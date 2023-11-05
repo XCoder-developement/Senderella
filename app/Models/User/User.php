@@ -4,14 +4,13 @@ namespace App\Models\User;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Models\City\City;
 use App\Models\Gift\Gift;
+use App\Models\Location\Country\Country;
+use App\Models\Location\State\State;
 use App\Models\Notification\Notification;
 use App\Models\Order\Order;
 use App\Models\Product\Product;
 use App\Models\Setting\Setting;
-use App\Models\State\State;
-use App\Models\Zone\Zone;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -45,26 +44,32 @@ class User extends Authenticatable
     {
         return $this->image ? asset($this->image) : '';
     }
-
-    public function state():BelongsTo {
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class);
+    }
+    public function state(): BelongsTo
+    {
         return $this->belongsTo(State::class);
     }
-    public function city():BelongsTo {
-        return $this->belongsTo(City::class);
-    }
-    public function zone():BelongsTo {
-        return $this->belongsTo(Zone::class);
-    }
-    protected $with = ["state","city","zone"];
 
-    public function user_devices():HasMany {
+
+    protected $with = ["country","state"];
+
+    public function user_devices(): HasMany
+    {
         return $this->hasMany(UserDevice::class);
     }
-    public function user_device():HasOne {
+    public function user_device(): HasOne
+    {
         return $this->hasOne(UserDevice::class);
+    }
+    public function images(): HasMany
+    {
+        return $this->hasMany(UserImage::class);
     }
     // public function notifications():BelongsToMany {
     //     return $this->belongsToMany(Notification::class,"user_notifications","user_id","notification_id");
     // }
-    
+
 }

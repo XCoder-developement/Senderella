@@ -23,9 +23,10 @@ return new class extends Migration
             $table->date('birthday_date')->nullable();
             $table->string('password');
             $table->integer('country_id')->unsigned()->nullable();
-            $table->integer('zone_id')->unsigned()->nullable();
+            $table->integer('state_id')->unsigned()->nullable();
+
             $table->string('nationality_id')->nullable();
-            $table->enum('marital_status',['Single','Married'])->nullable();
+            $table->tinyInteger('marital_status')->nullable()->comment('0 => single , 1 => married');
             $table->tinyInteger('is_married_before')->nullable()->comment('0 => no , 1 => yes');
             $table->integer('readiness_for_marriage')->default(0)->comment('0 => as soon as possible');
             $table->text('weight')->nullable();
@@ -37,8 +38,6 @@ return new class extends Migration
             $table->string('invitation_code')->nullable();
             $table->string('invite_code')->nullable();
 
-            $table->integer('country_id')->unsigned()->nullable();
-            $table->integer('state_id')->unsigned()->nullable();
 
             $table->rememberToken();
             $table->text('api_token')->nullable();
@@ -62,6 +61,20 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')
                 ->onDelete('cascade');
+        });
+
+        Schema::create('user_images', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->string('image')->nullable();
+
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+
+
+            $table->foreign('user_id')->references('id')->on('users')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
         });
     }
 
