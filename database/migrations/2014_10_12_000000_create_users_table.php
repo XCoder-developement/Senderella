@@ -14,32 +14,42 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->string('image')->nullable();
-            $table->string('email')->nullable();
             $table->string('phone')->nullable();
-            $table->double('points')->nullable();
+            $table->string('email')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('verification_code')->nullable();
+            $table->tinyInteger('verification_type')->nullable()->comment('0 => phone , 1 => email');
+            $table->tinyInteger('type')->nullable()->comment('0 => single , 1 => married');
+            $table->date('birthday_date')->nullable();
             $table->string('password');
+            $table->integer('country_id')->unsigned()->nullable();
+            $table->integer('zone_id')->unsigned()->nullable();
+            $table->string('nationality_id')->nullable();
+            $table->enum('marital_status',['Single','Married'])->nullable();
+            $table->tinyInteger('is_married_before')->nullable()->comment('0 => no , 1 => yes');
+            $table->integer('readiness_for_marriage')->default(0)->comment('0 => as soon as possible');
+            $table->text('weight')->nullable();
+            $table->text('height')->nullable();
+            $table->longText('notes')->nullable();
+
+
             $table->tinyInteger('is_verified')->unsigned()->default(0);
             $table->string('invitation_code')->nullable();
             $table->string('invite_code')->nullable();
 
+            $table->integer('country_id')->unsigned()->nullable();
             $table->integer('state_id')->unsigned()->nullable();
-            $table->integer('city_id')->unsigned()->nullable();
-            $table->integer('zone_id')->unsigned()->nullable();
 
             $table->rememberToken();
             $table->text('api_token')->nullable();
             $table->timestamps();
 
+            // $table->foreign('country_id')->references('id')->on('countries')
+            //     ->onUpdate('cascade')
+            //     ->onDelete('cascade');
             // $table->foreign('state_id')->references('id')->on('states')
-            // ->onUpdate('cascade')
-            // ->onDelete('cascade');
-            // $table->foreign('city_id')->references('id')->on('cities')
-            // ->onUpdate('cascade')
-            // ->onDelete('cascade');
-            // $table->foreign('zone_id')->references('id')->on('zones')
-            // ->onUpdate('cascade')
-            // ->onDelete('cascade');
+            //     ->onUpdate('cascade')
+            //     ->onDelete('cascade');
         });
 
         Schema::create('user_devices', function (Blueprint $table) {
@@ -53,7 +63,6 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')
                 ->onDelete('cascade');
         });
-
     }
 
     /**

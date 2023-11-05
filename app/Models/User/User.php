@@ -63,34 +63,8 @@ class User extends Authenticatable
     public function user_device():HasOne {
         return $this->hasOne(UserDevice::class);
     }
-    public function notifications():BelongsToMany {
-        return $this->belongsToMany(Notification::class,"user_notifications","user_id","notification_id");
-    }
-    public function favorite_products():BelongsToMany {
-        return $this->belongsToMany(Product::class,"user_favorite_products","user_id","product_id");
-    }
-
-    public function orders():HasMany {
-        return $this->hasMany(Order::class);
-    }
-
-    public function points():HasMany {
-        return $this->hasMany(UserPoint::class);
-    }
-
-    public function convert_money_to_points($money):float{
-        $setting = Setting::first();
-
-        $points = 0;
-
-        if($setting && $setting->points && $setting->money){
-
-        $points = ($money * ($setting->points)) / $setting->money;
-        }
-        return $points;
-    }
-
-    public function gifts():BelongsToMany {
-        return $this->belongsToMany(Gift::class,"user_gifts","user_id","gift_id");
-    }
+    // public function notifications():BelongsToMany {
+    //     return $this->belongsToMany(Notification::class,"user_notifications","user_id","notification_id");
+    // }
+    
 }

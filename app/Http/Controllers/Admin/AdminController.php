@@ -37,7 +37,7 @@ class AdminController extends Controller
         }
 
        $admin = Admin::create($data);
-        $admin->syncRoles(['super_super_admin']);
+        // $admin->syncRoles(['super_super_admin']);
 
         return redirect()->route($this->route."index")
         ->with(['success'=> __("messages.createmessage")]);
