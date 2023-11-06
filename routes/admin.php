@@ -6,6 +6,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\EducationTypeController;
+use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\Location\StateController;
 
@@ -48,6 +49,9 @@ Route::group(
 
                 //eduaction_types
                 Route::resource('education_types', EducationTypeController::class);
+
+                //Color
+                Route::resource('colors', ColorController::class);
             });
         });
     }
