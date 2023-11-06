@@ -297,8 +297,13 @@ return [
     "points_expire_days"=>"ايام انتهاء النقاط",
     "points_expire_date"=>"تاريخ انتهاء النقاط",
     "app_users"=>"مستخدمي التطبيق",
+
     "add education_type"=>"اضافه نوع تعليم",
-    "education_types"=>"انواع التعليم",
     "edit education_type"=>"تعديل نوع تعليم",
+    "education_types"=>"انواع التعليم",
+
+    "add marital_status"=>"اضافه حاله اجتماعيه",
+    "edit marital_status"=>"تعديل الحاله الاجتماعيه",
+    "marital_statuses"=>"الحالات الاجتماعيه",
 
 ];

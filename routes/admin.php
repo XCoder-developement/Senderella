@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\EducationTypeController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\Location\StateController;
+use App\Http\Controllers\Admin\MaritalStatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,9 @@ Route::group(
                 //eduaction_types
                 Route::resource('education_types', EducationTypeController::class);
 
+                //marital_statuses
+                Route::resource('marital_statuses', MaritalStatusController::class);
+              
                 //Color
                 Route::resource('colors', ColorController::class);
             });

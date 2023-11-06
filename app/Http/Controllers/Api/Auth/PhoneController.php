@@ -17,7 +17,7 @@ class PhoneController extends Controller
     {
         try {
 
-            //validation
+            //     validation
 
             $rules = [
                 "phone" => "required",
@@ -30,25 +30,17 @@ class PhoneController extends Controller
             }
 
             $user = User::wherePhone($request->phone)->first();
-
-            //check if user exists
-
-            if ($user) {
-                $msg = __('messages.The user was found successfully');
-                return true;
-                if ($request->verification_type == VerificationTypeEnum::phone->value) {
-                    $user->update([
-                        'verification_type' => VerificationTypeEnum::phone->value
-                    ]);
-                }
-                if ($request->verification_type == VerificationTypeEnum::email->value) {
-                    $user->update([
-                        'verification_type' => VerificationTypeEnum::email->value
-                    ]);
-                }
-            } else {
+            if (!$user) {
                 $msg = __('messages.Sorry, this user does not exist');
-                return false;
+                return $this->errorResponse($msg, 401);
+            }
+            //check if user exists
+            elseif ($user) {
+                $user->update([
+                    'verification_type' => $request->verification_type
+                ]);
+                $msg = __('messages.The user was found successfully');
+                return $this->successResponse($msg, 200);
             }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);

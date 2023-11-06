@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->string('gender')->nullable();
+            $table->tinyInteger('gender')->nullable()->comment('0 => male , 1 => female');
             $table->string('verification_code')->nullable();
             $table->tinyInteger('verification_type')->nullable()->comment('0 => phone , 1 => email');
             $table->tinyInteger('type')->nullable();
