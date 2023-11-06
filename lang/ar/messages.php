@@ -296,6 +296,9 @@ return [
     "not used"=>"لم يستخدم",
     "points_expire_days"=>"ايام انتهاء النقاط",
     "points_expire_date"=>"تاريخ انتهاء النقاط",
-    "app_users"=>"مستخدمي التطبيق"
+    "app_users"=>"مستخدمي التطبيق",
+    "add education_type"=>"اضافه نوع تعليم",
+    "education_types"=>"انواع التعليم",
+    "edit education_type"=>"تعديل نوع تعليم",
 
 ];

@@ -74,7 +74,6 @@ class UserController extends Controller
             //validation
             $rules = [
                 "images" => "required",
-
             ];
             $validator = Validator::make($request->all(), $rules);
 
@@ -93,8 +92,6 @@ class UserController extends Controller
                     ]);
                 }
             }
-            
-            $user->update($data);
 
             $msg = __("messages.save successful");
 
