@@ -72,35 +72,12 @@ class LoginController extends Controller
             return $this->returnException($ex->getMessage(), 500);
         }
     }
-    public function logout(Request $request){
+    public function logout(){
         try {
-            $rules = [
-                'device_token' => 'sometimes'
-                ];
 
-            $validator = Validator::make($request->all(), $rules);
-
-            if ($validator->fails()) {
-
-                return $this->getvalidationErrors($validator);
-
-            }
             $user = auth()->user();
 
             $user->update(["api_token" => null]);
-
-            if($request->device_token){
-                $user->user_device()->whereDeviceToken($request->device_token)->updateOrCreate([],[
-                'device_token' => null
-                ]);
-            }else{
-                $user->user_device()->updateOrCreate([],[
-                    'device_token' => null
-                    ]);
-            }
-
-
-
 
             //response
 

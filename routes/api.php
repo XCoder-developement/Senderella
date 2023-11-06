@@ -58,7 +58,7 @@ Route::post("check_phone_and_email", [PhoneController::class, "check_phone_and_e
 Route::group(['middleware' => 'auth:api'], function () {
 
     //logout
-    Route::post("logout", [LoginController::class, "logout"]);
+    Route::get("logout", [LoginController::class, "logout"]);
 
     //change_password
     Route::post("change_password", [PasswordController::class, "change_password"]);
@@ -71,4 +71,3 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 
 });
-// Route::post("fetch_nearest_selling_port", [SellingPortController::class, "fetch_nearest_selling_port"]);
