@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             CountrySeeder::class,
             EducationTypeSeeder::class,
+            ColorSeeder::class,
 
         ]);
     }

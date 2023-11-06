@@ -306,4 +306,8 @@ return [
     "edit marital_status"=>"تعديل الحاله الاجتماعيه",
     "marital_statuses"=>"الحالات الاجتماعيه",
 
+    "add color"=>'اضافه لون البشره',
+    "edit color"=>'تعديل لون البشره',
+    "colors"=>"الوان البشره",
+
 ];
