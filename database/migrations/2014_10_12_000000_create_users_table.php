@@ -19,14 +19,16 @@ return new class extends Migration
             $table->string('gender')->nullable();
             $table->string('verification_code')->nullable();
             $table->tinyInteger('verification_type')->nullable()->comment('0 => phone , 1 => email');
-            $table->tinyInteger('type')->nullable()->comment('0 => single , 1 => married');
+            $table->tinyInteger('type')->nullable();
             $table->date('birthday_date')->nullable();
             $table->string('password');
             $table->integer('country_id')->unsigned()->nullable();
             $table->integer('state_id')->unsigned()->nullable();
 
             $table->string('nationality_id')->nullable();
+
             $table->tinyInteger('marital_status')->nullable()->comment('0 => single , 1 => married');
+
             $table->tinyInteger('is_married_before')->nullable()->comment('0 => no , 1 => yes');
             $table->integer('readiness_for_marriage')->default(0)->comment('0 => as soon as possible');
             $table->text('weight')->nullable();

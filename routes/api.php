@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Api\AboutController;
 use App\Http\Controllers\Api\Auth\LocationController;
 use App\Http\Controllers\Api\Auth\LoginController;
@@ -47,10 +48,10 @@ Route::post("login", [LoginController::class, "login"]);
 Route::get("token_invalid", [RegisterController::class, "token_invalid"])->name("token_invalid");
 
 //reset_password
-Route::post("set_password", [PasswordController::class, "set_password"]);
+Route::post("reset_password", [PasswordController::class, "reset_password"]);
 
-//check_phone
-Route::post("check_phone", [PhoneController::class, "check_phone"]);
+//check_phone_and_email
+Route::post("check_phone_and_email", [PhoneController::class, "check_phone_and_email"]);
 
 
 // Auth Api
@@ -59,6 +60,15 @@ Route::group(['middleware' => 'auth:api'], function () {
     //logout
     Route::post("logout", [LoginController::class, "logout"]);
 
-  
+    //change_password
+    Route::post("change_password", [PasswordController::class, "change_password"]);
+
+    //set_user_data
+    Route::post("set_user_data", [UserController::class, "set_user_data"]);
+
+    //set_user_images
+    Route::post("set_user_images", [UserController::class, "set_user_images"]);
+
+
 });
 // Route::post("fetch_nearest_selling_port", [SellingPortController::class, "fetch_nearest_selling_port"]);

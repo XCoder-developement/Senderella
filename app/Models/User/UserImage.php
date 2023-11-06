@@ -11,8 +11,18 @@ class UserImage extends Model
     use HasFactory;
     protected $table = 'user_images';
     protected $guarded = [];
+
+    protected $appends = ["image_link"];
+
+    public function getImageLinkAttribute()
+    {
+        return $this->image ? asset($this->image) : '';
+    }
+    
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
+
 }

@@ -38,12 +38,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $appends = ["image_link"];
-
-    public function getImageLinkAttribute()
-    {
-        return $this->image ? asset($this->image) : '';
-    }
+    
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
@@ -52,9 +47,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(State::class);
     }
-
-
     protected $with = ["country","state"];
+
 
     public function user_devices(): HasMany
     {
@@ -72,4 +66,12 @@ class User extends Authenticatable
     //     return $this->belongsToMany(Notification::class,"user_notifications","user_id","notification_id");
     // }
 
+    public function getIsMarriedBeforeFormatAttribute()
+    {
+        if($this->is_married_before == 0){
+            return __('messages.no');
+        }elseif($this->is_married_before == 1){
+            return __('messages.yes');
+        }
+    }
 }

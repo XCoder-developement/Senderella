@@ -57,7 +57,7 @@ class PasswordController extends Controller
             return $this->returnException($ex->getMessage(), 500);
         }
     }
-    public function set_password(Request $request)
+    public function reset_password(Request $request)
     {
         try {
 

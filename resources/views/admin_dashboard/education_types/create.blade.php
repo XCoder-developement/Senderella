@@ -28,64 +28,39 @@
 
                     </span>
 
-                    <h3 class="card-label"> {{ __('messages.add admin') }}</h3>
+                    <h3 class="card-label"> {{ __('messages.add education_type') }}</h3>
                 </div>
             </div>
 
 
             <div class="card-body">
-                <form method="post" action="{{ route('admins.store') }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('education_types.store') }}" enctype="multipart/form-data">
                     @csrf
+
+
                     <div class="row">
-                        <div class="col-8 mx-auto">
-                            <div class="uploadOuter">
-                                <span class="dragBox">
+                        @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                            <!-- For loop this div -->
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>
+                                        {{ __('messages.title_' . $localeCode) }}
+                                        <span class="text-danger"> ( {{ $localeCode }} )</span>
+                                    </label>
+                                    <input
+                                        class="form-control   @error('title-' . $localeCode) is-invalid
+                          @enderror"
+                                        required value="{{ old('title-' . $localeCode) }}" name="title-{{ $localeCode }}">
 
-                                    Darg and Drop image here
-                                    <input type="file" name="image" onChange="dragNdrop(event)" ondragover="drag()"
-                                        ondrop="drop()" id="uploadFile" />
-                                </span>
+                                    @error('title-' . $localeCode)
+                                        <span class="invalid-feedback">
+                                            {{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
+                        @endforeach
 
-                            <div id="preview">
-                                @error('image')
-                                    <span class="invalid-feedback">
-                                        {{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
 
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <label>{{ __('messages.name') }}</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                                value="{{ old('name') }}" required>
-                            @error('name')
-                                <span class="invalid-feedback">
-                                    {{ $message }}</span>
-                            @enderror
-                        </div>
-                        
-                        <div class="col-6">
-                            <label>{{ __('messages.phone') }}</label>
-                            <input type="number" class="form-control @error('phone') is-invalid @enderror" name="phone"
-                                value="{{ old('phone') }}" required />
-                            @error('phone')
-                                <span class="invalid-feedback">
-                                    {{ $message }}</span>
-                            @enderror
-
-                        </div>
-                        <div class="col-6">
-                            <label>{{ __('messages.password') }}</label>
-                            <input type="password" class="form-control  @error('password') is-invalid @enderror"
-                                name="password" value="{{ old('password') }}" required>
-                            @error('password')
-                                <span class="invalid-feedback">
-                                    {{ $message }}</span>
-                            @enderror
-                        </div>
                     </div>
                     <button type="submit" class="btn btn-shadow btn-primary font-weight-bold mt-5">
                         {{ __('messages.save') }}

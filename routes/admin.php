@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\EducationTypeController;
 use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\Location\StateController;
 
@@ -32,10 +33,9 @@ Route::group(
                 Route::get("login", [AuthController::class, "login"])->name("admin_loginpage");
                 Route::post("admin_login", [AuthController::class, "admin_login"])->name("admin_login");
             });
+
             Route::group(["middleware" => "auth:admin"], function () {
                 Route::get("logout", [AuthController::class, "logout"])->name("logout");
-
-
 
                 //admins
                 Route::resource('admins', AdminController::class);
@@ -45,6 +45,9 @@ Route::group(
 
                 //states
                 Route::resource('states', StateController::class);
+
+                //eduaction_types
+                Route::resource('education_types', EducationTypeController::class);
             });
         });
     }

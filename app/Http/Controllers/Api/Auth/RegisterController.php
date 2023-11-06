@@ -17,8 +17,8 @@ class RegisterController extends Controller
      try {
 
          $rules = [
-            "name" => "required",
             "phone" => "required|unique:users,phone",
+            "email" => "required|unique:users,email",
             'password' => 'required|min:8',
         ];
         $validator = Validator::make($request->all(), $rules);
@@ -29,9 +29,9 @@ class RegisterController extends Controller
 
         }
 
-        $data["name"] = $request->name;
         $data["phone"] = $request->phone;
-        $data["invitation_code"] = rand(99999,999999);
+        $data["email"] = $request->email;
+        $data['verification_code'] = rand(9999,999999);
         $data["password"] = Hash::make($request->password);
         $data["api_token"] = Hash::make(rand(100,55415415415));
 
