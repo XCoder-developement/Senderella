@@ -6,6 +6,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\EducationTypeController;
+use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\Location\StateController;
 use App\Http\Controllers\Admin\MaritalStatusController;
@@ -52,6 +53,9 @@ Route::group(
 
                 //marital_statuses
                 Route::resource('marital_statuses', MaritalStatusController::class);
+              
+                //Color
+                Route::resource('colors', ColorController::class);
             });
         });
     }
