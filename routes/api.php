@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Api\AboutController;
 use App\Http\Controllers\Api\Auth\LocationController;
 use App\Http\Controllers\Api\Auth\LoginController;
@@ -21,6 +20,7 @@ use App\Http\Controllers\Api\SellingPortController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\TermController;
 use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
