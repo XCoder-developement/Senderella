@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\Location\StateController;
 use App\Http\Controllers\Admin\MaritalStatusController;
+use App\Http\Controllers\Admin\ProblemTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,9 +54,12 @@ Route::group(
 
                 //marital_statuses
                 Route::resource('marital_statuses', MaritalStatusController::class);
-              
-                //Color
+
+                //colors
                 Route::resource('colors', ColorController::class);
+
+                //problem_types
+                Route::resource('problem_types', ProblemTypeController::class);
             });
         });
     }

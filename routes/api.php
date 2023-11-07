@@ -13,6 +13,8 @@ use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PrivacyController;
+use App\Http\Controllers\Api\ProblemController;
+use App\Http\Controllers\Api\ProblemTypeController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\QuestionController;
@@ -69,5 +71,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     //set_user_images
     Route::post("set_user_images", [UserController::class, "set_user_images"]);
 
+    //fetch_problem_types
+    Route::get("fetch_problem_types", [ProblemTypeController::class, "fetch_problem_types"])->name('fetch_problem_types');
+
+    //send_problem
+    Route::post("send_problem", [ProblemController::class, "send_problem"])->name('send_problem');
 
 });

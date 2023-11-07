@@ -310,4 +310,8 @@ return [
     "edit color"=>'تعديل لون البشره',
     "colors"=>"الوان البشره",
 
+    "add problem_type"=>"اضافه سبب مشكله",
+    "edit problem_type"=>"تعديل سبب المشكله",
+    "problem_types"=>"اسباب المشاكل",
+
 ];
