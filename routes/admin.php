@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\HairColorController;
 use App\Http\Controllers\Admin\EyeColorController;
 use App\Http\Controllers\Admin\ProcreationController;
+use App\Http\Controllers\Admin\ReligiosityController;
+use App\Http\Controllers\Admin\EleganceStyleController;
 use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\Location\StateController;
 use App\Http\Controllers\Admin\MaritalStatusController;
@@ -80,6 +82,12 @@ Route::group(
 
                  //procreations
                  Route::resource('procreations', ProcreationController::class);
+
+                  //religiositys
+                  Route::resource('religiositys', ReligiosityController::class);
+
+                   //elegance_styles
+                   Route::resource('elegance_styles', EleganceStyleController::class);
 
             });
         });
