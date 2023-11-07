@@ -6,7 +6,12 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\EducationTypeController;
+use App\Http\Controllers\Admin\HijibTypeController;
+use App\Http\Controllers\Admin\WorkTypeController;
 use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\HairColorController;
+use App\Http\Controllers\Admin\EyeColorController;
+use App\Http\Controllers\Admin\ProcreationController;
 use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\Location\StateController;
 use App\Http\Controllers\Admin\MaritalStatusController;
@@ -60,6 +65,22 @@ Route::group(
 
                 //problem_types
                 Route::resource('problem_types', ProblemTypeController::class);
+
+                //hijib_types
+                Route::resource('hijib_types', HijibTypeController::class);
+
+                //work_types
+                Route::resource('work_types', WorkTypeController::class);
+
+                 //hair-colors
+                 Route::resource('hair_colors', HairColorController::class);
+
+                 //eye-colors
+                 Route::resource('eye_colors', EyeColorController::class);
+
+                 //procreations
+                 Route::resource('procreations', ProcreationController::class);
+
             });
         });
     }
