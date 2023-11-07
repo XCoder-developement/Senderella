@@ -2,7 +2,7 @@
 
 namespace App\DataTables\Admin;
 
-use App\Models\EducationType\EducationType;
+use App\Models\Problem\Problem;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class EducationTypeDataTable extends DataTable
+class ProblemDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -23,7 +23,10 @@ class EducationTypeDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('action', 'admin_dashboard.education_types.action')
+            ->addColumn('action', 'admin_dashboard.problems.action')
+            ->editColumn('problem_type', function ($query) {
+                return $query->problem_type?->title ?? "";
+            })
             ->rawColumns([
                 'action',
             ]);
@@ -32,7 +35,7 @@ class EducationTypeDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(EducationType $model): QueryBuilder
+    public function query(Problem $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -61,9 +64,11 @@ class EducationTypeDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-             ["data" => "title" ,"title" => __('messages.title'),'orderable'=>false],
-             ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
-        ];
+            ["data" => "email" ,"title" => __('messages.email'),'orderable'=>false],
+            ["data" => "problem_type" ,"title" => __('messages.problem_type'),'orderable'=>false],
+            ["data" => "comment" ,"title" => __('messages.comment'),'orderable'=>false],
+            ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
+       ];
     }
 
     /**
@@ -71,6 +76,6 @@ class EducationTypeDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'EducationType_' . date('YmdHis');
+        return 'Problem_' . date('YmdHis');
     }
 }
