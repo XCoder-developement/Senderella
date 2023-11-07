@@ -34,7 +34,7 @@ class HijibTypeDataTable extends DataTable
      */
     public function query(HijibType $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy("id","desc");
     }
 
     /**

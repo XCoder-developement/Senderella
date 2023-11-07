@@ -34,7 +34,7 @@ class ColorDataTable extends DataTable
      */
     public function query(Color $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy("id","desc");
     }
 
     /**
