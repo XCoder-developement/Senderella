@@ -18,6 +18,11 @@ class DatabaseSeeder extends Seeder
             EducationTypeSeeder::class,
             ColorSeeder::class,
             ProblemTypeSeeder::class,
+            HairColorSeeder::class,
+            HijibTypeSeeder::class,
+            MaritalStatusSeeder::class,
+            ProcreationSeeder::class,
+            WorkTypeSeeder::class,
 
         ]);
     }
