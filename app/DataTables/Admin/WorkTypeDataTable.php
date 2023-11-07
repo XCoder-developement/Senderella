@@ -34,7 +34,7 @@ class WorkTypeDataTable extends DataTable
      */
     public function query(WorkType $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy("id","desc");
     }
 
     /**

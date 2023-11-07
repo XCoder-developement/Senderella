@@ -37,7 +37,7 @@ class ProblemDataTable extends DataTable
      */
     public function query(Problem $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy("id","desc");
     }
 
     /**
