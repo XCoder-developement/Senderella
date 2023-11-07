@@ -34,7 +34,7 @@ class EducationTypeDataTable extends DataTable
      */
     public function query(EducationType $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy("id","desc");
     }
 
     /**

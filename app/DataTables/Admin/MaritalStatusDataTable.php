@@ -34,7 +34,7 @@ class MaritalStatusDataTable extends DataTable
      */
     public function query(MaritalStatus $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy("id","desc");
     }
 
     /**

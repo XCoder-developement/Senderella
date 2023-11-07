@@ -34,7 +34,7 @@ class ProcreationDataTable extends DataTable
      */
     public function query(Procreation $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy("id","desc");
     }
 
     /**

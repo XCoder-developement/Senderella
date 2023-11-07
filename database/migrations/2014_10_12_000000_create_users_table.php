@@ -16,41 +16,27 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->tinyInteger('gender')->nullable()->comment('0 => male , 1 => female');
-            $table->string('verification_code')->nullable();
-            $table->tinyInteger('verification_type')->nullable()->comment('0 => phone , 1 => email');
-            $table->tinyInteger('type')->nullable();
-            $table->date('birthday_date')->nullable();
             $table->string('password');
+            $table->date('birthday_date')->nullable();
             $table->integer('country_id')->unsigned()->nullable();
             $table->integer('state_id')->unsigned()->nullable();
-
             $table->string('nationality_id')->nullable();
-
-            $table->tinyInteger('marital_status')->nullable()->comment('0 => single , 1 => married');
-
-            $table->tinyInteger('is_married_before')->nullable()->comment('0 => no , 1 => yes');
-            $table->integer('readiness_for_marriage')->default(0)->comment('0 => as soon as possible');
             $table->text('weight')->nullable();
             $table->text('height')->nullable();
             $table->longText('notes')->nullable();
-
-
+            $table->longText('about_me')->nullable();
+            $table->longText('important_in_marriage')->nullable();
+            $table->longText('partner_specifications')->nullable();
+            $table->tinyInteger('gender')->nullable()->comment('0 => male , 1 => female');
+            $table->tinyInteger('is_married_before')->nullable()->comment('0 => no , 1 => yes');
+            $table->tinyInteger('verification_type')->nullable()->comment('0 => phone , 1 => email');
+            $table->string('verification_code')->nullable();
             $table->tinyInteger('is_verified')->unsigned()->default(0);
-            $table->string('invitation_code')->nullable();
-            $table->string('invite_code')->nullable();
-
 
             $table->rememberToken();
             $table->text('api_token')->nullable();
             $table->timestamps();
 
-            // $table->foreign('country_id')->references('id')->on('countries')
-            //     ->onUpdate('cascade')
-            //     ->onDelete('cascade');
-            // $table->foreign('state_id')->references('id')->on('states')
-            //     ->onUpdate('cascade')
-            //     ->onDelete('cascade');
         });
 
         Schema::create('user_devices', function (Blueprint $table) {
