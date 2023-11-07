@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
             MaritalStatusSeeder::class,
             ProcreationSeeder::class,
             WorkTypeSeeder::class,
+            ReligiositySeeder::class,
+            EleganceStyleSeeder::class,
+
         ]);
     }
 }
