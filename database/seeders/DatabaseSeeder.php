@@ -25,6 +25,11 @@ class DatabaseSeeder extends Seeder
             WorkTypeSeeder::class,
             ReligiositySeeder::class,
             EleganceStyleSeeder::class,
+            HealthStatusSeeder::class,
+            FirstMeetSeeder::class,
+            FamilyValueSeeder::class,
+            MovingPlaceSeeder::class,
+
 
         ]);
     }

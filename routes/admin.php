@@ -14,6 +14,11 @@ use App\Http\Controllers\Admin\EyeColorController;
 use App\Http\Controllers\Admin\ProcreationController;
 use App\Http\Controllers\Admin\ReligiosityController;
 use App\Http\Controllers\Admin\EleganceStyleController;
+use App\Http\Controllers\Admin\HealthStatusController;
+use App\Http\Controllers\Admin\FirstMeetController;
+use App\Http\Controllers\Admin\FamilyValueController;
+use App\Http\Controllers\Admin\MovingPlaceController;
+use App\Http\Controllers\Admin\MultiplicityStatusController;
 use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\Location\StateController;
 use App\Http\Controllers\Admin\MaritalStatusController;
@@ -89,6 +94,19 @@ Route::group(
                    //elegance_styles
                    Route::resource('elegance_styles', EleganceStyleController::class);
 
+                   //health_statuss
+                   Route::resource('health_statuss', HealthStatusController::class);
+
+                      //multiplicity_statuses
+                      Route::resource('multiplicity_statuses', MultiplicityStatusController::class);
+
+                      //first_meets
+                  Route::resource('first_meets', FirstMeetController::class);
+
+                    //family_values
+                    Route::resource('family_values', FamilyValueController::class);
+                    //moving_places
+                    Route::resource('moving_places', MovingPlaceController::class);
             });
         });
     }
