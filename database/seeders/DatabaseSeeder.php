@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
             TermSeeder::class,
             QuestionSeeder::class,
             AboutSeeder::class,
-
+            MarriageReadinessSeeder::class,
 
         ]);
     }

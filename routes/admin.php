@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\HealthStatusController;
 use App\Http\Controllers\Admin\FirstMeetController;
 use App\Http\Controllers\Admin\FamilyValueController;
 use App\Http\Controllers\Admin\MovingPlaceController;
+use App\Http\Controllers\Admin\MarriageReadinessController;
 use App\Http\Controllers\Admin\MultiplicityStatusController;
 use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\Location\StateController;
@@ -117,6 +118,7 @@ Route::group(
 
                     //family_values
                     Route::resource('family_values', FamilyValueController::class);
+
                     //moving_places
                     Route::resource('moving_places', MovingPlaceController::class);
 
@@ -130,6 +132,8 @@ Route::group(
                 //problems
                 Route::get('problems', [ProblemController::class, 'index'])->name('problems.index');
 
+                    //marriage_readiness
+                    Route::resource('marriage_readinesses', MarriageReadinessController::class);
             });
         });
     }
