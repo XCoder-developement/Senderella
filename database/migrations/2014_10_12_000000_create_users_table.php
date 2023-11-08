@@ -51,6 +51,33 @@ return new class extends Migration
                 ->onDelete('cascade');
         });
 
+        Schema::create('user_informations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned()->nullable();
+
+            $table->integer('educational_type_id')->unsigned()->nullable();
+            $table->integer('hair_color_id')->unsigned()->nullable();
+            $table->integer('color_id')->unsigned()->nullable();
+            $table->integer('procreation_id')->unsigned()->nullable();
+            $table->integer('religiosity_id')->unsigned()->nullable();
+            $table->integer('elegance_style_id')->unsigned()->nullable();
+            $table->integer('hijab_type_id')->unsigned()->nullable();
+            $table->integer('work_type_id')->unsigned()->nullable();
+            $table->integer('eyes_color_id')->unsigned()->nullable();
+            $table->integer('health_status_id')->unsigned()->nullable();
+            $table->integer('multiplicity_status_id')->unsigned()->nullable();
+            $table->integer('first_meet_id')->unsigned()->nullable();
+            $table->integer('family_value_id')->unsigned()->nullable();
+            $table->integer('moving_place_id')->unsigned()->nullable();
+            $table->integer('marital_status_id')->unsigned()->nullable();
+            $table->integer('marriage_readiness_id')->unsigned()->nullable();
+
+            $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')
+                ->onDelete('cascade');
+        });
+
         Schema::create('user_images', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->nullable();
