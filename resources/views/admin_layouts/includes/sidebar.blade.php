@@ -100,7 +100,190 @@
                             </div>
                         </li>
 
+                        <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                            <a href="javascript:;" class="menu-link menu-toggle">
+                                <span class="svg-icon menu-icon">
+                                    <i class="fas fa-cog"></i>
+                                </span>
+                                <span class="menu-text">{{ __('messages.user_informations') }}</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="menu-submenu">
+                                <i class="menu-arrow"></i>
 
+                                <ul class="menu-subnav">
+                                    <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                        <span class="menu-link">
+                                            <span class="menu-text">{{ __('messages.user_informations') }}</span>
+                                        </span>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('education_types.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.education_types')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('marital_statuses.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.marital_statuses')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('hijib_types.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.hijib_types')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('work_types.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.work_types')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('colors.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.colors')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('eye_colors.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.eye_colors')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('hair_colors.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.hair_colors')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('procreations.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.procreations')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('religiositys.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.religiositys')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('health_statuss.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.health_statuss')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('multiplicity_statuses.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.multiplicity_statuses')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('first_meets.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.first_meets')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('family_values.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.family_values')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('elegance_styles.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.elegance_styles')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('moving_places.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.moving_places')}}</span>
+                                        </a>
+                                    </li>
+
+                                    {{-- <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('work_types.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.work_types')}}</span>
+                                        </a>
+                                    </li> --}}
+
+
+
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                            <a href="javascript:;" class="menu-link menu-toggle">
+                                <span class="svg-icon menu-icon">
+                                    <i class="fas fa-cog"></i>
+                                </span>
+                                <span class="menu-text">{{ __('messages.website_settings') }}</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="menu-submenu">
+                                <i class="menu-arrow"></i>
+
+                                <ul class="menu-subnav">
+                                    <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                        <span class="menu-link">
+                                            <span class="menu-text">{{ __('messages.website_settings') }}</span>
+                                        </span>
+                                    </li>
+
+                                    {{-- <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{ route('settings.index') }}" class="menu-link">
+                                            <span class="menu-text">{{ __('messages.settings') }}</span>
+                                        </a>
+                                    </li> --}}
+
+
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('privacies.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.privacies')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('terms.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.terms')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('abouts.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.abouts')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('questions.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.questions')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('problem_types.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.problem_types')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('problems.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.problems')}}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
 
             <li class="menu-item" aria-haspopup="true">
                 <a href="{{ route('logout') }}" class="menu-link">

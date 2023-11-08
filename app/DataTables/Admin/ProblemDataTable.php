@@ -67,7 +67,7 @@ class ProblemDataTable extends DataTable
             ["data" => "email" ,"title" => __('messages.email'),'orderable'=>false],
             ["data" => "problem_type" ,"title" => __('messages.problem_type'),'orderable'=>false],
             ["data" => "comment" ,"title" => __('messages.comment'),'orderable'=>false],
-            ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
+            // ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
        ];
     }
 

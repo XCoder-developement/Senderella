@@ -163,13 +163,7 @@ return [
     "source" => "المصدر",
     "article" => "مقال",
     "equation" => "معادله",
-
-    'answers' => "الاجابات",
-    'answer1' => "الاجابه الاولى",
-    'answer2' => "الاجابه الثانيه",
-    'answer3' => "الاجابه الثالثه",
-    'answer4' => "الاجابه الرابعه",
-
+    "comment" => "تعليق",
 
 
     "pending" => "في انتظار الرد",
@@ -228,7 +222,7 @@ return [
     "edit term" => "تعديل سياسه الشروط والاحكام",
 
     "abouts"=>"عنا",
-    "edit term" => "تعديل عنا",
+    "edit about" => "تعديل عنا",
 
     "transactions"=>"المعاملات",
     "add transaction" => "اضافه المعاملات",
@@ -298,6 +292,8 @@ return [
     "points_expire_date"=>"تاريخ انتهاء النقاط",
     "app_users"=>"مستخدمي التطبيق",
 
+    "user_informations"=>'بيانات المستخدم',
+
     "add education_type"=>"اضافه نوع تعليم",
     "edit education_type"=>"تعديل نوع تعليم",
     "education_types"=>"انواع التعليم",
@@ -313,5 +309,72 @@ return [
     "add problem_type"=>"اضافه سبب مشكله",
     "edit problem_type"=>"تعديل سبب المشكله",
     "problem_types"=>"اسباب المشاكل",
+    "problem_type"=>"سبب المشاكل",
+    "problems"=>"مشاكل التسجيل",
 
+    "add hijib_type"=>"اضافه نوع الحجاب",
+    "edit hijib_type"=>"تعديل نوع الحجاب",
+    "hijib_types"=>"انواع الحجاب",
+    "hijib_types"=>"نوع الحجاب",
+
+    "add education_type"=>"اضافه نوع التعليم",
+    "edit education_type"=>"تعديل نوع التعليم",
+    "education_types"=>"انواع التعليم",
+    "education_type"=>"نوع التعليم",
+
+    "add work_type"=>"اضافه نوع العمل",
+    "edit work_type"=>"تعديل نوع العمل",
+    "work_types"=>"انواع العمل",
+    "work_type"=>"نوع العمل",
+
+    "add eye_color"=>"اضافه لون العين",
+    "edit eye_color"=>"تعديل لون العين",
+    "eye_colors"=>"الوان العين",
+    "eye_color"=>"لون العين",
+
+    "add hair_color"=>"اضافه لون الشعر",
+    "edit hair_color"=>"تعديل لون الشعر",
+    "hair_colors"=>"الوان الشعر",
+    "hair_color"=>"لون الشعر",
+
+    "add procreation"=>"اضافه الانجاب",
+    "edit procreation"=>"تعديل الانجاب",
+    "procreations"=>"الانجاب",
+    "procreation"=>"الانجاب",
+
+    "add religiosity"=>"اضافه التدين",
+    "edit religiosity"=>"تعديل التدين",
+    "religiositys"=>"التدين",
+    "religiosity"=>"التدين",
+
+    "add health_status"=>"اضافه الحالة الصحية",
+    "edit health_status"=>"تعديل الحالة الصحية",
+    "health_statuss"=>"الحالات الصحية",
+    "health_status"=>"الحالة الصحية",
+
+
+    "add multiplicity_status"=>"اضافه حالة التعدد",
+    "edit multiplicity_status"=>"تعديل حالة التعدد",
+    "multiplicity_statuses"=>"حالات التعدد",
+    "multiplicity_status"=>"حالة التعدد",
+
+    "add first_meet"=>"اضافه اللقاء الاول",
+    "edit first_meet"=>"تعديل اللقاء الاول",
+    "first_meets"=>"اللقاءات الاولى",
+    "first_meet"=>"اللقاء الاول",
+
+    "add family_value"=>"اضافه قيمه العائله",
+    "edit family_value"=>"تعديل قيمه العائله",
+    "family_values"=>"قيم العائله",
+    "family_value"=>"قيمه العائله",
+
+    "add moving_place"=>"اضافه الانتقال لمكان اخر",
+    "edit moving_place"=>"تعديل الانتقال لمكان اخر",
+    "moving_places"=>"الانتقال لمكان اخر",
+    "moving_place"=>"الانتقال لمكان اخر",
+
+    "add elegance_style"=>"اضافه نمط الاناقه",
+    "edit elegance_style"=>"تعديل نمط الاناقه",
+    "elegance_styles"=>"انماط الاناقه",
+    "elegance_style"=>"نمط الاناقه",
 ];

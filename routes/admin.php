@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\Admin\AboutController;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\Admin\Auth\AuthController;
@@ -24,7 +24,9 @@ use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\Location\StateController;
 use App\Http\Controllers\Admin\MaritalStatusController;
 use App\Http\Controllers\Admin\PrivacyController;
+use App\Http\Controllers\Admin\ProblemController;
 use App\Http\Controllers\Admin\ProblemTypeController;
+use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\TermController;
 
 /*
@@ -119,6 +121,16 @@ Route::group(
 
                     //moving_places
                     Route::resource('moving_places', MovingPlaceController::class);
+
+                    //questions
+                Route::resource('questions', QuestionController::class);
+
+                //abouts
+                Route::get('abouts', [AboutController::class, 'index'])->name('abouts.index');
+                Route::post('abouts/update', [AboutController::class, 'update'])->name('abouts.update');
+
+                //problems
+                Route::get('problems', [ProblemController::class, 'index'])->name('problems.index');
 
                     //marriage_readiness
                     Route::resource('marriage_readinesses', MarriageReadinessController::class);
