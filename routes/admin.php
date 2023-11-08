@@ -15,7 +15,9 @@ use App\Http\Controllers\Admin\ProcreationController;
 use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\Location\StateController;
 use App\Http\Controllers\Admin\MaritalStatusController;
+use App\Http\Controllers\Admin\PrivacyController;
 use App\Http\Controllers\Admin\ProblemTypeController;
+use App\Http\Controllers\Admin\TermController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +82,14 @@ Route::group(
 
                  //procreations
                  Route::resource('procreations', ProcreationController::class);
+
+                 //privacies
+                Route::get('privacies', [PrivacyController::class, 'index'])->name('privacies.index');
+                Route::post('privacies/update', [PrivacyController::class, 'update'])->name('privacies.update');
+
+                //terms
+                Route::get('terms', [TermController::class, 'index'])->name('terms.index');
+                Route::post('terms/update', [TermController::class, 'update'])->name('terms.update');
 
             });
         });

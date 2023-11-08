@@ -55,6 +55,17 @@ Route::post("reset_password", [PasswordController::class, "reset_password"]);
 //check_phone_and_email
 Route::post("check_phone_and_email", [PhoneController::class, "check_phone_and_email"]);
 
+//fetch_problem_types
+Route::get("fetch_problem_types", [ProblemTypeController::class, "fetch_problem_types"])->name('fetch_problem_types');
+
+//send_problem
+Route::post("send_problem", [ProblemController::class, "send_problem"])->name('send_problem');
+
+//fetch_privacy
+Route::get("fetch_privacy", [PrivacyController::class, "fetch_privacy"]);
+
+//fetch_term
+Route::get("fetch_term", [TermController::class, "fetch_term"]);
 
 // Auth Api
 Route::group(['middleware' => 'auth:api'], function () {
@@ -71,10 +82,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     //set_user_images
     Route::post("set_user_images", [UserController::class, "set_user_images"]);
 
-    //fetch_problem_types
-    Route::get("fetch_problem_types", [ProblemTypeController::class, "fetch_problem_types"])->name('fetch_problem_types');
-
-    //send_problem
-    Route::post("send_problem", [ProblemController::class, "send_problem"])->name('send_problem');
 
 });
