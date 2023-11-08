@@ -29,6 +29,10 @@ class DatabaseSeeder extends Seeder
             FirstMeetSeeder::class,
             FamilyValueSeeder::class,
             MovingPlaceSeeder::class,
+            PrivacySeeder::class,
+            TermSeeder::class,
+            QuestionSeeder::class,
+            AboutSeeder::class,
 
 
         ]);

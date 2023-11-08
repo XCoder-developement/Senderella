@@ -67,6 +67,12 @@ Route::get("fetch_privacy", [PrivacyController::class, "fetch_privacy"]);
 //fetch_term
 Route::get("fetch_term", [TermController::class, "fetch_term"]);
 
+//fetch_questions
+Route::get("fetch_questions", [QuestionController::class, "fetch_questions"]);
+
+//fetch_about
+Route::get("fetch_about", [AboutController::class, "fetch_about"]);
+
 // Auth Api
 Route::group(['middleware' => 'auth:api'], function () {
 
@@ -81,6 +87,4 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //set_user_images
     Route::post("set_user_images", [UserController::class, "set_user_images"]);
-
-
 });
