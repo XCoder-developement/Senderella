@@ -208,11 +208,11 @@
                                         </a>
                                     </li>
 
-                                    {{-- <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="{{route('work_types.index')}}" class="menu-link" >
-                                            <span class="menu-text">{{__('messages.work_types')}}</span>
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('marriage_readinesses.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.marriage_readinesses')}}</span>
                                         </a>
-                                    </li> --}}
+                                    </li>
 
 
 
