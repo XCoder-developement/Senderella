@@ -377,4 +377,9 @@ return [
     "edit elegance_style"=>"تعديل نمط الاناقه",
     "elegance_styles"=>"انماط الاناقه",
     "elegance_style"=>"نمط الاناقه",
+
+    "add marriage_readiness"=>"اضافه الجهازيه للزواج",
+    "edit marriage_readiness"=>"تعديل الجهازيه للزواج",
+    "marriage_readinesses"=>"الجهازيه للزواج",
+    "marriage_readiness"=>"الجهازيه للزواج",
 ];
