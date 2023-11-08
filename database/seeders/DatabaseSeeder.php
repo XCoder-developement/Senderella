@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             FirstMeetSeeder::class,
             FamilyValueSeeder::class,
             MovingPlaceSeeder::class,
-
+            MarriageReadinessSeeder::class,
 
         ]);
     }
