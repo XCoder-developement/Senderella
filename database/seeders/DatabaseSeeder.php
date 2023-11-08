@@ -23,6 +23,14 @@ class DatabaseSeeder extends Seeder
             MaritalStatusSeeder::class,
             ProcreationSeeder::class,
             WorkTypeSeeder::class,
+            ReligiositySeeder::class,
+            EleganceStyleSeeder::class,
+            HealthStatusSeeder::class,
+            FirstMeetSeeder::class,
+            FamilyValueSeeder::class,
+            MovingPlaceSeeder::class,
+
+
         ]);
     }
 }
