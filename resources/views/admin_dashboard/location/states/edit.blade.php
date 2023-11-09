@@ -46,7 +46,7 @@
                                 </label>
                                 <select
                                     class=" form-control selectpicker
-          @error('country_id') is-invalid @enderror"
+                                    @error('country_id') is-invalid @enderror"
                                     name="country_id" data-live-search="true" title="&nbsp;">
 
                                     @foreach ($countries as $country)

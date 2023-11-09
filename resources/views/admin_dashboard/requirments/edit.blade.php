@@ -70,11 +70,11 @@
                                 <label>
                                     {{ __('messages.answer_type') }}
                                 </label>
-                             <select class=" form-control selectpicker" name="durations"
+                             <select class=" form-control selectpicker" name="answer_type"
                               data-live-search="true"  title="&nbsp;" >
 
-                                <option value="1">{{__('message.requirment')}}</option>
-                                <option value="2">{{__('message.question')}}</option>
+                                <option value="1" @if ($requirment->answer_type == 1) selected @endif>{{__('message.requirments')}}</option>
+                                <option value="2" @if ($requirment->answer_type == 2) selected @endif>{{__('message.questions')}}</option>
 
 
                              </select>

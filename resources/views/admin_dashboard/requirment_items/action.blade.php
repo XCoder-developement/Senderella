@@ -1,7 +1,3 @@
-{{-- <?php $requirment = \App\Models\Requirment\Requirment::whereId($id)->first();?>
-
-<a href="{{route("requirment_item.index", $id)}}" title="{{__('messages.requirment_item')}}"
-class="text-dark ml-2"><i class="fas fa-layer-group"></i></a> --}}
 
 <a href="{{route('requirment_items.edit',$id)}}" class="btn btn-sm btn-hover-bg-light m-0">
 
@@ -58,7 +54,7 @@ class="text-dark ml-2"><i class="fas fa-layer-group"></i></a> --}}
         '_method': 'DELETE',
         '_token':$('meta[name="csrf-token"]').attr('content')
       },
-       url: `requirment_items/${id}`,
+       url: `../requirment_items/${id}`,
        dataType: "Json",
        success: function(result){
            if(result.status == true){
