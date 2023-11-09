@@ -47,6 +47,7 @@ class EducationTypeController extends Controller
         EducationType::create($data);
 
 
+
         return redirect()->route($this->route."index")
         ->with(['success'=> __("messages.createmessage")]);
     }
