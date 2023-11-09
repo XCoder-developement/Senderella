@@ -244,17 +244,9 @@
                                         </a>
                                     </li> --}}
 
-
-
                                     <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="{{route('privacies.index')}}" class="menu-link" >
-                                            <span class="menu-text">{{__('messages.privacies')}}</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="{{route('terms.index')}}" class="menu-link" >
-                                            <span class="menu-text">{{__('messages.terms')}}</span>
+                                        <a href="{{route('packages.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.packages')}}</span>
                                         </a>
                                     </li>
 
@@ -279,6 +271,18 @@
                                     <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="{{route('problems.index')}}" class="menu-link" >
                                             <span class="menu-text">{{__('messages.problems')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('privacies.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.privacies')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('terms.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.terms')}}</span>
                                         </a>
                                     </li>
                                 </ul>

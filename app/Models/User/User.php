@@ -64,18 +64,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserImage::class);
     }
-    public function informations(): HasMany
-    {
-        return $this->hasMany(UserInformation::class);
-    }
-    public function questions(): HasMany
-    {
-        return $this->hasMany(UserQuestion::class);
-    }
-    public function answers(): HasMany
-    {
-        return $this->hasMany(UserAnswer::class);
-    }
+    
     // public function notifications():BelongsToMany {
     //     return $this->belongsToMany(Notification::class,"user_notifications","user_id","notification_id");
     // }
