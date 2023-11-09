@@ -1,5 +1,6 @@
 <?php
 
+
 use App\Http\Controllers\Api\AboutController;
 use App\Http\Controllers\Api\Auth\LocationController;
 use App\Http\Controllers\Api\Auth\LoginController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\TermController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\UserInformationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -87,4 +89,5 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //set_user_images
     Route::post("set_user_images", [UserController::class, "set_user_images"]);
+
 });
