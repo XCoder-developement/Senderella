@@ -19,7 +19,7 @@ return new class extends Migration
 
         Schema::create('term_translations', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('term_id')->unsigned();
+            $table->integer('term_id')->unsigned()->nullable();
             $table->longText('text')->nullable();
             $table->string('locale')->index();
             $table->timestamp('created_at')->useCurrent();

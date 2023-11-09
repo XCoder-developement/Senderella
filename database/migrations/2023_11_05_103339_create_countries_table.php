@@ -19,7 +19,7 @@ return new class extends Migration
 
         Schema::create('country_translations', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('country_id')->unsigned();
+            $table->integer('country_id')->unsigned()->nullable();
             $table->string('title')->nullable();
             $table->string('currency')->nullable();
             $table->string('locale')->index();

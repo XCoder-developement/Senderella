@@ -20,6 +20,8 @@ class RegisterController extends Controller
             "phone" => "required|unique:users,phone",
             "email" => "required|unique:users,email",
             'password' => 'required|min:8',
+            "verification_type" => "required|integer",
+
         ];
         $validator = Validator::make($request->all(), $rules);
 
@@ -34,12 +36,13 @@ class RegisterController extends Controller
         $data['verification_code'] = rand(9999,999999);
         $data["password"] = Hash::make($request->password);
         $data["api_token"] = Hash::make(rand(100,55415415415));
+        $data["verification_type"] = $request->verification_type;
 
         //create new user
 
         $user = User::create($data);
 
-
+        
         //add device to user
 
         $user->user_device()->firstOrCreate([

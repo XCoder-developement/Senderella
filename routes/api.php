@@ -52,8 +52,8 @@ Route::get("token_invalid", [RegisterController::class, "token_invalid"])->name(
 //reset_password
 Route::post("reset_password", [PasswordController::class, "reset_password"]);
 
-//check_phone_and_email
-Route::post("check_phone_and_email", [PhoneController::class, "check_phone_and_email"]);
+//check_phone
+Route::post("check_phone", [PhoneController::class, "check_phone"]);
 
 //fetch_problem_types
 Route::get("fetch_problem_types", [ProblemTypeController::class, "fetch_problem_types"])->name('fetch_problem_types');

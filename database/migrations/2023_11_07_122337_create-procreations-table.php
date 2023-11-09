@@ -20,7 +20,7 @@ return new class extends Migration
 
         Schema::create('procreation_translations', function (Blueprint $table) {
             $table->increments("id");
-            $table->integer('procreation_id')->unsigned();
+            $table->integer('procreation_id')->unsigned()->nullable();
             $table->string('title')->nullable();
             $table->string('locale')->index();
             $table->timestamp('created_at')->useCurrent();

@@ -20,7 +20,7 @@ return new class extends Migration
 
         Schema::create('family_value_translations', function (Blueprint $table) {
             $table->increments("id");
-            $table->integer('family_value_id')->unsigned();
+            $table->integer('family_value_id')->unsigned()->nullable();
             $table->string('title')->nullable();
             $table->string('locale')->index();
             $table->timestamp('created_at')->useCurrent();
