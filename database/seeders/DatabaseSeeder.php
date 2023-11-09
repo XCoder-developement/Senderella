@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             QuestionSeeder::class,
             AboutSeeder::class,
             MarriageReadinessSeeder::class,
+            PackageSeeder::class,
 
         ]);
     }

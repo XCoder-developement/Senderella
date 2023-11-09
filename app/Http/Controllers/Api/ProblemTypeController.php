@@ -13,8 +13,9 @@ class ProblemTypeController extends Controller
 {
     use ApiTrait;
 
-    public function fetch_problem_types(){
-        try{
+    public function fetch_problem_types()
+    {
+        try {
 
 
             $problem_types = ProblemType::get();
@@ -24,16 +25,15 @@ class ProblemTypeController extends Controller
             $msg = "fetch_problem_types";
 
 
-            return $this->dataResponse($msg, $data,200);
+            return $this->dataResponse($msg, $data, 200);
             // return response()->json([
             //     'status' =>true,
             //     'message' => $msg,
             //     'status' =>ProblemTypeResource::collection($problem_types),
             // ]);
 
-        } catch (\Exception$ex) {
+        } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
-
-       }
+    }
 }

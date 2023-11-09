@@ -2,23 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\DataTables\Admin\ReligiosityDataTable;
+use App\DataTables\Admin\PackageDataTable;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Religiosity\StoreRequest;
-use App\Http\Requests\Admin\Religiosity\UpdateRequest;
-use App\Models\Religiosity\Religiosity;
+use App\Http\Requests\Admin\Package\StoreRequest;
+use App\Http\Requests\Admin\Package\UpdateRequest;
+use App\Models\Package\Package;
 use Illuminate\Http\Request;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-
-class ReligiosityController extends Controller
+class PackageController extends Controller
 {
-    protected $view = 'admin_dashboard.religiositys.';
-    protected $route = 'religiositys.';
+    protected $view = 'admin_dashboard.packages.';
+    protected $route = 'packages.';
 
+    // public function __construct()
+    // {
+    //     $this->middleware(['permission:packages-create'])->only('create');
+    //     $this->middleware(['permission:packages-read'])->only('index');
+    //     $this->middleware(['permission:packages-update'])->only('edit');
+    //     $this->middleware(['permission:packages-delete'])->only('destroy');
+    // }
 
-
-    public function index(ReligiosityDataTable $dataTable)
+    public function index(PackageDataTable $dataTable)
     {
         return $dataTable->render($this->view . 'index');
     }
@@ -37,9 +42,10 @@ class ReligiosityController extends Controller
             $data[$localeCode] = ['title' => $request['title-' . $localeCode],
           ];
         }
+        $data['price'] = $request->price;
+        $data['currency'] = $request->currency;
 
-        $data['answer_text']= $request->answer_text;
-        Religiosity::create($data);
+        Package::create($data);
 
 
         return redirect()->route($this->route."index")
@@ -49,23 +55,25 @@ class ReligiosityController extends Controller
 
     public function edit($id)
     {
-        $religiosity = Religiosity::whereId($id)->first();
+        $package = Package::whereId($id)->first();
 
-        return view($this->view . 'edit' , compact('religiosity'));
+        return view($this->view . 'edit' , compact('package'));
 
     }
 
 
     public function update(UpdateRequest $request, $id)
     {
-        $Religiosity = Religiosity::whereId($id)->firstOrFail();
+        $package = Package::whereId($id)->firstOrFail();
         foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
             $data[$localeCode] = ['title' => $request['title-' . $localeCode],
           ];
         }
 
+        $data['price'] = $request->price;
+        $data['currency'] = $request->currency;
 
-        $Religiosity ->update($data);
+        $package->update($data);
 
 
         return redirect()->route($this->route."index")
@@ -75,8 +83,8 @@ class ReligiosityController extends Controller
 
     public function destroy($id)
     {
-        $religiosity = Religiosity::whereId($id)->firstOrFail();
-        $religiosity->delete();
+        $package = Package::whereId($id)->firstOrFail();
+        $package->delete();
         return response()->json(['status' => true]);
     }
 }

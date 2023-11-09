@@ -2,7 +2,7 @@
 
 namespace App\DataTables\Admin;
 
-use App\Models\Religiosity\Religiosity;
+use App\Models\Package\Package;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class ReligiosityDataTable extends DataTable
+class PackageDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -23,7 +23,7 @@ class ReligiosityDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('action', 'admin_dashboard.religiositys.action')
+            ->addColumn('action', 'admin_dashboard.packages.action')
             ->rawColumns([
                 'action',
             ]);
@@ -32,9 +32,9 @@ class ReligiosityDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(Religiosity $model): QueryBuilder
+    public function query(Package $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy("id","desc");
     }
 
     /**
@@ -61,9 +61,11 @@ class ReligiosityDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-             ["data" => "title" ,"title" => __('messages.title'),'orderable'=>false],
-             ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
-        ];
+            ["data" => "title" ,"title" => __('messages.title'),'orderable'=>false],
+            ["data" => "price" ,"title" => __('messages.price'),'orderable'=>false],
+            ["data" => "currency" ,"title" => __('messages.currency'),'orderable'=>false],
+            ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
+       ];
     }
 
     /**
@@ -71,6 +73,6 @@ class ReligiosityDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Religiosity_' . date('YmdHis');
+        return 'Package_' . date('YmdHis');
     }
 }

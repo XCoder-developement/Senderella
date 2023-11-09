@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\GiftController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\PackageController;
 use App\Http\Controllers\Api\PrivacyController;
 use App\Http\Controllers\Api\ProblemController;
 use App\Http\Controllers\Api\ProblemTypeController;
@@ -75,6 +76,9 @@ Route::get("fetch_questions", [QuestionController::class, "fetch_questions"]);
 //fetch_about
 Route::get("fetch_about", [AboutController::class, "fetch_about"]);
 
+//fetch_packages
+Route::get("fetch_packages", [PackageController::class, "fetch_packages"]);
+
 // Auth Api
 Route::group(['middleware' => 'auth:api'], function () {
 
@@ -89,5 +93,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //set_user_images
     Route::post("set_user_images", [UserController::class, "set_user_images"]);
+
+    //subscribe_package
+    Route::post("subscribe_package", [PackageController::class, "subscribe_package"]);
 
 });

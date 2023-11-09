@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Admin\Religiosity;
+namespace App\Http\Requests\Admin\Package;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,6 +28,9 @@ class StoreRequest extends FormRequest
         $localeCode => $properties) {
              $validators['title-' . $localeCode] = ['required'];
         }
+        $validators['price'] = ['required'];
+        $validators['currency'] = ['required'];
+
         return  $validators;
     }
 }
