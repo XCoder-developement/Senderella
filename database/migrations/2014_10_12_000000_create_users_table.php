@@ -51,32 +51,6 @@ return new class extends Migration
                 ->onDelete('cascade');
         });
 
-        Schema::create('user_informations', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->unsigned()->nullable();
-
-            $table->integer('educational_type_id')->unsigned()->nullable();
-            $table->integer('hair_color_id')->unsigned()->nullable();
-            $table->integer('color_id')->unsigned()->nullable();
-            $table->integer('procreation_id')->unsigned()->nullable();
-            $table->integer('religiosity_id')->unsigned()->nullable();
-            $table->integer('elegance_style_id')->unsigned()->nullable();
-            $table->integer('hijab_type_id')->unsigned()->nullable();
-            $table->integer('work_type_id')->unsigned()->nullable();
-            $table->integer('eyes_color_id')->unsigned()->nullable();
-            $table->integer('health_status_id')->unsigned()->nullable();
-            $table->integer('multiplicity_status_id')->unsigned()->nullable();
-            $table->integer('first_meet_id')->unsigned()->nullable();
-            $table->integer('family_value_id')->unsigned()->nullable();
-            $table->integer('moving_place_id')->unsigned()->nullable();
-            $table->integer('marital_status_id')->unsigned()->nullable();
-            $table->integer('marriage_readiness_id')->unsigned()->nullable();
-
-            $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')
-                ->onDelete('cascade');
-        });
 
         Schema::create('user_images', function (Blueprint $table) {
             $table->increments('id');
@@ -91,6 +65,75 @@ return new class extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade');
         });
+
+        Schema::create('user_questions', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+
+
+            $table->foreign('user_id')->references('id')->on('users')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+        });
+
+        // Schema::create('user_question_translations', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->integer('user_question_id')->unsigned()->nullable();
+        //     $table->text('title')->nullable();
+        //     $table->string('locale')->index();
+        //     $table->timestamp('created_at')->useCurrent();
+        //     $table->timestamp('updated_at')->useCurrent();
+        //     $table->foreign('user_question_id')->references('id')->on('user_questions')
+        //     ->onUpdate('cascade')
+        //     ->onDelete('cascade');
+        // });
+
+        // Schema::create('user_answers', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->integer('user_id')->unsigned()->nullable();
+        //     $table->timestamp('created_at')->useCurrent();
+        //     $table->timestamp('updated_at')->useCurrent();
+
+
+        //     $table->foreign('user_id')->references('id')->on('users')
+        //     ->onUpdate('cascade')
+        //     ->onDelete('cascade');
+        // });
+
+        // Schema::create('user_answer_translations', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->integer('user_answer_id')->unsigned()->nullable();
+        //     $table->longText('title')->nullable();
+        //     $table->string('locale')->index();
+        //     $table->timestamp('created_at')->useCurrent();
+        //     $table->timestamp('updated_at')->useCurrent();
+        //     $table->foreign('user_answer_id')->references('id')->on('user_answers')
+        //     ->onUpdate('cascade')
+        //     ->onDelete('cascade');
+
+        // });
+
+        // Schema::create('user_question_answers', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->integer('user_id')->unsigned()->nullable();
+        //     $table->integer('user_question_id')->unsigned()->nullable();
+        //     $table->integer('user_answer_id')->unsigned()->nullable();
+
+        //     $table->longText('answer_text')->nullable();
+        //     $table->timestamp('created_at')->useCurrent();
+        //     $table->timestamp('updated_at')->useCurrent();
+        //     $table->foreign('user_question_id')->references('id')->on('user_questions')
+        //     ->onUpdate('cascade')
+        //     ->onDelete('cascade');
+        //     $table->foreign('user_answer_id')->references('id')->on('user_answers')
+        //     ->onUpdate('cascade')
+        //     ->onDelete('cascade');
+        //     $table->foreign('user_id')->references('id')->on('users')
+        //     ->onUpdate('cascade')
+        //     ->onDelete('cascade');
+        // });
     }
 
     /**

@@ -18,7 +18,7 @@ return new class extends Migration
         });
         Schema::create('question_translations', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('question_id')->unsigned();
+            $table->integer('question_id')->unsigned()->nullable();
             $table->string('question')->nullable();
             $table->longText('answer')->nullable();
             $table->string('locale')->index();

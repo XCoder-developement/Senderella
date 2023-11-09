@@ -20,7 +20,7 @@ class ProblemTypeController extends Controller
             $problem_types = ProblemType::get();
 
             //response
-            $data = ProblemTypeResource::collection($problem_types);
+            $data = TitleResource::collection($problem_types);
             $msg = "fetch_problem_types";
 
 

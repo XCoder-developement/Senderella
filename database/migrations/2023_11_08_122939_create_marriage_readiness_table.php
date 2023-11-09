@@ -19,7 +19,7 @@ return new class extends Migration
 
         Schema::create('marriage_readiness_translations', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('marriage_readiness_id')->unsigned();
+            $table->integer('marriage_readiness_id')->unsigned()->nullable();
             $table->string('title')->nullable();
             $table->string('locale')->index();
             $table->timestamp('created_at')->useCurrent();

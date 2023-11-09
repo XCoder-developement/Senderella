@@ -13,15 +13,13 @@ use App\Models\User\User;
 class PhoneController extends Controller
 {
     use ApiTrait;
-    public function check_phone_and_email(Request $request)
+    public function check_phone(Request $request)
     {
         try {
 
             //     validation
-
             $rules = [
                 "phone" => "required",
-                "verification_type" => "required|integer",
             ];
             $validator = Validator::make($request->all(), $rules);
 
@@ -36,9 +34,6 @@ class PhoneController extends Controller
             }
             //check if user exists
             elseif ($user) {
-                $user->update([
-                    'verification_type' => $request->verification_type
-                ]);
                 $msg = __('messages.The user was found successfully');
                 return $this->successResponse($msg, 200);
             }

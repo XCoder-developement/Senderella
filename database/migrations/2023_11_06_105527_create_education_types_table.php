@@ -19,7 +19,7 @@ return new class extends Migration
 
         Schema::create('education_type_translations', function (Blueprint $table) {
             $table->increments("id");
-            $table->integer('education_type_id')->unsigned();
+            $table->integer('education_type_id')->unsigned()->nullable();
             $table->string('title')->nullable();
             $table->string('locale')->index();
             $table->timestamp('created_at')->useCurrent();

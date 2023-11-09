@@ -20,7 +20,7 @@ return new class extends Migration
 
         Schema::create('hair_color_translations', function (Blueprint $table) {
             $table->increments("id");
-            $table->integer('hair_color_id')->unsigned();
+            $table->integer('hair_color_id')->unsigned()->nullable();
             $table->string('title')->nullable();
             $table->string('locale')->index();
             $table->timestamp('created_at')->useCurrent();

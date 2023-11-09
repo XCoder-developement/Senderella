@@ -23,7 +23,7 @@ return new class extends Migration
 
         Schema::create('state_translations', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('state_id')->unsigned();
+            $table->integer('state_id')->unsigned()->nullable();
             $table->string('title')->nullable();
             $table->string('locale')->index();
             $table->timestamp('created_at')->useCurrent();

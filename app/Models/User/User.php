@@ -11,6 +11,8 @@ use App\Models\Notification\Notification;
 use App\Models\Order\Order;
 use App\Models\Product\Product;
 use App\Models\Setting\Setting;
+use App\Models\UserQuestion\UserAnswer;
+use App\Models\UserQuestion\UserQuestion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -38,7 +40,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    
+
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
@@ -61,6 +63,18 @@ class User extends Authenticatable
     public function images(): HasMany
     {
         return $this->hasMany(UserImage::class);
+    }
+    public function informations(): HasMany
+    {
+        return $this->hasMany(UserInformation::class);
+    }
+    public function questions(): HasMany
+    {
+        return $this->hasMany(UserQuestion::class);
+    }
+    public function answers(): HasMany
+    {
+        return $this->hasMany(UserAnswer::class);
     }
     // public function notifications():BelongsToMany {
     //     return $this->belongsToMany(Notification::class,"user_notifications","user_id","notification_id");

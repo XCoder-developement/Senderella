@@ -20,7 +20,7 @@ return new class extends Migration
 
         Schema::create('eye_color_translations', function (Blueprint $table) {
             $table->increments("id");
-            $table->integer('eye_color_id')->unsigned();
+            $table->integer('eye_color_id')->unsigned()->nullable();
             $table->string('title')->nullable();
             $table->string('locale')->index();
             $table->timestamp('created_at')->useCurrent();
