@@ -28,7 +28,6 @@ class UpdateRequest extends FormRequest
         $localeCode => $properties) {
              $validators['title-' . $localeCode] = ['required'];
         }
-        $validators['requirment_id'] = ['required'];
         return  $validators;
     }
 }

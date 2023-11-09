@@ -31,6 +31,7 @@
     <form method="post" action="{{route('requirment_items.store',$id)}}" enctype="multipart/form-data">
     @csrf
 
+   
     <div class="row">
         @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
             <!-- For loop this div -->

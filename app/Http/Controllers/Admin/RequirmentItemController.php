@@ -44,7 +44,7 @@ class RequirmentItemController extends Controller
     {
         $requirment = Requirment::whereId($id)->firstOrFail();
         foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
-            $data[$localeCode] = ['text' => $request['text-' . $localeCode],
+            $data[$localeCode] = ['title' => $request['title-' . $localeCode],
           ];
         }
         $data["requirment_id"] = $requirment->id;
@@ -69,7 +69,7 @@ class RequirmentItemController extends Controller
         $requirment_item = RequirmentItem::whereId($id)->firstOrFail();
 
         foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
-            $data[$localeCode] = ['text' => $request['text-' . $localeCode],
+            $data[$localeCode] = ['title' => $request['title-' . $localeCode],
           ];
         }
         $requirment_item->update($data);
