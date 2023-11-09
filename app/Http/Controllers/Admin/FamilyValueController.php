@@ -37,7 +37,6 @@ class FamilyValueController extends Controller
           ];
         }
 
-
         FamilyValue::create($data);
 
 
