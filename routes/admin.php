@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\MultiplicityStatusController;
 use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\Location\StateController;
 use App\Http\Controllers\Admin\MaritalStatusController;
+use App\Http\Controllers\Admin\RequirmentController;
 use App\Http\Controllers\Admin\PrivacyController;
 use App\Http\Controllers\Admin\ProblemController;
 use App\Http\Controllers\Admin\ProblemTypeController;
@@ -134,7 +135,12 @@ Route::group(
 
                 //marriage_readiness
                 Route::resource('marriage_readinesses', MarriageReadinessController::class);
+
+                    //requirments
+                    Route::resource('requirments', RequirmentController::class);
             });
+
+
         });
     }
 );
