@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\ProblemTypeController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\QuestionController;
+use App\Http\Controllers\Api\RequirmentController;
 use App\Http\Controllers\Api\SellingPortController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\TermController;
@@ -96,5 +97,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //subscribe_package
     Route::post("subscribe_package", [PackageController::class, "subscribe_package"]);
+
+    //fetch_requirements
+    Route::get("fetch_requirments", [RequirmentController::class,"fetch_requirments"]);
+
+    //fetch_questions
+    Route::get("fetch_user_questions", [RequirmentController::class,"fetch_user_questions"]);
 
 });

@@ -2,6 +2,7 @@
 
 namespace App\Models\RequirmentItem;
 
+use App\Models\Question\Question;
 use App\Models\Requirment\Requirment;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
