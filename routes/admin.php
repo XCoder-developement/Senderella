@@ -138,6 +138,10 @@ Route::group(
 
                     //requirments
                     Route::resource('requirments', RequirmentController::class);
+                //page in requirements
+                    Route::get('/page',function(){
+                        return 'page';
+                    });
             });
 
 
