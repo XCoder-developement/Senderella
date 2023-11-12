@@ -383,4 +383,19 @@ return [
     "edit marriage_readiness"=>"تعديل الجهازيه للزواج",
     "marriage_readinesses"=>"الجهازيه للزواج",
     "marriage_readiness"=>"الجهازيه للزواج",
+
+    "add requirment"=>"اضافه متطلبات المستخدم",
+    "edit requirment"=>"تعديل متطلبات المستخدم",
+    "requirments"=>"متطلبات المستخدم",
+    "requirment"=>"متطلبات المستخدم",
+
+    "add requirment_item"=>"اضافه تفاصيل متطلبات المستخدم",
+    "edit requirment_item"=>"تعديل تفاصيل متطلبات المستخدم",
+    "requirment_items"=>"تفاصيل متطلبات المستخدم",
+    "requirment_item"=>"تفاصيل متطلبات المستخدم",
+
+    "add block_reason"=>"اضافه سبب الحظر",
+    "edit block_reason"=>"تعديل سبب الحظر",
+    "block_reasons"=>"اسباب الحظر",
+    "block_reason"=>"سبب الحظر",
 ];
