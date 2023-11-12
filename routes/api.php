@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\GiftController;
 use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\MaritalStatusController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PackageController;
@@ -107,5 +108,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //fetch_block_reasons
     Route::get("fetch_block_reasons", [BlockReasonController::class,"fetch_block_reasons"]);
+
+    //fetch_marital_status
+    Route::get("fetch_marital_status", [MaritalStatusController::class,"fetch_marital_status"]);
 
 });
