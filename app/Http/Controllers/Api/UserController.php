@@ -31,6 +31,7 @@ class UserController extends Controller
                 "nationality_id" => "required|integer|exists:countries,id",
                 "state_id" => "required|integer|exists:states,id",
                 "marital_status_id" => "required|integer|exists:marital_statuses,id",
+                "readiness_for_marriages_id" => "required|integer|exists:marriage_readinesses,id",
                 "is_married_before" => "required|integer",
                 "weight" => "required",
                 "height" => "required",
@@ -71,6 +72,7 @@ class UserController extends Controller
             $data['height'] = $request->height;
             $data['notes'] = $request->notes;
             $data['marital_status_id'] = $request->marital_status_id;
+            $data['readiness_for_marriages_id'] = $request->readiness_for_marriages_id;
 
             $data['about_me'] = $request->about_me;
             $data['important_for_marriage'] = $request->important_for_marriage;

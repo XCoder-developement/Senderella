@@ -64,17 +64,26 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserImage::class);
     }
-    
+
     // public function notifications():BelongsToMany {
     //     return $this->belongsToMany(Notification::class,"user_notifications","user_id","notification_id");
     // }
 
     public function getIsMarriedBeforeFormatAttribute()
     {
-        if($this->is_married_before == 0){
+        if($this->is_married_before == 2){
             return __('messages.no');
         }elseif($this->is_married_before == 1){
             return __('messages.yes');
+        }
+    }
+
+    public function getGenderFormatAttribute()
+    {
+        if($this->gender == 2){
+            return __('messages.female');
+        }elseif($this->gender == 1){
+            return __('messages.male');
         }
     }
 }
