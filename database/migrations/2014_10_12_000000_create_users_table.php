@@ -20,14 +20,15 @@ return new class extends Migration
             $table->date('birthday_date')->nullable();
             $table->integer('country_id')->unsigned()->nullable();
             $table->integer('state_id')->unsigned()->nullable();
-            $table->string('nationality_id')->nullable();
+            $table->integer('nationality_id')->unsigned()->nullable();
+            $table->integer('marital_status_id')->unsigned()->nullable();
             $table->text('weight')->nullable();
             $table->text('height')->nullable();
             $table->longText('notes')->nullable();
             $table->longText('about_me')->nullable();
-            $table->longText('important_in_marriage')->nullable();
+            $table->longText('important_for_marriage')->nullable();
             $table->longText('partner_specifications')->nullable();
-            $table->tinyInteger('gender')->nullable()->comment('0 => male , 1 => female');
+            $table->tinyInteger('gender')->nullable()->comment('1 => male , 2 => female');
             $table->tinyInteger('is_married_before')->nullable()->comment('0 => no , 1 => yes');
             $table->tinyInteger('verification_type')->nullable()->comment('0 => phone , 1 => email');
             $table->string('verification_code')->nullable();
@@ -51,6 +52,19 @@ return new class extends Migration
                 ->onDelete('cascade');
         });
 
+        Schema::create('user_informations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->integer('requirment_id')->unsigned()->nullable();
+            $table->integer('requirment_item_id')->unsigned()->nullable();
+            $table->longText('answer')->nullable();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+            $table->foreign('user_id')->references('id')->on('users')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+        });
+
 
         Schema::create('user_images', function (Blueprint $table) {
             $table->increments('id');
@@ -66,31 +80,6 @@ return new class extends Migration
             ->onDelete('cascade');
         });
 
-        Schema::create('user_questions', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->unsigned()->nullable();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-
-
-            $table->foreign('user_id')->references('id')->on('users')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
-        });
-
-        Schema::create('user_requirment_answers', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->unsigned()->nullable();
-            $table->integer('requirment_id')->unsigned()->nullable();
-            $table->integer('requirment_item_id')->unsigned()->nullable();
-            $table->longText('answer')->nullable();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-
-            $table->foreign('user_id')->references('id')->on('users')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
-        });
 
         Schema::create('user_packages', function (Blueprint $table) {
             $table->increments('id');
