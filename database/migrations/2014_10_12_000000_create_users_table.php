@@ -22,8 +22,12 @@ return new class extends Migration
             $table->integer('state_id')->unsigned()->nullable();
             $table->integer('nationality_id')->unsigned()->nullable();
             $table->integer('marital_status_id')->unsigned()->nullable();
+            $table->integer('marriage_readiness_id')->unsigned()->nullable();
             $table->text('weight')->nullable();
             $table->text('height')->nullable();
+            $table->integer('active')->nullable()->default(0);
+            $table->integer('trusted')->nullable()->default(0);
+
             $table->longText('notes')->nullable();
             $table->longText('about_me')->nullable();
             $table->longText('important_for_marriage')->nullable();
