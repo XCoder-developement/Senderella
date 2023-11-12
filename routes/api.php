@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\BlockReasonController;
 use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\GiftController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\MaritalStatusController;
@@ -111,5 +112,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //fetch_marital_status
     Route::get("fetch_marital_status", [MaritalStatusController::class,"fetch_marital_status"]);
+
+    //fetch_countries
+    Route::get("fetch_countries", [CountryController::class,"fetch_countries"]);
 
 });
