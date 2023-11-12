@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\Admin\MarriageReadinessController;
 use App\Http\Controllers\Api\AboutController;
 use App\Http\Controllers\Api\Auth\LocationController;
 use App\Http\Controllers\Api\Auth\LoginController;
@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\GiftController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\MaritalStatusController;
+use App\Http\Controllers\Api\MarriageReadinessController as ApiMarriageReadinessController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PackageController;
@@ -29,6 +30,7 @@ use App\Http\Controllers\Api\TermController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\UserInformationController;
+use App\Models\MarriageReadiness\MarriageReadiness;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -111,5 +113,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //fetch_marital_status
     Route::get("fetch_marital_status", [MaritalStatusController::class,"fetch_marital_status"]);
+
+    //fetch_readiness_for_marriages
+    Route::get("fetch_readiness_for_marriages", [ApiMarriageReadinessController::class,"fetch_readiness_for_marriages"]);
 
 });
