@@ -14,6 +14,17 @@ class MiniPartnerResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "id"=>$this->id,
+            "name"=>$this->name ??"",
+            "images" => ImageResource::collection($this->images) ??"",
+            "age"=>$this->age??"",
+            "trusted"=>$this->trusted ??"",
+            "country"=>$this->country ??"",
+            "city"=>$this->city ??"",
+            "duration"=>$this->duration ??"",
+            "like_status"=>$this->like_status,
+            "active"=>$this->active,
+        ];
     }
 }
