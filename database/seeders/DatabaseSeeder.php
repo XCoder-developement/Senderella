@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
             AboutSeeder::class,
             MarriageReadinessSeeder::class,
             PackageSeeder::class,
+            BlockReasonSeeder::class,
 
         ]);
     }
