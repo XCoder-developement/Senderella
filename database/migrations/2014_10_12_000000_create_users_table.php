@@ -29,7 +29,7 @@ return new class extends Migration
             $table->longText('important_for_marriage')->nullable();
             $table->longText('partner_specifications')->nullable();
             $table->tinyInteger('gender')->nullable()->comment('1 => male , 2 => female');
-            $table->tinyInteger('is_married_before')->nullable()->comment('0 => no , 1 => yes');
+            $table->tinyInteger('is_married_before')->nullable()->comment('2 => no , 1 => yes');
             $table->tinyInteger('verification_type')->nullable()->comment('0 => phone , 1 => email');
             $table->string('verification_code')->nullable();
             $table->tinyInteger('is_verified')->unsigned()->default(0);
