@@ -2,28 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\DataTables\Admin\EducationTypeDataTable;
+use App\DataTables\Admin\BlockReasonDataTable;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\EducationType\StoreRequest;
-use App\Http\Requests\Admin\EducationType\UpdateRequest;
-use App\Models\EducationType\EducationType;
+use App\Http\Requests\Admin\BlockReason\StoreRequest;
+use App\Http\Requests\Admin\BlockReason\UpdateRequest;
+use App\Models\BlockReason\BlockReason;
 use Illuminate\Http\Request;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-class EducationTypeController extends Controller
+class BlockReasonController extends Controller
 {
-    protected $view = 'admin_dashboard.education_types.';
-    protected $route = 'education_types.';
+    protected $view = 'admin_dashboard.block_reasons.';
+    protected $route = 'block_reasons.';
 
-    // public function __construct()
-    // {
-    //     $this->middleware(['permission:education_types-create'])->only('create');
-    //     $this->middleware(['permission:education_types-read'])->only('index');
-    //     $this->middleware(['permission:education_types-update'])->only('edit');
-    //     $this->middleware(['permission:education_types-delete'])->only('destroy');
-    // }
 
-    public function index(EducationTypeDataTable $dataTable)
+
+    public function index(BlockReasonDataTable $dataTable)
     {
         return $dataTable->render($this->view . 'index');
     }
@@ -38,16 +32,14 @@ class EducationTypeController extends Controller
 
     public function store(StoreRequest $request)
     {
-        
+
         foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
             $data[$localeCode] = ['title' => $request['title-' . $localeCode],
           ];
         }
 
 
-        EducationType::create($data);
-
-
+        BlockReason::create($data);
 
         return redirect()->route($this->route."index")
         ->with(['success'=> __("messages.createmessage")]);
@@ -56,23 +48,23 @@ class EducationTypeController extends Controller
 
     public function edit($id)
     {
-        $education_type = EducationType::whereId($id)->first();
+        $block_reason = BlockReason::whereId($id)->first();
 
-        return view($this->view . 'edit' , compact('education_type'));
+        return view($this->view . 'edit' , compact('block_reason'));
 
     }
 
 
     public function update(UpdateRequest $request, $id)
     {
-        $education_type = EducationType::whereId($id)->firstOrFail();
+        $block_reason = BlockReason::whereId($id)->firstOrFail();
         foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
             $data[$localeCode] = ['title' => $request['title-' . $localeCode],
           ];
         }
 
 
-        $education_type->update($data);
+        $block_reason->update($data);
 
 
         return redirect()->route($this->route."index")
@@ -82,8 +74,8 @@ class EducationTypeController extends Controller
 
     public function destroy($id)
     {
-        $education_type = EducationType::whereId($id)->firstOrFail();
-        $education_type->delete();
+        $block_reason = BlockReason::whereId($id)->firstOrFail();
+        $block_reason->delete();
         return response()->json(['status' => true]);
     }
 }

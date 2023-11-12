@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\PasswordController;
 use App\Http\Controllers\Api\Auth\PhoneController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\BlockReasonController;
 use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\GiftController;
@@ -103,5 +104,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //fetch_questions
     Route::get("fetch_user_questions", [RequirmentController::class,"fetch_user_questions"]);
+
+    //fetch_block_reasons
+    Route::get("fetch_block_reasons", [BlockReasonController::class,"fetch_block_reasons"]);
 
 });

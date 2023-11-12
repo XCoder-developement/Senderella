@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BlockReasonController;
 use App\Http\Controllers\Admin\EducationTypeController;
 use App\Http\Controllers\Admin\HijibTypeController;
 use App\Http\Controllers\Admin\WorkTypeController;
@@ -137,6 +138,9 @@ Route::group(
 
                 //marriage_readiness
                 Route::resource('marriage_readinesses', MarriageReadinessController::class);
+
+                //marriage_readiness
+                Route::resource('block_reasons', BlockReasonController::class);
 
                 //packages
                 Route::resource('packages', PackageController::class);

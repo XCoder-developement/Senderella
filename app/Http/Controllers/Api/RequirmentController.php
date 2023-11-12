@@ -13,8 +13,8 @@ class RequirmentController extends Controller
     //
     use ApiTrait;
     public function fetch_requirments(){
-        $requirements = Requirment::where('answer_type',1)->get();
-        $data = RequirmentResource::collection($requirements);
+        $requirments = Requirment::where('answer_type',1)->get();
+        $data = RequirmentResource::collection($requirments);
         $msg='fetch_rquirments';
         return $this->dataResponse($msg, $data ,200);
     }
