@@ -24,7 +24,7 @@ class PartnerResource extends JsonResource
             "country"=>$this->country??"",
             "city"=>$this->city??"",
             "active"=>$this->active??"",
-            
+            "partner_more_info"=>PartnerMoreInfo::collection($this ->partner_more_info),
         ];
     }
 }
