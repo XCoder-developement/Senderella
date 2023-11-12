@@ -144,21 +144,18 @@ Route::group(
 
                 //packages
                 Route::resource('packages', PackageController::class);
+                
+                //requirments
+                Route::resource('requirments', RequirmentController::class);
 
                 //requirment_items
-                Route::get('requirment_items/{id}', [RequirmentItemController::class,'index'])->name('requirment_items.index');
-                Route::get('requirment_items/create/{id}', [RequirmentItemController::class,'create'])->name('requirment_items.create');
-                Route::post('requirment_items/store/{id}', [RequirmentItemController::class,'store'])->name('requirment_items.store');
-                Route::get('requirment_items/edit/{id}', [RequirmentItemController::class,'edit'])->name('requirment_items.edit');
-                Route::post('requirment_items/update/{id}', [RequirmentItemController::class,'update'])->name('requirment_items.update');
-                Route::delete('requirment_items/{id}', [RequirmentItemController::class,'destroy'])->name('requirment_items.destroy');
-
-                    //requirments
-                    Route::resource('requirments', RequirmentController::class);
-                
+                Route::get('requirment_items/{id}', [RequirmentItemController::class, 'index'])->name('requirment_items.index');
+                Route::get('requirment_items/create/{id}', [RequirmentItemController::class, 'create'])->name('requirment_items.create');
+                Route::post('requirment_items/store/{id}', [RequirmentItemController::class, 'store'])->name('requirment_items.store');
+                Route::get('requirment_items/edit/{id}', [RequirmentItemController::class, 'edit'])->name('requirment_items.edit');
+                Route::post('requirment_items/update/{id}', [RequirmentItemController::class, 'update'])->name('requirment_items.update');
+                Route::delete('requirment_items/{id}', [RequirmentItemController::class, 'destroy'])->name('requirment_items.destroy');
             });
-
-
         });
     }
 );

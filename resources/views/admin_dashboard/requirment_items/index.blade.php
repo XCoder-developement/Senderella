@@ -6,7 +6,7 @@
 
         <div class="card-header flex-wrap py-3">
 										<div class="card-title">
-											<h3 class="card-label">{{__('messages.requirment_items')}} . {{$lawyer->name ?? ""}}
+											<h3 class="card-label">{{__('messages.requirment_items')}} . {{$requirment->name ?? ""}}
 </h3>
 										</div>
 										<div class="card-toolbar">

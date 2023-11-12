@@ -1,6 +1,8 @@
-<?php $requirment = \App\Models\Requirment\Requirment::whereId($id)->first();?>
+<?php
+$requirment = \App\Models\Requirment\Requirment::whereId($id)->first();
+?>
 
-<a href="{{route("requirment_items.index", $id)}}" title="{{__('messages.requirment_item')}}"
+<a href="{{route("requirment_items.index", $requirment->id)}}" title="{{__('messages.requirment_item')}}"
 class="text-dark ml-2"><i class="fas fa-layer-group"></i></a>
 
 <a href="{{route('requirments.edit',$id)}}" class="btn btn-sm btn-hover-bg-light m-0">

@@ -83,6 +83,21 @@ Route::get("fetch_about", [AboutController::class, "fetch_about"]);
 //fetch_packages
 Route::get("fetch_packages", [PackageController::class, "fetch_packages"]);
 
+//fetch_requirements
+Route::get("fetch_requirments", [RequirmentController::class, "fetch_requirments"]);
+
+//fetch_questions
+Route::get("fetch_user_questions", [RequirmentController::class, "fetch_user_questions"]);
+
+//fetch_block_reasons
+Route::get("fetch_block_reasons", [BlockReasonController::class, "fetch_block_reasons"]);
+
+//fetch_marital_status
+Route::get("fetch_marital_status", [MaritalStatusController::class, "fetch_marital_status"]);
+
+//fetch_countries
+Route::get("fetch_countries", [CountryController::class, "fetch_countries"]);
+
 // Auth Api
 Route::group(['middleware' => 'auth:api'], function () {
 
@@ -100,20 +115,4 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //subscribe_package
     Route::post("subscribe_package", [PackageController::class, "subscribe_package"]);
-
-    //fetch_requirements
-    Route::get("fetch_requirments", [RequirmentController::class,"fetch_requirments"]);
-
-    //fetch_questions
-    Route::get("fetch_user_questions", [RequirmentController::class,"fetch_user_questions"]);
-
-    //fetch_block_reasons
-    Route::get("fetch_block_reasons", [BlockReasonController::class,"fetch_block_reasons"]);
-
-    //fetch_marital_status
-    Route::get("fetch_marital_status", [MaritalStatusController::class,"fetch_marital_status"]);
-
-    //fetch_countries
-    Route::get("fetch_countries", [CountryController::class,"fetch_countries"]);
-
 });
