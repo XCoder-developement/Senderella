@@ -27,7 +27,7 @@ class RequirmentItemController extends Controller
     public function index(RequirmentItemDataTable $dataTable ,$id)
     {
         $requirment = Requirment::whereId($id)->firstorFail();
-        $dataTable->$id =$id;
+        $dataTable->id =$id;
         return $dataTable->render($this->view . 'index', compact('id','requirment'));
     }
 

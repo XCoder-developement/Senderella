@@ -119,10 +119,16 @@
                                     </li>
 
                                     <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('requirments.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.requirments')}}</span>
+                                        </a>
+                                    </li>
+
+                                    {{-- <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="{{route('education_types.index')}}" class="menu-link" >
                                             <span class="menu-text">{{__('messages.education_types')}}</span>
                                         </a>
-                                    </li>
+                                    </li> --}}
 
                                     <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="{{route('marital_statuses.index')}}" class="menu-link" >
@@ -130,7 +136,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                    {{-- <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="{{route('hijib_types.index')}}" class="menu-link" >
                                             <span class="menu-text">{{__('messages.hijib_types')}}</span>
                                         </a>
@@ -206,7 +212,7 @@
                                         <a href="{{route('moving_places.index')}}" class="menu-link" >
                                             <span class="menu-text">{{__('messages.moving_places')}}</span>
                                         </a>
-                                    </li>
+                                    </li> --}}
 
                                     <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="{{route('marriage_readinesses.index')}}" class="menu-link" >
@@ -283,6 +289,12 @@
                                     <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="{{route('terms.index')}}" class="menu-link" >
                                             <span class="menu-text">{{__('messages.terms')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('block_reasons.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.block_reasons')}}</span>
                                         </a>
                                     </li>
                                 </ul>
