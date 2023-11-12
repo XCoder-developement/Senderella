@@ -30,12 +30,12 @@ class PhoneController extends Controller
             $user = User::wherePhone($request->phone)->first();
             if (!$user) {
                 $msg = __('messages.Sorry, this user does not exist');
-                return $this->errorResponse($msg, 401);
+                return $this->dataResponse($msg,false, 401);
             }
             //check if user exists
             elseif ($user) {
                 $msg = __('messages.The user was found successfully');
-                return $this->successResponse($msg, 200);
+                return $this->dataResponse($msg,true, 200);
             }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);

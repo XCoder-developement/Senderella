@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\PartnerResource;
 use App\Http\Resources\Api\UserResource;
 use App\Models\User\User;
 use App\Models\User\UserImage;
+use App\Models\User\UserInformation;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -26,14 +28,25 @@ class UserController extends Controller
                 "gender" => "required|integer",
                 "birthday_date" => "required|date",
                 "country_id" => "required|integer|exists:countries,id",
+                "nationality_id" => "required|integer|exists:countries,id",
                 "state_id" => "required|integer|exists:states,id",
-                "nationality_id" => "required",
-                "marital_status" => "required|integer",
+                "marital_status_id" => "required|integer|exists:marital_statuses,id",
                 "is_married_before" => "required|integer",
-                "readiness_for_marriage" => "required",
                 "weight" => "required",
                 "height" => "required",
                 "notes" => "required",
+                "about_me" => "required",
+                "important_for_marriage" => "required",
+                "partner_specifications" => "required",
+
+                "user_information" => "sometimes|array",
+                "user_information.*.requirment_id" => "sometimes|exists:requirments,id",
+                "user_information.*.requirment_item_id" => "sometimes|exists:requirment_items,id",
+
+                "questions" => "sometimes|array",
+                "questions.*.requirment_id" => "sometimes|exists:requirments,id",
+                "questions.*.requirment_item_id" => "sometimes|exists:requirment_items,id",
+                "questions.*.answer" => "sometimes",
 
                 // "verification_type" => "required",
             ];
@@ -53,15 +66,45 @@ class UserController extends Controller
             $data['country_id'] = $request->country_id;
             $data['state_id'] = $request->state_id;
             $data['nationality_id'] = $request->nationality_id;
-            $data['marital_status'] = $request->marital_status;
             $data['is_married_before'] = $request->is_married_before;
-            $data['readiness_for_marriage'] = $request->readiness_for_marriage;
             $data['weight'] = $request->weight;
             $data['height'] = $request->height;
             $data['notes'] = $request->notes;
+            $data['marital_status_id'] = $request->marital_status_id;
+
+            $data['about_me'] = $request->about_me;
+            $data['important_for_marriage'] = $request->important_for_marriage;
+            $data['partner_specifications'] = $request->partner_specifications;
 
             $user->update($data);
 
+            if($request->user_information){
+            foreach($request->user_information as $user_information){
+                $requirment_id = $user_information["requirment_id"];
+                $requirment_item_id = $user_information["requirment_item_id"];
+
+                $user_info_data['requirment_id'] = $requirment_id;
+                $user_info_data['requirment_item_id'] = $requirment_item_id;
+                $user_info_data['user_id'] = $user->id;
+
+                UserInformation::create($user_info_data);
+                }
+            }
+            if($request->questions){
+                foreach($request->questions as $question){
+                    $requirment_id = $question["requirment_id"];
+                    $requirment_item_id = $question["requirment_item_id"];
+                    $answer = $question["answer"];
+
+                    $user_info_data['requirment_id'] = $requirment_id;
+                    $user_info_data['requirment_item_id'] = $requirment_item_id;
+                    $user_info_data['answer'] = $answer;
+                    $user_info_data['user_id'] = $user->id;
+
+                    UserInformation::create($user_info_data);
+
+                    }
+            }
             $msg = __("messages.save successful");
 
           return $this->dataResponse($msg, new UserResource($user), 200);

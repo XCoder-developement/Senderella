@@ -29,7 +29,7 @@ class ProblemTypeController extends Controller
             // return response()->json([
             //     'status' =>true,
             //     'message' => $msg,
-            //     'status' =>ProblemTypeResource::collection($problem_types),
+            //     'data' =>ProblemTypeResource::collection($problem_types),
             // ]);
 
         } catch (\Exception $ex) {
