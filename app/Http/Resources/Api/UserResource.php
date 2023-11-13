@@ -34,6 +34,8 @@ class UserResource extends JsonResource
 
             "verification_code" => $this->verification_code ?? "",
             "verification_type" => intval($this->verification_type) ?? "",
+            "phone_verify" => intval($this->phone_verify) ?? "",
+            "email_verify" => intval($this->email_verify) ?? "",
 
 
             // "is_verified" => $this->is_verified ?? "",
