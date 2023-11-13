@@ -142,4 +142,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get("fetch_all_partners", [PartnerController::class, "fetch_all_partners"]);
     //fetch_post
     Route::get("fetch_post", [PostController::class, "fetch_post"]);
+    Route::get("fetch_all_partners", [PartnerController::class,"fetch_all_partners"]);
+
+    //fetch_partner_details
+    Route::post("fetch_partner_details",[PartnerController::class,"fetch_partner_details"]);
 });
