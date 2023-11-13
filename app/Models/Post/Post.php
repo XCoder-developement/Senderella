@@ -22,18 +22,18 @@ class Post extends Model
         return $this->morphMany(Like::class, 'likeable');
 
     }
-    public function likesCount()
-    {
-        return $this->hasMany(Like::class)->withCount('likes');
-    }
+    // public function likesCount()
+    // {
+    //     return $this->hasMany(Like::class)->withCount('likes');
+    // }
     public function comments()
     {
-        return $this->HasMany(Comment::class);
+        return $this->HasMany(Comment::class, 'post_id');
     }
-    public function commentsCount()
-    {
-        return $this->hasMany(Comment::class)->withCount('comments');
-    }
+    // public function commentsCount()
+    // {
+    //     return $this->hasMany(Comment::class)->withCount('comments');
+    // }
     public function user()
     {
         return $this->belongsTo(User::class);
