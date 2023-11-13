@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
             BlockReasonSeeder::class,
             RequirmentSeeder::class,
             UserSeeder::class,
-            
+
 
         ]);
     }
