@@ -7,6 +7,7 @@ namespace App\Models\User;
 use App\Models\Gift\Gift;
 use App\Models\Post\Post;
 use App\Models\Order\Order;
+use App\Models\Comment\Comment;
 use App\Models\Product\Product;
 use App\Models\Setting\Setting;
 use Laravel\Sanctum\HasApiTokens;
@@ -79,7 +80,7 @@ class User extends Authenticatable
     }
     public function comments(): HasMany
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Comment::class);
     }
 
     

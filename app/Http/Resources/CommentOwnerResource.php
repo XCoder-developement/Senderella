@@ -15,7 +15,12 @@ class CommentOwnerResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            // not used yet
+            'id' => $this->id,
+            'name' => $this->name,
+            'trusted' => $this->trusted,
+            'country_id' => $this->country_id,
+            'city_id' => $this->city_id,
+            // 'comment' => CommentResource::collection($this->comments),
         ];
     }
 }

@@ -14,17 +14,18 @@ class PostController extends Controller
 
     public function fetch_post()
     {
-        $post = Post::whereUserId('null')->whereStatus(1)->first();
+        // try {
+        $post = Post::whereUserId(null)->whereStatus(1)->first();
+    
         if (!$post) {
             return $this->errorResponse('no posts found', 404);
         }
         $msg = "fetch_posts";
-        $data = new PostResource($post);
-        try {
-            return $this->dataResponse($msg, $data, 200);
-        } catch (\Exception $ex) {
-            return $this->returnException($ex->getMessage(), 500);
-        }
+       return $data = new PostResource($post);
+            // return $this->dataResponse($msg, $data, 200);
+        // } catch (\Exception $ex) {
+            // return $this->returnException($ex->getMessage(), 500);
+        // }
 
     }
 }
