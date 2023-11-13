@@ -36,7 +36,8 @@ return new class extends Migration
             $table->tinyInteger('is_married_before')->nullable()->comment('2 => no , 1 => yes');
             $table->tinyInteger('verification_type')->nullable()->comment('0 => phone , 1 => email');
             $table->string('verification_code')->nullable();
-            $table->tinyInteger('is_verified')->unsigned()->default(0);
+            $table->tinyInteger('phone_verify')->unsigned()->default(0);
+            $table->tinyInteger('email_verify')->unsigned()->default(0);
 
             $table->rememberToken();
             $table->text('api_token')->nullable();
