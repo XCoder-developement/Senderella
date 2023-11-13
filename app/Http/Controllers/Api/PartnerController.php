@@ -56,23 +56,5 @@ class PartnerController extends Controller
     }
 
 
-    public function fetch_new_partners()
-    {
-        try {
-
-            $user = auth()->user();
-
-            $partners = User::whereNot('id', auth()->id())->orderBy('id', 'desc')->paginate(10);
-            if (!$partners) {
-                $msg = "there is no partners";
-
-                return $this->errorResponse($msg, 401);
-            }
-            $msg = "fetch_all_users";
-
-            return $this->dataResponse($msg, PartnerResource::collection($partners)->response()->getData(true), 200);
-        } catch (\Exception $ex) {
-            return $this->returnException($ex->getMessage(), 500);
-        }
-    }
+    
 }
