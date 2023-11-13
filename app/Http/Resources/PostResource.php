@@ -16,9 +16,12 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'owner'=> new PostOwnerResource($this->user_id),
+            'owner' => new PostOwnerResource($this->user_id),
             'post' => $this->post,
-            'like'
+            'duration' => $this->created_at,
+            'comments_count' => $this->commentsCount,
+            'likes_count' => $this->likesCount,
+            'comments' => CommentResource::collection($this->comments),
         ];
     }
 }

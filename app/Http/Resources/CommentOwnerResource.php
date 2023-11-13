@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PostOwnerResource extends JsonResource
+class CommentOwnerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,9 +15,7 @@ class PostOwnerResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id ?? 0,
-            'name' => $this->name ?? "Cinderella",
-            "image" => $this->image_link ?? "",
+            // not used yet
         ];
     }
 }
