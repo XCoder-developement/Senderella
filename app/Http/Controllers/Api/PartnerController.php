@@ -31,4 +31,5 @@ class PartnerController extends Controller
         }
     }
 
+    
 }
