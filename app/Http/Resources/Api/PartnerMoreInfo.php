@@ -15,7 +15,7 @@ class PartnerMoreInfo extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id??0,
+            "id" => $this->id,
             "title" => $this->title??"",
             "value" => $this->value,
         ];
