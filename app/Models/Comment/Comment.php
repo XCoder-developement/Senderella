@@ -14,9 +14,9 @@ class Comment extends Model
     protected $table = 'comments';
     protected $guarded = [];
 
-    public function posts()
+    public function post()
     {
-        return $this->hasMany(Post::class);
+        return $this->belongsTo(Post::class);
     }
 
     public function postsCount()

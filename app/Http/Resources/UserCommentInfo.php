@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CommentOwnerResource extends JsonResource
+class UserCommentInfo extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,10 +17,10 @@ class CommentOwnerResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            "image" => $this->image_link ?? "",
             'trusted' => $this->trusted,
             'country_id' => $this->country_id,
             'city_id' => $this->city_id,
-            // 'comment' => CommentResource::collection($this->comments),
         ];
     }
 }

@@ -20,24 +20,15 @@ class Post extends Model
     public function likes()
     {
         return $this->morphMany(Like::class, 'likeable');
-
     }
-    // public function likesCount()
-    // {
-    //     return $this->hasMany(Like::class)->withCount('likes');
-    // }
+
     public function comments()
     {
-        return $this->HasMany(Comment::class, 'post_id');
+        return $this->hasMany(Comment::class);
     }
-    // public function commentsCount()
-    // {
-    //     return $this->hasMany(Comment::class)->withCount('comments');
-    // }
+
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
-
-
