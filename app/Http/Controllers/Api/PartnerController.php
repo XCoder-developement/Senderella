@@ -38,8 +38,6 @@ class PartnerController extends Controller
     {
         try {
 
-
-
             $partners =[
 
              "partner_id" => "required|exists:user,id",
@@ -48,7 +46,7 @@ class PartnerController extends Controller
             if ($validator->fails()) {
                 return $this->getvalidationErrors("validator");
             }
-            $partner= User::whereId($request->partner_id)->first();
+            $partner= User::whereId($request->user_id)->first();
 
             $msg="fetch_partner_details";
             return $this->dataResponse($msg, new PartnerResource($partner), 200);
@@ -57,4 +55,6 @@ class PartnerController extends Controller
         }
     }
 
+
+    
 }
