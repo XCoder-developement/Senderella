@@ -38,7 +38,8 @@ class DatabaseSeeder extends Seeder
             BlockReasonSeeder::class,
             RequirmentSeeder::class,
             UserSeeder::class,
-            
+            PostSeeder::class,
+            CommentSeeder::class,
 
         ]);
     }

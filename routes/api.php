@@ -1,40 +1,41 @@
 <?php
 
-use App\Http\Controllers\Admin\MarriageReadinessController;
-use App\Http\Controllers\Api\AboutController;
-use App\Http\Controllers\Api\Auth\LocationController;
-use App\Http\Controllers\Api\Auth\LoginController;
-use App\Http\Controllers\Api\Auth\PasswordController;
-use App\Http\Controllers\Api\Auth\PhoneController;
-use App\Http\Controllers\Api\Auth\RegisterController;
-use App\Http\Controllers\Api\BlockReasonController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\BlogController;
-use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\GiftController;
 use App\Http\Controllers\Api\HomeController;
-use App\Http\Controllers\Api\MaritalStatusController;
-use App\Http\Controllers\Api\MarriageReadinessController as ApiMarriageReadinessController;
-use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\TermController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\AboutController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\PackageController;
 use App\Http\Controllers\Api\PartnerController;
 use App\Http\Controllers\Api\PrivacyController;
 use App\Http\Controllers\Api\ProblemController;
-use App\Http\Controllers\Api\ProblemTypeController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;
-use App\Http\Controllers\Api\QuestionController;
-use App\Http\Controllers\Api\RequirmentController;
-use App\Http\Controllers\Api\SellingPortController;
 use App\Http\Controllers\Api\SettingController;
-use App\Http\Controllers\Api\TermController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\QuestionController;
+use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\Auth\PhoneController;
+use App\Http\Controllers\Api\RequirmentController;
+use App\Http\Controllers\Api\BlockReasonController;
+use App\Http\Controllers\Api\ProblemTypeController;
+use App\Http\Controllers\Api\SellingPortController;
 use App\Http\Controllers\Api\TransactionController;
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\UserInformationController;
 use App\Models\MarriageReadiness\MarriageReadiness;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\Auth\LocationController;
+use App\Http\Controllers\Api\Auth\PasswordController;
+use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\MaritalStatusController;
+use App\Http\Controllers\Api\UserInformationController;
+use App\Http\Controllers\Admin\MarriageReadinessController;
+use App\Http\Controllers\Api\MarriageReadinessController as ApiMarriageReadinessController;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,23 +121,25 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post("subscribe_package", [PackageController::class, "subscribe_package"]);
 
     //fetch_requirements
-    Route::get("fetch_requirments", [RequirmentController::class,"fetch_requirments"]);
+    Route::get("fetch_requirments", [RequirmentController::class, "fetch_requirments"]);
 
     //fetch_questions
-    Route::get("fetch_user_questions", [RequirmentController::class,"fetch_user_questions"]);
+    Route::get("fetch_user_questions", [RequirmentController::class, "fetch_user_questions"]);
 
     //fetch_block_reasons
-    Route::get("fetch_block_reasons", [BlockReasonController::class,"fetch_block_reasons"]);
+    Route::get("fetch_block_reasons", [BlockReasonController::class, "fetch_block_reasons"]);
 
     //fetch_marital_status
-    Route::get("fetch_marital_status", [MaritalStatusController::class,"fetch_marital_status"]);
+    Route::get("fetch_marital_status", [MaritalStatusController::class, "fetch_marital_status"]);
 
     //fetch_readiness_for_marriages
-    Route::get("fetch_readiness_for_marriages", [ApiMarriageReadinessController::class,"fetch_readiness_for_marriages"]);
+    Route::get("fetch_readiness_for_marriages", [ApiMarriageReadinessController::class, "fetch_readiness_for_marriages"]);
 
     //fetch_countries
-    Route::get("fetch_countries", [CountryController::class,"fetch_countries"]);
+    Route::get("fetch_countries", [CountryController::class, "fetch_countries"]);
 
     //fetch_all_partners
-    Route::get("fetch_all_partners", [PartnerController::class,"fetch_all_partners"]);
+    Route::get("fetch_all_partners", [PartnerController::class, "fetch_all_partners"]);
+    //fetch_post
+    Route::get("fetch_post", [PostController::class, "fetch_post"]);
 });
