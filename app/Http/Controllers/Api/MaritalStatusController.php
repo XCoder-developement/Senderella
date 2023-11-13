@@ -11,10 +11,18 @@ use Illuminate\Http\Request;
 class MaritalStatusController extends Controller
 {
     use ApiTrait;
-    public function fetch_marital_status(){
-        $martial_statuses = MaritalStatus::get();
-        $data=TitleResource::collection($martial_statuses);
-        $msg="fetch_marital_status";
-        return $this->dataResponse($msg ,$data ,200);
+    public function fetch_marital_status()
+    {
+        try {
+            $martial_statuses = MaritalStatus::get();
+
+            $data = TitleResource::collection($martial_statuses);
+
+            $msg = "fetch_marital_status";
+            
+            return $this->dataResponse($msg, $data, 200);
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
     }
 }

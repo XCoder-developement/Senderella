@@ -26,11 +26,7 @@ class ProblemTypeController extends Controller
 
 
             return $this->dataResponse($msg, $data, 200);
-            // return response()->json([
-            //     'status' =>true,
-            //     'message' => $msg,
-            //     'data' =>ProblemTypeResource::collection($problem_types),
-            // ]);
+           
 
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);

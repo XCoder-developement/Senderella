@@ -11,10 +11,19 @@ use Illuminate\Http\Request;
 class BlockReasonController extends Controller
 {
     use ApiTrait;
-    public function fetch_block_reasons(){
-        $block_reasons = BlockReason::get();
-        $data=TitleResource::collection($block_reasons);
-        $msg='fetch_block_reasons';
-        return $this->dataResponse($msg ,$data ,200);
+    public function fetch_block_reasons()
+    {
+        try {
+
+            $block_reasons = BlockReason::get();
+
+            $data = TitleResource::collection($block_reasons);
+
+            $msg = 'fetch_block_reasons';
+            return $this->dataResponse($msg, $data, 200);
+        } catch (\Exception $ex) {
+
+            return $this->returnException($ex->getMessage(), 500);
+        }
     }
 }

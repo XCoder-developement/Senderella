@@ -11,8 +11,9 @@ class PrivacyController extends Controller
 {
     use ApiTrait;
 
-    public function fetch_privacy(){
-        try{
+    public function fetch_privacy()
+    {
+        try {
 
 
             $privacy = Privacy::firstOrNew();
@@ -22,11 +23,9 @@ class PrivacyController extends Controller
 
             $msg = "fetch_privacy";
 
-            return $this->dataResponse($msg, $data,200);
-
-        } catch (\Exception$ex) {
+            return $this->dataResponse($msg, $data, 200);
+        } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
-
     }
 }
