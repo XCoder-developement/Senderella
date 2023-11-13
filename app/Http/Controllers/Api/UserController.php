@@ -80,20 +80,20 @@ class UserController extends Controller
 
             $user->update($data);
 
-            if($request->user_information){
-            foreach($request->user_information as $user_information){
-                $requirment_id = $user_information["requirment_id"];
-                $requirment_item_id = $user_information["requirment_item_id"];
+            if ($request->user_information) {
+                foreach ($request->user_information as $user_information) {
+                    $requirment_id = $user_information["requirment_id"];
+                    $requirment_item_id = $user_information["requirment_item_id"];
 
-                $user_info_data['requirment_id'] = $requirment_id;
-                $user_info_data['requirment_item_id'] = $requirment_item_id;
-                $user_info_data['user_id'] = $user->id;
+                    $user_info_data['requirment_id'] = $requirment_id;
+                    $user_info_data['requirment_item_id'] = $requirment_item_id;
+                    $user_info_data['user_id'] = $user->id;
 
-                UserInformation::create($user_info_data);
+                    UserInformation::create($user_info_data);
                 }
             }
-            if($request->questions){
-                foreach($request->questions as $question){
+            if ($request->questions) {
+                foreach ($request->questions as $question) {
                     $requirment_id = $question["requirment_id"];
                     $requirment_item_id = $question["requirment_item_id"];
                     $answer = $question["answer"];
@@ -104,13 +104,12 @@ class UserController extends Controller
                     $user_info_data['user_id'] = $user->id;
 
                     UserInformation::create($user_info_data);
-
-                    }
+                }
             }
             $msg = __("messages.save successful");
 
-          return $this->dataResponse($msg, new UserResource($user), 200);
-        } catch (\Exception$ex) {
+            return $this->dataResponse($msg, new UserResource($user), 200);
+        } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
     }
@@ -143,8 +142,8 @@ class UserController extends Controller
 
             $msg = __("messages.save successful");
 
-          return $this->dataResponse($msg, new UserResource($user), 200);
-        } catch (\Exception$ex) {
+            return $this->dataResponse($msg, new UserResource($user), 200);
+        } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
     }

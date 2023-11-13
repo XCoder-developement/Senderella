@@ -11,10 +11,24 @@ use Illuminate\Http\Request;
 class PartnerController extends Controller
 {
     use ApiTrait;
-    public function fetch_all_partners(){
-        $partners = User::get();
-        $msg="fetch_all_users";
-        return $this->dataResponse($msg , PartnerResource::collection($partners),200);
+    public function fetch_all_partners()
+    {
+        try {
 
+            $user = auth()->user();
+
+            $partners = User::whereNot('id', auth()->id())->orderBy('id', 'desc')->paginate(10);
+            if (!$partners) {
+                $msg = "there is no partners";
+
+                return $this->errorResponse($msg, 401);
+            }
+            $msg = "fetch_all_users";
+
+            return $this->dataResponse($msg, PartnerResource::collection($partners)->response()->getData(true), 200);
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
     }
+
 }

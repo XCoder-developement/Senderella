@@ -12,20 +12,38 @@ class RequirmentController extends Controller
 {
     //
     use ApiTrait;
-    public function fetch_requirments(){
-        $requirments = Requirment::where('answer_type',1)->get();
-        $data = RequirmentResource::collection($requirments);
-        $msg='fetch_rquirments';
-        return $this->dataResponse($msg, $data ,200);
+    public function fetch_requirments()
+    {
+        try {
+
+            $requirments = Requirment::where('answer_type', 1)->get();
+
+            $data = RequirmentResource::collection($requirments);
+
+            $msg = 'fetch_rquirments';
+
+            return $this->dataResponse($msg, $data, 200);
+        } catch (\Exception $ex) {
+
+            return $this->returnException($ex->getMessage(), 500);
+        }
     }
 
-    
-    public function fetch_user_questions(){
-        $user_questions = Requirment::where('answer_type',2)->get();
-        $data = RequirmentResource::collection($user_questions);
-        $msg='fetch_user_questions';
-        return $this->dataResponse($msg, $data ,200);
+
+    public function fetch_user_questions()
+    {
+        try {
+
+            $user_questions = Requirment::where('answer_type', 2)->get();
+
+            $data = RequirmentResource::collection($user_questions);
+
+            $msg = 'fetch_user_questions';
+
+            return $this->dataResponse($msg, $data, 200);
+        } catch (\Exception $ex) {
+
+            return $this->returnException($ex->getMessage(), 500);
+        }
     }
-
-
 }

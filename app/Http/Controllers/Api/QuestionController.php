@@ -11,21 +11,19 @@ use Illuminate\Http\Request;
 class QuestionController extends Controller
 {
     use ApiTrait;
-    public function fetch_questions(){
-        try{
+    public function fetch_questions()
+    {
+        try {
 
             $questions = Question::get();
-              //response
+            //response
 
-           $msg = "fetch_questions";
+            $msg = "fetch_questions";
 
-           return $this->dataResponse($msg,  QuestionResource::collection($questions), 200);
-
-
-       } catch (\Exception$ex) {
+            return $this->dataResponse($msg,  QuestionResource::collection($questions), 200);
+        } catch (\Exception $ex) {
 
             return $this->returnException($ex->getMessage(), 500);
-
         }
     }
 }

@@ -11,11 +11,17 @@ use Illuminate\Http\Request;
 class MarriageReadinessController extends Controller
 {
     use ApiTrait;
-    public function fetch_readiness_for_marriages(){
-        $readiness_marriage=MarriageReadiness::get();
-        $data=TitleResource::collection($readiness_marriage);
-        $msg="fetch_readiness_for_Marriages";
-        return $this->dataResponse($msg, $data , 200);
+    public function fetch_readiness_for_marriages()
+    {
+        try {
 
+            $readiness_marriage = MarriageReadiness::get();
+
+            $data = TitleResource::collection($readiness_marriage);
+            $msg = "fetch_readiness_for_Marriages";
+            return $this->dataResponse($msg, $data, 200);
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
     }
 }

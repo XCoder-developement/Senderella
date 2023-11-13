@@ -11,21 +11,19 @@ use Illuminate\Http\Request;
 class CountryController extends Controller
 {
     use ApiTrait;
-    public function fetch_countries(){
-        try{
+    public function fetch_countries()
+    {
+        try {
 
             $countries = Country::get();
-              //response
+            //response
 
-           $msg = "fetch_questions";
+            $msg = "fetch_questions";
 
-           return $this->dataResponse($msg,  CountryResource::collection($countries), 200);
-
-
-       } catch (\Exception$ex) {
+            return $this->dataResponse($msg,  CountryResource::collection($countries), 200);
+        } catch (\Exception $ex) {
 
             return $this->returnException($ex->getMessage(), 500);
-
         }
     }
 }
