@@ -27,7 +27,7 @@ class PartnerResource extends JsonResource
             "country_title" => $this->country->title ?? "",
             "state_title" => $this->state->title ?? "",
             "active"=>intval($this->active)??"",
-            "partner_more_info"=>RequirmentResource::collection($this->informations->whereIn('answer_type',1)),
+            "partner_more_info"=>RequirmentResource::collection($this->informations->where('answer_type',1)),
         ];
     }
 }
