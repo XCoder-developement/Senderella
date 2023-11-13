@@ -21,10 +21,23 @@ class PartnerResource extends JsonResource
             "age"=>$this->age??"",
             "trusted"=>$this->trusted??"",
             "is_new" => intval($this->is_new),
-            "country"=>$this->country??"",
-            "city"=>$this->city??"",
+            "country_id" => $this->country_id ?? null,
+            "state_id" => $this->state_id ?? null,
+            "country_title" => $this->country->title ?? "",
+            "state_title" => $this->state->title ?? "",
             "active"=>$this->active??"",
             "partner_more_info"=>PartnerMoreInfo::collection($this->partner_more_info),
+        ];
+    }
+}
+
+class ImageResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
+        return [
+            "id" =>$this->id,
+            "image" => $this->image_link ?? "",
         ];
     }
 }
