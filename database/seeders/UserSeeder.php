@@ -23,9 +23,9 @@ class UserSeeder extends Seeder
            $data ["name"] = $faker->text(50);
            $data ["password"] = Hash::make(123123123);
            $data ["email"] = $faker->text(20);
-           $data ["gender"] = $faker->text(20);
-           $data ["birthday_date"] =$faker->date();
-           $data ["is_married_before"] =$faker->text(20);
+           $data ["gender"] = 1;
+        //    $data ["birthday_date"] =$faker->date();
+           $data ["is_married_before"] =1;
            $data ["weight"] =$faker->text(20);
 
          User::create($data);

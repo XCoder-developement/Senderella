@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Api;
+namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RequirmentResource extends JsonResource
+class PostResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,10 @@ class RequirmentResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id"=>$this ->id,
-            "title"=> $this -> title,
-            "type"=> $this -> answer_type,
-            "items"=> TitleResource::collection($this->requirment_items),
+            'id' => $this->id,
+            'owner'=> new PostOwnerResource($this->user_id),
+            'post' => $this->post,
+            'like'
         ];
     }
 }

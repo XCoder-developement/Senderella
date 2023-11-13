@@ -47,9 +47,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 //register
 Route::post("register", [RegisterController::class, "register"]);
@@ -139,4 +139,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //fetch_all_partners
     Route::get("fetch_all_partners", [PartnerController::class,"fetch_all_partners"]);
+
+    //fetch_partner_details
+    Route::post("fetch_partner_details",[PartnerController::class,"fetch_partner_details"]);
 });
