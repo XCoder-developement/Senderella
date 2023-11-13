@@ -5,23 +5,24 @@ namespace App\Models\User;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Models\Gift\Gift;
-use App\Models\Location\Country\Country;
-use App\Models\Location\State\State;
-use App\Models\Notification\Notification;
+use App\Models\Post\Post;
 use App\Models\Order\Order;
 use App\Models\Product\Product;
 use App\Models\Setting\Setting;
-use App\Models\UserQuestion\UserAnswer;
-use App\Models\UserQuestion\UserQuestion;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Location\State\State;
 use PhpParser\Node\Expr\Cast\Double;
+use App\Models\UserQuestion\UserAnswer;
+use App\Models\Location\Country\Country;
+use Illuminate\Notifications\Notifiable;
+use App\Models\Notification\Notification;
+use App\Models\UserQuestion\UserQuestion;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -49,7 +50,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(State::class);
     }
-    protected $with = ["country","state"];
+    protected $with = ["country", "state"];
 
 
     public function user_devices(): HasMany
@@ -72,21 +73,30 @@ class User extends Authenticatable
     // public function notifications():BelongsToMany {
     //     return $this->belongsToMany(Notification::class,"user_notifications","user_id","notification_id");
     // }
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
 
+    
     public function getIsMarriedBeforeFormatAttribute()
     {
-        if($this->is_married_before == 2){
+        if ($this->is_married_before == 2) {
             return __('messages.no');
-        }elseif($this->is_married_before == 1){
+        } elseif ($this->is_married_before == 1) {
             return __('messages.yes');
         }
     }
 
     public function getGenderFormatAttribute()
     {
-        if($this->gender == 2){
+        if ($this->gender == 2) {
             return __('messages.female');
-        }elseif($this->gender == 1){
+        } elseif ($this->gender == 1) {
             return __('messages.male');
         }
     }

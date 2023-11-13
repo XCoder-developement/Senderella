@@ -39,7 +39,6 @@ class DatabaseSeeder extends Seeder
             RequirmentSeeder::class,
             // UserSeeder::class,
 
-
         ]);
     }
 }
