@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\MarriageReadinessController as ApiMarriageReadiness
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PackageController;
+use App\Http\Controllers\Api\PartnerController;
 use App\Http\Controllers\Api\PrivacyController;
 use App\Http\Controllers\Api\ProblemController;
 use App\Http\Controllers\Api\ProblemTypeController;
@@ -132,8 +133,10 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //fetch_readiness_for_marriages
     Route::get("fetch_readiness_for_marriages", [ApiMarriageReadinessController::class,"fetch_readiness_for_marriages"]);
-  
+
     //fetch_countries
     Route::get("fetch_countries", [CountryController::class,"fetch_countries"]);
 
+    //fetch_all_partners
+    Route::get("fetch_all_partners", [PartnerController::class,"fetch_all_partners"]);
 });

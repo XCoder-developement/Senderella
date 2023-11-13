@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api;
 
+use App\Http\Resources\api\RequirmentResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,15 +19,15 @@ class PartnerResource extends JsonResource
             "id"=>$this->id,
             "images" => ImageResource::collection($this->images) ?? "",
             "name"=>$this->name ??"",
-            "age"=>$this->age??"",
-            "trusted"=>$this->trusted??"",
-            "is_new" => intval($this->is_new),
+            // "age"=>$this->age??"",
+            // "trusted"=>$this->trusted??"",
+            // "is_new" => intval($this->is_new ?? 0),
             "country_id" => $this->country_id ?? null,
             "state_id" => $this->state_id ?? null,
             "country_title" => $this->country->title ?? "",
             "state_title" => $this->state->title ?? "",
-            "active"=>$this->active??"",
-            "partner_more_info"=>PartnerMoreInfo::collection($this->partner_more_info),
+            "active"=>intval($this->active)??"",
+            "partner_more_info"=>RequirmentResource::collection($this->informations->whereIn('answer_type',1)),
         ];
     }
 }
