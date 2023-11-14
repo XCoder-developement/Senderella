@@ -1,37 +1,38 @@
 <?php
 
-use App\Http\Controllers\Admin\AboutController;
 use Illuminate\Support\Facades\Route;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use App\Http\Controllers\Admin\Auth\AuthController;
+use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\TermController;
+use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\BlockReasonController;
-use App\Http\Controllers\Admin\EducationTypeController;
-use App\Http\Controllers\Admin\HijibTypeController;
-use App\Http\Controllers\Admin\WorkTypeController;
 use App\Http\Controllers\Admin\ColorController;
-use App\Http\Controllers\Admin\HairColorController;
-use App\Http\Controllers\Admin\EyeColorController;
-use App\Http\Controllers\Admin\ProcreationController;
-use App\Http\Controllers\Admin\ReligiosityController;
-use App\Http\Controllers\Admin\EleganceStyleController;
-use App\Http\Controllers\Admin\HealthStatusController;
-use App\Http\Controllers\Admin\FirstMeetController;
-use App\Http\Controllers\Admin\FamilyValueController;
-use App\Http\Controllers\Admin\MovingPlaceController;
-use App\Http\Controllers\Admin\MarriageReadinessController;
-use App\Http\Controllers\Admin\MultiplicityStatusController;
-use App\Http\Controllers\Admin\Location\CountryController;
-use App\Http\Controllers\Admin\Location\StateController;
-use App\Http\Controllers\Admin\MaritalStatusController;
 use App\Http\Controllers\Admin\PackageController;
-use App\Http\Controllers\Admin\RequirmentController;
 use App\Http\Controllers\Admin\PrivacyController;
 use App\Http\Controllers\Admin\ProblemController;
-use App\Http\Controllers\Admin\ProblemTypeController;
+use App\Http\Controllers\Admin\EyeColorController;
 use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\WorkTypeController;
+use App\Http\Controllers\Admin\Auth\AuthController;
+use App\Http\Controllers\Admin\FirstMeetController;
+use App\Http\Controllers\Admin\HairColorController;
+use App\Http\Controllers\Admin\HijibTypeController;
+use App\Http\Controllers\Admin\RequirmentController;
+use App\Http\Controllers\Admin\BlockReasonController;
+use App\Http\Controllers\Admin\FamilyValueController;
+use App\Http\Controllers\Admin\MovingPlaceController;
+use App\Http\Controllers\Admin\ProblemTypeController;
+use App\Http\Controllers\Admin\ProcreationController;
+use App\Http\Controllers\Admin\ReligiosityController;
+use App\Http\Controllers\Admin\HealthStatusController;
+use App\Http\Controllers\Admin\EducationTypeController;
+use App\Http\Controllers\Admin\EleganceStyleController;
+use App\Http\Controllers\Admin\MaritalStatusController;
+use App\Http\Controllers\Admin\Location\StateController;
 use App\Http\Controllers\Admin\RequirmentItemController;
-use App\Http\Controllers\Admin\TermController;
+use App\Http\Controllers\Admin\Location\CountryController;
+use App\Http\Controllers\Admin\MarriageReadinessController;
+use App\Http\Controllers\Admin\MultiplicityStatusController;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
 |--------------------------------------------------------------------------
@@ -155,6 +156,9 @@ Route::group(
                 Route::get('requirment_items/edit/{id}', [RequirmentItemController::class, 'edit'])->name('requirment_items.edit');
                 Route::post('requirment_items/update/{id}', [RequirmentItemController::class, 'update'])->name('requirment_items.update');
                 Route::delete('requirment_items/{id}', [RequirmentItemController::class, 'destroy'])->name('requirment_items.destroy');
+
+                //POST
+                Route::resource('posts', PostController::class);
             });
         });
     }
