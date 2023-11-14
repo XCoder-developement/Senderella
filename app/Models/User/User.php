@@ -4,10 +4,12 @@ namespace App\Models\User;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Color\Color;
 use App\Models\Gift\Gift;
 use App\Models\Post\Post;
 use App\Models\Order\Order;
 use App\Models\Comment\Comment;
+use App\Models\EducationType\EducationType;
 use App\Models\Product\Product;
 use App\Models\Setting\Setting;
 use Laravel\Sanctum\HasApiTokens;
@@ -58,11 +60,22 @@ class User extends Authenticatable
     {
         return $this->belongsTo(MaritalStatus::class);
     }
+
+    public function education_type(): BelongsTo
+    {
+        return $this->belongsTo(EducationType::class);
+    }
+
+    public function color(): BelongsTo
+    {
+        return $this->belongsTo(Color::class);
+    }
+
     public function marriage_readiness(): BelongsTo
     {
         return $this->belongsTo(MarriageReadiness::class);
     }
-    
+
     protected $with = ["country", "state"];
 
 

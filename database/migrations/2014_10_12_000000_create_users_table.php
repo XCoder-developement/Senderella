@@ -23,6 +23,8 @@ return new class extends Migration
             $table->integer('nationality_id')->unsigned()->nullable();
             $table->integer('marital_status_id')->unsigned()->nullable();
             $table->integer('marriage_readiness_id')->unsigned()->nullable();
+            $table->integer('education_type_id')->unsigned()->nullable();
+            $table->integer('color_id')->unsigned()->nullable();
             $table->text('weight')->nullable();
             $table->text('height')->nullable();
             $table->integer('active')->nullable()->default(0);
