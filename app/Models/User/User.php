@@ -15,6 +15,8 @@ use App\Models\Location\State\State;
 use PhpParser\Node\Expr\Cast\Double;
 use App\Models\UserQuestion\UserAnswer;
 use App\Models\Location\Country\Country;
+use App\Models\MaritalStatus\MaritalStatus;
+use App\Models\MarriageReadiness\MarriageReadiness;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Notification\Notification;
 use App\Models\UserQuestion\UserQuestion;
@@ -51,6 +53,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(State::class);
     }
+
+    public function marital_status(): BelongsTo
+    {
+        return $this->belongsTo(MaritalStatus::class);
+    }
+    public function marriage_readiness(): BelongsTo
+    {
+        return $this->belongsTo(MarriageReadiness::class);
+    }
+    
     protected $with = ["country", "state"];
 
 
@@ -83,7 +95,7 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
-    
+
     public function getIsMarriedBeforeFormatAttribute()
     {
         if ($this->is_married_before == 2) {
