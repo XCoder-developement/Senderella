@@ -42,16 +42,16 @@ class PartnerController extends Controller
     {
         try {
 
-            $rules =[
-             "partner_id" => "required|exists:users,id",
+            $rules = [
+                "partner_id" => "required|exists:users,id",
             ];
-            $validator = Validator::make(request()->all(),$rules);
+            $validator = Validator::make(request()->all(), $rules);
             if ($validator->fails()) {
                 return $this->getvalidationErrors("validator");
             }
-            $partner= User::whereId($request->partner_id)->first();
+            $partner = User::whereId($request->partner_id)->first();
 
-            $msg="fetch_partner_details";
+            $msg = "fetch_partner_details";
             return $this->dataResponse($msg, new PartnerResource($partner), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
@@ -71,71 +71,73 @@ class PartnerController extends Controller
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
-
     }
 
-public function like_partner(Request $request){
-    try {
-        $rules =[
-            "partner_id" => "required|exists:users,id",
-        ];
-        $validator = Validator::make(request()->all(),$rules);
-        if ($validator->fails()) {
-            return $this->getvalidationErrors("validator");
+    public function like_partner(Request $request)
+    {
+        try {
+            $rules = [
+                "partner_id" => "required|exists:users,id",
+            ];
+            $validator = Validator::make(request()->all(), $rules);
+            if ($validator->fails()) {
+                return $this->getvalidationErrors("validator");
+            }
+            $user_id = auth()->id();
+            $partner_id = $request->partner_id;
+
+            $data['user_id'] =  $user_id;
+            $data['partner_id'] =  $partner_id;
+            UserLike::create($data);
+
+            $partner = User::whereId($partner_id)->first();
+            //responce
+            $msg = "like_partner";
+            $data = new PartnerResource($partner);
+            return $this->dataResponse($msg, $data, 200);
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
         }
-        $user_id = auth()->id();
-        $partner_id = $request->partner_id;
-
-        $data['user_id'] =  $user_id ;
-        $data['partner_id'] =  $partner_id ;
-        UserLike::create($data);
-
-        $partner = User::whereId($partner_id)->first();
-        //responce
-        $msg = "like_partner";
-        $data = new PartnerResource($partner);
-        return $this->dataResponse($msg, $data , 200);
     }
 
- catch (\Exception $ex) {
-    return $this->returnException($ex->getMessage(), 500);
-}
-}
+    public function block_partner(Request $request)
+    {
+        try {
 
-// public function block_partner(Request $request)
-// {
-//     try {
-
-//         $rules =[ //partner_id
-//          "partner_id" => "required|exists:users,id",
-//           // reason
-//          "reason"=> "nullable",
-//          //reason_id
-//          "reason_ids" => "sometimes|array",
-//          "reason_ids.*" => "sometimes|exists:block_reasons,id",
-//         ];
+            $rules =[ //partner_id
+             "partner_id" => "required|exists:users,id",
+              // reason
+             "reason"=> "nullable",
+             //reason_id
+             "reason_ids" => "sometimes|array",
+             "reason_ids.*" => "sometimes|exists:block_reasons,id",
+            ];
 
 
 
-//         $validator = Validator::make(request()->all(),$rules);
-//         if ($validator->fails()) {
-//             return $this->getvalidationErrors("validator");
-//         }
+            $validator = Validator::make(request()->all(),$rules);
+            if ($validator->fails()) {
+                return $this->getvalidationErrors("validator");
+            }
 
-//         $user_id = auth()->id();
-//         $partner_id = $request->partner_id;
-//         $reason_ids = $request->reason_ids;
-//         $reason = $request->reason;
+            $user_id = auth()->id();
+            $partner_id = $request->partner_id;
+            $reason_ids = $request->reason_ids;
+            $reason = $request->reason;
 
-//         $data['user_id'] =  $user_id ;
-//         $data['partner_id'] =  $partner_id ;
-//         UserBlock::create($data);
+            $data['user_id'] =  $user_id ;
+            $data['partner_id'] =  $partner_id ;
+            $data['text'] =  $reason ?? null ;
+            $user_block = UserBlock::create($data);
 
-//         $msg="block_partner";
-//         return $this->dataResponse($msg, $data , 200);
-//     } catch (\Exception $ex) {
-//         return $this->returnException($ex->getMessage(), 500);
-//     }
-// }
+            $user_block->reasons()->attach($reason_ids);
+
+            $msg = __("messages.save successful");
+
+        return $this->successResponse($msg,200);
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
 
 }
