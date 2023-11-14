@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\PostOwnerResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostResource extends JsonResource
@@ -16,11 +17,11 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'owner' => new PostOwnerResource($this->user_id),
             'post' => $this->post,
             'duration' => $this->created_at,
-            // 'comments_count' => $this->commentsCount,
-            // 'likes_count' => $this->likesCount,
+            'owner' => new PostOwnerResource($this->user), //user relation
+            'likes_count' => $this->likes->count(),
+            'comments_count' => $this->comments->count(),
             'comments' => commentResource::collection($this->comments),
         ];
     }
