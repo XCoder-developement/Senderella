@@ -1,9 +1,4 @@
-
-<a href="{{ route('comments.index', $id) }}" title="{{ __('messages.comments') }}" class="text-dark ml-2"><i
-        class="fas fa-layer-group"></i>
-</a>
-
-<a href="{{ route('posts.edit', $id) }}" class="btn btn-sm btn-hover-bg-light m-0">
+{{-- <a href="{{ route('comments.edit', $id) }}" class="btn btn-sm btn-hover-bg-light m-0">
 
     <span class="svg-icon svg-icon-primary m-0 p-0 svg-icon-md">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
@@ -19,9 +14,9 @@
         </svg>
     </span>
 
-</a>
+</a> --}}
 
-<div style="cursor:pointer;" onclick="deleteposts({{ $id }})" class="btn btn-sm btn-hover-bg-light mr-1">
+<div style="cursor:pointer;" onclick="deletecomments({{ $id }})" class="btn btn-sm btn-hover-bg-light mr-1">
     <span
         class="svg-icon svg-icon-danger m-0 p-0 svg-icon-md"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-12-28-020759/theme/html/demo8/dist/../src/media/svg/icons/Home/Trash.svg-->
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
@@ -40,7 +35,7 @@
 </div>
 
 <script>
-    function deleteposts(id) {
+    function deletecomments(id) {
 
         var table = $('.dataTable').DataTable();
         $.ajaxSetup({
@@ -67,7 +62,7 @@
                         '_method': 'DELETE',
                         '_token': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: `posts/${id}`,
+                    url: `../comments/${id}`,
                     dataType: "Json",
                     success: function(result) {
                         if (result.status == true) {

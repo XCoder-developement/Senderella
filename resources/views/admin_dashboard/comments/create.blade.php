@@ -28,15 +28,14 @@
 
                     </span>
 
-                    <h3 class="card-label"> {{ __('messages.edit_post') }}</h3>
+                    <h3 class="card-label"> {{ __('messages.add_post') }}</h3>
                 </div>
             </div>
 
 
             <div class="card-body">
-                <form method="post" action="{{ route('posts.update', $post->id) }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('comments.store') }}" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
 
 
                     <div class="row">
@@ -48,11 +47,19 @@
                                         {{ __('messages.post_' . $localeCode) }}
                                         <span class="text-danger"> ( {{ $localeCode }} )</span>
                                     </label>
-                                    <input class="form-control   @error('post-' . $localeCode) is-invalid @enderror" required value="{{ $post->translate($localeCode)->post ?? '' }}" name="post-{{ $localeCode }}">
-                                    @error('post-' . $localeCode)<span class="invalid-feedback">{{ $message }}</span>@enderror
+                                    <input
+                                        class="form-control   @error('post-' . $localeCode) is-invalid
+                          @enderror"
+                                        required value="{{ old('post-' . $localeCode) }}" name="post-{{ $localeCode }}">
+
+                                    @error('post-' . $localeCode)
+                                        <span class="invalid-feedback">
+                                            {{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         @endforeach
+
 
                     </div>
                     <button type="submit" class="btn btn-shadow btn-primary font-weight-bold mt-5">

@@ -406,5 +406,12 @@ return [
     "edit_post"=> "تعديل المنشور",
     "post_ar"=> "المنشور بالعربية",
     "post_en"=> "المنشور بالانجليزية",
-
+    "post_status"=>"حالة المنشور",
+    "post_active"=>"نشط",
+    "post_inactive"=>"غير نشط",
+    //COMMENTS
+    "comments"=>"التعليقات",
+    "comment"=>"التعليق",
+    "comment_created"=>"كاتب التعليق",
+    "comment_time"=>"الوقت",
 ];

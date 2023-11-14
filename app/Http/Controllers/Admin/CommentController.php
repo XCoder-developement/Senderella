@@ -2,65 +2,58 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\Admin\CommentDataTable;
+use App\Models\Post\Post;
 use Illuminate\Http\Request;
 use App\Models\Comment\Comment;
 use App\Http\Controllers\Controller;
 
+
 class CommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $view = 'admin_dashboard.comments.';
+    protected $route = 'comments.';
+    public function index(CommentDataTable $dataTable, $id)
     {
-        //
+        $post = Post::whereId($id)->first();
+        $dataTable->id = $id;
+        return $dataTable->render($this->view . 'index', compact('id', 'post'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Comment $comment)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(Comment $comment)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, Comment $comment)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Comment $comment)
+
+    public function destroy($id)
     {
-        //
+        $post = Comment::whereId($id)->firstOrFail();
+        $post->delete();
+        return response()->json(['status' => true]);
     }
 }

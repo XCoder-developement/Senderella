@@ -31,10 +31,9 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
         foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
-            $data[$localeCode] = $request['post-' . $localeCode];
+            $data[$localeCode] = ['post' => $request['post-' . $localeCode]];
         }
         $data['admin_id'] = auth()->user()->id ?? null;
-        // dd($data);
         Post::create($data);
         return redirect()->route($this->route . "index")
             ->with(['success' => __("messages.createmessage")]);
@@ -43,13 +42,15 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        //
+
     }
 
 
-    public function edit(Post $post)
+    public function edit($id)
     {
-        //
+        $post = Post::whereId($id)->first();
+
+        return view($this->view . 'edit', compact('post'));
     }
 
 
@@ -57,9 +58,8 @@ class PostController extends Controller
     {
         $post = Post::whereId($id)->firstOrFail();
         foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
-            $data[$localeCode] = ['post', $request['post-' . $localeCode],];
+            $data[$localeCode] = ['post' => $request['post-' . $localeCode],];
         }
-        // $data['user_id'] = auth()->user()->id ?? null;
         $post->update($data);
         return redirect()->route($this->route . "index")
             ->with(['success' => __("messages.editmessage")]);
