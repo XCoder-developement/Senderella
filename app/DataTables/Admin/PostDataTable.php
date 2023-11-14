@@ -1,29 +1,28 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Admin;
 
-use App\Models\BlockReason\BlockReason;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Yajra\DataTables\EloquentDataTable;
-use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use App\Models\Post\Post;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
-class BlockReasonDataTable extends DataTable
+class PostDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
      *
      * @param QueryBuilder $query Results from query() method.
      */
-    public function dataTable($query)
+    public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        return datatables()
-            ->eloquent($query)
-            ->addColumn('action', 'admin_dashboard.block_reasons.action')
+        return (new EloquentDataTable($query))
+            ->addColumn('action', 'admin_dashboard.posts.action')
             ->rawColumns([
                 'action',
             ]);
@@ -32,7 +31,7 @@ class BlockReasonDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(BlockReason $model): QueryBuilder
+    public function query(Post $model): QueryBuilder
     {
         return $model->newQuery()->orderBy("id","desc");
     }
@@ -61,7 +60,7 @@ class BlockReasonDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-             ["data" => "title" ,"title" => __('messages.title'),'orderable'=>false],
+            ["data" => "post" ,"title" => __('messages.post'),'orderable'=>false],
              ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
         ];
     }
@@ -71,6 +70,6 @@ class BlockReasonDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'BlockReason_' . date('YmdHis');
+        return 'Post_' . date('YmdHis');
     }
 }

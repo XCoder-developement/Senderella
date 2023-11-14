@@ -2,39 +2,42 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\Admin\PostDataTable;
 use App\Traits\ApiTrait;
 use App\Models\Post\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
+use App\Http\Requests\Admin\Post\PostRequest;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class PostController extends Controller
 {
-    use ApiTrait;
-
-    public function index()
+    protected $view = 'admin_dashboard.posts.';
+    protected $route = 'posts.';
+    public function index(PostDataTable $dataTable)
     {
-        try {
-            $posts = Post::orderBy("created_at", "desc")->paginate(10);
-            $msg = "fetch_posts_descending";
-            $data = PostResource::collection($posts);
-            return $this->dataResponse($msg, $data, 200);
-        } catch (\Exception $ex) {
-            return $this->returnException($ex->getMessage(), 500);
-        }
-
+        return $dataTable->render($this->view . 'index');
     }
 
 
     public function create()
     {
-        //
+        return view($this->view . 'create');
+
     }
 
 
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
+            $data[$localeCode] = $request['post-' . $localeCode];
+        }
+        $data['admin_id'] = auth()->user()->id ?? null;
+        // dd($data);
+        Post::create($data);
+        return redirect()->route($this->route . "index")
+            ->with(['success' => __("messages.createmessage")]);
     }
 
 
@@ -50,15 +53,24 @@ class PostController extends Controller
     }
 
 
-    public function update(Request $request, Post $post)
+    public function update(Request $request, $id)
     {
-        //
+        $post = Post::whereId($id)->firstOrFail();
+        foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
+            $data[$localeCode] = ['post', $request['post-' . $localeCode],];
+        }
+        // $data['user_id'] = auth()->user()->id ?? null;
+        $post->update($data);
+        return redirect()->route($this->route . "index")
+            ->with(['success' => __("messages.editmessage")]);
     }
 
 
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        //
+        $post = Post::whereId($id)->firstOrFail();
+        $post->delete();
+        return response()->json(['status' => true]);
     }
 
 }
