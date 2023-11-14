@@ -6,6 +6,7 @@ use App\Models\BlockReason\BlockReason;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class UserBlock extends Model
 {
@@ -23,8 +24,8 @@ class UserBlock extends Model
         return $this->belongsTo(User::class , 'partner_id');
     }
 
-    public function block_reason(): BelongsTo
+    public function reasons(): BelongsToMany
     {
-        return $this->belongsTo(BlockReason::class , 'block_reason_id');
+        return $this->belongsToMany(BlockReason::class ,'user_block_reasons','user_block_id' ,'block_reason_id');
     }
 }
