@@ -171,9 +171,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     //fetch_skin_colors
     Route::get("fetch_skin_colors", [SkinColorController::class, "fetch_skin_colors"]);
 
-    // //fetch_following
+     //fetch_following
     // Route::get("fetch_following", [PartnerController::class, "fetch_following"]);
 
     //bookmark_partner
     Route::post("bookmark_partner",[PartnerController::class,"bookmark_partner"]);
+
+    //user_watch
+    Route::post("user_watch",[PartnerController::class,"user_watch"]);
 });

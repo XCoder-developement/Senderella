@@ -130,6 +130,22 @@ return new class extends Migration
             ->onDelete('cascade');
         });
 
+        Schema::create('user_watches', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->integer('partner_id')->unsigned()->nullable()->comment('watched_user');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+
+            $table->foreign('user_id')->references('id')->on('users')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+            $table->foreign('partner_id')->references('id')->on('users')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+        });
+
+
         Schema::create('user_blocks', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->nullable()->comment('blocker');

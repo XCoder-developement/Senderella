@@ -13,6 +13,7 @@ use App\Http\Resources\Api\PartnerResource;
 use App\Models\User\UserBlock;
 use App\Models\User\UserBookmark;
 use App\Models\User\UserLike;
+use App\Models\User\UserWatch;
 
 class PartnerController extends Controller
 {
@@ -209,6 +210,33 @@ class PartnerController extends Controller
         }
     }
 
+    public function user_watch(Request $request)
+    {
+        try {
+            $rules = [
+                "partner_id" => "required|exists:users,id",
+            ];
+            $validator = Validator::make(request()->all(), $rules);
+            if ($validator->fails()) {
+                return $this->getvalidationErrors("validator");
+            }
+
+            $user_id = auth()->id();
+            $partner_id = $request->partner_id;
 
 
+
+            $data['user_id'] =  $user_id;
+            $data['partner_id'] =  $partner_id;
+            UserWatch::create($data);
+
+            $partner = User::whereId($partner_id)->first();
+            //responce
+            $msg = "user_watch";
+            $data = new PartnerResource($partner);
+            return $this->dataResponse($msg, $data, 200);
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
 }
