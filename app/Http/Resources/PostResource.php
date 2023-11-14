@@ -22,8 +22,8 @@ class PostResource extends JsonResource
             'duration' => $this->created_at,
             'owner' => new PostOwnerResource($this->user), //user relation
             'likes_count' => $this->likes->count(),
-            // 'comments_count' => $this->comments->count(),
-            'comments' => commentResource::collection($this->comments),
+            'comments_count' => $this->comments->count(),
+            'comments' => CommentResource::collection($this->comments),
         ];
     }
 }
