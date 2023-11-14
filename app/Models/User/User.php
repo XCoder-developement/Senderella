@@ -95,7 +95,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserImage::class);
     }
-
+    public function likes(): HasMany
+    {
+        return $this->hasMany(UserLike::class);
+    }
+    public function blocks(): HasMany
+    {
+        return $this->hasMany(UserLike::class);
+    }
     // public function notifications():BelongsToMany {
     //     return $this->belongsToMany(Notification::class,"user_notifications","user_id","notification_id");
     // }
@@ -126,4 +133,19 @@ class User extends Authenticatable
             return __('messages.male');
         }
     }
+
+    // public function followers(): HasMany
+    // {
+    //     return $this->likes->whereIn('user_id',auth()->id());
+    // }
+
+    // public function following(): HasMany
+    // {
+    //     return $this->likes->whereIn('partner_id',auth()->id());
+    // }
+
+    // public function block_partners(): HasMany
+    // {
+    //     return $this->likes->whereIn('partner_id',auth()->id());
+    // }
 }
