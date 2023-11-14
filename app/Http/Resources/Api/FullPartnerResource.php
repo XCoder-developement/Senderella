@@ -16,21 +16,50 @@ class FullPartnerResource extends JsonResource
     {
         return [
             "id"=>$this->id,
-            "images" => ImageResource::collection($this->images) ?? "",
             "name"=>$this->name ??"",
-            // "age"=>$this->age??"",
-            // "trusted"=>$this->trusted??"",
-            // "is_new" => intval($this->is_new ?? 0),
-            "country_id" => $this->country_id ?? null,
-            "state_id" => $this->state_id ?? null,
-            "country_title" => $this->country->title ?? "",
-            "state_title" => $this->state->title ?? "",
+            "images" => ImageResource::collection($this->images) ??"",
+            "age"=>$this->age??"",
+            "last_active"=>$this->last_active ?? '',
+            "is_follow"=>$this->is_follow ??0,
+            "is_verify"=>$this->is_verify ??0,
+            "trusted"=>$this->trused ??0,
+            "is_new"=>intval($this->is_new)??0,
+            "notes" =>$this->notes ??"",
+            "is_married_before"=>intval ($this->is_married_before),
+
+            "weight"=>$this->weight ??"",
+            "height"=>$this->height ??"",
+            "country_id"=>$this->country_id ?? null,
+            "State_id"=>$this->State_id ??null,
+            "country_title"=>$this->country_title ??"",
+            "state_title"=>$this->state_title,
+
+
+            "marital_status_id" =>$this->marital_status_id??null ,
+            "readiness_for_marriages_id" =>$this->readiness_for_marriage_id??null,
+            "marital_status_title" => $this->marital_status->title ?? "",
+            "marital_status_title" => $this->marital_status->title ?? "",
+
+            "skin_color_id" => $this->color_id ?? null,
+            "education_type_id" => $this->education_type_id ?? null,
+            "skin_color_title" => $this->color->title ?? "",
+            "education_type_title" => $this->education_type->title ?? "",
+
             "active"=>intval($this->active)??"",
             "partner_more_info"=>UserInformationResource::collection($this->informations),
-
         ];
+    }
+}
 
 
+class ImageResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
+        return [
+            "id" =>$this->id,
+            "image" => $this->image_link ?? "",
+        ];
     }
 }
 
