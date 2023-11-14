@@ -162,7 +162,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     //like_partner
     Route::post("like_partner",[PartnerController::class,"like_partner"]);
 
-    //like_partner
+    //block_partner
     Route::post("block_partner",[PartnerController::class,"block_partner"]);
 
     //fetch_education_types
@@ -173,4 +173,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // //fetch_following
     // Route::get("fetch_following", [PartnerController::class, "fetch_following"]);
+
+    //bookmark_partner
+    Route::post("bookmark_partner",[PartnerController::class,"bookmark_partner"]);
 });
