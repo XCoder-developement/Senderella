@@ -100,4 +100,33 @@ public function like_partner(Request $request){
     return $this->returnException($ex->getMessage(), 500);
 }
 }
+
+public function block_partner(Request $request)
+{
+    try {
+
+        $rules =[ //partner_id
+         "partner_id" => "required|exists:users,id",
+          // reason
+         "reason"=> "nullable",
+         //reason_id
+         "reason_id" => "required|exists:block_reasons,id",
+        ];
+
+
+
+        $validator = Validator::make(request()->all(),$rules);
+        if ($validator->fails()) {
+            return $this->getvalidationErrors("validator");
+        }
+
+        $data = 
+
+        $msg="block_partner";
+        return $this->dataResponse($msg, $data , 200);
+    } catch (\Exception $ex) {
+        return $this->returnException($ex->getMessage(), 500);
+    }
+}
+
 }
