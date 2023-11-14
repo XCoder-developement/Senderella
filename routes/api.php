@@ -36,7 +36,9 @@ use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\MaritalStatusController;
 use App\Http\Controllers\Api\UserInformationController;
 use App\Http\Controllers\Admin\MarriageReadinessController;
+use App\Http\Controllers\Api\EducationTypeController;
 use App\Http\Controllers\Api\MarriageReadinessController as ApiMarriageReadinessController;
+use App\Http\Controllers\Api\SkinColorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -163,5 +165,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     //like_partner
     Route::post("block_partner",[PartnerController::class,"block_partner"]);
 
+    //fetch_education_types
+    Route::get("fetch_education_types", [EducationTypeController::class, "fetch_education_types"]);
 
+    //fetch_skin_colors
+    Route::get("fetch_skin_colors", [SkinColorController::class, "fetch_skin_colors"]);
 });
