@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\TermController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AboutController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\PackageController;
 use App\Http\Controllers\Api\PartnerController;
@@ -140,16 +141,22 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //fetch_all_partners
     Route::get("fetch_all_partners", [PartnerController::class, "fetch_all_partners"]);
-    //fetch_post
+
+    //POST
     Route::get("fetch_post", [PostController::class, "fetch_post"]);
-    Route::get("fetch_all_partners", [PartnerController::class,"fetch_all_partners"]);
+    Route::post("like_post", [PostController::class, "likePost"]);
+    //COMMENT
+    Route::post("store_comment", [CommentController::class, "store"]);
+    Route::post("like_comment", [CommentController::class, "likeComment"]);
+
+    Route::get("fetch_all_partners", [PartnerController::class, "fetch_all_partners"]);
 
     //fetch_partner_details
-    Route::post("fetch_partner_details",[PartnerController::class,"fetch_partner_details"]);
+    Route::post("fetch_partner_details", [PartnerController::class, "fetch_partner_details"]);
 
     //fetch_new_partners
-    Route::get("fetch_new_partners", [PartnerController::class,"fetch_new_partners"]);
+    Route::get("fetch_new_partners", [PartnerController::class, "fetch_new_partners"]);
 
     //like_partner
-    Route::post("like_partner",[PartnerController::class,"like_partner"]);
+    Route::post("like_partner", [PartnerController::class, "like_partner"]);
 });
