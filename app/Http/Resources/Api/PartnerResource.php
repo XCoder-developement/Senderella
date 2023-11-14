@@ -40,6 +40,11 @@ class PartnerResource extends JsonResource
             "marital_status_title" => $this->marital_status->title ?? "",
             "marital_status_title" => $this->marital_status->title ?? "",
 
+            "skin_color_id" => $this->color_id ?? null,
+            "education_type_id" => $this->education_type_id ?? null,
+            "skin_color_title" => $this->color->title ?? "",
+            "education_type_title" => $this->education_type->title ?? "",
+
             "active"=>intval($this->active)??"",
             "partner_more_info"=>UserInformationResource::collection($this->informations),
         ];
