@@ -11,6 +11,7 @@ use App\Http\Resources\Api\UserResource;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Api\PartnerResource;
 use App\Models\User\UserBlock;
+use App\Models\User\UserBookmark;
 use App\Models\User\UserLike;
 
 class PartnerController extends Controller
@@ -171,4 +172,43 @@ class PartnerController extends Controller
     //         return $this->returnException($ex->getMessage(), 500);
     //     }
     // }
+
+    public function bookmark_partner(Request $request)
+    {
+        try {
+            $rules = [
+                "partner_id" => "required|exists:users,id",
+            ];
+            $validator = Validator::make(request()->all(), $rules);
+            if ($validator->fails()) {
+                return $this->getvalidationErrors("validator");
+            }
+
+            $user_id = auth()->id();
+            $partner_id = $request->partner_id;
+
+            $bookmark_partner = UserBookmark::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
+
+            if ($bookmark_partner) {
+                $msg = __('messages.you already bookmarked this partner');
+                return $this->errorResponse($msg, 200);
+            } else {
+
+                $data['user_id'] =  $user_id;
+                $data['partner_id'] =  $partner_id;
+                UserBookmark::create($data);
+
+                $partner = User::whereId($partner_id)->first();
+                //responce
+                $msg = "bookmark_partner";
+                $data = new PartnerResource($partner);
+                return $this->dataResponse($msg, $data, 200);
+            }
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
+
+
+
 }

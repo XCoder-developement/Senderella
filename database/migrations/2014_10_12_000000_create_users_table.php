@@ -115,6 +115,21 @@ return new class extends Migration
             ->onDelete('cascade');
         });
 
+        Schema::create('user_bookmarks', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->integer('partner_id')->unsigned()->nullable()->comment('bookmarked_user');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+
+            $table->foreign('user_id')->references('id')->on('users')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+            $table->foreign('partner_id')->references('id')->on('users')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+        });
+
         Schema::create('user_blocks', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->nullable()->comment('blocker');
@@ -140,7 +155,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
 
-            
+
             $table->foreign('user_block_id')->references('id')->on('user_blocks')
             ->onUpdate('cascade')
             ->onDelete('cascade');
