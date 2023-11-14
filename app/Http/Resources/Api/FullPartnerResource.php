@@ -26,11 +26,22 @@ class FullPartnerResource extends JsonResource
             "country_title" => $this->country->title ?? "",
             "state_title" => $this->state->title ?? "",
             "active"=>intval($this->active)??"",
-            "partner_more_info"=>RequirmentResource::collection($this->informations->where('answer_type',1)),
-            "questions"=>RequirmentResource::collection($this->informations->where('answer_type',2)),
+            "partner_more_info"=>UserInformationResource::collection($this->informations),
 
         ];
 
 
+    }
+}
+
+class UserInformationResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
+        return [
+            "id" =>$this->id,
+            "title" => $this->requirment_id ?? "",
+            "value" => $this->requirment_item_id ?? "",
+        ];
     }
 }

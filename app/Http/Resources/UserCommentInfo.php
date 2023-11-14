@@ -2,7 +2,10 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Http\Resources\Api\TitleResource;
+use App\Http\Resources\Api\CountryResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserCommentInfo extends JsonResource
@@ -17,10 +20,11 @@ class UserCommentInfo extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'age' => Carbon::parse($this->birthday_date)->age,
             "image" => $this->image_link ?? "",
             'trusted' => $this->trusted,
-            'country_id' => $this->country_id,
-            'city_id' => $this->city_id,
+            'country' => new UserCountryResource($this->country),
+            'city' => new UserStateResource($this->state),
         ];
     }
 }
