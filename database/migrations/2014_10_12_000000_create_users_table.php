@@ -132,6 +132,24 @@ return new class extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade');
         });
+
+        // Schema::create('user_block_reasons', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->integer('user_id')->unsigned()->nullable()->comment('blocker');
+        //     $table->integer('partner_id')->unsigned()->nullable()->comment('blocked_parteners');
+        //     $table->integer('block_reason_id')->unsigned()->nullable();
+        //     $table->text('text')->nullable();
+
+        //     $table->timestamp('created_at')->useCurrent();
+        //     $table->timestamp('updated_at')->useCurrent();
+
+        //     $table->foreign('user_id')->references('id')->on('users')
+        //     ->onUpdate('cascade')
+        //     ->onDelete('cascade');
+        //     $table->foreign('partner_id')->references('id')->on('users')
+        //     ->onUpdate('cascade')
+        //     ->onDelete('cascade');
+        // });
     }
 
     /**
