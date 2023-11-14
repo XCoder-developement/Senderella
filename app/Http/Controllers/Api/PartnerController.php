@@ -83,18 +83,27 @@ class PartnerController extends Controller
             if ($validator->fails()) {
                 return $this->getvalidationErrors("validator");
             }
+
             $user_id = auth()->id();
             $partner_id = $request->partner_id;
 
-            $data['user_id'] =  $user_id;
-            $data['partner_id'] =  $partner_id;
-            UserLike::create($data);
+            $like_partner = UserLike::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
 
-            $partner = User::whereId($partner_id)->first();
-            //responce
-            $msg = "like_partner";
-            $data = new PartnerResource($partner);
-            return $this->dataResponse($msg, $data, 200);
+            if ($like_partner) {
+                $msg = __('messages.you already liked this partner');
+                return $this->errorResponse($msg, 200);
+            } else {
+
+                $data['user_id'] =  $user_id;
+                $data['partner_id'] =  $partner_id;
+                UserLike::create($data);
+
+                $partner = User::whereId($partner_id)->first();
+                //responce
+                $msg = "like_partner";
+                $data = new PartnerResource($partner);
+                return $this->dataResponse($msg, $data, 200);
+            }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -104,18 +113,18 @@ class PartnerController extends Controller
     {
         try {
 
-            $rules =[ //partner_id
-             "partner_id" => "required|exists:users,id",
-              // reason
-             "reason"=> "nullable",
-             //reason_id
-             "reason_ids" => "sometimes|array",
-             "reason_ids.*" => "sometimes|exists:block_reasons,id",
+            $rules = [ //partner_id
+                "partner_id" => "required|exists:users,id",
+                // reason
+                "reason" => "nullable",
+                //reason_id
+                "reason_ids" => "sometimes|array",
+                "reason_ids.*" => "sometimes|exists:block_reasons,id",
             ];
 
 
 
-            $validator = Validator::make(request()->all(),$rules);
+            $validator = Validator::make(request()->all(), $rules);
             if ($validator->fails()) {
                 return $this->getvalidationErrors("validator");
             }
@@ -125,19 +134,41 @@ class PartnerController extends Controller
             $reason_ids = $request->reason_ids;
             $reason = $request->reason;
 
-            $data['user_id'] =  $user_id ;
-            $data['partner_id'] =  $partner_id ;
-            $data['text'] =  $reason ?? null ;
-            $user_block = UserBlock::create($data);
+            $like_partner = UserBlock::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
 
-            $user_block->reasons()->attach($reason_ids);
+            if ($like_partner) {
+                $msg = __('messages.you already blocked this partner');
+                return $this->errorResponse($msg, 200);
+            } else {
 
-            $msg = __("messages.save successful");
+                $data['user_id'] =  $user_id;
+                $data['partner_id'] =  $partner_id;
+                $data['text'] =  $reason ?? null;
+                $user_block = UserBlock::create($data);
 
-        return $this->successResponse($msg,200);
+                $user_block->reasons()->attach($reason_ids);
+
+                $msg = __("messages.save successful");
+
+                return $this->successResponse($msg, 200);
+            }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
     }
 
+    // public function fetch_following()
+    // {
+    //     try {
+    //         $user = auth()->user();
+
+    //         // Assuming 'likes' is the relationship for users being followed
+    //         $following = UserLike::where('user_id',$user->id)->get();
+
+    //         $msg = "fetch_following";
+    //         return $this->dataResponse($msg, PartnerResource::collection($following), 200);
+    //     } catch (\Exception $ex) {
+    //         return $this->returnException($ex->getMessage(), 500);
+    //     }
+    // }
 }

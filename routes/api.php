@@ -170,4 +170,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //fetch_skin_colors
     Route::get("fetch_skin_colors", [SkinColorController::class, "fetch_skin_colors"]);
+
+    //fetch_following
+    Route::get("fetch_following", [PartnerController::class, "fetch_following"]);
 });
