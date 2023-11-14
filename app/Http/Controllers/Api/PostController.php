@@ -17,7 +17,7 @@ class PostController extends Controller
     public function fetch_post()
     {
         try {
-            $post = Post::whereUserId(null)->whereStatus(1)->first();
+            $post = Post::whereStatus(1)->first();
             if (!$post) {
                 return $this->errorResponse('no posts found', 404);
             }

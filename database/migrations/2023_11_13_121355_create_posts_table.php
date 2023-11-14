@@ -20,7 +20,7 @@ return new class extends Migration {
         Schema::create('post_translations', function (Blueprint $table) {
             $table->id();
             $table->string('post')->nullable();
-            $table->integer('post_id')->unsigned()->nullable();
+            // $table->integer('post_id')->unsigned()->nullable();
 
             $table->string('locale')->index();
             $table->foreignId('post_id')->references('id')->on('posts')->onUpdate('cascade')->onDelete('cascade');
