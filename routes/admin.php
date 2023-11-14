@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\TermController;
 use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\PrivacyController;
 use App\Http\Controllers\Admin\ProblemController;
@@ -159,6 +160,15 @@ Route::group(
 
                 //POSTS
                 Route::resource('posts', PostController::class);
+
+                //COMMENTS
+                Route::get('comments/{id}', [CommentController::class, 'index'])->name('comments.index');
+                Route::get('comments/create/{id}', [CommentController::class, 'create'])->name('comments.create');
+                Route::post('comments/store/{id}', [CommentController::class, 'store'])->name('comments.store');
+                Route::get('comments/edit/{id}', [CommentController::class, 'edit'])->name('comments.edit');
+                Route::post('comments/update/{id}', [CommentController::class, 'update'])->name('comments.update');
+                Route::delete('comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
             });
         });
     }

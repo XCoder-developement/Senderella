@@ -2,7 +2,7 @@
 
 namespace App\DataTables\Admin;
 
-use App\Models\Post\Post;
+use App\Models\Comment\Comment;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\EloquentDataTable;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
-class PostDataTable extends DataTable
+class CommentDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -22,21 +22,22 @@ class PostDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'admin_dashboard.posts.action')
-            ->addColumn('status', function ($post) {
-                return $post->status ? __('messages.post_active') : __('messages.post_inactive');
+            ->addColumn('action', 'admin_dashboard.comments.action')
+            ->addColumn('created_at', function ($post) {
+                return $post->created_at->format('Y-m-d H:i:s');
             })
-            ->rawColumns([
-                'action',
-            ]);
+            ->addColumn('owner_name', function ($comment) {
+                return $comment->user?->name ?? '';
+            })
+            ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Post $model): QueryBuilder
+    public function query(Comment $model): QueryBuilder
     {
-        return $model->newQuery()->orderBy("id", "desc");
+        return $model->newQuery()->orderBy("id", "desc")->where('post_id',$this->id);
     }
 
     /**
@@ -64,10 +65,10 @@ class PostDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            ["data" => "post", "title" => __('messages.post'), 'orderable' => false],
-            ["data" => "status", "title" => __('messages.post_status'), 'orderable' => false],
+            ["data" => "comment", "title" => __('messages.comment'), 'orderable' => false],
+            ["data" => "owner_name", "title" => __('messages.comment_created'), 'orderable' => false],
+            ["data" => "created_at", "title" => __('messages.comment_time'), 'orderable' => false],
             ['data' => 'action', 'title' => __("messages.actions"), 'printable' => false, 'exportable' => false, 'orderable' => false, 'searchable' => false],
-
         ];
     }
 
@@ -76,6 +77,6 @@ class PostDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Post_' . date('YmdHis');
+        return 'Comment_' . date('YmdHis');
     }
 }

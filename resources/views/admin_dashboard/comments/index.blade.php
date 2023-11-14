@@ -6,13 +6,14 @@
 
             <div class="card-header flex-wrap py-3">
                 <div class="card-title">
-                    <h3 class="card-label">{{ __('messages.requirment_items') }} . {{ $requirment->name ?? '' }}
+                    <h3 class="card-label">{{ __('messages.comments') }}
+
                     </h3>
                 </div>
                 <div class="card-toolbar">
 
 
-                    <a href="{{ route('requirment_items.create', $id) }}" class="btn btn-light-success font-weight-bold">
+                    <a href="{{ route('comments.create', $id) }}" class="btn btn-light-success font-weight-bold">
                         <i class="ki ki-plus icon-md mr-2"></i>{{ __('messages.add') }}</a>
                     <!--end::Button-->
                 </div>

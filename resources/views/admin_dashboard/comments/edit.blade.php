@@ -34,7 +34,7 @@
 
 
             <div class="card-body">
-                <form method="post" action="{{ route('posts.update', $post->id) }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('comments.update', $post->id) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
