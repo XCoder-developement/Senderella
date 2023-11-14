@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Admin\Color;
+namespace App\Http\Requests\Admin\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-class StoreRequest extends FormRequest
+class PostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +26,8 @@ class StoreRequest extends FormRequest
 
         foreach (LaravelLocalization::getSupportedLocales() as
         $localeCode => $properties) {
-             $validators['title-' . $localeCode] = ['required'];
+             $validators['post-' . $localeCode] = ['required'];
          }
-
         return  $validators;
     }
 }

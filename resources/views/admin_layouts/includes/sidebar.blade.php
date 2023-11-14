@@ -67,6 +67,32 @@
                             </ul>
                         </div>
                     </li>
+                    {{-- POSTS --}}
+                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                        <a href="javascript:;" class="menu-link menu-toggle">
+                            <span class="svg-icon menu-icon">
+                                <i class="fas fa-user-lock"></i>
+                            </span>
+                            <span class="menu-text">{{ __('messages.posts') }}</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="menu-submenu">
+                            <i class="menu-arrow"></i>
+                            <ul class="menu-subnav">
+                                <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                    <span class="menu-link">
+                                        <span class="menu-text">{{ __('messages.posts') }}</span>
+                                    </span>
+                                </li>
+                                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                    <a href="{{ route('posts.index') }}" class="menu-link">
+                                        <span class="menu-text">{{ __('messages.all') }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    {{-- END POSTS --}}
 
                     <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
@@ -225,7 +251,8 @@
                                 </ul>
                             </div>
                         </li>
-
+                            {{-- POSTS --}}
+                            
                         <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                             <a href="javascript:;" class="menu-link menu-toggle">
                                 <span class="svg-icon menu-icon">

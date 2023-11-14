@@ -157,7 +157,7 @@ Route::group(
                 Route::post('requirment_items/update/{id}', [RequirmentItemController::class, 'update'])->name('requirment_items.update');
                 Route::delete('requirment_items/{id}', [RequirmentItemController::class, 'destroy'])->name('requirment_items.destroy');
 
-                //POST
+                //POSTS
                 Route::resource('posts', PostController::class);
             });
         });
