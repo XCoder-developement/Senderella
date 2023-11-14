@@ -158,5 +158,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get("fetch_new_partners", [PartnerController::class, "fetch_new_partners"]);
 
     //like_partner
-    Route::post("like_partner", [PartnerController::class, "like_partner"]);
+    Route::post("like_partner",[PartnerController::class,"like_partner"]);
+
+    //like_partner
+    Route::post("block_partner",[PartnerController::class,"block_partner"]);
+
+
 });
