@@ -120,8 +120,6 @@ public function block_partner(Request $request)
             return $this->getvalidationErrors("validator");
         }
 
-        $data = 
-
         $msg="block_partner";
         return $this->dataResponse($msg, $data , 200);
     } catch (\Exception $ex) {
