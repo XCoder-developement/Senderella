@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\DataTables\Admin\PostDataTable;
 use App\Traits\ApiTrait;
 use App\Models\Post\Post;
 use Illuminate\Http\Request;
+use App\Models\Post\PostImage;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
+use App\DataTables\Admin\PostDataTable;
 use App\Http\Requests\Admin\Post\PostRequest;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -34,7 +35,17 @@ class PostController extends Controller
             $data[$localeCode] = ['post' => $request['post-' . $localeCode]];
         }
         $data['admin_id'] = auth()->user()->id ?? null;
-        Post::create($data);
+        $post = Post::create($data);
+        if ($request->has('images') && count($request->images) > 0) {
+            foreach ($request->images as $image) {
+                $image_data = upload_image($image, "posts");
+                PostImage::create([
+                    'image' => $image_data,
+                    'post_id' => $post->id,
+                ]);
+            }
+
+        }
         return redirect()->route($this->route . "index")
             ->with(['success' => __("messages.createmessage")]);
     }
@@ -61,6 +72,15 @@ class PostController extends Controller
             $data[$localeCode] = ['post' => $request['post-' . $localeCode],];
         }
         $post->update($data);
+        if ($request->has('images') && count($request->images) > 0) {
+            foreach ($request->images as $image) {
+                $image_data = upload_image($image, "posts");
+                PostImage::create([
+                    'image' => $image_data,
+                    'post_id' => $post->id,
+                ]);
+            }
+        }
         return redirect()->route($this->route . "index")
             ->with(['success' => __("messages.editmessage")]);
     }
