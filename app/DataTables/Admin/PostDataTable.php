@@ -66,7 +66,6 @@ class PostDataTable extends DataTable
         return [
             ["data" => "post", "title" => __('messages.post'), 'orderable' => false],
             ["data" => "status", "title" => __('messages.post_status'), 'orderable' => false],
-            ["data" => "editstatus", "title" => __('messages.edit_post_status'), 'orderable' => false],
             ['data' => 'action', 'title' => __("messages.actions"), 'printable' => false, 'exportable' => false, 'orderable' => false, 'searchable' => false],
 
         ];

@@ -1,3 +1,14 @@
+<div class="col-4">
+    <span class="switch btn btns-m switch-outline switch-icon switch-primary">
+        <label>
+            <input type="checkbox" onchange="activePost({{ $id }})"
+                @if ($status == 1) checked @endif name="active" id="active" value="1" />
+            <span></span>
+            {{-- {{__("messages.active")}} --}}
+        </label>
+    </span>
+
+</div>
 <a href="{{ route('comments.index', $id) }}" title="{{ __('messages.comments') }}" class="text-dark ml-2"><i
         class="fas fa-layer-group"></i>
 </a>
@@ -39,6 +50,29 @@
 </div>
 
 <script>
+    function activePost(id) {
+        let post_id = id;
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: 'POST',
+            data: {
+                'post_id': post_id
+            },
+            url: "{{ route('active_post') }}",
+            dataType: "Json",
+            success: function(result) {
+                if (result.status == true) {
+                    // $("#active").empty();
+                    // $("#active").append(result.data);
+                }
+            }
+        });
+    }
+
     function deleteposts(id) {
 
         var table = $('.dataTable').DataTable();
