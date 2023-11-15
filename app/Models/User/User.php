@@ -22,6 +22,7 @@ use App\Models\MarriageReadiness\MarriageReadiness;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Notification\Notification;
 use App\Models\UserQuestion\UserQuestion;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -46,6 +47,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = ['date_format'];
+
+    public function getDateFormatAttribute(){
+        return Carbon::parse($this->created_at)->format('Y-m-d g:i A') ;
+    }
 
     public function country(): BelongsTo
     {
