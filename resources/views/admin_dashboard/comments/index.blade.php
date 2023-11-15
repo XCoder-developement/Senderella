@@ -10,13 +10,13 @@
 
                     </h3>
                 </div>
-                <div class="card-toolbar">
+                {{-- <div class="card-toolbar">
 
 
                     <a href="{{ route('comments.create', $id) }}" class="btn btn-light-success font-weight-bold">
                         <i class="ki ki-plus icon-md mr-2"></i>{{ __('messages.add') }}</a>
                     <!--end::Button-->
-                </div>
+                </div> --}}
             </div>
             <div class="card-body">
                 <!--begin: Datatable-->
