@@ -159,21 +159,6 @@ class PartnerController extends Controller
         }
     }
 
-    // public function fetch_following()
-    // {
-    //     try {
-    //         $user = auth()->user();
-
-    //         // Assuming 'likes' is the relationship for users being followed
-    //         $following = UserLike::where('user_id',$user->id)->get();
-
-    //         $msg = "fetch_following";
-    //         return $this->dataResponse($msg, PartnerResource::collection($following), 200);
-    //     } catch (\Exception $ex) {
-    //         return $this->returnException($ex->getMessage(), 500);
-    //     }
-    // }
-
     public function bookmark_partner(Request $request)
     {
         try {
@@ -239,4 +224,38 @@ class PartnerController extends Controller
             return $this->returnException($ex->getMessage(), 500);
         }
     }
+
+    public function fetch_following()
+    {
+        try {
+            $user = auth()->user();
+
+            // Assuming 'likes' is the relationship for partner being followed
+            $following_ids = $user->following->pluck('partner_id')->toArray();
+
+            $users = User::whereIn('id',$following_ids)->get();
+
+            $msg = "fetch_following";
+            return $this->dataResponse($msg, PartnerResource::collection($users), 200);
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
+
+    // public function fetch_followers()
+    // {
+    //     try {
+    //         $user = auth()->user();
+
+    //         // Assuming 'likes' is the relationship for partner being followed
+    //         $following_ids = $user->followers->pluck('user_id')->toArray();
+
+    //         $users = User::whereIn('id',$following_ids)->get();
+
+    //         $msg = "fetch_followers";
+    //         return $this->dataResponse($msg, PartnerResource::collection($users), 200);
+    //     } catch (\Exception $ex) {
+    //         return $this->returnException($ex->getMessage(), 500);
+    //     }
+    // }
 }
