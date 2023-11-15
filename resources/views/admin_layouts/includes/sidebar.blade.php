@@ -324,6 +324,11 @@
                                             <span class="menu-text">{{__('messages.block_reasons')}}</span>
                                         </a>
                                     </li>
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('settings.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.settings')}}</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
