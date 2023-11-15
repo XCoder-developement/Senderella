@@ -280,6 +280,20 @@ class PartnerController extends Controller
         }
     }
 
+
+    public function fetch_most_liked_partners(){
+        try{
+
+            $most_liked = UserLike::pluck("partner_id")->toArray();
+
+
+            $msg ="fetch_most_liked_partners";
+            return $this->dataResponse($msg , PartnerResource::collection($blocker),200);
+        } catch(\Exception $ex){
+            return $this->returnException($ex->getMessage(),500);
+        }
+    }
+
     // public function fetch_followers()
     // {
     //     try {
