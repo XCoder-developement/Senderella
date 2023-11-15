@@ -178,7 +178,7 @@
                                     {{ __('messages.whatsApp') }}
                                     <span class="text-danger"> </span>
                                 </label>
-                                <input id="whatsApp" type="text" name="whatsApp" value="{{ $setting->whatsApp ?? '' }}"
+                                <input id="whatsApp" type="number" name="whatsApp" value="{{ $setting->whatsApp ?? '' }}"
                                 class="form-control @error('whatsApp') is-invalid @enderror">
 
                                 @error('whatsApp')
@@ -194,7 +194,7 @@
                                     {{ __('messages.phone') }}
                                     <span class="text-danger"> </span>
                                 </label>
-                                <input id="phone" type="text" name="phone" value="{{ $setting->phone ?? '' }}"
+                                <input id="phone" type="number" name="phone" value="{{ $setting->phone ?? '' }}"
                                     class="form-control @error('phone') is-invalid @enderror">
 
                                 @error('phone')

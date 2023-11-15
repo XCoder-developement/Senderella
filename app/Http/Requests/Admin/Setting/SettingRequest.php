@@ -30,8 +30,8 @@ class SettingRequest extends FormRequest
             'twitter' => ['required'],
             'tikTok' => ['required'],
             'messenger' => ['required'],
-            'whatsApp' => ['required'],
-            'phone' => ['required'],
+            'whatsApp' => ['required', 'numeric'],
+            'phone' => ['required', 'numeric'],
             'email' => ['required'],
         ];
         foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
