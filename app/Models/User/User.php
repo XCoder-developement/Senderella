@@ -171,6 +171,17 @@ class User extends Authenticatable
         return $this->hasMany(UserWatch::class, 'partner_id');
     }
 
+    //who the user favorites
+    public function favorited():HasMany{
+        return $this->hasMany(UserBookmark::class,'user_id');
+    }
+
+
+    //who favorites the user
+    public function favorited_by():HasMany{
+        return $this->hasMany(UserBookmark::class, 'partner_id');
+    }
+
     //like me and followers partners
     // public function followers(): HasMany
     // {

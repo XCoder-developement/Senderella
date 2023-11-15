@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class UserBookmark extends Model
 {
     use HasFactory;
-    public $table = 'user_bookmarks';
-    public $guarded =[];
+    protected $table = 'user_bookmarks';
+    protected $guarded =[];
 
     public function user(): BelongsTo
     {
