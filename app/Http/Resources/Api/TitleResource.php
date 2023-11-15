@@ -21,7 +21,7 @@ class TitleResource extends JsonResource
 
 
         return [
-            "id" => $this->id??0,
+            "id" => $this->id,
             "title" => $this->title??"",
         ];
     }

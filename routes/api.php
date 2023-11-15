@@ -85,7 +85,7 @@ Route::get("fetch_term", [TermController::class, "fetch_term"]);
 Route::get("fetch_questions", [QuestionController::class, "fetch_questions"]);
 
 //fetch_about
-Route::get("fetch_about", [AboutController::class, "fetch_about"]);
+Route::get("fetch_about", [SettingController::class, "fetch_about"]);
 
 //fetch_packages
 Route::get("fetch_packages", [PackageController::class, "fetch_packages"]);
@@ -183,8 +183,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     //fetch_following
     Route::get("fetch_following", [PartnerController::class, "fetch_following"]);
 
-    //FETCH SETTING
-    Route::get("fetch_setting", [SettingController::class, "fetch_setting"]);
+   
 
     //fetch_my_block_partners
     Route::get("fetch_my_block_partners", [PartnerController::class, "fetch_my_block_partners"]);

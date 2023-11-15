@@ -15,27 +15,20 @@ class SettingResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $titles = [];
-        foreach ($this->translations as $translation) {
-            $titles[] = [
-                'locale' => $translation->locale,
-                'title' => $translation->title,
-            ];
-        }
-        $data = [
+
+        return [
             "id" => $this->id,
-            "youtube" => $this->youtube,
-            "instagram" => $this->instagram,
-            "facebook" => $this->facebook,
-            "linkedin" => $this->linkedin,
-            "twitter" => $this->twitter,
-            "tikTok" => $this->tikTok,
-            "messenger" => $this->messenger,
-            "whatsApp" => $this->whatsApp,
-            "phone" => $this->phone,
-            "email" => $this->email,
-            "description" => $titles ?? [],
+            "youtube" => $this->youtube?? '',
+            "instagram" => $this->instagram?? '',
+            "facebook" => $this->facebook?? '',
+            "linkedin" => $this->linkedin?? '',
+            "twitter" => $this->twitter?? '',
+            "tikTok" => $this->tikTok?? '',
+            "messenger" => $this->messenger?? '',
+            "whatsApp" => $this->whatsApp?? '',
+            "phone" => $this->phone?? '',
+            "email" => $this->email?? '',
+            "description" => $this->translate('en')->title ?? '',
         ];
-        return $data;
     }
 }
