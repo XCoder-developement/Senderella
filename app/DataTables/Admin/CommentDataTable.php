@@ -23,6 +23,7 @@ class CommentDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', 'admin_dashboard.comments.action')
+            
             ->addColumn('created_at', function ($post) {
                 return $post->created_at->format('Y-m-d H:i:s');
             })
@@ -37,7 +38,7 @@ class CommentDataTable extends DataTable
      */
     public function query(Comment $model): QueryBuilder
     {
-        return $model->newQuery()->orderBy("id", "desc")->where('post_id',$this->id);
+        return $model->newQuery()->orderBy("id", "desc")->where('post_id', $this->id);
     }
 
     /**

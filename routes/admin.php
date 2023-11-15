@@ -146,7 +146,7 @@ Route::group(
 
                 //packages
                 Route::resource('packages', PackageController::class);
-                
+
                 //requirments
                 Route::resource('requirments', RequirmentController::class);
 
@@ -160,7 +160,12 @@ Route::group(
 
                 //POSTS
                 Route::resource('posts', PostController::class);
-
+                // Route::get('posts/{id}', [PostController::class, 'index'])->name('posts.index');
+                // Route::get('posts/create/{id}', [PostController::class, 'create'])->name('posts.create');
+                // Route::post('posts/store/{id}', [PostController::class, 'store'])->name('posts.store');
+                // Route::get('posts/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
+                // Route::post('posts/update/{id}', [PostController::class, 'update'])->name('posts.update');
+                Route::post('active_post', [PostController::class, 'active_post'])->name('active_post');
                 //COMMENTS
                 Route::get('comments/{id}', [CommentController::class, 'index'])->name('comments.index');
                 Route::get('comments/create/{id}', [CommentController::class, 'create'])->name('comments.create');

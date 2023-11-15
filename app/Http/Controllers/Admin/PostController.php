@@ -18,6 +18,7 @@ class PostController extends Controller
     protected $route = 'posts.';
     public function index(PostDataTable $dataTable)
     {
+        
         return $dataTable->render($this->view . 'index');
     }
 
@@ -93,4 +94,13 @@ class PostController extends Controller
         return response()->json(['status' => true]);
     }
 
+    public function active_post(Request $request)
+    {
+        $post = Post::whereId($request->post_id)->first();
+        $data['status'] = $post->status ? 0 : 1;
+        $post->update($data);
+        return response()->json([
+            'status' => true
+        ]);
+    }
 }
