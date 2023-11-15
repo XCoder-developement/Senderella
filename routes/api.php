@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\QuestionController;
+use App\Http\Controllers\Api\SkinColorController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\PhoneController;
 use App\Http\Controllers\Api\RequirmentController;
@@ -33,12 +34,11 @@ use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\Auth\LocationController;
 use App\Http\Controllers\Api\Auth\PasswordController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\EducationTypeController;
 use App\Http\Controllers\Api\MaritalStatusController;
 use App\Http\Controllers\Api\UserInformationController;
 use App\Http\Controllers\Admin\MarriageReadinessController;
-use App\Http\Controllers\Api\EducationTypeController;
 use App\Http\Controllers\Api\MarriageReadinessController as ApiMarriageReadinessController;
-use App\Http\Controllers\Api\SkinColorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -160,10 +160,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get("fetch_new_partners", [PartnerController::class, "fetch_new_partners"]);
 
     //like_partner
-    Route::post("like_partner",[PartnerController::class,"like_partner"]);
+    Route::post("like_partner", [PartnerController::class, "like_partner"]);
 
     //block_partner
-    Route::post("block_partner",[PartnerController::class,"block_partner"]);
+    Route::post("block_partner", [PartnerController::class, "block_partner"]);
 
     //fetch_education_types
     Route::get("fetch_education_types", [EducationTypeController::class, "fetch_education_types"]);
@@ -172,12 +172,15 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get("fetch_skin_colors", [SkinColorController::class, "fetch_skin_colors"]);
 
     //bookmark_partner
-    Route::post("bookmark_partner",[PartnerController::class,"bookmark_partner"]);
+    Route::post("bookmark_partner", [PartnerController::class, "bookmark_partner"]);
 
     //user_watch
-    Route::post("user_watch",[PartnerController::class,"user_watch"]);
+    Route::post("user_watch", [PartnerController::class, "user_watch"]);
 
     //fetch_followers
     Route::get("fetch_followers", [PartnerController::class, "fetch_followers"]);
+
+    //FETCH SETTING
+    Route::get("fetch_setting", [SettingController::class, "fetch_setting"]);
 
 });

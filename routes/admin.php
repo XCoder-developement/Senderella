@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\TermController;
@@ -173,6 +174,10 @@ Route::group(
                 Route::get('comments/edit/{id}', [CommentController::class, 'edit'])->name('comments.edit');
                 Route::post('comments/update/{id}', [CommentController::class, 'update'])->name('comments.update');
                 Route::delete('comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
+                //SETTINGS
+                // Route::resource('settings', SettingController::class);
+                Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+                Route::post('settings/update', [SettingController::class, 'update'])->name('settings.update');
 
             });
         });
