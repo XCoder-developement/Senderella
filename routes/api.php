@@ -185,4 +185,10 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //fetch_blockers
     Route::get("fetch_blockers", [PartnerController::class, "fetch_blockers"]);
+
+    //who_i_watch
+    Route::get("who_i_watch",[PartnerController::class,"who_i_watch"]);
+
+    //who_watch_my_account
+    Route::get("who_watch_my_account",[PartnerController::class,"who_watch_my_account"]);
 });
