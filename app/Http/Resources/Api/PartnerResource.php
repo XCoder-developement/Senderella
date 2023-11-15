@@ -16,17 +16,17 @@ class PartnerResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id"=>$this->id,
+            "id" => $this->id,
             "images" => ImageResource::collection($this->images) ?? "",
-            "name"=>$this->name ??"",
-            "age"=>$this->age ?? "",
-            "last_active"=>$this->last_active ?? '',
-            "is_follow"=>$this->is_follow ?? 0,
-            "is_verify"=>$this->is_verify ?? 0,
-            "trusted"=>$this->trusted ?? 0,
-            "is_new" => intval($this->is_new ) ?? 0,
+            "name" => $this->name ?? "",
+            "age" => $this->user_age ?? "",
+            "last_active" => $this->last_active ?? '',
+            "is_follow" => $this->is_follow ?? 0,
+            "is_verify" => $this->is_verify ?? 0,
+            "trusted" => $this->trusted ?? 0,
+            "is_new" => intval($this->is_new) ?? 0,
             "notes" => $this->notes ?? "",
-            "is_married_before" => intval($this->is_married_before ) ?? 0,
+            "is_married_before" => intval($this->is_married_before) ?? 0,
 
             "weight" => $this->weight ?? "",
             "height" => $this->height ?? "",
@@ -45,8 +45,8 @@ class PartnerResource extends JsonResource
             "skin_color_title" => $this->color->title ?? "",
             "education_type_title" => $this->education_type->title ?? "",
 
-            "active"=>intval($this->active)??"",
-            "partner_more_info"=>UserInformationResource::collection($this->informations),
+            "active" => intval($this->active) ?? "",
+            "partner_more_info" => UserInformationResource::collection($this->informations),
         ];
     }
 }
@@ -56,7 +56,7 @@ class ImageResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" =>$this->id,
+            "id" => $this->id,
             "image" => $this->image_link ?? "",
         ];
     }
@@ -67,7 +67,7 @@ class UserInformationResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" =>$this->id,
+            "id" => $this->id,
             "title" => $this->requirment_id ?? "",
             "value" => $this->requirment_item_id ?? "",
         ];

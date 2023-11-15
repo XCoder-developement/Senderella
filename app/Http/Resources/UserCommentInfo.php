@@ -20,7 +20,7 @@ class UserCommentInfo extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'age' => Carbon::parse($this->birthday_date)->age,
+            'age' => $this->user_age ?? "",
             "image" => $this->image_link ?? "",
             'trusted' => $this->trusted,
             'country' => new UserCountryResource($this->country),

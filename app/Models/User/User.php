@@ -47,12 +47,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $appends = ['date_format'];
+    protected $appends = ['date_format', 'user_age'];
 
-    public function getDateFormatAttribute(){
-        return Carbon::parse($this->created_at)->format('Y-m-d g:i A') ;
+    public function getDateFormatAttribute()
+    {
+        return Carbon::parse($this->created_at)->format('Y-m-d g:i A');
     }
-
+    public function getUserAgeAttribute()
+    {
+        return Carbon::parse($this->birthday_date)->age;
+    }
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
@@ -136,7 +140,7 @@ class User extends Authenticatable
     //liked and following partners
     public function following(): HasMany
     {
-        return $this->hasMany(UserLike::class ,'user_id');
+        return $this->hasMany(UserLike::class, 'user_id');
     }
 
     //like me and followers partners
