@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 class SettingController extends Controller
 {
     use ApiTrait;
-    public function fetch_setting()
+    public function fetch_about()
     {
         try {
             $setting = Setting::firstOrNew();
