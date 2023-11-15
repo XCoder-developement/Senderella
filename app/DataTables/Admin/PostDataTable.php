@@ -23,9 +23,9 @@ class PostDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', 'admin_dashboard.posts.action')
-            ->addColumn('status', function ($post) {
-                return $post->status ? __('messages.post_active') : __('messages.post_inactive');
-            })
+            // ->addColumn('status', function ($post) {
+            //     return $post->status ? __('messages.post_active') : __('messages.post_inactive');
+            // })
             ->rawColumns([
                 'action',
             ]);
@@ -51,8 +51,7 @@ class PostDataTable extends DataTable
                 'dom' => 'Blfrtip',
                 'order' => [0, 'desc'],
                 'lengthMenu' => [
-                    [10, 25, 50, -1],
-                    [10, 25, 50, 'all record']
+                    [10, 25, 50, -1],[10, 25, 50, 'all record']
                 ],
                 'buttons' => ['export'],
             ]);
@@ -65,7 +64,7 @@ class PostDataTable extends DataTable
     {
         return [
             ["data" => "post", "title" => __('messages.post'), 'orderable' => false],
-            ["data" => "status", "title" => __('messages.post_status'), 'orderable' => false],
+            // ["data" => "status", "title" => __('messages.post_status'), 'orderable' => false],
             ['data' => 'action', 'title' => __("messages.actions"), 'printable' => false, 'exportable' => false, 'orderable' => false, 'searchable' => false],
 
         ];
