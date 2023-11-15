@@ -1,4 +1,3 @@
-
 <a href="{{ route('comments.index', $id) }}" title="{{ __('messages.comments') }}" class="text-dark ml-2"><i
         class="fas fa-layer-group"></i>
 </a>
