@@ -2,6 +2,7 @@
 
 namespace App\Models\Post;
 
+use Carbon\Carbon;
 use App\Models\Like\Like;
 use App\Models\User\User;
 use App\Models\Comment\Comment;
@@ -16,6 +17,13 @@ class Post extends Model
     public $translationForeignKey = 'post_id';
     public $table = 'posts';
     protected $guarded = [];
+
+    protected $appends = ['date_format'];
+
+    public function getDateFormatAttribute()
+    {
+        return Carbon::parse($this->created_at)->format('Y-m-d g:i A');
+    }
 
     public function likes()
     {
