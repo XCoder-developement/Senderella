@@ -17,7 +17,7 @@ class MiniPartnerResource extends JsonResource
         return [
             "id"=>$this->id,
             "name"=>$this->name ??"",
-            "images" => ImageResource::collection($this->images) ??"",
+            //"images" => ImageResource::collection($this->images) ??"",
             "age"=>$this->age??"",
             "last_active"=>$this->last_active ?? '',
             "is_follow"=>$this->is_follow ??0,

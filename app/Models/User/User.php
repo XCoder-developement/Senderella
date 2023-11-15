@@ -160,6 +160,17 @@ class User extends Authenticatable
         return $this->hasMany(UserBlock::class, 'partner_id');
     }
 
+    //who the user watches
+    public function Watched():HasMany{
+        return $this->hasMany(UserWatch::class,'user_id');
+    }
+
+
+    //blocker who blocks the user
+    public function watcher():HasMany{
+        return $this->hasMany(UserWatch::class, 'partner_id');
+    }
+
     //like me and followers partners
     // public function followers(): HasMany
     // {
