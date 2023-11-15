@@ -160,10 +160,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get("fetch_new_partners", [PartnerController::class, "fetch_new_partners"]);
 
     //like_partner
-    Route::post("like_partner",[PartnerController::class,"like_partner"]);
+    Route::post("like_partner", [PartnerController::class, "like_partner"]);
 
     //block_partner
-    Route::post("block_partner",[PartnerController::class,"block_partner"]);
+    Route::post("block_partner", [PartnerController::class, "block_partner"]);
 
     //fetch_education_types
     Route::get("fetch_education_types", [EducationTypeController::class, "fetch_education_types"]);
@@ -172,13 +172,16 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get("fetch_skin_colors", [SkinColorController::class, "fetch_skin_colors"]);
 
     //bookmark_partner
-    Route::post("bookmark_partner",[PartnerController::class,"bookmark_partner"]);
+    Route::post("bookmark_partner", [PartnerController::class, "bookmark_partner"]);
 
     //user_watch
-    Route::post("user_watch",[PartnerController::class,"user_watch"]);
+    Route::post("user_watch", [PartnerController::class, "user_watch"]);
 
     //fetch_followers
     Route::get("fetch_followers", [PartnerController::class, "fetch_followers"]);
+    
+    //fetch_following
+    Route::get("fetch_following", [PartnerController::class, "fetch_following"]);
 
     //fetch_my_block_partners
     Route::get("fetch_my_block_partners", [PartnerController::class, "fetch_my_block_partners"]);
@@ -187,8 +190,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get("fetch_blockers", [PartnerController::class, "fetch_blockers"]);
 
     //who_i_watch
-    Route::get("who_i_watch",[PartnerController::class,"who_i_watch"]);
+    Route::get("who_i_watch", [PartnerController::class, "who_i_watch"]);
 
     //who_watch_my_account
-    Route::get("who_watch_my_account",[PartnerController::class,"who_watch_my_account"]);
+    Route::get("who_watch_my_account", [PartnerController::class, "who_watch_my_account"]);
 });
