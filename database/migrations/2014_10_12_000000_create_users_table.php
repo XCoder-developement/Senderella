@@ -65,6 +65,7 @@ return new class extends Migration
             $table->integer('requirment_id')->unsigned()->nullable();
             $table->integer('requirment_item_id')->unsigned()->nullable();
             $table->longText('answer')->nullable();
+            $table->integer('type')->unsigned()->nullable()->comment('1 => requirment , 2 => question');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->foreign('user_id')->references('id')->on('users')

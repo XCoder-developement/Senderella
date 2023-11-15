@@ -179,7 +179,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //fetch_followers
     Route::get("fetch_followers", [PartnerController::class, "fetch_followers"]);
-    
+
     //fetch_following
     Route::get("fetch_following", [PartnerController::class, "fetch_following"]);
 
@@ -196,4 +196,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //who_watch_my_account
     Route::get("who_watch_my_account", [PartnerController::class, "who_watch_my_account"]);
+
+    //who_i_favorite
+    Route::get("who_i_favorite", [PartnerController::class, "who_i_favorite"]);
+
+    //who_favorite_me
+    Route::get("who_favorite_me", [PartnerController::class, "who_favorite_me"]);
+
 });

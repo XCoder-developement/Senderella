@@ -92,6 +92,7 @@ class UserController extends Controller
                     $user_info_data['requirment_id'] = $requirment_id;
                     $user_info_data['requirment_item_id'] = $requirment_item_id;
                     $user_info_data['user_id'] = $user->id;
+                    $user_info_data['type'] = 1;
 
                     UserInformation::create($user_info_data);
                 }
@@ -106,6 +107,7 @@ class UserController extends Controller
                     $user_info_data['requirment_item_id'] = $requirment_item_id;
                     $user_info_data['answer'] = $answer;
                     $user_info_data['user_id'] = $user->id;
+                    $user_info_data['type'] = 2;
 
                     UserInformation::create($user_info_data);
                 }
