@@ -180,4 +180,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     //fetch_followers
     Route::get("fetch_followers", [PartnerController::class, "fetch_followers"]);
 
+    //fetch_my_block_partners
+    Route::get("fetch_my_block_partners", [PartnerController::class, "fetch_my_block_partners"]);
+
+    //fetch_blockers
+    Route::get("fetch_blockers", [PartnerController::class, "fetch_blockers"]);
 });
