@@ -143,6 +143,34 @@ class User extends Authenticatable
         return $this->hasMany(UserLike::class, 'user_id');
     }
 
+    //liked by and follower partners
+    public function followers():HasMany{
+        return $this->hasMany(UserLike::class,'partner_id');
+    }
+
+
+    //blocked partner who user blocks
+    public function blocked():HasMany{
+        return $this->hasMany(UserBlock::class,'user_id');
+    }
+
+
+    //blocker who blocks the user
+    public function blocker():HasMany{
+        return $this->hasMany(UserBlock::class, 'partner_id');
+    }
+
+    //who the user watches
+    public function Watched():HasMany{
+        return $this->hasMany(UserWatch::class,'user_id');
+    }
+
+
+    //blocker who blocks the user
+    public function watcher():HasMany{
+        return $this->hasMany(UserWatch::class, 'partner_id');
+    }
+
     //like me and followers partners
     // public function followers(): HasMany
     // {

@@ -28,4 +28,6 @@ class UserBlock extends Model
     {
         return $this->belongsToMany(BlockReason::class ,'user_block_reasons','user_block_id' ,'block_reason_id');
     }
+
+    
 }

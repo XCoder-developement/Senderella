@@ -7,6 +7,7 @@ use App\Traits\ApiTrait;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\MiniPartnerResource;
 use App\Http\Resources\Api\UserResource;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Api\PartnerResource;
@@ -241,6 +242,88 @@ class PartnerController extends Controller
             return $this->returnException($ex->getMessage(), 500);
         }
     }
+
+
+    public function fetch_followers(){
+        try{
+            $user= auth()->user();
+            $followers_ids = $user->followers->pluck('user_id')->toArray();
+            $followers = User::whereIn('id',$followers_ids)->get();
+            $msg = "fetch_followers";
+            return $this->dataResponse($msg , PartnerResource::collection($followers),200 );
+        }catch(\Exception $ex){
+            return $this->returnException($ex->getMessage(),500);
+        }
+    }
+
+    public function fetch_my_block_partners(){
+        try{
+            $user =auth()->user();
+            $blocked_ids = $user->blocked->pluck("partner_id")->toArray();
+            $blocked = User::whereIn('id',$blocked_ids)->get();
+            $msg = "fetch_my_block_partners";
+            return $this->dataResponse($msg , PartnerResource::collection($blocked),200);
+        } catch (\Exception $ex){
+            return $this->returnException($ex->getMessage(),500);
+        }
+    }
+
+
+    public function fetch_blockers(){
+        try{
+            $user = auth()->user();
+            $blocker_ids = $user->blocker->pluck("user_id")->toArray();
+            $blocker = User::WhereIn('id', $blocker_ids)->get();
+            $msg ="fetch_blockers";
+            return $this->dataResponse($msg , PartnerResource::collection($blocker),200);
+        } catch(\Exception $ex){
+            return $this->returnException($ex->getMessage(),500);
+        }
+    }
+
+    public function who_i_watch(){
+        try{
+            $user = auth()->user();
+            $watched_ids = $user->blocked->pluck("partner_id")->toArray();
+            $watched = UserWatch::whereIn('id',$watched_ids)->get();
+            $msg = "who_i_watch";
+            return $this->dataResponse($msg , MiniPartnerResource::collection($watched),200);
+        } catch(\Exception $ex){
+            return $this->returnException($ex->getMessage(),500);
+        }
+    }
+
+
+
+public function who_watch_my_account(){
+        try{
+            $user = auth()->user();
+            $watcher_ids = $user->blocked->pluck("user_id")->toArray();
+            $watcher = UserWatch::whereIn('id',$watcher_ids)->get();
+            $msg = "who_watch_my_account";
+            return $this->dataResponse($msg , MiniPartnerResource::collection($watcher),200);
+        } catch(\Exception $ex){
+            return $this->returnException($ex->getMessage(),500);
+        }
+    }
+
+    // public function fetch_most_liked_partners(){
+    //     try{
+
+    //         $most_liked = UserLike::pluck("partner_id")->toArray()->count();
+
+
+    //         if ($most_liked>){
+
+    //         }
+    //         // $most_likee = $most_liked::orderBy('count', 'desc')->paginate(10);
+
+    //         $msg ="fetch_most_liked_partners";
+    //         return $this->dataResponse($msg , PartnerResource::collection($blocker),200);
+    //     } catch(\Exception $ex){
+    //         return $this->returnException($ex->getMessage(),500);
+    //     }
+    // }
 
     // public function fetch_followers()
     // {
