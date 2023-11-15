@@ -242,6 +242,44 @@ class PartnerController extends Controller
         }
     }
 
+
+    public function fetch_followers(){
+        try{
+            $user= auth()->user();
+            $followers_ids = $user->followers->pluck('user_id')->toArray();
+            $followers = User::whereIn('id',$followers_ids)->get();
+            $msg = "fetch_followers";
+            return $this->dataResponse($msg , PartnerResource::collection($followers),200 );
+        }catch(\Exception $ex){
+            return $this->returnException($ex->getMessage(),500);
+        }
+    }
+
+    public function fetch_my_block_partners(){
+        try{
+            $user =auth()->user();
+            $blocked_ids = $user->blocked->pluck("partner_id")->toArray();
+            $blocked = User::whereIn('id',$blocked_ids)->get();
+            $msg = "fetch_my_block_partners";
+            return $this->dataResponse($msg , PartnerResource::collection($blocked),200);
+        } catch (\Exception $ex){
+            return $this->returnException($ex->getMessage(),500);
+        }
+    }
+
+
+    public function fetch_blockers(){
+        try{
+            $user = auth()->user();
+            $blocker_ids = $user->blocker->pluck("user_id")->toArray();
+            $blocker = User::WhereIn('id', $blocker_ids)->get();
+            $msg ="fetch_blockers";
+            return $this->dataResponse($msg , PartnerResource::collection($blocker),200);
+        } catch(\Exception $ex){
+            return $this->returnException($ex->getMessage(),500);
+        }
+    }
+
     // public function fetch_followers()
     // {
     //     try {
