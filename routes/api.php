@@ -36,6 +36,7 @@ use App\Http\Controllers\Api\Auth\PasswordController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\EducationTypeController;
 use App\Http\Controllers\Api\MaritalStatusController;
+use App\Http\Controllers\Api\SearchPartnerController;
 use App\Http\Controllers\Api\UserInformationController;
 use App\Http\Controllers\Admin\MarriageReadinessController;
 use App\Http\Controllers\Api\MarriageReadinessController as ApiMarriageReadinessController;
@@ -183,7 +184,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     //fetch_following
     Route::get("fetch_following", [PartnerController::class, "fetch_following"]);
 
-   
+
 
     //fetch_my_block_partners
     Route::get("fetch_my_block_partners", [PartnerController::class, "fetch_my_block_partners"]);
@@ -203,4 +204,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     //who_favorite_me
     Route::get("who_favorite_me", [PartnerController::class, "who_favorite_me"]);
 
+    //SEARCH PARTNER    
+    Route::post("search_partner", [SearchPartnerController::class, "search_partner"]);
 });
