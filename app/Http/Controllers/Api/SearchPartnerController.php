@@ -39,15 +39,17 @@ class SearchPartnerController extends Controller
                     $q->when($request->has('age_from') && $request->has('age_to'), function ($q) use ($request) {
                         $q->ageRange($request->age_from, $request->age_to);
                     });
+
                     $q->when($request->has('user_info_data'), function ($q) use ($request) {
-                        $q->orWhereHas('informations', function ($subQuery) use ($request) {
-                            foreach ($request->user_info_data as $key => $value) {
-                                $subQuery->where($key, $value);
-                            }
-                        });
+                        foreach ($request->user_info_data as $data) {
+                        $q->orWhereHas('informations', function ($subQuery) use ($data) {
+                                $subQuery->where('requirment_id', $data['requirment_id'])
+                                    ->where('requirment_item_id', $data['requirment_item_id']);
+                            });
+                        }
                     });
                 })->paginate(10);
-            $res = UserResource::collection($partner)->response()->getData(true);
+            $res = PartnerResource::collection($partner)->response()->getData(true);
             $msg = "search_partner";
             return $this->dataResponse($msg, $res, 200);
         } catch (\Exception $e) {
