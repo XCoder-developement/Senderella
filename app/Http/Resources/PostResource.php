@@ -21,10 +21,11 @@ class PostResource extends JsonResource
         $liked = 0;
         $user = auth()->user();
         if ($user) {
-            $like = Like::where('user_id', auth()->id())->where('likeable_id', $this->id)->where('likeable_type', 'App\Models\Post\Post')->first();
-            if ($like) {
-                $liked = 1;
-            }
+            $like = Like::where('user_id', auth()->id())
+                ->where('likeable_id', $this->id)
+                ->where('likeable_type', 'App\Models\Post\Post')
+                ->first();
+            $liked = $like ? 1 : 0;
         }
         return [
             'id' => $this->id,
