@@ -17,12 +17,12 @@ class PostController extends Controller
     public function fetch_post()
     {
         try {
-            $post = Post::whereStatus(1)->first();
+            $post = Post::whereStatus(1)->get();
             if (!$post) {
                 return $this->errorResponse('no posts found', 404);
             }
             $msg = "fetch_posts";
-            $data = new PostResource($post);
+            $data =  PostResource::collection($post);
             return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
