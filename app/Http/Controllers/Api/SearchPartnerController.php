@@ -15,7 +15,7 @@ class SearchPartnerController extends Controller
     public function search_partner(Request $request)
     {
         try {
-            $partner = User::where('id', '!=', auth()->user()->id)
+            $partner = User::where('id', '!=', auth()->id())
                 ->where(function ($q) use ($request) {
                     $q->when($request->has('word'), function ($q) use ($request) {
                         $q->orWhere('name', 'like', '%' . $request->word . '%');
@@ -38,6 +38,13 @@ class SearchPartnerController extends Controller
                     });
                     $q->when($request->has('age_from') && $request->has('age_to'), function ($q) use ($request) {
                         $q->ageRange($request->age_from, $request->age_to);
+                    });
+                    $q->when($request->has('user_info_data'), function ($q) use ($request) {
+                        $q->orWhereHas('informations', function ($subQuery) use ($request) {
+                            foreach ($request->user_info_data as $key => $value) {
+                                $subQuery->where($key, $value);
+                            }
+                        });
                     });
                 })->paginate(10);
             $res = UserResource::collection($partner)->response()->getData(true);
