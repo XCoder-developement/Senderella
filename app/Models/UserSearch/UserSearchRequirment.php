@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class UserSearchRequirment extends Model
 {
     use HasFactory;
+    protected $table = 'user_search_requirments';
+    protected $guarded = [];
 }
