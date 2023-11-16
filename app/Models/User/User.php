@@ -57,6 +57,20 @@ class User extends Authenticatable
     {
         return Carbon::parse($this->birthday_date)->age;
     }
+    public function scopeAgeRange($query, $ageFrom, $ageTo)
+    {
+        //Calculate request age by subtracting[2023-25=1998] it from the current year 
+        //birtday_date = 1998-02-01
+        //age_from = 20
+        //age_to = 25
+        $dateFrom = now()->subYears($ageTo)->addDay();
+        //calc 2023 - 20 = 2003
+        //calc 2023 - 25 = 2008
+        //not equal!! if birthday_date = 2003-02-01
+        $dateTo = now()->subYears($ageFrom);
+        //return birtd_date between 2003-02-01 and 2008-02-01
+        return $query->orwhereBetween('birthday_date', [$dateFrom, $dateTo]);
+    }
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
@@ -144,41 +158,48 @@ class User extends Authenticatable
     }
 
     //liked by and follower partners
-    public function followers():HasMany{
-        return $this->hasMany(UserLike::class,'partner_id');
+    public function followers(): HasMany
+    {
+        return $this->hasMany(UserLike::class, 'partner_id');
     }
 
 
     //blocked partner who user blocks
-    public function blocked():HasMany{
-        return $this->hasMany(UserBlock::class,'user_id');
+    public function blocked(): HasMany
+    {
+        return $this->hasMany(UserBlock::class, 'user_id');
     }
 
 
     //blocker who blocks the user
-    public function blocker():HasMany{
+    public function blocker(): HasMany
+    {
         return $this->hasMany(UserBlock::class, 'partner_id');
     }
 
     //who the user watches
-    public function Watched():HasMany{
-        return $this->hasMany(UserWatch::class,'user_id');
+    public function Watched(): HasMany
+    {
+        return $this->hasMany(UserWatch::class, 'user_id');
     }
 
 
     //blocker who blocks the user
-    public function watcher():HasMany{
+    public function watcher(): HasMany
+    {
         return $this->hasMany(UserWatch::class, 'partner_id');
     }
 
     //who the user favorites
-    public function favorited():HasMany{
-        return $this->hasMany(UserBookmark::class,'user_id');
+    public function favorited(): HasMany
+    {
+        return $this->hasMany(UserBookmark::class, 'user_id');
     }
 
 
     //who favorites the user
-    public function favorited_by():HasMany{
+    public function favorited_by(): HasMany
+    {
         return $this->hasMany(UserBookmark::class, 'partner_id');
     }
 
