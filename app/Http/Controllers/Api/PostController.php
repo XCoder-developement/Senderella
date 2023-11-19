@@ -22,7 +22,7 @@ class PostController extends Controller
                 return $this->errorResponse('no posts found', 404);
             }
             $msg = "fetch_posts";
-            $data =  new PostResource($post);
+            $data = new PostResource($post);
             return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
@@ -45,7 +45,9 @@ class PostController extends Controller
                 ->first();
             if ($existingLike) {
                 $existingLike->delete();
-                return response()->json(['message' => 'Post like removed successfully'], 200);
+                $msg = 'The like has been removed';
+                $data = new LikePostResource($post);
+                return $this->dataResponse($msg, $data, 200);
             } else {
                 $post->likes()->create([
                     'user_id' => $user->id,
