@@ -6,7 +6,7 @@ use App\Models\UserSearch\UserSearchRequirment;
 
 class StoreSearchService
 {
-    public static function storeUserSearch($request)
+    public function storeUserSearch($request)
     {
         $store_time = 3;
         $searchData = array_filter([
@@ -24,17 +24,18 @@ class StoreSearchService
         $count = UserSearch::where("user_id", auth()->id())->count();
         if (!empty($searchData) && $count < $store_time) {
             $userSearch = UserSearch::create($searchData);
-            self::storeUserRequirment($request, $userSearch->id);
+            $this->storeUserRequirment($request, $userSearch->id);
         } else {
             $userSearch = UserSearch::where("user_id", auth()->id())->delete();
             $stored = UserSearch::create($searchData);
-            self::storeUserRequirment($request, $stored->id);
+            $this->storeUserRequirment($request, $stored->id);
         }
+        return response();
 
     }
-    public static function storeUserRequirment($request, $userSearchId)
+    public function storeUserRequirment($request, $userSearchId)
     {
-        if ($request->has("user_info_data") && count($request->user_info_data) > 0) {
+        if (isset($request->user_info_data) && count($request->user_info_data) > 0) {
             foreach ($request->user_info_data as $data) {
                 $store_data = [
                     'user_search_id' => $userSearchId,
