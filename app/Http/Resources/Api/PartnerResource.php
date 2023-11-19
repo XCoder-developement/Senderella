@@ -68,8 +68,11 @@ class UserInformationResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "title" => $this->requirment_id ?? "",
-            "value" => $this->requirment_item_id ?? "",
+            "title" => $this->requirment->title ?? "",
+            "value" => $this->requirment_item->title ?? "",
+
+            "title_id" => $this->requirment_id ?? "",
+            "value_id" => $this->requirment_item_id ?? "",
         ];
     }
 }

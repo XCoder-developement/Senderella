@@ -49,7 +49,9 @@ class CommentController extends Controller
                 ->first();
             if ($existingLike) {
                 $existingLike->delete();
-                return response()->json(['message' => 'Comment like removed successfully'], 200);
+                $msg = 'The like has been removed';
+                $data = new CommentResource($comment);
+                return $this->dataResponse($msg, $data, 200);
             } else {
                 $comment->likes()->create([
                     'user_id' => $user->id,
