@@ -15,6 +15,7 @@ use App\Models\User\UserBlock;
 use App\Models\User\UserBookmark;
 use App\Models\User\UserLike;
 use App\Models\User\UserWatch;
+use Illuminate\Support\Facades\DB;
 
 class PartnerController extends Controller
 {
@@ -340,49 +341,52 @@ class PartnerController extends Controller
         }
     }
 
-    public function most_compatible_partners(){
-        try{
+    public function most_compatible_partners()
+    {
+        try {
             $user = auth()->user();
-            $compatible_partner = User::
-            where('height',$user->height)->where('weight',$user->weight)->
-            where('country_id',$user->country_id)->where('state_id',$user->state_id)->
-            where('marital_status_id',$user->marital_status_id)->
-            where('marriage_readiness_id',$user->marriage_readiness_id)->
-            where('color_id',$user->color_id)->where('education_type_id',$user->education_type_id)->
-            where('is_married_before',$user->is_married_before)->whereNot('id',$user->id)->get();
+            $compatible_partner = User::where('height', $user->height)->where('weight', $user->weight)->where('country_id', $user->country_id)->where('state_id', $user->state_id)->where('marital_status_id', $user->marital_status_id)->where('marriage_readiness_id', $user->marriage_readiness_id)->where('color_id', $user->color_id)->where('education_type_id', $user->education_type_id)->where('is_married_before', $user->is_married_before)->whereNot('id', $user->id)->get();
 
-            $msg="most_compatible_partners";
+            $msg = "most_compatible_partners";
 
-            return $this->dataResponse($msg, PartnerResource::collection($compatible_partner),200);
-        }   catch (\Exception $ex){
-            return $this->returnException($ex->getMessage(),500);
+            return $this->dataResponse($msg, PartnerResource::collection($compatible_partner), 200);
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
         }
     }
 
 
     public function fetch_most_liked_partners()
-{
-    try {
-        $user = auth()->user();
+    {
+        try {
 
-        // Assuming you have a 'followers' relationship in your User model
-        $mostLikedPartnerIds = $user->followers->pluck('partner_id')->toArray();
+            // Assuming you have a 'followers' relationship in your User model
+            // $mostLikedPartnerIds = $user->followers->pluck('partner_id')->toArray();
+            // $mostLikedPartnerIds = UserLike->groupBy('partner_id');
+            // dd($mostLikedPartnerIds);
+            // $mostLikedPartners = UserLike::select('partner_id', \DB::raw('count(partner_id) as like_count'))
+            //     ->groupBy('partner_id') // Group by partner_id
+            //     ->orderByDesc('like_count')
+            //     ->get();
 
-        $mostLikedPartners = UserLike::whereIn('partner_id', $mostLikedPartnerIds)
-            ->select('partner_id', \DB::raw('count(*) as like_count'))
-            ->where('partner_id', '<>', $user->id)
-            ->groupBy('partner_id') // Group by partner_id
-            ->orderByDesc('like_count')
-            ->get();
+            $partnerCounts = UserLike::groupBy('partner_id')
+                ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
+                ->pluck('count', 'partner_id');
+            // Find the partner_id with the highest count
+            // $mostLikedPartnerId = ($partnerCounts->max())->keys()->first();
 
-        $msg = "fetch_most_liked_partners";
-        $data = PartnerResource::collection($mostLikedPartners);
+            $mostLikedPartnerId = $partnerCounts->sortDesc()->keys()->first();
 
-        return $this->dataResponse($msg, $data, 200);
-    } catch (\Exception $ex) {
-        return $this->returnException($ex->getMessage(), 500);
+
+            // Get the count for the most liked partner_id
+            $mostLikedCount = User::whereId($mostLikedPartnerId)->first();
+
+            $msg = "fetch_most_liked_partners";
+            $data = new PartnerResource($mostLikedCount);
+
+            return $this->dataResponse($msg, $data, 200);
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
     }
-}
-
-
 }
