@@ -5,34 +5,34 @@ use App\Models\User\User;
 
 class SearchService
 {
-    public static function search($search)
+    public function search($search, $with_store = true)
     {
-        return User::where('id', '!=', auth()->id())
+        $search = (object) $search;
+        $query = User::where('id', '!=', auth()->id())
             ->where(function ($q) use ($search) {
-                $q->when($search->has('word'), function ($q) use ($search) {
+                $q->when(isset($search->word), function ($q) use ($search) {
                     $q->orWhere('name', 'like', '%' . $search->word . '%');
                 });
-                $q->when($search->has('state_id') && $search->state_id, function ($q) use ($search) {
+                $q->when(isset($search->state_id), function ($q) use ($search) {
                     $q->orwhere('state_id', $search->state_id);
                 });
-                $q->when($search->has('country_id'), function ($q) use ($search) {
+                $q->when(isset($search->country_id), function ($q) use ($search) {
                     $q->orwhere('country_id', $search->country_id);
                     $q->orwhere('country_id', $search->nationality_id);
                 });
-                $q->when($search->has('weight'), function ($q) use ($search) {
+                $q->when(isset($search->weight), function ($q) use ($search) {
                     $q->orwhere('weight', $search->weight);
                 });
-                $q->when($search->has('height'), function ($q) use ($search) {
+                $q->when(isset($search->height), function ($q) use ($search) {
                     $q->orwhere('height', $search->height);
                 });
-                $q->when($search->has('marital_status_id'), function ($q) use ($search) {
+                $q->when(isset($search->marital_status_id), function ($q) use ($search) {
                     $q->orwhere('marital_status_id', $search->marital_status_id);
                 });
-                $q->when($search->has('age_from') && $search->has('age_to'), function ($q) use ($search) {
+                $q->when(isset($search->age_from) && isset($search->age_to), function ($q) use ($search) {
                     $q->ageRange($search->age_from, $search->age_to);
                 });
-
-                $q->when($search->has('user_info_data'), function ($q) use ($search) {
+                $q->when(isset($search->user_info_data), function ($q) use ($search) {
                     foreach ($search->user_info_data as $data) {
                         $q->orWhereHas('informations', function ($subQuery) use ($data) {
                             $subQuery->where('requirment_id', $data['requirment_id'])
@@ -40,6 +40,12 @@ class SearchService
                         });
                     }
                 });
-            })->paginate(10);
+            });
+        $user = $query->paginate(10);
+        if ($with_store) {
+            (new StoreSearchService())->storeUserSearch($search);
+        }
+        return $user;
     }
+
 }
