@@ -360,24 +360,29 @@ class PartnerController extends Controller
     }
 
 
-    public function most_liked_partners(){
-        try{
-            $user = auth()->user();
-            $most_liked_partner_ids = $user->followers->pluck('partner_id')->toArray();
-            $most_liked_partners = UserLike::whereIn('partner_id', $most_liked_partner_ids )
+    public function fetch_most_liked_partners()
+{
+    try {
+        $user = auth()->user();
+
+        // Assuming you have a 'followers' relationship in your User model
+        $mostLikedPartnerIds = $user->followers->pluck('partner_id')->toArray();
+
+        $mostLikedPartners = UserLike::whereIn('partner_id', $mostLikedPartnerIds)
             ->select('partner_id', \DB::raw('count(*) as like_count'))
             ->where('partner_id', '<>', $user->id)
             ->groupBy('partner_id') // Group by partner_id
             ->orderByDesc('like_count')
             ->get();
 
+        $msg = "fetch_most_liked_partners";
+        $data = PartnerResource::collection($mostLikedPartners);
 
-            $msg="most_liked_partners";
-            $data= PartnerResource::collection($most_liked_partners);
-            return $this->dataResponse($msg ,$data ,200);
-        }  catch (\Exception $ex){
-            return $this->returnException($ex->getMessage(),500);
-        }
+        return $this->dataResponse($msg, $data, 200);
+    } catch (\Exception $ex) {
+        return $this->returnException($ex->getMessage(), 500);
     }
+}
+
 
 }
