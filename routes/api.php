@@ -204,6 +204,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     //who_favorite_me
     Route::get("who_favorite_me", [PartnerController::class, "who_favorite_me"]);
 
+    //most_compatible_partners
+    Route::get("most_compatible_partners", [PartnerController::class, "most_compatible_partners"]);
+
+    //most_liked_partners
+    Route::get("most_liked_partners", [PartnerController::class, "most_liked_partners"]);
+
     //SEARCH PARTNER    
     Route::post("search_partner", [SearchPartnerController::class, "search_partner"]);
 });
