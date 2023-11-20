@@ -359,29 +359,20 @@ class PartnerController extends Controller
     {
         try {
 
-            // Assuming you have a 'followers' relationship in your User model
-            // $mostLikedPartnerIds = $user->followers->pluck('partner_id')->toArray();
-            // $mostLikedPartnerIds = UserLike->groupBy('partner_id');
-            // dd($mostLikedPartnerIds);
-            // $mostLikedPartners = UserLike::select('partner_id', \DB::raw('count(partner_id) as like_count'))
-            //     ->groupBy('partner_id') // Group by partner_id
-            //     ->orderByDesc('like_count')
-            //     ->get();
 
             $partnerCounts = UserLike::groupBy('partner_id')
                 ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
                 ->pluck('count', 'partner_id');
-            // Find the partner_id with the highest count
-            // $mostLikedPartnerId = ($partnerCounts->max())->keys()->first();
 
-            $mostLikedPartnerId = $partnerCounts->sortDesc()->keys()->first();
+
+            $mostLikedPartnerId = $partnerCounts->sortDesc()->keys()->toArray();
 
 
             // Get the count for the most liked partner_id
-            $mostLikedCount = User::whereId($mostLikedPartnerId)->first();
+            $mostLikedCount = User::whereIn('id',$mostLikedPartnerId)->get();
 
             $msg = "fetch_most_liked_partners";
-            $data = new PartnerResource($mostLikedCount);
+            $data = PartnerResource::collection($mostLikedCount);
 
             return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
