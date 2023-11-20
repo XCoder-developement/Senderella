@@ -361,20 +361,19 @@ class PartnerController extends Controller
         try {
 
 
-
             $partnerCounts = UserLike::groupBy('partner_id')
                 ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
                 ->pluck('count', 'partner_id');
-        
 
-            $mostLikedPartnerId = $partnerCounts->sortDesc()->keys()->first();
+
+            $mostLikedPartnerId = $partnerCounts->sortDesc()->keys()->toArray();
 
 
             // Get the count for the most liked partner_id
-            $mostLikedCount = User::whereId($mostLikedPartnerId)->first();
+            $mostLikedCount = User::whereIn('id',$mostLikedPartnerId)->get();
 
             $msg = "fetch_most_liked_partners";
-            $data = new PartnerResource($mostLikedCount);
+            $data = PartnerResource::collection($mostLikedCount);
 
             return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
