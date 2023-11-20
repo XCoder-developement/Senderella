@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Notification\StoreRequest;
 use App\Http\Requests\Admin\Notification\UpdateRequest;
 use App\Models\Notification\Notification;
+use App\Models\User\User;
 use App\Services\SendNotification;
 use Illuminate\Http\Request;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -17,71 +18,43 @@ class NotificationController extends Controller
     protected $view = 'admin_dashboard.notifications.';
     protected $route = 'notifications.';
 
-    public function index(NotificationDataTable $dataTable)
-    {
-        return $dataTable->render($this->view . 'index');
 
+
+    public function index()
+    {
+        return view($this->view . 'index');
     }
 
 
-    public function create()
-    {
-        return view($this->view . 'create');
-        SendNotification::create(request()->all());
-
-    }
-
-
-    public function store(StoreRequest $request)
+    public function send(StoreRequest $request)
     {
 
-        foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
-            $data[$localeCode] = ['title' => $request['title-' . $localeCode], 'body' => $request['body-' . $localeCode]
-          ];
-        }
+        $title = $request->title;
+        $text = $request->text;
 
 
-        Notification::create($data);
+        $notify_data["title"] = $title;
+        $notify_data["text"] = $text;
 
+        $notification  = Notification::create($notify_data);
+
+        $users = User::whereHas('user_device' ,function($q){
+           $q->whereNotNull('device_token');
+        })->get();
+
+        foreach($users as $user){
+            $user->notifications()->attach($notification);
+
+            foreach($user->user_devices as $user_device){
+
+            SendNotification::send($user_device->device_token ?? "",$title,$text);
+
+            }
+            }
 
 
         return redirect()->route($this->route."index")
         ->with(['success'=> __("messages.createmessage")]);
     }
-
-
-    // public function edit($id)
-    // {
-    //     $notification = Notification::whereId($id)->first();
-
-    //     return view($this->view . 'edit' , compact('notification'));
-
-    // }
-
-
-    public function update(UpdateRequest $request, $id)
-    {
-        $notification = Notification::whereId($id)->firstOrFail();
-        foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
-            $data[$localeCode] = ['title' => $request['title-' . $localeCode],  'body' => $request['body-' . $localeCode],
-          ];
-        }
-
-
-        $notification->update($data);
-
-
-        return redirect()->route($this->route."index")
-        ->with(['success'=> __("messages.editmessage")]);
-    }
-
-
-    public function destroy($id)
-    {
-        $notification = Notification::whereId($id)->firstOrFail();
-        $notification->delete();
-        return response()->json(['status' => true]);
-    }
-
 
 }

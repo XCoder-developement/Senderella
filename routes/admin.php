@@ -34,6 +34,7 @@ use App\Http\Controllers\Admin\RequirmentItemController;
 use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\MarriageReadinessController;
 use App\Http\Controllers\Admin\MultiplicityStatusController;
+use App\Http\Controllers\Admin\NotificationController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
@@ -142,7 +143,7 @@ Route::group(
                 //marriage_readiness
                 Route::resource('marriage_readinesses', MarriageReadinessController::class);
 
-                
+
 
                 //marriage_readiness
                 Route::resource('block_reasons', BlockReasonController::class);
@@ -181,6 +182,11 @@ Route::group(
                 Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
                 Route::post('settings/update', [SettingController::class, 'update'])->name('settings.update');
 
+
+
+                //notification
+                Route::get('notifications',  [NotificationController::class , 'index'])->name('notifications');
+                Route::post('notifications/send',[ NotificationController::class, 'send'])->name('notifications.send');
             });
         });
     }
