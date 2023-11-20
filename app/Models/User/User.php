@@ -59,7 +59,7 @@ class User extends Authenticatable
     }
     public function scopeAgeRange($query, $ageFrom, $ageTo)
     {
-        //Calculate request age by subtracting[2023-25=1998] it from the current year 
+        //Calculate request age by subtracting[2023-25=1998] it from the current year
         //birtday_date = 1998-02-01
         //age_from = 20
         //age_to = 25
@@ -203,6 +203,8 @@ class User extends Authenticatable
         return $this->hasMany(UserBookmark::class, 'partner_id');
     }
 
+
+    
     //like me and followers partners
     // public function followers(): HasMany
     // {

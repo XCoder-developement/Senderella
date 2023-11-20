@@ -183,6 +183,17 @@ return new class extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->nullable();
             $table->integer('notification_id')->unsigned()->nullable();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+
+
+            $table->foreign('user_id')->references('id')->on('users')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+            $table->foreign('notification_id')->references('id')->on('users')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+
                 });
     }
 
