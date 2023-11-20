@@ -12,13 +12,19 @@ class UserQuestionResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+
     public function toArray(Request $request): array
     {
+        $user = auth()->user();
+
+        $user_answer = $user->informations?->where('requirment_id',$this->id)->first();
+       
        return [
         'id'=>$this->id,
-        'title'=>$this->title,
-        'type'=>$this-> answer_type,
-        'items'=>TitleResource::collection($this->user_questions),
+        'question'=>$this->title ?? '',
+        'answer'=>$user_answer->answer ?? '',
+        // 'type'=>$this->answer_type,
+        // 'items'=>TitleResource::collection($this->user_questions),
        ];
     }
 }

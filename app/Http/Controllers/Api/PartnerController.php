@@ -93,20 +93,19 @@ class PartnerController extends Controller
 
             $like_partner = UserLike::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
 
-            if ($like_partner) {
-                $msg = __('messages.you already liked this partner');
-                return $this->errorResponse($msg, 200);
-            } else {
-
+            if (!$like_partner) {
                 $data['user_id'] =  $user_id;
                 $data['partner_id'] =  $partner_id;
                 UserLike::create($data);
-
                 $partner = User::whereId($partner_id)->first();
                 //responce
                 $msg = "like_partner";
                 $data = new PartnerResource($partner);
                 return $this->dataResponse($msg, $data, 200);
+            } elseif ($like_partner) {
+                $like_partner->delete();
+                $msg = __('messages.partner disliked');
+                return $this->errorResponse($msg, 200);
             }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
@@ -140,11 +139,7 @@ class PartnerController extends Controller
 
             $like_partner = UserBlock::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
 
-            if ($like_partner) {
-                $msg = __('messages.you already blocked this partner');
-                return $this->errorResponse($msg, 200);
-            } else {
-
+            if (!$like_partner) {
                 $data['user_id'] =  $user_id;
                 $data['partner_id'] =  $partner_id;
                 $data['text'] =  $reason ?? null;
@@ -152,9 +147,13 @@ class PartnerController extends Controller
 
                 $user_block->reasons()->attach($reason_ids);
 
-                $msg = __("messages.save successful");
+                $msg = __("messages.partner blocked");
 
                 return $this->successResponse($msg, 200);
+            } elseif($like_partner) {
+                $like_partner->delete();
+                $msg = __('messages.partner unblocked');
+                return $this->errorResponse($msg, 200);
             }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
@@ -360,12 +359,20 @@ class PartnerController extends Controller
     {
         try {
 
-
+            // Assuming you have a 'followers' relationship in your User model
+            // $mostLikedPartnerIds = $user->followers->pluck('partner_id')->toArray();
+            // $mostLikedPartnerIds = UserLike->groupBy('partner_id');
+            // dd($mostLikedPartnerIds);
+            // $mostLikedPartners = UserLike::select('partner_id', \DB::raw('count(partner_id) as like_count'))
+            //     ->groupBy('partner_id') // Group by partner_id
+            //     ->orderByDesc('like_count')
+            //     ->get();
 
             $partnerCounts = UserLike::groupBy('partner_id')
                 ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
                 ->pluck('count', 'partner_id');
-        
+            // Find the partner_id with the highest count
+            // $mostLikedPartnerId = ($partnerCounts->max())->keys()->first();
 
             $mostLikedPartnerId = $partnerCounts->sortDesc()->keys()->first();
 

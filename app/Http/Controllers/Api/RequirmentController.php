@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\RequirmentResource;
+use App\Http\Resources\Api\UserQuestionResource;
 use App\Models\Requirment\Requirment;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
@@ -33,10 +34,17 @@ class RequirmentController extends Controller
     public function fetch_user_questions()
     {
         try {
+            $user = auth()->user();
 
             $user_questions = Requirment::where('answer_type', 2)->get();
 
-            $data = RequirmentResource::collection($user_questions);
+           
+
+            $data = UserQuestionResource::collection($user_questions);
+
+            // if($user_answers && $user_answers->pluck('answer')->toArray() != null){
+
+            // }
 
             $msg = 'fetch_user_questions';
 
