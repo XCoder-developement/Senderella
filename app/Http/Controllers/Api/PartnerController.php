@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\Api\FullPartnerResource;
 use App\Models\Like\Like;
 use App\Traits\ApiTrait;
 use App\Models\User\User;
@@ -56,7 +57,7 @@ class PartnerController extends Controller
             $partner = User::whereId($request->partner_id)->first();
 
             $msg = "fetch_partner_details";
-            return $this->dataResponse($msg, new PartnerResource($partner), 200);
+            return $this->dataResponse($msg, new FullPartnerResource($partner), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }

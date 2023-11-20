@@ -178,6 +178,12 @@ return new class extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade');
         });
+
+        Schema::create('user_notifications', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->integer('notification_id')->unsigned()->nullable();
+                });
     }
 
     /**
