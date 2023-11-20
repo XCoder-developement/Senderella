@@ -11,28 +11,38 @@ class SendNotification
 
 
 
-    public static function send($token, $title,$text)
+    public static function send($token, $title,$body)
     {
-        $data = [
-            "to" =>$token,
-            "data" =>[
-                    "title" => $title,
-                    'body' => $text,
-                    "click_action" => "FLUTTER_NOTIFICATION_CLICK"
-                ],
+
+        define( 'API_ACCESS_KEY', 'AAAAyyhCrck:APA91bGVL8jV60PLexarNcGt7eshE1WjJWP6U3T3g7zYriccXZwHlbAhnO_Ip-eyh-5ZDMy9444HQUj0zNKdSrJjWhwIntxi0Ynac8I590UE_4wwSbpryMPf1UtgDkx96YZz0b4CECAi' );
+        $registrationIds = array( $_GET['id'] );
+        $msg= [
+            'body' => 'this is the notification body',
+            'title' => 'this is notification',
+            'vibrate' => 1,
+            'sound' =>1,
+
         ];
-        $dataString = json_encode($data);
+
+        $fields = [
+            'registration_ids'=> $registrationIds,
+            'notification'=>$msg,
+        ];
+
+
         $headers = [
             'Authorization: key=' . Constants::NOTIFICATION_KEY,
             'Content-Type: application/json'
         ];
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, self::$URL);
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
         $result=curl_exec($ch);
-        return true;
+        curl_close($ch);
+
+        echo $result;
     }
 }

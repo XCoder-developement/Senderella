@@ -142,6 +142,8 @@ Route::group(
                 //marriage_readiness
                 Route::resource('marriage_readinesses', MarriageReadinessController::class);
 
+                
+
                 //marriage_readiness
                 Route::resource('block_reasons', BlockReasonController::class);
 
