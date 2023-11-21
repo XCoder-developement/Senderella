@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\PartnerResource;
 use App\Http\Resources\Api\UserResource;
 use App\Models\User\User;
+use App\Models\User\UserDocument;
 use App\Models\User\UserImage;
 use App\Models\User\UserInformation;
 use App\Traits\ApiTrait;
@@ -149,6 +150,40 @@ class UserController extends Controller
             $msg = __("messages.save successful");
 
             return $this->dataResponse($msg, new UserResource($user), 200);
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
+
+
+
+    public function account_document(Request $request)
+    {
+        try {
+            //validation
+            $rules = [
+                "image" => "required",
+            ];
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return $this->getvalidationErrors($validator);
+            }
+
+            $user = auth()->user();
+            if (($request->image) ) {
+                    $document_data = upload_image($request->image , "users");
+                    UserDocument::create([
+                        'image' => $document_data,
+                        'user_id' => $user->id,
+                    ]);
+
+                    $user->update(['is_verify' => 1]);
+            }
+
+            $msg =("user_document_succseed");
+
+            return $this->successResponse($msg,200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }

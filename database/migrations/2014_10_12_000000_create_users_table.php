@@ -30,6 +30,8 @@ return new class extends Migration
             $table->integer('active')->nullable()->default(0);
             $table->integer('trusted')->nullable()->default(0);
 
+            $table->integer('is_verify')->default(0);
+
             $table->longText('notes')->nullable();
             $table->longText('about_me')->nullable();
             $table->longText('important_for_marriage')->nullable();
@@ -88,6 +90,22 @@ return new class extends Migration
             ->onDelete('cascade');
         });
 
+
+        Schema::create('user_documents', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->string('image')->nullable();
+
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+
+            $table->foreign('user_id')->references('id')->on('users')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+
+
+
+        });
 
         Schema::create('user_packages', function (Blueprint $table) {
             $table->increments('id');
