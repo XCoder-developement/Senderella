@@ -80,6 +80,8 @@ return new class extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->nullable();
             $table->string('image')->nullable();
+            $table->integer('is_primary')->default(0);
+            $table->integer('is_blurry')->default(0);
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
