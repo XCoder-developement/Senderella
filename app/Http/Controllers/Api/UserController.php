@@ -128,6 +128,8 @@ class UserController extends Controller
             //validation
             $rules = [
                 "images" => "required",
+                "is_primary" => "required",
+                "is_blurry" => "required",
             ];
             $validator = Validator::make($request->all(), $rules);
 
@@ -143,9 +145,29 @@ class UserController extends Controller
                     UserImage::create([
                         'image' => $image_data,
                         'user_id' => $user->id,
+                        'is_primary' => $request->is_primary,
+                        'is_blurry' => $request->is_blurry,
                     ]);
                 }
             }
+
+
+
+            if ($request->user_image  && ($request->is_primary) && ($request->is_blurry)) {
+                foreach ($request->user_image as $user_image ) {
+                    $image = $user_image['image'];
+                    $is_primary = $user_image['is_primary'];
+                    $is_blurry = $user_image['is_blurry'];
+
+                    $user_image_data['image'] = $image;
+                    $user_image_data['is_primary'] = $is_primary;
+                    $user_image_data['user_id'] = $user->id;
+                    $user_image_data['is_blurry'] = $is_blurry;
+
+                    UserImage::create($user_image_data);
+                }
+            }
+
 
             $msg = __("messages.save successful");
 
@@ -181,11 +203,12 @@ class UserController extends Controller
                     $user->update(['is_verify' => 1]);
             }
 
-            $msg =("user_document_succseed");
+            $msg =("account_document_succseed");
 
             return $this->successResponse($msg,200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
     }
+
 }

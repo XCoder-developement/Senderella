@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api;
 
+use App\Models\User\UserImage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -42,7 +43,7 @@ class UserResource extends JsonResource
 
             "api_token" => $this->api_token ?? "",
             "device_token" => $this->user_device->device_token ?? "",
-            "images" => ImageResource::collection($this->images) ?? "",
+            "images" => ImageResource::collection($this->images()->orderBy('is_primary','desc')->get()) ?? "",
 
         ];
     }
@@ -55,6 +56,8 @@ class ImageResource extends JsonResource
         return [
             "id" =>$this->id,
             "image" => $this->image_link ?? "",
+            "is_primary" => $this->is_primary ??"",
+            "is_blurry" => $this->is_blurry ??"",
         ];
     }
 }
