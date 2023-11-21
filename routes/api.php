@@ -216,4 +216,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //FETCH LAST SEARCH
     Route::post("fetch_last_search", [FetchLastSearchController::class, "fetch_last_search"]);
+
+    //account_document
+    Route::post("account_document", [UserController::class, "account_document"]);
 });
