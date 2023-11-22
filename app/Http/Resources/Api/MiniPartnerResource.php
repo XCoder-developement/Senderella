@@ -17,7 +17,7 @@ class MiniPartnerResource extends JsonResource
         return [
             "id"=>$this->id,
             "name"=>$this->name ??"",
-            //"images" => ImageResource::collection($this->images) ??"",
+            "images" => ImageResource::collection($this->images) ??"",
             "age"=>$this->age??"",
             "last_active"=>$this->last_active ?? '',
             "is_follow"=>$this->is_follow ??0,
@@ -51,3 +51,15 @@ class MiniPartnerResource extends JsonResource
 }
 
 
+class ImageResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
+        return [
+            "id" => $this->id,
+            "image" => $this->image_link ?? "",
+            "is_primary" => $this->is_primary ??"",
+            "is_blurry" => $this->is_blurry ??"",
+        ];
+    }
+}
