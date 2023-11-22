@@ -125,7 +125,7 @@ return new class extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->nullable();
             $table->integer('partner_id')->unsigned()->nullable()->comment('liked_user');
-            $table->integer('like_count')->unsigned()->nullable();
+            $table->integer('count')->unsigned()->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
 
