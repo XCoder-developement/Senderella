@@ -43,7 +43,7 @@ class UserResource extends JsonResource
 
             "api_token" => $this->api_token ?? "",
             "device_token" => $this->user_device->device_token ?? "",
-            "images" => ImageResource::collection($this->images()->orderBy('is_primary','desc')->get()) ?? "",
+            "images" => ImageResource::collection($this->images()->orderBy('is_primary','desc')->get()) ?? [],
 
         ];
     }
