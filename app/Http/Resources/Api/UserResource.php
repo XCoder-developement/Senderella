@@ -43,7 +43,7 @@ class UserResource extends JsonResource
 
             "api_token" => $this->api_token ?? "",
             "device_token" => $this->user_device->device_token ?? "",
-            "images" => ImageResource::collection($this->images) ?? [],
+            "images" => ImageResource::collection($this->images) ?? null,
 
         ];
     }
