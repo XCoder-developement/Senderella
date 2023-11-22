@@ -16,7 +16,7 @@ class FullPartnerResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "images" => ImageResource::collection($this->images) ?? null,
+            "images" => count($this->images) == 0 ? null : ImageResource::collection($this->images) ,
             "name" => $this->name ?? "",
             "age" => $this->user_age ?? "",
             "last_active" => $this->last_active ?? '',
