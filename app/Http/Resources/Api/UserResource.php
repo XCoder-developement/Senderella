@@ -28,8 +28,8 @@ class UserResource extends JsonResource
             "height" => $this->height ?? "",
             "notes" => $this->notes ?? "",
             "about_me" => $this->about_me ?? "",
-            "country_id" => $this->country_id ?? null,
-            "state_id" => $this->state_id ?? null,
+            "country_id" => intval($this->country_id) ?? "",
+            "state_id" => intval($this->state_id) ?? "",
             "country_title" => $this->country->title ?? "",
             "state_title" => $this->state->title ?? "",
 

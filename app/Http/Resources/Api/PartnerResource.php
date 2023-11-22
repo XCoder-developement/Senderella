@@ -30,8 +30,8 @@ class PartnerResource extends JsonResource
 
             "weight" => $this->weight ?? "",
             "height" => $this->height ?? "",
-            "country_id" => $this->country_id ?? null,
-            "state_id" => $this->state_id ?? null,
+            "country_id" => intval($this->country_id) ?? "",
+            "state_id" => intval($this->state_id) ?? "",
             "country_title" => $this->country->title ?? "",
             "state_title" => $this->state->title ?? "",
 
@@ -58,6 +58,8 @@ class ImageResource extends JsonResource
         return [
             "id" => $this->id,
             "image" => $this->image_link ?? "",
+            "is_primary" => $this->is_primary ??"",
+            "is_blurry" => $this->is_blurry ??"",
         ];
     }
 }

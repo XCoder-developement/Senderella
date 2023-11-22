@@ -29,8 +29,8 @@ class MiniPartnerResource extends JsonResource
 
             "weight"=>$this->weight ??"",
             "height"=>$this->height ??"",
-            "country_id"=>$this->country_id ?? null,
-            "State_id"=>$this->State_id ??null,
+            "country_id"=>intval($this->country_id) ?? "",
+            "State_id"=>intval($this->state_id) ?? "",
             "country_title"=>$this->country_title ??"",
             "state_title"=>$this->state_title,
 
