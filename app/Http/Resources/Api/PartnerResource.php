@@ -17,7 +17,7 @@ class PartnerResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "images" => ImageResource::collection($this->images) ?? [],
+            "images" => ImageResource::collection($this->images) ?? null,
             "name" => $this->name ?? "",
             "age" => $this->user_age ?? "",
             "last_active" => $this->last_active ?? '',
