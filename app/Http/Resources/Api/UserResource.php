@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             "name" => $this->name ?? "",
             "phone" => $this->phone ?? "",
             "email" => $this->email ?? "",
-            "gender" => $this->gender ?? "",
+            "gender" => intval($this->gender) ?? "",
             "birthday_date" => $this->birthday_date ?? "",
             "nationality_id" => $this->nationality_id ?? "",
             "is_married_before" => intval($this->is_married_before) ?? "",
