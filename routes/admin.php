@@ -35,6 +35,7 @@ use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\MarriageReadinessController;
 use App\Http\Controllers\Admin\MultiplicityStatusController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\UserController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
@@ -70,6 +71,9 @@ Route::group(
 
                 //countries
                 Route::resource('countries', CountryController::class);
+
+                //users
+                Route::resource('users', UserController::class);
 
                 //states
                 Route::resource('states', StateController::class);
