@@ -64,6 +64,35 @@
                                         <span class="menu-text">{{ __('messages.all') }}</span>
                                     </a>
                                 </li>
+
+
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                        <a href="javascript:;" class="menu-link menu-toggle">
+                            <span class="svg-icon menu-icon">
+                                <i class="fas fa-user-lock"></i>
+                            </span>
+                            <span class="menu-text">{{ __('messages.users') }}</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="menu-submenu">
+                            <i class="menu-arrow"></i>
+                            <ul class="menu-subnav">
+                                <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                    <span class="menu-link">
+                                        <span class="menu-text">{{ __('messages.users') }}</span>
+                                    </span>
+                                </li>
+                                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                    <a href="{{ route('users.index') }}" class="menu-link">
+                                        <span class="menu-text">{{ __('messages.all') }}</span>
+                                    </a>
+                                </li>
+
+
                             </ul>
                         </div>
                     </li>
@@ -162,6 +191,17 @@
                                         </a>
                                     </li>
 
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('education_types.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.education_types')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('colors.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.colors')}}</span>
+                                        </a>
+                                    </li>
                                     {{-- <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="{{route('hijib_types.index')}}" class="menu-link" >
                                             <span class="menu-text">{{__('messages.hijib_types')}}</span>
@@ -252,7 +292,7 @@
                             </div>
                         </li>
                             {{-- POSTS --}}
-                            
+
                         <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                             <a href="javascript:;" class="menu-link menu-toggle">
                                 <span class="svg-icon menu-icon">
@@ -284,7 +324,7 @@
                                     </li>
 
                                     <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="{{route('abouts.index')}}" class="menu-link" >
+                                        <a href="{{route('settings.index')}}" class="menu-link" >
                                             <span class="menu-text">{{__('messages.abouts')}}</span>
                                         </a>
                                     </li>

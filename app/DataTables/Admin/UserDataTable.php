@@ -81,11 +81,11 @@ class UserDataTable extends DataTable
     {
         return [
             ["data" => "name" ,"title" => __('messages.name')],
+            ["data" => "email" ,"title" => __('messages.email'),'orderable'=>false,'searchable'=>false],
             ["data" => "phone" ,"title" => __('messages.phone')],
             ["data" => "country" ,"title" => __('messages.country')],
             ["data" => "state" ,"title" => __('messages.state')],
             ["data" => "nationality" ,"title" => __('messages.nationality')],
-            ["data" => "email" ,"title" => __('messages.email'),'orderable'=>false,'searchable'=>false],
             ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
         ];
     }
