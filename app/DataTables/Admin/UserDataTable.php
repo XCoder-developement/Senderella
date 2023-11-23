@@ -23,23 +23,23 @@ class UserDataTable extends DataTable
     {
         return datatables()
         ->eloquent($query)
-        ->editColumn("image", function ($query) {
-            if ($query->image_link) {
-                $image = $query->image_link;
-                $status = '<img src="'.$image.'">';
-            } else {
-                $status =__('messages.doesnt have image');
-            }
-            return $status;
-        })
+        // ->editColumn("image", function ($query) {
+        //     if ($query->image_link) {
+        //         $image = $query->image_link;
+        //         $status = '<img src="'.$image.'">';
+        //     } else {
+        //         $status =__('messages.doesnt have image');
+        //     }
+        //     return $status;
+        // })
         ->editColumn('state', function ($query) {
             return $query->state?->title ?? "";
         })
-        ->editColumn('city', function ($query) {
-            return $query->city?->title ?? "";
+        ->editColumn('country', function ($query) {
+            return $query->country?->title ?? "";
         })
-        ->editColumn('zone', function ($query) {
-            return $query->zone?->title ?? "";
+        ->editColumn('nationality', function ($query) {
+            return $query->nationality?->title ?? "";
         })
         ->addColumn('action', 'admin_dashboard.users.action')
         ->rawColumns([
@@ -80,14 +80,12 @@ class UserDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            ["data" => "image" ,"title" => __('messages.image'),'searchable'=>false],
             ["data" => "name" ,"title" => __('messages.name')],
+            ["data" => "email" ,"title" => __('messages.email'),'orderable'=>false,'searchable'=>false],
             ["data" => "phone" ,"title" => __('messages.phone')],
+            ["data" => "country" ,"title" => __('messages.country')],
             ["data" => "state" ,"title" => __('messages.state')],
-            ["data" => "city" ,"title" => __('messages.city')],
-            ["data" => "zone" ,"title" => __('messages.zone')],
-            // ["data" => "email" ,"title" => __('messages.email'),'orderable'=>false,'searchable'=>false],
-            ["data" => "points" ,"title" => __('messages.points'),'orderable'=>false,'searchable'=>false],
+            ["data" => "nationality" ,"title" => __('messages.nationality')],
             ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
         ];
     }
