@@ -151,6 +151,26 @@ class User extends Authenticatable
         }
     }
 
+
+    public function getIsFollowAttribute()
+    {
+        if ($this->is_follow == 1) {
+            return __('messages.is followed');
+        } elseif ($this->is_follow == 0) {
+            return __('messages.not followed');
+        }
+    }
+
+    public function is_follow($user_id){
+        $favorite_product = UserLike::whereUserId($user_id)->wherePartnerId($this->id)->first();
+        if($favorite_product){
+            return 1;
+        }elseif(!$favorite_product){
+            return 0;
+        }
+    }
+
+
     //liked and following partners
     public function following(): HasMany
     {
@@ -204,7 +224,7 @@ class User extends Authenticatable
     }
 
 
-    
+
     //like me and followers partners
     // public function followers(): HasMany
     // {

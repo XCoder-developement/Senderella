@@ -22,7 +22,7 @@ class UserResource extends JsonResource
             "email" => $this->email ?? "",
             "gender" => intval($this->gender) ?? "",
             "birthday_date" => $this->birthday_date ?? "",
-            "nationality_id" => $this->nationality_id ?? "",
+            "nationality_id" => intval($this->nationality_id) ?? "",
             "is_married_before" => intval($this->is_married_before) ?? "",
             "weight" => $this->weight ?? "",
             "height" => $this->height ?? "",
@@ -35,8 +35,8 @@ class UserResource extends JsonResource
 
             "verification_code" => (string) $this->verification_code ?? "",
             "verification_type" => intval($this->verification_type) ?? "",
-            "phone_verify" => intval($this->phone_verify) ?? "",
-            "email_verify" => intval($this->email_verify) ?? "",
+            "phone_verify" => intval($this->phone_verify) ,
+            "email_verify" => intval($this->email_verify) ,
 
 
             // "is_verified" => $this->is_verified ?? "",
