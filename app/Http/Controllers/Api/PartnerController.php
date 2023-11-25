@@ -78,6 +78,9 @@ class PartnerController extends Controller
         }
     }
 
+
+
+
     public function like_partner(Request $request)
     {
         try {
@@ -98,6 +101,8 @@ class PartnerController extends Controller
             if (!$like_partner) {
                 $data['user_id'] =  $user_id;
                 $data['partner_id'] =  $partner_id;
+
+
                 UserLike::create($data);
                 //responce
                 $msg = "like_partner";
@@ -253,6 +258,7 @@ class PartnerController extends Controller
             $user = auth()->user();
             $followers_ids = $user->followers->pluck('user_id')->toArray();
             $followers = User::whereIn('id', $followers_ids)->get();
+
             $msg = "fetch_followers";
             return $this->dataResponse($msg, PartnerResource::collection($followers), 200);
         } catch (\Exception $ex) {

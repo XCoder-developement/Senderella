@@ -53,7 +53,7 @@ class RegisterController extends Controller
             ]);
             //response
 
-            $msg = __("messages.save successful");      
+            $msg = __("messages.save successful");
 
             return $this->dataResponse($msg, new UserResource($user), 200);
         } catch (\Exception $ex) {
