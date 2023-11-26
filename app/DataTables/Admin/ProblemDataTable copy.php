@@ -2,7 +2,7 @@
 
 namespace App\DataTables\Admin;
 
-use App\Models\EducationType\EducationType;
+use App\Models\Report\Report;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,8 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-
-class EducationTypeDataTable extends DataTable
+class ReportDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -24,23 +23,22 @@ class EducationTypeDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('action', 'admin_dashboard.education_types.action')
+            ->addColumn('action', 'admin_dashboard.reports.action')
+            ->editColumn('report_type', function ($query) {
+                return $query->report_type?->title ?? "";
+            })
             ->rawColumns([
                 'action',
             ]);
     }
 
-    /**
-     * Get the query source of dataTable.
-     */
-    public function query(EducationType $model): QueryBuilder
+
+    public function query(report $model): QueryBuilder
     {
         return $model->newQuery()->orderBy("id","desc");
     }
 
-    /**
-     * Optional method if you want to use the html builder.
-     */
+    
     public function html(): HtmlBuilder
     {
         return $this->builder()
@@ -62,16 +60,16 @@ class EducationTypeDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-             ["data" => "title" ,"title" => __('messages.title'),'orderable'=>false],
-             ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
-        ];
+
+            ["data" => "report_type" ,"title" => __('messages.report_type'),'orderable'=>false],
+            ["data" => "comment" ,"title" => __('messages.comment'),'orderable'=>false],
+
+       ];
     }
 
-    /**
-     * Get the filename for export.
-     */
+
     protected function filename(): string
     {
-        return 'EducationType_' . date('YmdHis');
+        return 'report_' . date('YmdHis');
     }
 }
