@@ -35,6 +35,7 @@ use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\MarriageReadinessController;
 use App\Http\Controllers\Admin\MultiplicityStatusController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\ReportTypeController;
 use App\Http\Controllers\Admin\UserController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -89,6 +90,9 @@ Route::group(
 
                 //problem_types
                 Route::resource('problem_types', ProblemTypeController::class);
+
+                //report_types
+                Route::resource('report_types', ReportTypeController::class);
 
                 //hijib_types
                 Route::resource('hijib_types', HijibTypeController::class);

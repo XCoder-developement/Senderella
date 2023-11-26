@@ -40,6 +40,7 @@ use App\Http\Controllers\Api\SearchPartnerController;
 use App\Http\Controllers\Api\FetchLastSearchController;
 use App\Http\Controllers\Api\UserInformationController;
 use App\Http\Controllers\Admin\MarriageReadinessController;
+use App\Http\Controllers\Admin\ReportTypeController;
 use App\Http\Controllers\Api\MarriageReadinessController as ApiMarriageReadinessController;
 
 /*
@@ -73,6 +74,9 @@ Route::post("check_phone", [PhoneController::class, "check_phone"]);
 
 //fetch_problem_types
 Route::get("fetch_problem_types", [ProblemTypeController::class, "fetch_problem_types"])->name('fetch_problem_types');
+
+//fetch_problem_types
+Route::get("fetch_report_types", [ReportTypeController::class, "fetch_report_types"])->name('fetch_report_types');
 
 //send_problem
 Route::post("send_problem", [ProblemController::class, "send_problem"])->name('send_problem');
