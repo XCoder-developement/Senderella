@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->increments("id");
             $table->unsignedInteger('report_type_id')->nullable();
-            $table->longText('comment')->nullable();
+            $table->longText('reason')->nullable();
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
