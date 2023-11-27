@@ -16,14 +16,14 @@ class ReportController extends Controller
         try{
         $rules = [
             "report_type_id" => "required|integer",
-            "comment" => "required",
+            "reason" => "required",
         ];
         $validator = Validator::make($request->all(), $rules);
         if($validator->fails()){
             return $this->getvalidationErrors($validator,422);
         }
         $data['report_type_id']= $request->report_type_id;
-        $data['comment']= $request->comment;
+        $data['reason']= $request->comment;
 
          Report::create($data);
 
