@@ -13,20 +13,18 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->increments("id");
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-        });
+            $table->unsignedInteger('report_type_id')->nullable();
+            $table->longText('comment')->nullable();
 
-        Schema::create('report_translations', function (Blueprint $table) {
-            $table->increments("id");
-            $table->integer('report_id')->unsigned()->nullable();
-            $table->string('title')->nullable();
-            $table->string('locale')->index();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
-            $table->foreign('report_id')->references('id')->on('reports')
+
+            $table->foreign('report_type_id')->references('id')->on('report_types')
             ->onUpdate('cascade')
             ->onDelete('cascade');
+            // $table->foreign('report_type_id')->references('id')->on('report_types')
+            // ->onUpdate('cascade')
+            // ->onDelete('cascade');
         });
     }
 
