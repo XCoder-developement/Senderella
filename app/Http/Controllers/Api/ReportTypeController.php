@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Api\ReportTypeResource;
 use App\Http\Resources\Api\TitleResource;
 use App\Models\ReportType\ReportType;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
 
-class ProblemTypeController extends Controller
+class ReportTypeController extends Controller
 {
     use ApiTrait;
 
-    public function fetch_problem_types()
+    public function fetch_report_types()
     {
         try {
 

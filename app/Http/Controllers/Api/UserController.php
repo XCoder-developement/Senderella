@@ -127,10 +127,12 @@ class UserController extends Controller
         try {
             //validation
             $rules = [
-                "images" => "required|array",
-                "is_primary" => "required",
-                "is_blurry" => "required",
+                "imagesArray" => "required|array",
+                "imagesArray.*.images" => "required",
+                "imagesArray.*.is_primary" => "required",
+                "imagesArray.*.is_blurry" => "required",
             ];
+
             $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
@@ -138,34 +140,33 @@ class UserController extends Controller
             }
 
             $user = auth()->user();
-
-            foreach ($request->images as $key => $image) {
-                $image_data = upload_image($image, "users");
+dd($request->all());
+            $imagesData = collect($request->get('images'))->map(function ($imageData) use ($user) {
                 UserImage::create([
-                    'image' => $image_data,
+                    'image' => $imageData['images'],
                     'user_id' => $user->id,
-                    'is_primary' => $request->is_primary[$key],
-                    'is_blurry' => $request->is_blurry[$key],
+                    'is_primary' => $imageData['is_primary'],
+                    'is_blurry' => $imageData['is_blurry'],
                 ]);
-            }
+            })->toArray();
 
 
-            if ($request->user_image  && ($request->is_primary) && ($request->is_blurry)) {
-                foreach ($request->user_image as $user_image ) {
-                    $image = $user_image['image'];
-                    $is_primary = $user_image['is_primary'];
-                    $is_blurry = $user_image['is_blurry'];
+            // if ($request->user_image  && ($request->is_primary) && ($request->is_blurry)) {
+            //     foreach ($request->user_image as $user_image ) {
+            //         $image = $user_image['image'];
+            //         $is_primary = $user_image['is_primary'];
+            //         $is_blurry = $user_image['is_blurry'];
 
-                    $user_image_data['image'] = $image;
-                    $user_image_data['is_primary'] = $is_primary;
-                    $user_image_data['user_id'] = $user->id;
-                    $user_image_data['is_blurry'] = $is_blurry;
+            //         $user_image_data['image'] = $image;
+            //         $user_image_data['is_primary'] = $is_primary;
+            //         $user_image_data['user_id'] = $user->id;
+            //         $user_image_data['is_blurry'] = $is_blurry;
 
-                    UserImage::create($user_image_data);
-                }
-            }
+            //         UserImage::create($user_image_data);
+            //     }
+            // }
 
-
+            UserImage::insert($imagesData);
             $msg = __("messages.save successful");
 
             return $this->dataResponse($msg, new UserResource($user), 200);

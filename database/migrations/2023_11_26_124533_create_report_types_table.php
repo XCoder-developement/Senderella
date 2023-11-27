@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('report_types', function (Blueprint $table) {
-            $table->increments("id");
+            $table->increments("id")->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
 
         Schema::create('report_type_translations', function (Blueprint $table) {
             $table->increments("id");
-            $table->integer('report_type_id')->unsigned()->nullable();
+            $table->unsignedInteger('report_type_id')->nullable();
             $table->string('title')->nullable();
             $table->string('locale')->index();
             $table->timestamp('created_at')->useCurrent();
@@ -30,7 +30,7 @@ return new class extends Migration
         });
     }
 
-    
+
 
     /**
      * Reverse the migrations.
@@ -38,5 +38,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('report_types');
+        Schema::dropIfExists('report_type_translations');
+
     }
 };
