@@ -13,26 +13,32 @@ class ReportController extends Controller
     use ApiTrait;
     public function send_report(Request $request)
     {
-        try{
-        $rules = [
-            "report_type_id" => "required|integer",
-            "reason" => "required",
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if($validator->fails()){
-            return $this->getvalidationErrors($validator,422);
-        }
-        $data['report_type_id']= $request->report_type_id;
-        $data['reason']= $request->comment;
+        try {
+            $rules = [
+                "report_type_id" => "required|array",
+                "reason" => "required",
+            ];
 
-         Report::create($data);
+            $validator = Validator::make($request->all(), $rules);
 
-        $msg = __("messages.save successful");
+            if ($validator->fails()) {
+                return $this->getvalidationErrors($validator, 422);
+            }
 
-        return $this->successResponse($msg,200);
+            $reportsData = $request->input('reports', []); // Provide a default empty array if 'reports' is not present
 
-        } catch (\Exception$ex) {
+            foreach ($reportsData as $reportData) {
+                $data['report_type_id'] = $reportData['report_type_id'];
+                $data['reason'] = $reportData['reason'];
+                Report::create($data);
+            }
+
+            $msg = __("messages.save successful");
+
+            return $this->successResponse($msg, 200);
+
+        } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
-    }
-}
+
+}}
