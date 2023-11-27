@@ -140,33 +140,37 @@ class UserController extends Controller
             }
 
             $user = auth()->user();
-dd($request->all());
-            $imagesData = collect($request->get('images'))->map(function ($imageData) use ($user) {
-                UserImage::create([
-                    'image' => $imageData['images'],
-                    'user_id' => $user->id,
-                    'is_primary' => $imageData['is_primary'],
-                    'is_blurry' => $imageData['is_blurry'],
-                ]);
-            })->toArray();
+// dd($request->all());
+            // $imagesData = collect($request->get('images'))->map(function ($imageData) use ($user) {
+            //     UserImage::create([
+            //         'image' => $imageData['images'],
+            //         'user_id' => $user->id,
+            //         'is_primary' => $imageData['is_primary'],
+            //         'is_blurry' => $imageData['is_blurry'],
+            //     ]);
+            // })->toArray();
 
 
-            // if ($request->user_image  && ($request->is_primary) && ($request->is_blurry)) {
-            //     foreach ($request->user_image as $user_image ) {
-            //         $image = $user_image['image'];
-            //         $is_primary = $user_image['is_primary'];
-            //         $is_blurry = $user_image['is_blurry'];
 
-            //         $user_image_data['image'] = $image;
-            //         $user_image_data['is_primary'] = $is_primary;
-            //         $user_image_data['user_id'] = $user->id;
-            //         $user_image_data['is_blurry'] = $is_blurry;
+            // Change this condition to check the existence of "imagesArray"
+if ($request->has('imagesArray') && is_array($request->imagesArray)) {
+    foreach ($request->imagesArray as $user_image) {
+        $image = $user_image['images']; // Change 'image' to 'images'
+        $is_primary = $user_image['is_primary'];
+        $is_blurry = $user_image['is_blurry'];
 
-            //         UserImage::create($user_image_data);
-            //     }
-            // }
+        $user_image_data['image'] = $image;
+        $user_image_data['is_primary'] = $is_primary;
+        $user_image_data['user_id'] = $user->id;
+        $user_image_data['is_blurry'] = $is_blurry;
 
-            UserImage::insert($imagesData);
+        UserImage::create($user_image_data);
+    }
+}
+
+
+            // UserImage::insert($imagesData);
+
             $msg = __("messages.save successful");
 
             return $this->dataResponse($msg, new UserResource($user), 200);
