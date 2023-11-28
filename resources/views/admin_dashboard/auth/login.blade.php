@@ -89,8 +89,8 @@
 									<input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg" type="password" placeholder="password" name="password" autocomplete="off" />
 								</div>
 
-								@if(session('error'))
-								<p class="text-danger">{{ session('error')  }}</p>
+								@if(session('errors'))
+								<p class="text-danger">{{ session('errors')  }}</p>
 								@endif
 								<!--end::Form group-->
 								<div class="form-group d-flex flex-wrap justify-content-between align-items-center px-8">
