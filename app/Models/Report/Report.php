@@ -18,6 +18,5 @@ class Report extends Model
 
     public function points(): HasMany{
         return $this->hasMany(ReportType::class);
-
     }
 }

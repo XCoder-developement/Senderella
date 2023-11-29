@@ -15,15 +15,15 @@ class ReportController extends Controller
     {
         try {
             $rules = [
+                "partner_id"=>"required",
                 "report_type_id" => "required|array",
                 "reason" => "required",
-                "partner_id"=>"required",
             ];
 
             $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
-                return $this->getvalidationErrors($validator, 422);
+                return $this->getvalidationErrors($validator);
             }
 
             $reportsData = $request->input('reports', []); // Provide a default empty array if 'reports' is not present
@@ -31,6 +31,7 @@ class ReportController extends Controller
             foreach ($reportsData as $reportData) {
                 $data['report_type_id'] = $reportData['report_type_id'];
                 $data['reason'] = $reportData['reason'];
+                $data['partner_id'] = $reportData['partner_id'] ;
                 Report::create($data);
             }
 
