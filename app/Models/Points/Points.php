@@ -12,7 +12,5 @@ class Points extends Model
     use HasFactory;
     protected $table = "report_points";
     protected $guard = [];
-    public function points(){
-        return $this->belongsToMany(Report::class,'report_type_id');
-    }
+   
 }

@@ -82,8 +82,6 @@ Route::get("fetch_report_types", [ReportTypeController::class, "fetch_report_typ
 //send_problem
 Route::post("send_problem", [ProblemController::class, "send_problem"])->name('send_problem');
 
-//send_report
-Route::post("send_report", [ReportController::class, "send_report"])->name('send_report');
 
 //fetch_privacy
 Route::get("fetch_privacy", [PrivacyController::class, "fetch_privacy"]);
@@ -193,6 +191,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     //fetch_following
     Route::get("fetch_following", [PartnerController::class, "fetch_following"]);
 
+    //send_report
+    Route::post("send_report", [ReportController::class, "send_report"])->name('send_report');
 
 
     //fetch_my_block_partners
