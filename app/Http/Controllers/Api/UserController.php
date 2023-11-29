@@ -128,7 +128,7 @@ class UserController extends Controller
             //validation
             $rules = [
                 "imagesArray" => "required|array",
-                "imagesArray.*.images" => "required",
+                "imagesArray.*.image" => "required",
                 "imagesArray.*.is_primary" => "required",
                 "imagesArray.*.is_blurry" => "required",
             ];
@@ -155,7 +155,7 @@ class UserController extends Controller
             // Change this condition to check the existence of "imagesArray"
 if ($request->has('imagesArray') && is_array($request->imagesArray)) {
     foreach ($request->imagesArray as $user_image) {
-        $image = $user_image['images']; // Change 'image' to 'images'
+        $image = $user_image['image']; // Change 'image' to 'images'
         $is_primary = $user_image['is_primary'];
         $is_blurry = $user_image['is_blurry'];
 
