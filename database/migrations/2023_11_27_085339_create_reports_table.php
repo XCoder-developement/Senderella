@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->increments("id");
-            $table->unsignedInteger('report_type_id')->nullable();
             $table->unsignedInteger('user_id')->nullable();
             $table->unsignedInteger('partner_id')->nullable();
 
@@ -26,6 +25,9 @@ return new class extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+            $table->foreign('partner_id')->references('id')->on('partners')
             ->onUpdate('cascade')
             ->onDelete('cascade');
         });
