@@ -6,6 +6,7 @@ use App\Models\Report\Report;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ReportType extends Model
@@ -18,5 +19,9 @@ class ReportType extends Model
 
     public function points(): HasMany{
         return $this->hasMany(Report::class);
+    }
+
+    public function reports(): BelongsToMany{
+        return $this->belongsToMany(Report::class,'reports','report_type_id','report_id');
     }
 }

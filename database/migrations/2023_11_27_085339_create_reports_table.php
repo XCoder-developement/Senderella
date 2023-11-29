@@ -21,13 +21,11 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
 
-            $table->foreign('report_type_id')->references('id')->on('report_types')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+
             $table->foreign('user_id')->references('id')->on('users')
             ->onUpdate('cascade')
             ->onDelete('cascade');
-            $table->foreign('partner_id')->references('id')->on('partners')
+            $table->foreign('partner_id')->references('id')->on('users')
             ->onUpdate('cascade')
             ->onDelete('cascade');
         });

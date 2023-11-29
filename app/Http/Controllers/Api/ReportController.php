@@ -15,8 +15,8 @@ class ReportController extends Controller
     {
         try {
             $rules = [
-                "partner_id"=>"required",
-                "report_type_id" => "required|array",
+                "partner_id"=>"required|exists:users,id",
+                "report_type_ids" => "required|array",
                 "reason" => "required",
             ];
 
@@ -26,14 +26,13 @@ class ReportController extends Controller
                 return $this->getvalidationErrors($validator);
             }
 
-            $reportsData = $request->input('reports', []); // Provide a default empty array if 'reports' is not present
 
-            foreach ($reportsData as $reportData) {
-                $data['report_type_id'] = $reportData['report_type_id'];
-                $data['reason'] = $reportData['reason'];
-                $data['partner_id'] = $reportData['partner_id'] ;
-                Report::create($data);
-            }
+                $data['user_id'] =auth()->id();
+                $data['reason'] =$request->reason;
+                $data['partner_id'] = $request->partner_id;
+                $report = Report::create($data);
+                $report->report_types()->attach($request->report_type_ids);
+
 
             $msg = __("messages.save successful");
 
