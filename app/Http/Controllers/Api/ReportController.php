@@ -17,6 +17,7 @@ class ReportController extends Controller
             $rules = [
                 "report_type_id" => "required|array",
                 "reason" => "required",
+                "partner_id"=>"required",
             ];
 
             $validator = Validator::make($request->all(), $rules);

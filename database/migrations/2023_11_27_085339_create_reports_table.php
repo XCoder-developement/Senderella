@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->increments("id");
             $table->unsignedInteger('report_type_id')->nullable();
+            $table->unsignedInteger('user_id')->nullable();
+            $table->unsignedInteger('partner_id')->nullable();
+
             $table->longText('reason')->nullable();
 
             $table->timestamp('created_at')->useCurrent();
@@ -22,11 +25,28 @@ return new class extends Migration
             $table->foreign('report_type_id')->references('id')->on('report_types')
             ->onUpdate('cascade')
             ->onDelete('cascade');
-            // $table->foreign('report_type_id')->references('id')->on('report_types')
-            // ->onUpdate('cascade')
-            // ->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+        });
+
+        Schema::create('report_points', function (Blueprint $table) {
+            $table->increments("id");
+            $table->unsignedInteger('report_type_id')->nullable();
+            $table->unsignedInteger('report_id')->nullable();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+
+            $table->foreign('report_type_id')->references('id')->on('report_types')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+            $table->foreign('report_id')->references('id')->on('reports')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
         });
     }
+
+
 
     /**
      * Reverse the migrations.
