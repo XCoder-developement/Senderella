@@ -129,8 +129,8 @@ class UserController extends Controller
             $rules = [
                 "imagesArray" => "required|array",
                 "imagesArray.*.image" => "nullable",
-                "imagesArray.*.is_primary" => "required|boolean",
-                "imagesArray.*.is_blurry" => "required|boolean",
+                "imagesArray.*.is_primary" => "sometimes",
+                "imagesArray.*.is_blurry" => "sometimes",
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -155,18 +155,21 @@ class UserController extends Controller
             // Change this condition to check the existence of "imagesArray"
             if ($request->has('imagesArray') && is_array($request->imagesArray)) {
                 foreach ($request->imagesArray as $user_image) {
+
                     if (isset($user_image['image']) && is_uploaded_file($user_image['image'])) {
                         $image = upload_image($user_image['image'], "users");
                         $user_image_data['image'] = $image;
                     }
+
+
                     $is_primary = $user_image['is_primary'];
                     $is_blurry = $user_image['is_blurry'];
 
 
 
                     $user_image_data['is_primary'] = $is_primary;
-                    $user_image_data['user_id'] = $user->id;
                     $user_image_data['is_blurry'] = $is_blurry;
+                    $user_image_data['user_id'] = $user->id;
 
                     UserImage::create($user_image_data);
                 }
