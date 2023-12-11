@@ -128,7 +128,7 @@ class UserController extends Controller
             //validation
             $rules = [
                 "imagesArray" => "required|array",
-                "imagesArray.*.image" => "required",
+                "imagesArray.*.image" => "required|image|mimes:jpeg,png,jpg,gif|max:2048",
                 "imagesArray.*.is_primary" => "required",
                 "imagesArray.*.is_blurry" => "required",
             ];
@@ -140,7 +140,7 @@ class UserController extends Controller
             }
 
             $user = auth()->user();
-// dd($request->all());
+            // dd($request->all());
             // $imagesData = collect($request->get('images'))->map(function ($imageData) use ($user) {
             //     UserImage::create([
             //         'image' => $imageData['images'],
@@ -153,20 +153,21 @@ class UserController extends Controller
 
 
             // Change this condition to check the existence of "imagesArray"
-if ($request->has('imagesArray') && is_array($request->imagesArray)) {
-    foreach ($request->imagesArray as $user_image) {
-        $image = $user_image['image']; // Change 'image' to 'images'
-        $is_primary = $user_image['is_primary'];
-        $is_blurry = $user_image['is_blurry'];
+            if ($request->has('imagesArray') && is_array($request->imagesArray)) {
+                foreach ($request->imagesArray as $user_image) {
+                    $image = $user_image['image']; // Change 'image' to 'images'
+                    $is_primary = $user_image['is_primary'];
+                    $is_blurry = $user_image['is_blurry'];
 
-        $user_image_data['image'] = $image;
-        $user_image_data['is_primary'] = $is_primary;
-        $user_image_data['user_id'] = $user->id;
-        $user_image_data['is_blurry'] = $is_blurry;
+                    $user_image_data['image'] = upload_image($image, "users");
+                    $user_image_data['is_primary'] = $is_primary;
+                    $user_image_data['user_id'] = $user->id;
+                    $user_image_data['is_blurry'] = $is_blurry;
 
-        UserImage::create($user_image_data);
-    }
-}
+                    UserImage::create($user_image_data);
+                }
+            }
+
 
 
             // UserImage::insert($imagesData);
@@ -195,22 +196,21 @@ if ($request->has('imagesArray') && is_array($request->imagesArray)) {
             }
 
             $user = auth()->user();
-            if (($request->image) ) {
-                    $document_data = upload_image($request->image , "users");
-                    UserDocument::create([
-                        'image' => $document_data,
-                        'user_id' => $user->id,
-                    ]);
+            if (($request->image)) {
+                $document_data = upload_image($request->image, "users");
+                UserDocument::create([
+                    'image' => $document_data,
+                    'user_id' => $user->id,
+                ]);
 
-                    $user->update(['is_verify' => 1]);
+                $user->update(['is_verify' => 1]);
             }
 
-            $msg =("account_document_succseed");
+            $msg = ("account_document_succseed");
 
-            return $this->successResponse($msg,200);
+            return $this->successResponse($msg, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
     }
-
 }
