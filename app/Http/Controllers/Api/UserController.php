@@ -129,8 +129,8 @@ class UserController extends Controller
             $rules = [
                 "imagesArray" => "required|array",
                 "imagesArray.*.image" => "nullable",
-                "imagesArray.*.is_primary" => "required",
-                "imagesArray.*.is_blurry" => "required",
+                "imagesArray.*.is_primary" => "required|boolean",
+                "imagesArray.*.is_blurry" => "required|boolean",
             ];
 
             $validator = Validator::make($request->all(), $rules);
