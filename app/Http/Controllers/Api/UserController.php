@@ -128,7 +128,7 @@ class UserController extends Controller
             //validation
             $rules = [
                 "imagesArray" => "required|array",
-                "imagesArray.*.image" => "required|image|mimes:jpeg,png,jpg,gif|max:2048",
+                "imagesArray.*.image" => "required",
                 "imagesArray.*.is_primary" => "required",
                 "imagesArray.*.is_blurry" => "required",
             ];
