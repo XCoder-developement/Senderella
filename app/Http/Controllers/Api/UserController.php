@@ -25,8 +25,8 @@ class UserController extends Controller
             //validation
             $rules = [
                 "name" => "required",
-                "phone" => "required",
-                "email" => "required",
+                // "phone" => "required",
+                // "email" => "required",
                 "gender" => "required|integer",
                 "birthday_date" => "required|date",
                 "country_id" => "required|integer|exists:countries,id",
@@ -63,8 +63,8 @@ class UserController extends Controller
 
             $user = auth()->user();
             $data['name'] = $request->name;
-            $data['phone'] = $request->phone;
-            $data['email'] = $request->email;
+            // $data['phone'] = $request->phone;
+            // $data['email'] = $request->email;
             $data['gender'] = $request->gender;
 
             $data['birthday_date'] = $request->birthday_date;
@@ -143,7 +143,7 @@ class UserController extends Controller
             // dd($request->all());
             // $imagesData = collect($request->get('images'))->map(function ($imageData) use ($user) {
             //     UserImage::create([
-            //         'image' => $imageData['images'], 
+            //         'image' => $imageData['images'],
             //         'user_id' => $user->id,
             //         'is_primary' => $imageData['is_primary'],
             //         'is_blurry' => $imageData['is_blurry'],
