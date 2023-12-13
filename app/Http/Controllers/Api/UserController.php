@@ -143,7 +143,7 @@ class UserController extends Controller
             // dd($request->all());
             // $imagesData = collect($request->get('images'))->map(function ($imageData) use ($user) {
             //     UserImage::create([
-            //         'image' => $imageData['images'],
+            //         'image' => $imageData['images'], 
             //         'user_id' => $user->id,
             //         'is_primary' => $imageData['is_primary'],
             //         'is_blurry' => $imageData['is_blurry'],
