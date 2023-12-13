@@ -26,6 +26,10 @@ class UserResource extends JsonResource
             "is_married_before" => intval($this->is_married_before) ?? "",
             "marital_status_id" => intval($this->marital_status_id) ?? "",
             "marriage_readiness_id" => intval($this->marriage_readiness_id) ?? "",
+            "education_type_id" => intval($this->education_type_id) ?? "",
+            "color_id" => intval($this->color_id) ?? "",
+
+
 
 
             "weight" => $this->weight ?? "",
