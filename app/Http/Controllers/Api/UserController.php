@@ -11,6 +11,7 @@ use App\Models\User\UserImage;
 use App\Models\User\UserInformation;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Validator;
 
@@ -217,6 +218,27 @@ class UserController extends Controller
 
             return $this->successResponse($msg, 200);
         } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
+
+    public function delte_account(Request $request){
+        try{
+            $rules = [
+                "api_token" => "required",
+            ];
+
+            $user = auth()->user();
+
+            if($request->api_token == $user->api_token){ // check the api_token ig gotten right?
+                // delte the user data
+                User::destroy('id' , $user->id);
+
+                $msg = 'account is delted successfully';
+                return $this->successResponse($msg , 200);
+            }
+
+        }catch(\Exception $ex){
             return $this->returnException($ex->getMessage(), 500);
         }
     }
