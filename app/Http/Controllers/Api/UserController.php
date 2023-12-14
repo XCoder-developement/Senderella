@@ -222,15 +222,12 @@ class UserController extends Controller
         }
     }
 
-    public function delte_account(Request $request){
+    public function delte_account(){
         try{
-            $rules = [
-                "api_token" => "required",
-            ];
 
             $user = auth()->user();
 
-            if($request->api_token == $user->api_token){ // check the api_token ig gotten right?
+            if($user->api_token){ // check the api_token ig gotten right?
                 // delte the user data
                 User::destroy('id' , $user->id);
 
