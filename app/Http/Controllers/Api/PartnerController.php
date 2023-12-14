@@ -223,6 +223,7 @@ class PartnerController extends Controller
             $data['user_id'] =  $user_id;
             $data['partner_id'] =  $partner_id;
             UserWatch::create($data);
+
             $partner = User::whereId($partner_id)->first();
             //responce
             $msg = "user_watch";
@@ -326,7 +327,7 @@ class PartnerController extends Controller
         try {
             $user = auth()->user();
             $favorited_ids = $user->favorited->pluck("partner_id")->toArray();
-            $favorited = UserWatch::whereIn('id', $favorited_ids)->get();
+            $favorited = User::whereIn('id', $favorited_ids)->get();
             $msg = "who_i_favorite";
             return $this->dataResponse($msg, PartnerResource::collection($favorited), 200);
         } catch (\Exception $ex) {
