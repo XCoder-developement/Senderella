@@ -223,7 +223,6 @@ class PartnerController extends Controller
             $data['user_id'] =  $user_id;
             $data['partner_id'] =  $partner_id;
             UserWatch::create($data);
-
             $partner = User::whereId($partner_id)->first();
             //responce
             $msg = "user_watch";
