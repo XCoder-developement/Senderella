@@ -29,7 +29,12 @@ class UserResource extends JsonResource
             "education_type_id" => intval($this->education_type_id) ?? "",
             "color_id" => intval($this->color_id) ?? "",
 
-
+            "skin_color_title" => $this->color->title ?? "",
+            "education_type_title" => $this->education_type->title ?? "",
+            "marital_status_title" => $this->marital_status->title ?? "",
+            "marital_status_title" => $this->marital_status->title ?? "",
+            "readiness_for_marriages_title" => $this->readiness_for_marriages->title ?? "",
+            "nationality_title" => $this->country->title ?? "",
 
 
             "weight" => $this->weight ?? "",
