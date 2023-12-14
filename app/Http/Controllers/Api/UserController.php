@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\PartnerResource;
 use App\Http\Resources\Api\UserResource;
 use App\Models\User\User;
+use App\Models\User\UserDocument;
 use App\Models\User\UserImage;
 use App\Models\User\UserInformation;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Validator;
 
 // use Validator;
@@ -23,8 +26,8 @@ class UserController extends Controller
             //validation
             $rules = [
                 "name" => "required",
-                "phone" => "required",
-                "email" => "required",
+                // "phone" => "required",
+                // "email" => "required",
                 "gender" => "required|integer",
                 "birthday_date" => "required|date",
                 "country_id" => "required|integer|exists:countries,id",
@@ -61,8 +64,8 @@ class UserController extends Controller
 
             $user = auth()->user();
             $data['name'] = $request->name;
-            $data['phone'] = $request->phone;
-            $data['email'] = $request->email;
+            // $data['phone'] = $request->phone;
+            // $data['email'] = $request->email;
             $data['gender'] = $request->gender;
 
             $data['birthday_date'] = $request->birthday_date;
@@ -120,13 +123,79 @@ class UserController extends Controller
         }
     }
 
-
     public function set_user_images(Request $request)
     {
         try {
             //validation
             $rules = [
-                "images" => "required",
+                "imagesArray" => "required|array",
+                "imagesArray.*.image" => "required",
+                "imagesArray.*.is_primary" => "required",
+                "imagesArray.*.is_blurry" => "required",
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return $this->getvalidationErrors($validator);
+            }
+
+            $user = auth()->user();
+            // dd($request->all());
+            // $imagesData = collect($request->get('images'))->map(function ($imageData) use ($user) {
+            //     UserImage::create([
+            //         'image' => $imageData['images'],
+            //         'user_id' => $user->id,
+            //         'is_primary' => $imageData['is_primary'],
+            //         'is_blurry' => $imageData['is_blurry'],
+            //     ]);
+            // })->toArray();
+
+
+
+            // Change this condition to check the existence of "imagesArray"
+            if ($request->has('imagesArray') && is_array($request->imagesArray)) {
+                foreach ($request->imagesArray as $user_image) {
+
+                    // if (isset($user_image['image']) && is_uploaded_file($user_image['image'])) {
+                        $image = upload_image($user_image['image'], "users");
+                        $user_image_data['image'] = $image;
+                    // }
+
+
+                    $is_primary = $user_image['is_primary'];
+                    $is_blurry = $user_image['is_blurry'];
+
+
+
+                    $user_image_data['is_primary'] = $is_primary;
+                    $user_image_data['is_blurry'] = $is_blurry;
+                    $user_image_data['user_id'] = $user->id;
+
+                    UserImage::create($user_image_data);
+                }
+            }
+
+
+
+            // UserImage::insert($imagesData);
+
+            $msg = __("messages.save successful");
+
+            return $this->dataResponse($msg, new UserResource($user), 200);
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
+
+
+
+    public function account_document(Request $request)
+    {
+        try {
+            //validation
+            $rules = [
+                "image" => "required",
             ];
             $validator = Validator::make($request->all(), $rules);
 
@@ -135,21 +204,38 @@ class UserController extends Controller
             }
 
             $user = auth()->user();
+            if (($request->image)) {
+                $document_data = upload_image($request->image, "users");
+                UserDocument::create([
+                    'image' => $document_data,
+                    'user_id' => $user->id,
+                ]);
 
-            if (count($request->images) > 0) {
-                foreach ($request->images as $image) {
-                    $image_data = upload_image($image, "users");
-                    UserImage::create([
-                        'image' => $image_data,
-                        'user_id' => $user->id,
-                    ]);
-                }
+                $user->update(['is_verify' => 1]);
             }
 
-            $msg = __("messages.save successful");
+            $msg = ("account_document_succseed");
 
-            return $this->dataResponse($msg, new UserResource($user), 200);
+            return $this->successResponse($msg, 200);
         } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
+
+    public function delte_account(){
+        try{
+
+            $user = auth()->user();
+
+            if($user->api_token){ // check the api_token ig gotten right?
+                // delte the user data
+                User::destroy('id' , $user->id);
+
+                $msg = 'account is delted successfully';
+                return $this->successResponse($msg , 200);
+            }
+
+        }catch(\Exception $ex){
             return $this->returnException($ex->getMessage(), 500);
         }
     }

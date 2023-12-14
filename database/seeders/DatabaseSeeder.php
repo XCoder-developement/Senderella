@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PostSeeder::class,
             CommentSeeder::class,
+            ReportTypeSeeder::class,
             // UserSeeder::class,
 
         ]);

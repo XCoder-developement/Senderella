@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('country_id')->unsigned()->nullable();
             $table->integer('state_id')->unsigned()->nullable();
             $table->integer('nationality_id')->unsigned()->nullable();
+            
             $table->integer('marital_status_id')->unsigned()->nullable();
             $table->integer('marriage_readiness_id')->unsigned()->nullable();
             $table->integer('education_type_id')->unsigned()->nullable();
@@ -29,6 +30,8 @@ return new class extends Migration
             $table->text('height')->nullable();
             $table->integer('active')->nullable()->default(0);
             $table->integer('trusted')->nullable()->default(0);
+
+            $table->integer('is_verify')->default(0);
 
             $table->longText('notes')->nullable();
             $table->longText('about_me')->nullable();
@@ -78,6 +81,8 @@ return new class extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->nullable();
             $table->string('image')->nullable();
+            $table->integer('is_primary')->default(0);
+            $table->integer('is_blurry')->default(0);
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
@@ -88,6 +93,22 @@ return new class extends Migration
             ->onDelete('cascade');
         });
 
+
+        Schema::create('user_documents', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->string('image')->nullable();
+
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+
+            $table->foreign('user_id')->references('id')->on('users')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+
+
+
+        });
 
         Schema::create('user_packages', function (Blueprint $table) {
             $table->increments('id');
@@ -105,7 +126,7 @@ return new class extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->nullable();
             $table->integer('partner_id')->unsigned()->nullable()->comment('liked_user');
-            $table->integer('like_count')->unsigned()->nullable();
+            $table->integer('count')->unsigned()->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
 

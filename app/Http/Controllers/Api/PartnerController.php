@@ -78,6 +78,9 @@ class PartnerController extends Controller
         }
     }
 
+
+
+
     public function like_partner(Request $request)
     {
         try {
@@ -94,19 +97,23 @@ class PartnerController extends Controller
 
             $like_partner = UserLike::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
 
+            $partner = User::whereId($partner_id)->first();
             if (!$like_partner) {
                 $data['user_id'] =  $user_id;
                 $data['partner_id'] =  $partner_id;
+
+
                 UserLike::create($data);
-                $partner = User::whereId($partner_id)->first();
                 //responce
                 $msg = "like_partner";
                 $data = new PartnerResource($partner);
                 return $this->dataResponse($msg, $data, 200);
             } elseif ($like_partner) {
+
                 $like_partner->delete();
                 $msg = __('messages.partner disliked');
-                return $this->errorResponse($msg, 200);
+                $data = new PartnerResource($partner);
+                return $this->dataResponse($msg, $data, 200);
             }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
@@ -154,7 +161,7 @@ class PartnerController extends Controller
             } elseif($like_partner) {
                 $like_partner->delete();
                 $msg = __('messages.partner unblocked');
-                return $this->errorResponse($msg, 200);
+                return $this->successResponse($msg, 200);
             }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
@@ -251,6 +258,7 @@ class PartnerController extends Controller
             $user = auth()->user();
             $followers_ids = $user->followers->pluck('user_id')->toArray();
             $followers = User::whereIn('id', $followers_ids)->get();
+
             $msg = "fetch_followers";
             return $this->dataResponse($msg, PartnerResource::collection($followers), 200);
         } catch (\Exception $ex) {
@@ -291,6 +299,7 @@ class PartnerController extends Controller
             $user = auth()->user();
             $watched_ids = $user->watched->pluck("partner_id")->toArray();
             $watched = UserWatch::whereIn('id', $watched_ids)->get();
+            // dd($watched);
             $msg = "who_i_watch";
             return $this->dataResponse($msg, MiniPartnerResource::collection($watched), 200);
         } catch (\Exception $ex) {
@@ -319,7 +328,7 @@ class PartnerController extends Controller
         try {
             $user = auth()->user();
             $favorited_ids = $user->favorited->pluck("partner_id")->toArray();
-            $favorited = UserWatch::whereIn('id', $favorited_ids)->get();
+            $favorited = User::whereIn('id', $favorited_ids)->get();
             $msg = "who_i_favorite";
             return $this->dataResponse($msg, PartnerResource::collection($favorited), 200);
         } catch (\Exception $ex) {

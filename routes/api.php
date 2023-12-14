@@ -40,7 +40,9 @@ use App\Http\Controllers\Api\SearchPartnerController;
 use App\Http\Controllers\Api\FetchLastSearchController;
 use App\Http\Controllers\Api\UserInformationController;
 use App\Http\Controllers\Admin\MarriageReadinessController;
+use App\Http\Controllers\Api\ReportTypeController;
 use App\Http\Controllers\Api\MarriageReadinessController as ApiMarriageReadinessController;
+use App\Http\Controllers\Api\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,8 +76,12 @@ Route::post("check_phone", [PhoneController::class, "check_phone"]);
 //fetch_problem_types
 Route::get("fetch_problem_types", [ProblemTypeController::class, "fetch_problem_types"])->name('fetch_problem_types');
 
+//fetch_problem_types
+Route::get("fetch_report_types", [ReportTypeController::class, "fetch_report_types"])->name('fetch_report_types');
+
 //send_problem
 Route::post("send_problem", [ProblemController::class, "send_problem"])->name('send_problem');
+
 
 //fetch_privacy
 Route::get("fetch_privacy", [PrivacyController::class, "fetch_privacy"]);
@@ -121,6 +127,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //set_user_images
     Route::post("set_user_images", [UserController::class, "set_user_images"]);
+
+    //delte_account
+    Route::get("delte_account", [UserController::class, "delte_account"]);
 
     //subscribe_package
     Route::post("subscribe_package", [PackageController::class, "subscribe_package"]);
@@ -185,6 +194,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     //fetch_following
     Route::get("fetch_following", [PartnerController::class, "fetch_following"]);
 
+    //send_report
+    Route::post("send_report", [ReportController::class, "send_report"])->name('send_report');
 
 
     //fetch_my_block_partners
@@ -216,4 +227,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //FETCH LAST SEARCH
     Route::post("fetch_last_search", [FetchLastSearchController::class, "fetch_last_search"]);
+
+    //account_document
+    Route::post("account_document", [UserController::class, "account_document"]);
 });
