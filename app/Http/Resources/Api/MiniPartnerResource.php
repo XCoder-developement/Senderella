@@ -17,10 +17,10 @@ class MiniPartnerResource extends JsonResource
         return [
             "id"=>$this->id,
             "name"=>$this->name ??"",
-            "images" =>  count($this->images) == 0 ? null : ImageResource::collection($this->images) ,
+            // "images" => $this->images !== null && count($this->images) == 0 ? null : ImageResource::collection($this->images),
             "age"=>$this->age??"",
             "last_active"=>$this->last_active ?? '',
-            "is_follow" => $this->is_follow(auth()->id()) ?? 0,
+            // "is_follow" => $this->is_follow(auth()->id()) ?? 0,
             "is_verify"=>$this->is_verify ??0,
             "trusted"=>$this->trused ??0,
             "is_new"=>intval($this->is_new)??0,
