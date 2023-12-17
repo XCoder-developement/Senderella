@@ -314,7 +314,7 @@ class PartnerController extends Controller
         try {
             $user = auth()->user();
             $watcher_ids = $user->watcher->pluck("user_id")->toArray();
-            $watcher = UserWatch::whereIn('id', $watcher_ids)->get();
+            $watcher = User::whereIn('id', $watcher_ids)->get();
             $msg = "who_watch_my_account";
             return $this->dataResponse($msg, MiniPartnerResource::collection($watcher), 200);
         } catch (\Exception $ex) {
