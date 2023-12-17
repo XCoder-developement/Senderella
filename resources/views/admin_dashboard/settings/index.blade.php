@@ -131,7 +131,7 @@
                                 </label>
                                 <input id="tikTok" type="text" name="tikTok" value="{{ $setting->tikTok ?? '' }}"
                                 class="form-control @error('tikTok') is-invalid @enderror">
-                                
+
                                 @error('tikTok')
                                 <span class="invalid-feedback">
                                         {{ $message }}</span>
@@ -212,7 +212,7 @@
                                 </label>
                                 <input id="email" type="text" name="email" value="{{ $setting->email ?? '' }}"
                                 class="form-control @error('email') is-invalid @enderror">
-                                
+
                                 @error('email')
                                     <span class="invalid-feedback">
                                         {{ $message }}</span>
@@ -221,7 +221,7 @@
                         </div>
                         {{-- END ROW --}}
                     </div>
-                    
+
                     <button type="submit" class="btn btn-shadow btn-primary font-weight-bold mt-5">
                         {{ __('messages.save') }}
                         <span class="svg-icon svg-icon m-0 svg-icon-md">
