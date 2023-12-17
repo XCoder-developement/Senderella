@@ -172,7 +172,21 @@ class UserController extends Controller
             if($user->images()){
                 $user->images()->delete();
             }
+            // if ($user->images()) {
+            //     foreach ($user->images as $index => $image) {
+            //         $imageData = $request->imagesArray[$index] ?? null;
 
+            //         if ($imageData) {
+            //             // Update the image data without re-uploading
+            //             DB::table('user_images')
+            //                 ->where('id', $image->id)
+            //                 ->update([
+            //                     'is_primary' => $imageData['is_primary'],
+            //                     'is_blurry' => $imageData['is_blurry'],
+            //                 ]);
+            //         }
+            //     }
+            // }
 
             // Change this condition to check the existence of "imagesArray"
             if ($request->has('imagesArray') && is_array($request->imagesArray)) {
