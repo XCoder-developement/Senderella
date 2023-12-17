@@ -46,7 +46,7 @@ class UserResource extends JsonResource
             "country_title" => $this->country->title ?? "",
             "state_title" => $this->state->title ?? "",
 
-            "percentage" => $this->percentage ?? "",
+            "percentage" => intval($this->percentage) ?? "",
 
             "verification_code" => (string) $this->verification_code ?? "",
             "verification_type" => intval($this->verification_type) ?? "",
