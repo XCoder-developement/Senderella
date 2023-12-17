@@ -102,7 +102,7 @@ class UserController extends Controller
             if($request->partner_specifications){
                 $data['partner_specifications'] = intval((($p+1)/21)*100) ;
             }
-            
+
             $user->update($data);
 
             if ($request->user_information) {
@@ -169,6 +169,9 @@ class UserController extends Controller
             //     ]);
             // })->toArray();
 
+            if($user->images()){
+                $user->images()->delete();
+            }
 
 
             // Change this condition to check the existence of "imagesArray"
