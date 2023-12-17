@@ -59,8 +59,8 @@ class ImageResource extends JsonResource
         return [
             "id" =>$this->id,
             "image" => $this->image_link ?? "",
-            "is_primary" => $this->is_primary ??"",
-            "is_blurry" => $this->is_blurry ??"",
+            "is_primary" => boolval($this->is_primary) ??"",
+            "is_blurry" => boolval($this->is_blurry) ??"",
         ];
     }
 }
