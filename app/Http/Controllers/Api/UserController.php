@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\NotIn;
 
 // use Validator;
 
@@ -146,6 +147,10 @@ class UserController extends Controller
         try {
             //validation
             $rules = [
+                "stored_images" =>"sometimes|array",
+                "stored_images.*.id" => "sometimes",
+                "stored_images.*.is_primary" => "sometimes",
+                "stored_images.*.is_blurry" => "sometimes",
                 "imagesArray" => "required|array",
                 "imagesArray.*.image" => "required",
                 "imagesArray.*.is_primary" => "required",
@@ -168,10 +173,32 @@ class UserController extends Controller
             //         'is_blurry' => $imageData['is_blurry'],
             //     ]);
             // })->toArray();
+            $user_images = $user->images()->pluck("id")->toArray();
+// dd($user_images);
+            if($request->stored_images != []){
+                foreach ($request->stored_images as $img) {
 
-            if($user->images()){
-                $user->images()->delete();
+                    if (in_array($img['id'], $user_images)) {
+                        DB::table('user_images')
+                            ->where('id', $img)
+                            ->update([
+                            'is_primary' => $img['is_primary'],
+                            'is_blurry' => $img['is_blurry'],
+                    ]);
+                }
             }
+
+            if ($user_images != $img['id'] ) {
+                DB::table('user_images')->whereNotIn('id', $img)->delete();
+            }
+
+         }
+
+
+            // if($user->images()){
+            //     $user->images()->delete();
+            // }
+
             // if ($user->images()) {
             //     foreach ($user->images as $index => $image) {
             //         $imageData = $request->imagesArray[$index] ?? null;

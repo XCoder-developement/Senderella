@@ -298,7 +298,7 @@ class PartnerController extends Controller
         try {
             $user = auth()->user();
             $watched_ids = $user->watched->pluck("partner_id")->toArray();
-            $watched = UserWatch::whereIn('id', $watched_ids)->get();
+            $watched = User::whereIn('id', $watched_ids)->get();
             // dd($watched);
             $msg = "who_i_watch";
             return $this->dataResponse($msg, MiniPartnerResource::collection($watched), 200);
