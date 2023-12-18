@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\RegisterResource;
 use App\Http\Resources\Api\UserResource;
 use App\Models\User\User;
 use App\Traits\ApiTrait;
@@ -55,7 +56,7 @@ class RegisterController extends Controller
 
             $msg = __("messages.save successful");
 
-            return $this->dataResponse($msg, new UserResource($user), 200);
+            return $this->dataResponse($msg, new RegisterResource($user), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
