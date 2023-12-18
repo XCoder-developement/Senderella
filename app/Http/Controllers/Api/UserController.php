@@ -29,7 +29,7 @@ class UserController extends Controller
             $rules = [
                 "name" => "required",
                 // "phone" => "required",
-                // "email" => "required",
+                "email" => "required",
                 "gender" => "required|integer",
                 "birthday_date" => "required|date",
                 "country_id" => "required|integer|exists:countries,id",
