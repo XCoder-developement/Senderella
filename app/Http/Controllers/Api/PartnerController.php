@@ -301,7 +301,7 @@ class PartnerController extends Controller
             $watched = User::whereIn('id', $watched_ids)->get();
             // dd($watched);
             $msg = "who_i_watch";
-            return $this->dataResponse($msg, MiniPartnerResource::collection($watched), 200);
+            return $this->dataResponse($msg, PartnerResource::collection($watched), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -316,7 +316,7 @@ class PartnerController extends Controller
             $watcher_ids = $user->watcher->pluck("user_id")->toArray();
             $watcher = User::whereIn('id', $watcher_ids)->get();
             $msg = "who_watch_my_account";
-            return $this->dataResponse($msg, MiniPartnerResource::collection($watcher), 200);
+            return $this->dataResponse($msg, PartnerResource::collection($watcher), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
