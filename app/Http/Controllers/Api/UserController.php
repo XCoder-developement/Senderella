@@ -67,7 +67,7 @@ class UserController extends Controller
             $user = auth()->user();
             $data['name'] = $request->name;
             // $data['phone'] = $request->phone;
-            // $data['email'] = $request->email;
+            $data['email'] = $request->email;
             $data['gender'] = $request->gender;
 
             $data['birthday_date'] = $request->birthday_date;

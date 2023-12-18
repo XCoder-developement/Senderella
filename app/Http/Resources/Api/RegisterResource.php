@@ -2,11 +2,10 @@
 
 namespace App\Http\Resources\Api;
 
-use App\Models\User\UserImage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class RegisterResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -23,7 +22,7 @@ class UserResource extends JsonResource
             "gender" => intval($this->gender) ?? "",
             "birthday_date" => $this->birthday_date ?? "",
             "nationality_id" => intval($this->nationality_id) ?? "",
-            "is_married_before" => intval($this->is_married_before) ?? "",
+            "is_married_before" => ($this->is_married_before) ?? "",
             "marital_status_id" => intval($this->marital_status_id) ?? "",
             "marriage_readiness_id" => intval($this->marriage_readiness_id) ?? "",
             "education_type_id" => intval($this->education_type_id) ?? "",
