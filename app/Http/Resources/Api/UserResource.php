@@ -33,7 +33,7 @@ class UserResource extends JsonResource
             "education_type_title" => $this->education_type->title ?? "",
             "marital_status_title" => $this->marital_status->title ?? "",
             // "marital_status_title" => $this->marital_status->title ?? "",
-            "readiness_for_marriages_title" => $this->readiness_for_marriages->title ?? "",
+            "marriage_readiness_title" => $this->marriage_readiness->title ?? "",
             "nationality_title" => $this->country->title ?? "",
 
 
