@@ -188,9 +188,12 @@ class UserController extends Controller
                 }
             }
 
-            if ($user_images != $img['id'] ) {
-                DB::table('user_images')->whereNotIn('id', $img)->delete();
+            $imagesToDelete = array_diff($user_images, array_column($request->stored_images, 'id'));
+
+            if (!empty($imagesToDelete)) {
+                DB::table('user_images')->whereIn('id', $imagesToDelete)->delete();
             }
+
 
          }
 
