@@ -23,7 +23,7 @@ class UserController extends Controller
     use ApiTrait;
     public function set_user_data(Request $request)
     {
-        $p=15;
+        $p = 15;
         try {
             //validation
             $rules = [
@@ -86,22 +86,22 @@ class UserController extends Controller
             $data['about_me'] = $request->about_me;
             $data['important_for_marriage'] = $request->important_for_marriage;
             $data['partner_specifications'] = $request->partner_specifications;
-            $data['percentage'] = intval(($p/21)*100) ;
+            $data['percentage'] = intval(($p / 21) * 100);
 
-            if($request->notes){
-                $data['percentage'] = intval((($p+1)/21)*100) ;
+            if ($request->notes) {
+                $data['percentage'] = intval((($p + 1) / 21) * 100);
             }
-            if($request->about_me){
-                $data['about_me'] = intval((($p+1)/21)*100) ;
+            if ($request->about_me) {
+                $data['about_me'] = intval((($p + 1) / 21) * 100);
             }
-            if($request->important_for_marriage){
-                $data['important_for_marriage'] = intval((($p+1)/21)*100) ;
+            if ($request->important_for_marriage) {
+                $data['important_for_marriage'] = intval((($p + 1) / 21) * 100);
             }
-            if($request->partner_specifications){
-                $data['partner_specifications'] = intval((($p+1)/21)*100) ;
+            if ($request->partner_specifications) {
+                $data['partner_specifications'] = intval((($p + 1) / 21) * 100);
             }
-            if($request->partner_specifications){
-                $data['partner_specifications'] = intval((($p+1)/21)*100) ;
+            if ($request->partner_specifications) {
+                $data['partner_specifications'] = intval((($p + 1) / 21) * 100);
             }
 
             $user->update($data);
@@ -147,14 +147,14 @@ class UserController extends Controller
         try {
             //validation
             $rules = [
-                "stored_images" =>"sometimes|array",
+                "stored_images" => "sometimes|array",
                 "stored_images.*.id" => "sometimes",
                 "stored_images.*.is_primary" => "sometimes",
                 "stored_images.*.is_blurry" => "sometimes",
-                "imagesArray" => "required|array",
-                "imagesArray.*.image" => "required",
-                "imagesArray.*.is_primary" => "required",
-                "imagesArray.*.is_blurry" => "required",
+                "imagesArray" => "sometimes|array",
+                "imagesArray.*.image" => "sometimes",
+                "imagesArray.*.is_primary" => "sometimes",
+                "imagesArray.*.is_blurry" => "sometimes",
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -174,80 +174,85 @@ class UserController extends Controller
             //     ]);
             // })->toArray();
             $user_images = $user->images()->pluck("id")->toArray();
-// dd($user_images);
-            if($request->stored_images != []){
-                foreach ($request->stored_images as $img) {
+            // dd($user_images);
 
-                    if (in_array($img['id'], $user_images)) {
-                        DB::table('user_images')
-                            ->where('id', $img)
-                            ->update([
-                            'is_primary' => $img['is_primary'],
-                            'is_blurry' => $img['is_blurry'],
-                    ]);
+            if ($request->stored_images == [] && $request->imagesArray == []) {
+                $msg = __("message.error, you have to upload images");
+                return $this->successResponse($msg, 200);
+            } else {
+
+                if ($request->stored_images != []) {
+                    foreach ($request->stored_images as $img) {
+
+                        if (in_array($img['id'], $user_images)) {
+                            DB::table('user_images')
+                                ->where('id', $img)
+                                ->update([
+                                    'is_primary' => $img['is_primary'],
+                                    'is_blurry' => $img['is_blurry'],
+                                ]);
+                        }
+                    }
+
+                    $imagesToDelete = array_diff($user_images, array_column($request->stored_images, 'id'));
+
+                    if (!empty($imagesToDelete)) {
+                        DB::table('user_images')->whereIn('id', $imagesToDelete)->delete();
+                    }
                 }
-            }
-
-            $imagesToDelete = array_diff($user_images, array_column($request->stored_images, 'id'));
-
-            if (!empty($imagesToDelete)) {
-                DB::table('user_images')->whereIn('id', $imagesToDelete)->delete();
-            }
 
 
-         }
+                // if($user->images()){
+                //     $user->images()->delete();
+                // }
 
+                // if ($user->images()) {
+                //     foreach ($user->images as $index => $image) {
+                //         $imageData = $request->imagesArray[$index] ?? null;
 
-            // if($user->images()){
-            //     $user->images()->delete();
-            // }
+                //         if ($imageData) {
+                //             // Update the image data without re-uploading
+                //             DB::table('user_images')
+                //                 ->where('id', $image->id)
+                //                 ->update([
+                //                     'is_primary' => $imageData['is_primary'],
+                //                     'is_blurry' => $imageData['is_blurry'],
+                //                 ]);
+                //         }
+                //     }
+                // }
 
-            // if ($user->images()) {
-            //     foreach ($user->images as $index => $image) {
-            //         $imageData = $request->imagesArray[$index] ?? null;
+                // Change this condition to check the existence of "imagesArray"
+                if ($request->has('imagesArray') && is_array($request->imagesArray)) {
+                    foreach ($request->imagesArray as $user_image) {
 
-            //         if ($imageData) {
-            //             // Update the image data without re-uploading
-            //             DB::table('user_images')
-            //                 ->where('id', $image->id)
-            //                 ->update([
-            //                     'is_primary' => $imageData['is_primary'],
-            //                     'is_blurry' => $imageData['is_blurry'],
-            //                 ]);
-            //         }
-            //     }
-            // }
-
-            // Change this condition to check the existence of "imagesArray"
-            if ($request->has('imagesArray') && is_array($request->imagesArray)) {
-                foreach ($request->imagesArray as $user_image) {
-
-                    // if (isset($user_image['image']) && is_uploaded_file($user_image['image'])) {
+                        // if (isset($user_image['image']) && is_uploaded_file($user_image['image'])) {
                         $image = upload_image($user_image['image'], "users");
                         $user_image_data['image'] = $image;
-                    // }
+                        // }
 
 
-                    $is_primary = $user_image['is_primary'];
-                    $is_blurry = $user_image['is_blurry'];
+                        $is_primary = $user_image['is_primary'];
+                        $is_blurry = $user_image['is_blurry'];
 
 
 
-                    $user_image_data['is_primary'] = $is_primary;
-                    $user_image_data['is_blurry'] = $is_blurry;
-                    $user_image_data['user_id'] = $user->id;
+                        $user_image_data['is_primary'] = $is_primary;
+                        $user_image_data['is_blurry'] = $is_blurry;
+                        $user_image_data['user_id'] = $user->id;
 
-                    UserImage::create($user_image_data);
+                        UserImage::create($user_image_data);
+                    }
                 }
+
+
+
+                // UserImage::insert($imagesData);
+
+                $msg = __("messages.save successful");
+
+                return $this->dataResponse($msg, new UserResource($user), 200);
             }
-
-
-
-            // UserImage::insert($imagesData);
-
-            $msg = __("messages.save successful");
-
-            return $this->dataResponse($msg, new UserResource($user), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -287,20 +292,20 @@ class UserController extends Controller
         }
     }
 
-    public function delte_account(){
-        try{
+    public function delte_account()
+    {
+        try {
 
             $user = auth()->user();
 
-            if($user->api_token){ // check the api_token ig gotten right?
+            if ($user->api_token) { // check the api_token ig gotten right?
                 // delte the user data
-                User::destroy('id' , $user->id);
+                User::destroy('id', $user->id);
 
                 $msg = 'account is delted successfully';
-                return $this->successResponse($msg , 200);
+                return $this->successResponse($msg, 200);
             }
-
-        }catch(\Exception $ex){
+        } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
     }
