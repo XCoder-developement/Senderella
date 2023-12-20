@@ -29,12 +29,12 @@ class UserResource extends JsonResource
             "education_type_id" => intval($this->education_type_id) ?? "",
             "color_id" => intval($this->color_id) ?? "",
 
-            "skin_color_title" => $this->color->title ?? "",
-            "education_type_title" => $this->education_type->title ?? "",
-            "marital_status_title" => $this->marital_status->title ?? "",
+            "skin_color_title" => $this->color?->title ?? "",
+            "education_type_title" => $this->education_type?->title ?? "",
+            "marital_status_title" => $this->marital_status?->title ?? "",
             // "marital_status_title" => $this->marital_status->title ?? "",
-            "marriage_readiness_title" => $this->marriage_readiness->title ?? "",
-            "nationality_title" => $this->country->title ?? "",
+            "marriage_readiness_title" => $this->marriage_readiness?->title ?? "",
+            "nationality_title" => $this->country?->title ?? "",
 
 
             "weight" => $this->weight ?? "",
@@ -43,8 +43,8 @@ class UserResource extends JsonResource
             "about_me" => $this->about_me ?? "",
             "country_id" => intval($this->country_id) ?? "",
             "state_id" => intval($this->state_id) ?? "",
-            "country_title" => $this->country->title ?? "",
-            "state_title" => $this->state->title ?? "",
+            "country_title" => $this->country?->title ?? "",
+            "state_title" => $this->state?->title ?? "",
 
             "percentage" => intval($this->percentage) ?? "",
 
