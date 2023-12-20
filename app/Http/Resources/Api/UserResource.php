@@ -60,6 +60,8 @@ class UserResource extends JsonResource
             "device_token" => $this->user_device->device_token ?? "",
             "images" => count($this->images) == 0 ? null : ImageResource::collection($this->images) ,
 
+            "questions"=>DetailsResource::collection($this->informations->where('type',2)),
+
         ];
     }
 }
@@ -73,6 +75,18 @@ class ImageResource extends JsonResource
             "image" => $this->image_link ?? "",
             "is_primary" => boolval($this->is_primary)??"",
             "is_blurry" => boolval($this->is_blurry) ??"",
+        ];
+    }
+}
+
+class DetailsResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
+        return [
+            'id'=>$this->id,
+            'question'=>strval($this->requirment->title) ?? "",
+            'answer'=>$this->answer ?? '',
         ];
     }
 }
