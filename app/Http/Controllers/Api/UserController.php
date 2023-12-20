@@ -87,21 +87,25 @@ class UserController extends Controller
             $data['important_for_marriage'] = $request->important_for_marriage;
             $data['partner_specifications'] = $request->partner_specifications;
             $data['percentage'] = intval(($p / 21) * 100);
-
             if ($request->notes) {
+                $p++;
                 $data['percentage'] = intval((($p + 1) / 21) * 100);
             }
             if ($request->about_me) {
-                $data['about_me'] = intval((($p + 1) / 21) * 100);
+                $p++;
+                $data['percentage'] = intval((($p + 1) / 21) * 100);
             }
             if ($request->important_for_marriage) {
-                $data['important_for_marriage'] = intval((($p + 1) / 21) * 100);
+                $p++;
+                $data['percentage'] = intval((($p + 1) / 21) * 100);
             }
             if ($request->partner_specifications) {
-                $data['partner_specifications'] = intval((($p + 1) / 21) * 100);
+                $p++;
+                $data['percentage'] = intval((($p + 1) / 21) * 100);
             }
             if ($request->partner_specifications) {
-                $data['partner_specifications'] = intval((($p + 1) / 21) * 100);
+                $p++;
+                $data['percentage'] = intval((($p + 1) / 21) * 100);
             }
 
             $user->update($data);
