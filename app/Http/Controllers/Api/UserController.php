@@ -114,17 +114,32 @@ class UserController extends Controller
                 foreach ($request->user_information as $user_information) {
                     $requirment_id = $user_information["requirment_id"];
                     $requirment_item_id = $user_information["requirment_item_id"];
+                    // Check if a record with the same requirment_id exists
+                    $existingRecord = UserInformation::where('requirment_id', $requirment_id)
+                        ->where('user_id', $user->id)
+                        ->where('type', 1)
+                        ->first();
 
-                    $user_info_data['requirment_id'] = $requirment_id;
-                    $user_info_data['requirment_item_id'] = $requirment_item_id;
-                    $user_info_data['user_id'] = $user->id;
-                    $user_info_data['type'] = 1;
+                    if ($existingRecord) {
+                        // If the record exists, update the existing record
+                        $existingRecord->update([
+                            'requirment_item_id' => $requirment_item_id,
+                        ]);
+                    } else {
+                        // If the record does not exist, create a new record
+                        $user_info_data = [
+                            'requirment_id' => $requirment_id,
+                            'requirment_item_id' => $requirment_item_id,
+                            'user_id' => $user->id,
+                            'type' => 1,
+                        ];
 
-                    UserInformation::create($user_info_data);
+                        UserInformation::create($user_info_data);
+                    }
                 }
             }
+
             if ($request->questions) {
-                foreach ($request->questions as $question) {
                     foreach ($request->questions as $question) {
                         $requirment_id = $question["question_id"];
                         $answer = $question["answer"];
@@ -150,7 +165,7 @@ class UserController extends Controller
                             UserInformation::create($user_info_data);
                         }
                     }
-                }
+
             }
             $msg = __("messages.save successful");
 
