@@ -52,8 +52,8 @@ class UserController extends Controller
                 "user_information.*.requirment_item_id" => "sometimes|exists:requirment_items,id",
 
                 "questions" => "sometimes|array",
-                "questions.*.requirment_id" => "sometimes|exists:requirments,id",
-                "questions.*.requirment_item_id" => "sometimes|exists:requirment_items,id",
+                "questions.*.question_id" => "sometimes|exists:requirments,id",
+                // "questions.*.requirment_item_id" => "sometimes|exists:requirment_items,id",
                 "questions.*.answer" => "sometimes",
 
                 // "verification_type" => "required",
@@ -125,12 +125,12 @@ class UserController extends Controller
             }
             if ($request->questions) {
                 foreach ($request->questions as $question) {
-                    $requirment_id = $question["requirment_id"];
-                    $requirment_item_id = $question["requirment_item_id"];
+                    $requirment_id = $question["question_id"];
+                    // $requirment_item_id = $question["requirment_item_id"];
                     $answer = $question["answer"];
 
                     $user_info_data['requirment_id'] = $requirment_id;
-                    $user_info_data['requirment_item_id'] = $requirment_item_id;
+                    // $user_info_data['requirment_item_id'] = $requirment_item_id;
                     $user_info_data['answer'] = $answer;
                     $user_info_data['user_id'] = $user->id;
                     $user_info_data['type'] = 2;
