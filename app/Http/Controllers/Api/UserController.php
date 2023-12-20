@@ -125,17 +125,31 @@ class UserController extends Controller
             }
             if ($request->questions) {
                 foreach ($request->questions as $question) {
-                    $requirment_id = $question["question_id"];
-                    // $requirment_item_id = $question["requirment_item_id"];
-                    $answer = $question["answer"];
+                    foreach ($request->questions as $question) {
+                        $requirment_id = $question["question_id"];
+                        $answer = $question["answer"];
 
-                    $user_info_data['requirment_id'] = $requirment_id;
-                    // $user_info_data['requirment_item_id'] = $requirment_item_id;
-                    $user_info_data['answer'] = $answer;
-                    $user_info_data['user_id'] = $user->id;
-                    $user_info_data['type'] = 2;
+                        // Check if a record with the same requirment_id exists
+                        $existingRecord = UserInformation::where('requirment_id', $requirment_id)
+                            ->where('user_id', $user->id)
+                            ->where('type', 2)
+                            ->first();
 
-                    UserInformation::create($user_info_data);
+                        if ($existingRecord) {
+                            // If the record exists, update the answer
+                            $existingRecord->update(['answer' => $answer]);
+                        } else {
+                            // If the record does not exist, create a new record
+                            $user_info_data = [
+                                'requirment_id' => $requirment_id,
+                                'answer' => $answer,
+                                'user_id' => $user->id,
+                                'type' => 2,
+                            ];
+
+                            UserInformation::create($user_info_data);
+                        }
+                    }
                 }
             }
             $msg = __("messages.save successful");
