@@ -59,6 +59,8 @@ class UserResource extends JsonResource
             "api_token" => $this->api_token ?? "",
             "device_token" => $this->user_device->device_token ?? "",
             "images" => count($this->images) == 0 ? null : ImageResource::collection($this->images) ,
+            
+            "partner_more_info"=>UserInformationResource::collection($this->informations->where('type',1)),
 
             "questions"=>DetailsResource::collection($this->informations->where('type',2)),
 
@@ -87,6 +89,21 @@ class DetailsResource extends JsonResource
             'id'=>$this->id,
             'question'=>strval($this->requirment?->title) ?? "",
             'answer'=>$this->answer ?? '',
+        ];
+    }
+}
+
+class UserInformationResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
+        return [
+            "id" => $this->id,
+        "title" => strval($this->requirment?->title) ?? "",
+        "value" => strval($this->requirment_item?->title)  ?? "",
+
+        "title_id" => $this->requirment_id ?? "",
+        "value_id" => $this->requirment_item_id ?? "",
         ];
     }
 }
