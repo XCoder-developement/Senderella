@@ -69,8 +69,8 @@ class UserInformationResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "title" => strval($this->requirment->title) ?? "",
-            "value" => strval($this->requirment_item->title)  ?? "",
+            "title" => strval($this->requirment?->title) ?? "",
+            "value" => strval($this->requirment_item?->title)  ?? "",
 
             "title_id" => $this->requirment_id ?? "",
             "value_id" => $this->requirment_item_id ?? "",

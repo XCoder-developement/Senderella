@@ -71,7 +71,7 @@ class DetailsResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'question'=>strval($this->requirment->title) ?? "",
+            'question'=>strval($this->requirment?->title) ?? "",
             'answer'=>$this->answer ?? '',
         ];
     }
@@ -84,8 +84,8 @@ class UserInformationResource extends JsonResource
     {
         return [
             "id" => $this->id,
-        "title" => strval($this->requirment->title) ?? "",
-        "value" => strval($this->requirment_item->title)  ?? "",
+        "title" => strval($this->requirment?->title) ?? "",
+        "value" => strval($this->requirment_item?->title)  ?? "",
 
         "title_id" => $this->requirment_id ?? "",
         "value_id" => $this->requirment_item_id ?? "",
