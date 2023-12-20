@@ -73,7 +73,7 @@ class UserInformationResource extends JsonResource
             "value" => strval($this->requirment_item?->title)  ?? "",
 
             "title_id" => $this->requirment_id ?? "",
-            "value_id" => $this->requirment_item_id ?? "",
+            "value_id" => intval($this->requirment_item_id),
         ];
     }
 }
