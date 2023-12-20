@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Admin;
 
 use App\Models\BlockReason\BlockReason;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
