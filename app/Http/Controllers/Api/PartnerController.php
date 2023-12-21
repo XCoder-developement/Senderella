@@ -389,4 +389,18 @@ class PartnerController extends Controller
             return $this->returnException($ex->getMessage(), 500);
         }
     }
+
+    public function fetch_nearst_partners(){
+
+        try {
+            $user = auth()->user();
+            $partner = User::where('id', '!=', $user->id)->get();
+            $nearst_partners = $partner->where('state_id' , $user->state_id);
+            $data = PartnerResource::collection($nearst_partners);
+            $msg = "fetch_nearst_partners";
+            return $this->dataResponse($msg, $data , 200);
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
 }

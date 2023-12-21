@@ -225,6 +225,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     //SEARCH PARTNER
     Route::post("search_partner", [SearchPartnerController::class, "search_partner"]);
 
+    //fetch_nearst_partners
+    Route::get("fetch_nearst_partners", [PartnerController::class, "fetch_nearst_partners"]);
+
     //FETCH LAST SEARCH
     Route::post("fetch_last_search", [FetchLastSearchController::class, "fetch_last_search"]);
 
