@@ -317,7 +317,7 @@ class UserController extends Controller
                 $user->update(['is_verify' => 1]);
             }
 
-            $msg = ("account_document_succseed");
+            $msg = ("messages.account_document_succseed");
 
             return $this->successResponse($msg, 200);
         } catch (\Exception $ex) {
@@ -335,7 +335,7 @@ class UserController extends Controller
                 // delte the user data
                 User::destroy('id', $user->id);
 
-                $msg = 'account is delted successfully';
+                $msg = 'message.account is delted successfully';
                 return $this->successResponse($msg, 200);
             }
         } catch (\Exception $ex) {
