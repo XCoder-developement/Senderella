@@ -38,7 +38,7 @@ class UserResource extends JsonResource
             "important_for_marriage"=> $this->important_for_marriage?? "",
             "partner_specifications"=> $this->partner_specifications?? "",
 
-
+//weight and rest details
             "weight" => $this->weight ?? "",
             "height" => $this->height ?? "",
             "notes" => $this->notes ?? "",
