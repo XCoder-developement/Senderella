@@ -43,7 +43,7 @@ class PartnerResource extends JsonResource
             "education_type_id" => intval($this->education_type_id) ?? null,
             "skin_color_title" => $this->color?->title ?? "",
             "education_type_title" => $this->education_type?->title ?? "",
-
+           
             "active" => intval($this->active) ?? "",
             "partner_more_info" => UserInformationResource::collection($this->informations),
         ];
