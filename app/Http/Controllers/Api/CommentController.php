@@ -26,7 +26,7 @@ class CommentController extends Controller
                 'user_id' => $user->id,
                 'comment' => $request->comment
             ]);
-            $msg = 'commented  successfully';
+            $msg = 'message.commented  successfully';
             $data = new CommentResource($comment);
             return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
@@ -56,7 +56,7 @@ class CommentController extends Controller
                 $comment->likes()->create([
                     'user_id' => $user->id,
                 ]);
-                $msg = 'Comment liked successfully';
+                $msg = 'message.Comment liked successfully';
                 $data = new CommentResource($comment);
                 return $this->dataResponse($msg, $data, 200);
             }

@@ -381,7 +381,22 @@ return [
       "comment"=> "Comment",
 
 
-
+      "error, you have to upload images" => "ُError, you have to upload images",
+      "account_document_succseed"  => "Account Document Succseed",
+      "account_document_failed"  => "Account Document Failed",
+      "account is delted successfully"    => "Account is delted successfully",
+      "Post liked successfully"=>            "Post liked successfully",
+      "you already bookmarked this partner"=> "you already bookmarked this partner",
+      "partner unblocked"  => " partner unblocked",
+      "partner blocked" => " partner blocked",
+      "partner disliked" => " partner disliked",
+      "there is no partners"  => "there is no partners",
+      "commented  successfully" => "commented  successfully",
+      "Comment liked successfully" => "Comment liked successfully",
+      "The user was found successfully"=> "The user was found successfully",
+      "Password has been changed successfully" => "Password has been changed successfully",
+      "Sorry, this user does not exist" => "Sorry, this user does not exist",
+      "The old password does not match the user password" => "The old password does not match the user password",
 
 
 ];

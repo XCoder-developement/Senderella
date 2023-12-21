@@ -52,7 +52,7 @@ class PostController extends Controller
                 $post->likes()->create([
                     'user_id' => $user->id,
                 ]);
-                $msg = 'Post liked successfully';
+                $msg = 'message.Post liked successfully';
                 $data = new LikePostResource($post);
                 return $this->dataResponse($msg, $data, 200);
             }

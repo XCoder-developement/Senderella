@@ -29,7 +29,7 @@ class PartnerController extends Controller
 
             $partners = User::whereNot('id', auth()->id())->orderBy('id', 'desc')->paginate(10);
             if (!$partners) {
-                $msg = "there is no partners";
+                $msg = "message.there is no partners";
 
                 return $this->errorResponse($msg, 401);
             }
