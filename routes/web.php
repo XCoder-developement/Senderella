@@ -15,3 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+// Route::get('test-event/{body}', function($body) {
+//     try {
+//         event(new \App\Events\ChatMessageSent($body));
+//         dd('Message Successfully Sent.');
+//     } catch (\Throwable $th) {
+//         throw $th;
+//     }
+// });

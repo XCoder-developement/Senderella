@@ -40,6 +40,7 @@ use App\Http\Controllers\Api\SearchPartnerController;
 use App\Http\Controllers\Api\FetchLastSearchController;
 use App\Http\Controllers\Api\UserInformationController;
 use App\Http\Controllers\Admin\MarriageReadinessController;
+use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\ReportTypeController;
 use App\Http\Controllers\Api\MarriageReadinessController as ApiMarriageReadinessController;
 use App\Http\Controllers\Api\ReportController;
@@ -196,6 +197,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //send_report
     Route::post("send_report", [ReportController::class, "send_report"])->name('send_report');
+
+    //chatting
+    Route::post("create_chat", [ChatController::class, "create_chat"])->name('create_chat');
+    Route::post('send_message', [ChatController::class, 'send_message'])->name('send_message');
+    Route::get('fetch_chats', [ChatController::class, 'fetch_chats'])->name('fetch_chats');
 
 
     //fetch_my_block_partners
