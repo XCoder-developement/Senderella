@@ -29,7 +29,7 @@ class PartnerController extends Controller
 
             $partners = User::whereNot('id', auth()->id())->orderBy('id', 'desc')->paginate(10);
             if (!$partners) {
-                $msg = "there is no partners";
+                $msg = "message.there is no partners";
 
                 return $this->errorResponse($msg, 401);
             }
@@ -298,9 +298,10 @@ class PartnerController extends Controller
         try {
             $user = auth()->user();
             $watched_ids = $user->watched->pluck("partner_id")->toArray();
-            $watched = UserWatch::whereIn('id', $watched_ids)->get();
+            $watched = User::whereIn('id', $watched_ids)->get();
+            // dd($watched);
             $msg = "who_i_watch";
-            return $this->dataResponse($msg, MiniPartnerResource::collection($watched), 200);
+            return $this->dataResponse($msg, PartnerResource::collection($watched), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -313,9 +314,9 @@ class PartnerController extends Controller
         try {
             $user = auth()->user();
             $watcher_ids = $user->watcher->pluck("user_id")->toArray();
-            $watcher = UserWatch::whereIn('id', $watcher_ids)->get();
+            $watcher = User::whereIn('id', $watcher_ids)->get();
             $msg = "who_watch_my_account";
-            return $this->dataResponse($msg, MiniPartnerResource::collection($watcher), 200);
+            return $this->dataResponse($msg, PartnerResource::collection($watcher), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -327,7 +328,7 @@ class PartnerController extends Controller
         try {
             $user = auth()->user();
             $favorited_ids = $user->favorited->pluck("partner_id")->toArray();
-            $favorited = UserWatch::whereIn('id', $favorited_ids)->get();
+            $favorited = User::whereIn('id', $favorited_ids)->get();
             $msg = "who_i_favorite";
             return $this->dataResponse($msg, PartnerResource::collection($favorited), 200);
         } catch (\Exception $ex) {
@@ -384,6 +385,20 @@ class PartnerController extends Controller
             $data = PartnerResource::collection($mostLikedCount);
 
             return $this->dataResponse($msg, $data, 200);
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
+
+    public function fetch_nearst_partners(){
+
+        try {
+            $user = auth()->user();
+            $partner = User::where('id', '!=', $user->id)->get();
+            $nearst_partners = $partner->where('state_id' , $user->state_id);
+            $data = PartnerResource::collection($nearst_partners);
+            $msg = "fetch_nearst_partners";
+            return $this->dataResponse($msg, $data , 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }

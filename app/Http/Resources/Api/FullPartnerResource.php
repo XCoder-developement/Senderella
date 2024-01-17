@@ -31,18 +31,18 @@ class FullPartnerResource extends JsonResource
             "height" => $this->height ?? "",
             "country_id" => intval($this->country_id) ?? "",
             "state_id" => intval($this->state_id) ?? "",
-            "country_title" => $this->country->title ?? "",
-            "state_title" => $this->state->title ?? "",
+            "country_title" => $this->country?->title ?? "",
+            "state_title" => $this->state?->title ?? "",
 
             "marital_status_id" => intval($this->marital_status_id) ?? null,
             "readiness_for_marriages_id" => intval($this->readiness_for_marriages_id) ?? null,
-            "marital_status_title" => $this->marital_status->title ?? "",
-            "marital_status_title" => $this->marital_status->title ?? "",
+            "marital_status_title" => $this->marital_status?->title ?? "",
+            "marital_status_title" => $this->marital_status?->title ?? "",
 
             "skin_color_id" => intval($this->color_id) ?? null,
             "education_type_id" => intval($this->education_type_id) ?? null,
-            "skin_color_title" => $this->color->title ?? "",
-            "education_type_title" => $this->education_type->title ?? "",
+            "skin_color_title" => $this->color?->title ?? "",
+            "education_type_title" => $this->education_type?->title ?? "",
 
             "active" => intval($this->active) ?? "",
             "partner_more_info"=>UserInformationResource::collection($this->informations->where('type',1)),
@@ -59,8 +59,8 @@ class ImageResource extends JsonResource
         return [
             "id" =>$this->id,
             "image" => $this->image_link ?? "",
-            "is_primary" => $this->is_primary ??"",
-            "is_blurry" => $this->is_blurry ??"",
+            "is_primary" => boolval($this->is_primary) ??"",
+            "is_blurry" => boolval($this->is_blurry) ??"",
         ];
     }
 }
@@ -71,7 +71,7 @@ class DetailsResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'question'=>strval($this->requirment->title) ?? "",
+            'question'=>strval($this->requirment?->title) ?? "",
             'answer'=>$this->answer ?? '',
         ];
     }
@@ -84,8 +84,8 @@ class UserInformationResource extends JsonResource
     {
         return [
             "id" => $this->id,
-        "title" => strval($this->requirment->title) ?? "",
-        "value" => strval($this->requirment_item->title)  ?? "",
+        "title" => strval($this->requirment?->title) ?? "",
+        "value" => strval($this->requirment_item?->title)  ?? "",
 
         "title_id" => $this->requirment_id ?? "",
         "value_id" => $this->requirment_item_id ?? "",

@@ -128,6 +128,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     //set_user_images
     Route::post("set_user_images", [UserController::class, "set_user_images"]);
 
+    //delte_account
+    Route::get("delte_account", [UserController::class, "delte_account"]);
+
     //subscribe_package
     Route::post("subscribe_package", [PackageController::class, "subscribe_package"]);
 
@@ -221,6 +224,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //SEARCH PARTNER
     Route::post("search_partner", [SearchPartnerController::class, "search_partner"]);
+
+    //fetch_nearst_partners
+    Route::get("fetch_nearst_partners", [PartnerController::class, "fetch_nearst_partners"]);
 
     //FETCH LAST SEARCH
     Route::post("fetch_last_search", [FetchLastSearchController::class, "fetch_last_search"]);

@@ -225,6 +225,15 @@ class User extends Authenticatable
 
 
 
+
+
+
+
+
+
+
+
+
     //like me and followers partners
     // public function followers(): HasMany
     // {

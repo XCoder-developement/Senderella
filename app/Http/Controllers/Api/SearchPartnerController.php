@@ -18,8 +18,10 @@ class SearchPartnerController extends Controller
     {
         try {
             $search = new SearchService();
+
             $partners = $search->search($request);
             $response = PartnerResource::collection($partners)->response()->getData(true);
+
             $msg = "search_partners";
             return $this->dataResponse($msg, $response, 200);
         } catch (\Exception $e) {

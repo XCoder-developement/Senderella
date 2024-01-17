@@ -430,5 +430,25 @@ return [
     "email" => "البريد الالكتروني",
     "phone" => "الهاتف",
     "whatsApp" => "واتساب",
-    "nationality" => "الجنسية"
+    "nationality" => "الجنسية",
+
+
+    "error, you have to upload images" => "عذرا يجب رفع الصور",
+    "account_document_succseed"  => "تم تحميل الصورة بنجاح",
+    "account_document_failed"  => "فشل تحميل الصورة",
+    "account is delted successfully"    => "تم حذف الحساب بنجاح",
+    "Post liked successfully"=>            "تم الاعجاب بنجاح",
+    "you already bookmarked this partner"=> "تم الاعجاب بالفعل لهذا الشخص",
+    "partner unblocked"  => "تم فك الحظر على الشخص بنجاح",
+    "partner blocked" => "تم حظر الشخص بنجاح",
+    "partner disliked" => "تم عدم اعجاب الشخص بنجاح",
+    "there is no partners"  => "لا يوجد شركاء",
+    "commented  successfully" => "تم تعليق النص بنجاح",
+    "Comment liked successfully" => "تم الاعجاب بنجاح",
+    "The user was found successfully"=> " تم ايجاد المستخدم بنجاح",
+    "Password has been changed successfully" => "تم تغيير كلمة المرور بنجاح",
+    "Sorry, this user does not exist" => "عذرا ، هذا المستخدم غير موجود",
+    "The old password does not match the user password" => "كلمة المرور القديمة غير مطابقة",
+
+
 ];

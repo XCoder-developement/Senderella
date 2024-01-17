@@ -2,11 +2,10 @@
 
 namespace App\Http\Resources\Api;
 
-use App\Models\User\UserImage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class RegisterResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -23,30 +22,28 @@ class UserResource extends JsonResource
             "gender" => intval($this->gender) ?? "",
             "birthday_date" => $this->birthday_date ?? "",
             "nationality_id" => intval($this->nationality_id) ?? "",
-            "is_married_before" => intval($this->is_married_before) ?? "",
+            "is_married_before" => null ,
             "marital_status_id" => intval($this->marital_status_id) ?? "",
             "marriage_readiness_id" => intval($this->marriage_readiness_id) ?? "",
             "education_type_id" => intval($this->education_type_id) ?? "",
             "color_id" => intval($this->color_id) ?? "",
 
-            "skin_color_title" => $this->color?->title ?? "",
-            "education_type_title" => $this->education_type?->title ?? "",
-            "marital_status_title" => $this->marital_status?->title ?? "",
+            "skin_color_title" => $this->color->title ?? "",
+            "education_type_title" => $this->education_type->title ?? "",
+            "marital_status_title" => $this->marital_status->title ?? "",
             // "marital_status_title" => $this->marital_status->title ?? "",
-            "marriage_readiness_title" => $this->marriage_readiness?->title ?? "",
-            "nationality_title" => $this->country?->title ?? "",
-            "important_for_marriage"=> $this->important_for_marriage?? "",
-            "partner_specifications"=> $this->partner_specifications?? "",
+            "readiness_for_marriages_title" => $this->readiness_for_marriages->title ?? "",
+            "nationality_title" => $this->country->title ?? "",
 
-//weight and rest details
+
             "weight" => $this->weight ?? "",
             "height" => $this->height ?? "",
             "notes" => $this->notes ?? "",
             "about_me" => $this->about_me ?? "",
             "country_id" => intval($this->country_id) ?? "",
             "state_id" => intval($this->state_id) ?? "",
-            "country_title" => $this->country?->title ?? "",
-            "state_title" => $this->state?->title ?? "",
+            "country_title" => $this->country->title ?? "",
+            "state_title" => $this->state->title ?? "",
 
             "percentage" => intval($this->percentage) ?? "",
 
@@ -62,10 +59,6 @@ class UserResource extends JsonResource
             "device_token" => $this->user_device->device_token ?? "",
             "images" => count($this->images) == 0 ? null : ImageResource::collection($this->images) ,
 
-            "partner_more_info"=>UserInformationResource::collection($this->informations->where('type',1)),
-
-            "questions"=>DetailsResource::collection($this->informations->where('type',2)),
-
         ];
     }
 }
@@ -79,33 +72,6 @@ class ImageResource extends JsonResource
             "image" => $this->image_link ?? "",
             "is_primary" => boolval($this->is_primary)??"",
             "is_blurry" => boolval($this->is_blurry) ??"",
-        ];
-    }
-}
-
-class DetailsResource extends JsonResource
-{
-    public function toArray(Request $request): array
-    {
-        return [
-            'id'=>$this->id,
-            'question'=>strval($this->requirment?->title) ?? "",
-            'answer'=>$this->answer ?? '',
-        ];
-    }
-}
-
-class UserInformationResource extends JsonResource
-{
-    public function toArray(Request $request): array
-    {
-        return [
-            "id" => $this->id,
-        "title" => strval($this->requirment?->title) ?? "",
-        "value" => strval($this->requirment_item?->title)  ?? "",
-
-        "title_id" => $this->requirment_id ?? "",
-        "value_id" => $this->requirment_item_id ?? "",
         ];
     }
 }

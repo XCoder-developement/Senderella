@@ -66,3 +66,14 @@ use Illuminate\Support\Facades\DB;
      }
 
 
+     function age_range( $ageFrom, $ageTo)
+     {
+         // Calculate birth dates based on the age range
+         $dateTo = now()->subYears($ageFrom)->endOfDay();
+         $dateFrom = now()->subYears($ageTo + 1)->startOfDay(); // Adding 1 year to include the upper bound
+         // Filter records with birth dates within the calculated range
+
+
+         return DB::table('users')->whereBetween('birthday_date', [$dateFrom, $dateTo]);
+
+     }
