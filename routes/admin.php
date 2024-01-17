@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\NewDurationController;
 use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PostController;
@@ -195,6 +196,12 @@ Route::group(
                 //notification
                 Route::get('notifications',  [NotificationController::class , 'index'])->name('notifications');
                 Route::post('notifications/send',[ NotificationController::class, 'send'])->name('notifications.send');
+
+                //new_duration
+                Route::resource('new_durations', NewDurationController::class);
+                Route::post('new_durations/update', [NewDurationController::class, 'update'])->name('new_durations.update');
+
+
             });
         });
     }

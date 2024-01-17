@@ -455,4 +455,7 @@ return [
     "notes" => "ملاحظات",
     "education_type"    => "نوع التعليم",
     "mirital_status"    => "الحالة الزوجية",
+    "new_duration_edit"    => "تعديل مدة لقب حديث",
+    "new_duration"    => "مدة لقب حديث",
+    
 ];
