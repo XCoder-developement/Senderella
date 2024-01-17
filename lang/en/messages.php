@@ -403,5 +403,7 @@ return [
     "notes" => "Notes",
     "education_type"    => "Education Type",
     "mirital_status"    => "Mirital Status",
+    "new_duration_edit"    => "New Duration Edit",
+    "new_duration"    => "New Duration",
 
 ];
