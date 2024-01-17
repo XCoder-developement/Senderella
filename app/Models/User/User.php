@@ -4,6 +4,8 @@ namespace App\Models\User;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Chat\Chat;
+use App\Models\Chat\ChatMessage;
 use App\Models\Color\Color;
 use App\Models\Gift\Gift;
 use App\Models\Post\Post;
@@ -223,16 +225,16 @@ class User extends Authenticatable
         return $this->hasMany(UserBookmark::class, 'partner_id');
     }
 
+    public function chat(): HasMany{
+        // this relationship belongs to chat and ordered by which creating recently
+        return $this->hasMany(Chat::class)->orderBy('created_at', 'asc');
+    }
 
+    public function chat_message(): HasMany{
+        // this relationship belongs to chatmessage and ordered by which creating recently
 
-
-
-
-
-
-
-
-
+        return $this->hasMany(ChatMessage::class)->orderBy('created_at', 'asc');;
+    }
 
     //like me and followers partners
     // public function followers(): HasMany

@@ -32,6 +32,26 @@ class UserDataTable extends DataTable
         //     }
         //     return $status;
         // })
+        ->addColumn('image', function ($model) {
+            $imageModel = $model->images()->where('is_primary', 1)->first();
+
+            if ($imageModel) {
+                $image = asset($imageModel->image);
+                $status = '<img src="' . $image . '">';
+                return $status;
+            }
+
+         else {
+                    $status =__('messages.doesnt have image');
+                }
+                return $status;
+        })
+        ->addColumn('title', function ($model) {
+            return $model->education_type()->first()->title ?? '';
+        })
+        ->addColumn('mirital', function ($model) {
+            return $model->marital_status()->first()->title ?? '';
+        })
         ->editColumn('state', function ($query) {
             return $query->state?->title ?? "";
         })
@@ -80,13 +100,21 @@ class UserDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            ["data" => "image" ,"title" => __('messages.image')],
             ["data" => "name" ,"title" => __('messages.name')],
             ["data" => "email" ,"title" => __('messages.email'),'orderable'=>false,'searchable'=>false],
             ["data" => "phone" ,"title" => __('messages.phone')],
             ["data" => "country" ,"title" => __('messages.country')],
             ["data" => "state" ,"title" => __('messages.state')],
-            ["data" => "nationality" ,"title" => __('messages.nationality')],
-            ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
+            ["data" => "country" ,"title" => __('messages.nationality')],
+            ["data" => "weight" ,"title" => __('messages.weight')],
+            ["data" => "height" ,"title" => __('messages.height')],
+            ["data" => "title" ,"title" => __('messages.education_type')],
+            ["data" => "mirital" ,"title" => __('messages.mirital_status')],
+            ["data" => "about_me" ,"title" => __('messages.about')],
+            // ["data" => "notes" ,"title" => __('messages.notes')],
+
+            // ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
         ];
     }
 

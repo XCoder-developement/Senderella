@@ -450,5 +450,9 @@ return [
     "Sorry, this user does not exist" => "عذرا ، هذا المستخدم غير موجود",
     "The old password does not match the user password" => "كلمة المرور القديمة غير مطابقة",
 
-
+    "height" => "الطول",
+    "about" => "عنه",
+    "notes" => "ملاحظات",
+    "education_type"    => "نوع التعليم",
+    "mirital_status"    => "الحالة الزوجية",
 ];

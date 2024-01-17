@@ -26,7 +26,7 @@
     <script type="text/javascript">
         var i = 0;
         window.Echo.channel('send-chat-message')
-            .listen('.SendChatMessage', (data) => {
+            .listen('.ChatMessageSent', (data) => {
             i++;
             $("#message").append('<div class="alert alert-success">'+i+'.'+data.title+'</div>');
         });

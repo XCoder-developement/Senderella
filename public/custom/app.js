@@ -32,3 +32,4 @@ function dragNdrop1(event) {
 //  //   preview.innerHTML = "";
 //     preview.append(previewImg);
 // });
+
