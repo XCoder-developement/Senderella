@@ -159,6 +159,7 @@ class UserController extends Controller
                     // if (isset($user_image['image']) && is_uploaded_file($user_image['image'])) {
                         $image = upload_image($user_image['image'], "users");
                         $user_image_data['image'] = $image;
+
                     // }
 
 
