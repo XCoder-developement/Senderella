@@ -52,6 +52,12 @@ class UserDataTable extends DataTable
         ->addColumn('mirital', function ($model) {
             return $model->marital_status()->first()->title ?? '';
         })
+        ->addColumn('marriage', function ($model) {
+            return $model->marriage_readiness()->first()->title ?? '';
+        })
+        ->addColumn('color', function ($model) {
+            return $model->color()->first()->title ?? '';
+        })
         ->editColumn('state', function ($query) {
             return $query->state?->title ?? "";
         })
@@ -111,10 +117,10 @@ class UserDataTable extends DataTable
             ["data" => "height" ,"title" => __('messages.height')],
             ["data" => "title" ,"title" => __('messages.education_type')],
             ["data" => "mirital" ,"title" => __('messages.mirital_status')],
+            ["data" => "marriage" ,"title" => __('messages.marriage_readiness')],
             ["data" => "about_me" ,"title" => __('messages.about')],
-            // ["data" => "notes" ,"title" => __('messages.notes')],
 
-            // ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
+            ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
         ];
     }
 

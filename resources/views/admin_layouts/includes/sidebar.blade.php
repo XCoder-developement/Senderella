@@ -366,6 +366,12 @@
                                     </li>
 
                                     <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('notifications.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.notifications')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="{{route('new_durations.index')}}" class="menu-link" >
                                             <span class="menu-text">{{__('messages.new_duration')}}</span>
                                         </a>

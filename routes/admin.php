@@ -76,6 +76,7 @@ Route::group(
 
                 //users
                 Route::resource('users', UserController::class);
+                Route::post('users/active/{id}', [UserController::class, 'active'])->name('users.active');
 
                 //states
                 Route::resource('states', StateController::class);
@@ -194,7 +195,7 @@ Route::group(
 
 
                 //notification
-                Route::get('notifications',  [NotificationController::class , 'index'])->name('notifications');
+                Route::get('notifications',  [NotificationController::class , 'index'])->name('notifications.index');
                 Route::post('notifications/send',[ NotificationController::class, 'send'])->name('notifications.send');
 
                 //new_duration

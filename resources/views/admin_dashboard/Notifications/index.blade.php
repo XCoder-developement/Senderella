@@ -55,8 +55,8 @@
                         </label>
                         <textarea class="form-control"
                         required
-                        name="text" rows="5"></textarea>
-                         @error('text') <span class="invalid-feedback">
+                        name="body" rows="5"></textarea>
+                         @error('body') <span class="invalid-feedback">
                 {{ $message }}</span> @enderror
                     </div>
                 </div>

@@ -405,5 +405,7 @@ return [
     "mirital_status"    => "Mirital Status",
     "new_duration_edit"    => "New Duration Edit",
     "new_duration"    => "New Duration",
-
+    "send_notification"    => "Send Notification Done",
+    "marriage_readiness"    => "Marriage Readiness",
+    
 ];

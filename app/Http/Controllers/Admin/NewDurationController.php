@@ -28,6 +28,6 @@ class NewDurationController extends Controller
         } else {
             $duration->save();
         }
-        return redirect()->back();
+        return redirect()->back()->with(['success' => __("messages.editmessage")]);
     }
 }
