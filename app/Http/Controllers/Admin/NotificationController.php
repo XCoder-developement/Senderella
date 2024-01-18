@@ -30,16 +30,15 @@ class NotificationController extends Controller
     {
 
         $title = $request->title;
-        $text = $request->text;
+        $text = $request->body;
 
 
         $notify_data["title"] = $title;
-        $notify_data["text"] = $text;
+        $notify_data["body"] = $text;
 
         $notification  = Notification::create($notify_data);
-
         $users = User::whereHas('user_device' ,function($q){
-           $q->whereNotNull('device_token');
+            $q->whereNotNull('device_token');
         })->get();
 
         foreach($users as $user){
@@ -53,8 +52,7 @@ class NotificationController extends Controller
             }
 
 
-        return redirect()->route($this->route."index")
-        ->with(['success'=> __("messages.createmessage")]);
+        return redirect()->back()->with(['success'=> __("messages.send_notification")]);
     }
 
 }

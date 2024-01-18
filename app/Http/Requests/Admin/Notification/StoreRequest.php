@@ -22,12 +22,9 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        $validators = [];
-
-        foreach (LaravelLocalization::getSupportedLocales() as
-        $localeCode => $properties) {
-             $validators['title-' . $localeCode] = ['required'];
-         }
-        return  $validators;
+        return [
+            'title' => 'required',
+            'body' => 'required',
+        ];
     }
 }
