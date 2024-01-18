@@ -32,7 +32,12 @@ class UserController extends Controller
     {
         //activate the user
         $user = User::whereId($id)->first();
-        $user->update(['trusted' => 1]);
-        return redirect()->back()->with(['success' => __('messages.activated')]);
+        if($user->trusted == 0){
+            $user->update(['trusted' => 1]);
+            return response()->json(['status' => true]);
+        }else{
+            return response()->json(['status' => false]);
+
+        }
     }
 }

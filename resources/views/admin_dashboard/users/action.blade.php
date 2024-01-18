@@ -62,42 +62,48 @@
         }
     </script>
 
+<script>
+    function activeUser(id) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
-    <script>
-        function activeUser(id) {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            Swal.fire({
-                title: "{{ __('messages.areyousure') }}",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                cancelButtonText: "{{ __('messages.cancel') }}",
-                confirmButtonText: "{{ __('messages.yessure') }}",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: 'POST',
-                        url: `users/active/${id}`,
-                        dataType: "Json",
-                        success: function(result) {
-                            if (result.status == true) {
-                                Swal.fire(
-                                    "{{ __('messages.actived') }}",
-                                    "{{ __('messages.doneactivation') }}",
-                                    'success'
-                                )
-                                table.ajax.reload();
-                            }
+        Swal.fire({
+            title: "{{ __('messages.areyousure') }}",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: "{{ __('messages.cancel') }}",
+            confirmButtonText: "{{ __('messages.yessure') }}",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: `users/active/${id}`,
+                    dataType: "json",
+                    success: function(result) {
+                        if (result.status === true) {
+                            Swal.fire(
+                                "{{ __('messages.actived') }}",
+                                "{{ __('messages.doneactivation') }}",
+                                'success'
+                            )
+                            location.reload();
+                        } else {
+                            Swal.fire(
+                                "{{ __('messages.actived') }}",
+                                "{{ __('messages.activitedbefore') }}",
+                                'error'
+                            )
+                            location.reload();
                         }
-                    });
-                }
-            })
-            
-        }
-    </script>
+                    }
+                });
+            }
+        })
+
+    }
+</script>
