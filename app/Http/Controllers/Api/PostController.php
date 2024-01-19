@@ -17,13 +17,20 @@ class PostController extends Controller
     public function fetch_post()
     {
         try {
-            $post = Post::whereStatus(1)->first();
-            if (!$post) {
+            $posts = Post::where('is_read', 0)->pluck()->toArray();
+            if (!$posts) {
                 return $this->errorResponse('no posts found', 404);
-            }
+            }else{
+                foreach ($posts as $post) {
+                    $post->update(  [
+                        'is_read' => 1
+                    ]);
+                }
+                
             $msg = "fetch_posts";
-            $data = new PostResource($post);
+            $data = new PostResource($posts);
             return $this->dataResponse($msg, $data, 200);
+        }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
