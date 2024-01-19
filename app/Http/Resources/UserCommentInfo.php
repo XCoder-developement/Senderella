@@ -23,6 +23,7 @@ class UserCommentInfo extends JsonResource
             'age' => $this->user_age ?? "",
             "image" => $this->image_link ?? "",
             'trusted' => $this->trusted,
+            'is_verify' => $this->is_verify,
             'country' => new UserCountryResource($this->country),
             'city' => new UserStateResource($this->state),
         ];

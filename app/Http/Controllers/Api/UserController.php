@@ -120,6 +120,12 @@ class UserController extends Controller
                         ->where('type', 1)
                         ->first();
 
+                        if($user_information["requirment_item_id"]){
+                    $requirment_item_id = $user_information["requirment_item_id"];
+                        }else{
+                            $requirment_item_id = 'message.not_answered'
+                        }
+                        
                     if ($existingRecord) {
                         // If the record exists, update the existing record
                         $existingRecord->update([
@@ -149,6 +155,12 @@ class UserController extends Controller
                             ->where('user_id', $user->id)
                             ->where('type', 2)
                             ->first();
+
+                        if ($question["answer"]){
+                            $answer = $question["answer"];
+                        }else{
+                            $answer = 'message.not_answered';
+                        }
 
                         if ($existingRecord) {
                             // If the record exists, update the answer

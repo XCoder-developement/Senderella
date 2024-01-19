@@ -18,6 +18,7 @@ class ReportController extends Controller
                 "partner_id"=>"required|exists:users,id",
                 "report_type_ids" => "required|array",
                 "reason" => "required",
+                "image" => "sometimes",
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -26,14 +27,16 @@ class ReportController extends Controller
                 return $this->getvalidationErrors($validator);
             }
 
-
+            if ($request->hasFile('image')) {
+                $data["image"] = upload_image($request->file('image'), "reports");
+            }
                 $data['user_id'] =auth()->id();
                 $data['reason'] =$request->reason;
                 $data['partner_id'] = $request->partner_id;
                 $report = Report::create($data);
                 $report->report_types()->attach($request->report_type_ids);
 
-
+            dd($data);
             $msg = __("messages.save successful");
 
             return $this->successResponse($msg, 200);

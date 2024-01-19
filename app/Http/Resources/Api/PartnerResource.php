@@ -32,8 +32,8 @@ class PartnerResource extends JsonResource
             "notes" => $this->notes ?? "",
             "is_married_before" => intval($this->is_married_before) ?? 0,
 
-            "weight" => $this->weight ?? "",
-            "height" => $this->height ?? "",
+            "weight" => intval($this->weight) ?? "",
+            "height" => intval($this->height) ?? "",
             "country_id" => intval($this->country_id) ?? "",
             "state_id" => intval($this->state_id) ?? "",
             "country_title" => $this->country?->title ?? "",
