@@ -358,32 +358,46 @@ class UserController extends Controller
         }
     }
 
-    public function entry_status()
+    public function entry_status(Request $request)
     {
         try {
+            $rules = [
+                "status" => "required|integer",
+            ];
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return $this->getvalidationErrors($validator);
+            }
 
             $entry_status = UserLastShow::whereUserId(auth()->id())->first();
             if(!$entry_status){
-                $data['status'] = 1;
-                $data['start_date'] = Carbon::now();
+
+                $data['status'] = $request->status;
+                if($request->status == 1){
+                    $data['start_date'] = Carbon::now();
+                    $data['end_date'] = null;
+                }elseif($request->status == 0){
+                    $data['start_date'] = null;
+                    $data['end_date'] = Carbon::now();
+                }
                 $data['user_id'] = auth()->id();
                 UserLastShow::create($data);
-                auth()->user()->update(['active' => 1]);
-            }elseif($entry_status && $entry_status->status == 0){
-                $data['status'] = 1;
-                $data['start_date'] = Carbon::now();
-                $data['end_date'] = $entry_status->end_date ?? null;
+                auth()->user()->update(['active' =>  $request->status]);
+
+            }elseif($entry_status){
+
+                $data['status'] = $request->status;
+                if($request->status == 1){
+                    $data['start_date'] = Carbon::now();
+                    $data['end_date'] = null;
+                }elseif($request->status == 0){
+                    $data['start_date'] = $entry_status->start_date ?? null;
+                    $data['end_date'] = Carbon::now();
+                }
 
                 $entry_status->update($data);
-                auth()->user()->update(['active' => 1]);
-
-            }
-            elseif($entry_status && $entry_status->status == 1){
-                $data['status'] = 0;
-                $data['start_date'] = $entry_status->end_date ?? null;
-                $data['end_date'] = Carbon::now();
-                $entry_status->update($data);
-                auth()->user()->update(['active' => 0]);
+                auth()->user()->update(['active' => $request->status]);
 
             }
 
@@ -404,7 +418,7 @@ class UserController extends Controller
             $data['is_notification_shown'] = intval($user->is_notification_shown) ?? '';
             $data['is_post_shown'] = intval($user->is_post_shown) ?? '';
             $data['active'] = intval($user->active) ?? '';
-            $data['last_active'] = $user->last_shows?->first()->end_date ?? '';
+            $data['last_active'] = $user->last_shows?->first()->end_date ? 'last active ' . $user->last_shows?->first()->end_date  : 'active now';
 
             $msg = 'new_partner_activity';
             return $this->dataResponse($msg,$data, 200);
