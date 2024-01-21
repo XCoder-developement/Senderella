@@ -18,18 +18,17 @@ class FetchLastSearchController extends Controller
         try {
             $user = auth()->id();
             $fetch_search = UserSearch::with('requirments')->where('user_id', $user)->latest()->first();
+            if (!$fetch_search) {
+                $msg = "message.there is no last search";
+                return $this->errorResponse($msg, 500);
+            }
+            
             $params = SearchPartnerParams::buildBody($fetch_search);
             $search = new SearchService();
             $partners = $search->search($params->toMap(), $with_store = false);
-            if($partners->isEmpty()){
-                $msg = "fetch_last_search";
-                return $this->dataResponse($msg, [], 200);
-            }
-            else{
             $response = PartnerResource::collection($partners)->response()->getData(true);
             $msg = "fetch_last_search";
             return $this->dataResponse($msg, $response, 200);
-        }
         } catch (\Exception $e) {
             return $this->returnException($e->getMessage(), 500);
         }

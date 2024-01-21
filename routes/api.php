@@ -246,4 +246,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     //new_partner_activity
     Route::get("new_partner_activity", [UserController::class, "new_partner_activity"]);
 
+    //notifications
+    Route::get("fetch_notifications", [NotificationController::class, "fetch_notifications"]);
+
 });

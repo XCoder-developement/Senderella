@@ -11,6 +11,8 @@ use App\Http\Resources\PostResource;
 use App\DataTables\Admin\PostDataTable;
 use App\Http\Requests\Admin\Post\PostRequest;
 use App\Models\User\User;
+use App\Models\User\UserNotification;
+use App\Services\SendNotification;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class PostController extends Controller
@@ -43,6 +45,11 @@ class PostController extends Controller
         foreach($users as $user){
             $user->update(['is_post_shown' => $user->is_post_shown + 1]);
             $user->update(['is_notification_shown' => $user->is_notification_shown + 1]);
+            SendNotification::send($user->device_token ?? "",__('messages.new_post'),__('messages.new_post'));
+            UserNotification::create([
+                'user_id' => $user->id,
+                'title' => __('messages.new_post'),
+            ]);
         }
 
         if ($request->has('images') && count($request->images) > 0) {
