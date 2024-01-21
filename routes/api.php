@@ -239,4 +239,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //account_document
     Route::post("account_document", [UserController::class, "account_document"]);
+
+    //entry_status
+    Route::get("entry_status", [UserController::class, "entry_status"]);
+
 });

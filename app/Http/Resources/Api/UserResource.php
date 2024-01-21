@@ -57,6 +57,8 @@ class UserResource extends JsonResource
 
 
             // "is_verified" => $this->is_verified ?? "",
+            "active" => intval($this->active) ?? "",
+            "last_active" => $this->last_shows?->first()->end_date ?? '',
 
             "api_token" => $this->api_token ?? "",
             "device_token" => $this->user_device->device_token ?? "",
