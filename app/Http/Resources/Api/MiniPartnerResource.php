@@ -19,7 +19,6 @@ class MiniPartnerResource extends JsonResource
             "name"=>$this->name ??"",
             // "images" => $this->images !== null && count($this->images) == 0 ? null : ImageResource::collection($this->images),
             "age"=>intval($this->age)??"",
-            "last_active"=>$this->last_active ?? '',
             // "is_follow" => $this->is_follow(auth()->id()) ?? 0,
             "is_verify"=>$this->is_verify ??0,
             "trusted"=>$this->trused ??0,
@@ -27,7 +26,7 @@ class MiniPartnerResource extends JsonResource
             "notes" =>$this->notes ??"",
             "is_married_before"=>intval ($this->is_married_before),
             "active" => intval($this->active) ?? "",
-            "last_active" => $this->last_shows?->first()->end_date ?? '',
+            "last_active" => $this->last_shows?->first()->end_date ? $this->last_shows?->first()->end_date  : 'active now',
 
             "weight"=>$this->weight ??"",
             "height"=>$this->height ??"",
