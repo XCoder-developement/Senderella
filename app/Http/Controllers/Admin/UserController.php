@@ -22,7 +22,7 @@ class UserController extends Controller
     {
         $user = User::whereId($id)->first();
 
-       delete_image($user->image);
+        delete_image($user->image);
 
         $user->delete();
         return response()->json(['status' => true]);
@@ -32,12 +32,11 @@ class UserController extends Controller
     {
         //activate the user
         $user = User::whereId($id)->first();
-        if($user->trusted == 0){
+        if ($user->trusted == 0) {
             $user->update(['trusted' => 1]);
             return response()->json(['status' => true]);
-        }else{
+        } else {
             return response()->json(['status' => false]);
-
         }
     }
 }

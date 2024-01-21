@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use App\DataTables\Admin\PostDataTable;
 use App\Http\Requests\Admin\Post\PostRequest;
+use App\Models\User\User;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class PostController extends Controller
@@ -18,7 +19,7 @@ class PostController extends Controller
     protected $route = 'posts.';
     public function index(PostDataTable $dataTable)
     {
-        
+
         return $dataTable->render($this->view . 'index');
     }
 
@@ -32,11 +33,18 @@ class PostController extends Controller
 
     public function store(PostRequest $request)
     {
+        $users = User::all();
         foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
             $data[$localeCode] = ['post' => $request['post-' . $localeCode]];
         }
         $data['admin_id'] = auth()->user()->id ?? null;
         $post = Post::create($data);
+
+        foreach($users as $user){
+            $user->update(['is_post_shown' => $user->is_post_shown + 1]);
+            $user->update(['is_notification_shown' => $user->is_notification_shown + 1]);
+        }
+
         if ($request->has('images') && count($request->images) > 0) {
             foreach ($request->images as $image) {
                 $image_data = upload_image($image, "posts");
@@ -45,7 +53,6 @@ class PostController extends Controller
                     'post_id' => $post->id,
                 ]);
             }
-
         }
         return redirect()->route($this->route . "index")
             ->with(['success' => __("messages.createmessage")]);
