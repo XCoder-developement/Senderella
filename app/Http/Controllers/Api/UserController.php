@@ -125,7 +125,7 @@ class UserController extends Controller
                         }else{
                             $requirment_item_id = 'message.not_answered'
                         }
-                        
+
                     if ($existingRecord) {
                         // If the record exists, update the existing record
                         $existingRecord->update([

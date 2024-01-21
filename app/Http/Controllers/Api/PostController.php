@@ -16,25 +16,30 @@ class PostController extends Controller
 
     public function fetch_post()
     {
+        $user = auth()->user();
         try {
-            $posts = Post::where('is_read', 0)->pluck()->toArray();
-            if (!$posts) {
-                return $this->errorResponse('no posts found', 404);
-            }else{
-                foreach ($posts as $post) {
-                    $post->update(  [
-                        'is_read' => 1
-                    ]);
-                }
-                
+            $post = Post::where('status', 1)
+                // ->where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->with('user')
+                // ->whereHas('user', function ($query) {
+                //     $query->where('is_post_shown', '!=', 0);
+                // })
+                ->get();
+            // dd($user->is_post_shown);
+            if ($post->isEmpty()) {
+                return $this->errorResponse('no posts found', 500);
+            }
+            $user->update(['is_post_shown' => 0]);
+
             $msg = "fetch_posts";
-            $data = new PostResource($posts);
+            $data = PostResource::collection($post);;
             return $this->dataResponse($msg, $data, 200);
-        }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
     }
+
     public function likePost(LikePostRequest $request)
     {
         try {
@@ -66,6 +71,5 @@ class PostController extends Controller
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
-
     }
 }

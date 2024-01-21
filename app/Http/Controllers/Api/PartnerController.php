@@ -102,6 +102,8 @@ class PartnerController extends Controller
                 $data['user_id'] =  $user_id;
                 $data['partner_id'] =  $partner_id;
 
+                $partner->update(['is_like_shown' => $partner->is_like_shown+1]);
+                $partner->update(['is_notification_shown' => $partner->is_notification_shown+1]);
 
                 UserLike::create($data);
                 //responce
@@ -111,6 +113,8 @@ class PartnerController extends Controller
             } elseif ($like_partner) {
 
                 $like_partner->delete();
+                $partner->update(['is_like_shown' => $partner->is_like_shown-1]);
+
                 $msg = __('messages.partner disliked');
                 $data = new PartnerResource($partner);
                 return $this->dataResponse($msg, $data, 200);

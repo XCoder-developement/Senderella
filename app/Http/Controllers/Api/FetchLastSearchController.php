@@ -21,9 +21,15 @@ class FetchLastSearchController extends Controller
             $params = SearchPartnerParams::buildBody($fetch_search);
             $search = new SearchService();
             $partners = $search->search($params->toMap(), $with_store = false);
+            if($partners->isEmpty()){
+                $msg = "fetch_last_search";
+                return $this->dataResponse($msg, [], 200);
+            }
+            else{
             $response = PartnerResource::collection($partners)->response()->getData(true);
             $msg = "fetch_last_search";
             return $this->dataResponse($msg, $response, 200);
+        }
         } catch (\Exception $e) {
             return $this->returnException($e->getMessage(), 500);
         }
