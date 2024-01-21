@@ -407,5 +407,9 @@ return [
     "new_duration"    => "New Duration",
     "send_notification"    => "Send Notification Done",
     "marriage_readiness"    => "Marriage Readiness",
-    
+    "new_post"    => "New Post",
+    "new like"    => "New Like",
+    "someone_viewed"    => "Someone Watched Your Profile",
+    "bookmarked_by_user" => "Bookmarked By User",
+    "there is no last search"    => "There is no last search",
 ];

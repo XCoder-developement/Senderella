@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('is_post_shown')->nullable();
             $table->string('is_like_shown')->nullable();
             $table->string('is_notification_shown')->nullable();
+            $table->string('is_bookmark_shown')->nullable();
+            $table->string('is_watch_shown')->nullable();
         });
     }
 

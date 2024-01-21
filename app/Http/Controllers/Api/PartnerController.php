@@ -15,7 +15,9 @@ use App\Http\Resources\Api\PartnerResource;
 use App\Models\User\UserBlock;
 use App\Models\User\UserBookmark;
 use App\Models\User\UserLike;
+use App\Models\User\UserNotification;
 use App\Models\User\UserWatch;
+use App\Services\SendNotification;
 use Illuminate\Support\Facades\DB;
 
 class PartnerController extends Controller
@@ -105,6 +107,11 @@ class PartnerController extends Controller
                 $partner->update(['is_like_shown' => $partner->is_like_shown+1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown+1]);
 
+                SendNotification::send($partner->device_token ?? "",__('messages.new like'),__('messages.new like'));
+                UserNotification::create([
+                    'user_id' => $partner->id,
+                    'title' => __('messages.new like'),
+                ]);
                 UserLike::create($data);
                 //responce
                 $msg = "like_partner";
@@ -186,6 +193,7 @@ class PartnerController extends Controller
             $user_id = auth()->id();
             $partner_id = $request->partner_id;
 
+
             $bookmark_partner = UserBookmark::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
 
             if ($bookmark_partner) {
@@ -199,6 +207,13 @@ class PartnerController extends Controller
 
                 $partner = User::whereId($partner_id)->first();
                 //responce
+                $partner->update(['is_bookmark_shown' => $partner->is_bookmark_shown+1]);
+                SendNotification::send($partner->device_token ?? "",__('messages.bookmarked_by_user'),__('messages.bookmarked_by_user'));
+                UserNotification::create([
+                    'user_id' => $partner->id,
+                    'title' => __('messages.bookmarked_by_user'),
+                ]);
+
                 $msg = "bookmark_partner";
                 $data = new PartnerResource($partner);
                 return $this->dataResponse($msg, $data, 200);
@@ -224,11 +239,20 @@ class PartnerController extends Controller
 
 
 
+
             $data['user_id'] =  $user_id;
             $data['partner_id'] =  $partner_id;
             UserWatch::create($data);
 
             $partner = User::whereId($partner_id)->first();
+            $partner->update(['is_watch_shown' => $partner->is_watch_shown+1]);
+            $partner->update(['is_notification_shown' => $partner->is_notification_shown+1]);
+            SendNotification::send($partner->device_token ?? "", __('messages.someone_viewed'), __("messages.someone_viewed"));
+            UserNotification::create([
+                'user_id' => $partner->id,
+                'title' => __('messages.someone_viewed'),
+            ]);
+
             //responce
             $msg = "user_watch";
             $data = new PartnerResource($partner);

@@ -13,7 +13,7 @@ class Notification extends Model
     public $translatedAttributes = ['title', 'body'];
 
     protected $translationForeignKey = 'notification_id';
-    protected $fillable = ['title','body'];
+    // protected $fillable = ['title','body'];
     protected $table = 'notifications';
     protected $guarded =[];
 
