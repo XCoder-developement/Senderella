@@ -243,4 +243,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     //entry_status
     Route::get("entry_status", [UserController::class, "entry_status"]);
 
+    //new_partner_activity
+    Route::get("new_partner_activity", [UserController::class, "new_partner_activity"]);
+
 });

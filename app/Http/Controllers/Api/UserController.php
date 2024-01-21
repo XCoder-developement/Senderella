@@ -400,6 +400,14 @@ class UserController extends Controller
         try {
 
             $user = auth()->user();
+            $data['is_like_shown'] = intval($user->is_like_shown) ?? '';
+            $data['is_notification_shown'] = intval($user->is_notification_shown) ?? '';
+            $data['is_post_shown'] = intval($user->is_post_shown) ?? '';
+            $data['active'] = intval($user->active) ?? '';
+            $data['last_active'] = $user->last_shows?->first()->end_date ?? '';
+
+            $msg = 'new_partner_activity';
+            return $this->dataResponse($msg,$data, 200);
 
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
