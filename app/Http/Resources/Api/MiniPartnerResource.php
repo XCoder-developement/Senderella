@@ -26,6 +26,8 @@ class MiniPartnerResource extends JsonResource
             "is_new"=>intval($this->is_new)??0,
             "notes" =>$this->notes ??"",
             "is_married_before"=>intval ($this->is_married_before),
+            "active" => intval($this->active) ?? "",
+            "last_active" => $this->last_shows?->first()->end_date ?? '',
 
             "weight"=>$this->weight ??"",
             "height"=>$this->height ??"",

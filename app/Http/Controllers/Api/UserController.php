@@ -9,7 +9,9 @@ use App\Models\User\User;
 use App\Models\User\UserDocument;
 use App\Models\User\UserImage;
 use App\Models\User\UserInformation;
+use App\Models\User\UserLastShow;
 use App\Traits\ApiTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Process;
@@ -123,9 +125,9 @@ class UserController extends Controller
                         if($user_information["requirment_item_id"]){
                     $requirment_item_id = $user_information["requirment_item_id"];
                         }else{
-                            $requirment_item_id = 'message.not_answered'
+                            $requirment_item_id = 'message.not_answered';
                         }
-                        
+
                     if ($existingRecord) {
                         // If the record exists, update the existing record
                         $existingRecord->update([
@@ -351,6 +353,54 @@ class UserController extends Controller
                 $msg = 'message.account is delted successfully';
                 return $this->successResponse($msg, 200);
             }
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
+
+    public function entry_status()
+    {
+        try {
+
+            $entry_status = UserLastShow::whereUserId(auth()->id())->first();
+            if(!$entry_status){
+                $data['status'] = 1;
+                $data['start_date'] = Carbon::now();
+                $data['user_id'] = auth()->id();
+                UserLastShow::create($data);
+                auth()->user()->update(['active' => 1]);
+            }elseif($entry_status && $entry_status->status == 0){
+                $data['status'] = 1;
+                $data['start_date'] = Carbon::now();
+                $data['end_date'] = $entry_status->end_date ?? null;
+
+                $entry_status->update($data);
+                auth()->user()->update(['active' => 1]);
+
+            }
+            elseif($entry_status && $entry_status->status == 1){
+                $data['status'] = 0;
+                $data['start_date'] = $entry_status->end_date ?? null;
+                $data['end_date'] = Carbon::now();
+                $entry_status->update($data);
+                auth()->user()->update(['active' => 0]);
+
+            }
+
+            $msg = 'status updated successfully';
+                return $this->successResponse($msg, 200);
+
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
+
+    public function new_partner_activity()
+    {
+        try {
+
+            $user = auth()->user();
+
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }

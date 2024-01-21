@@ -233,7 +233,11 @@ class User extends Authenticatable
     public function chat_message(): HasMany{
         // this relationship belongs to chatmessage and ordered by which creating recently
 
-        return $this->hasMany(ChatMessage::class)->orderBy('created_at', 'asc');;
+        return $this->hasMany(ChatMessage::class)->orderBy('created_at', 'asc');
+    }
+
+    public function last_shows(): HasMany{
+        return $this->hasMany(UserLastShow::class);
     }
 
     //like me and followers partners
