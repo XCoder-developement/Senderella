@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('new_durations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('new_duration')->nullable()->comment('the duration for the new tag');
+            $table->string('new_duration')->nullable()->comment('the duration for the new tag')->default(0);
             $table->timestamps();
         });
     }
