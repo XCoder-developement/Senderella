@@ -417,6 +417,8 @@ class UserController extends Controller
             $data['is_like_shown'] = intval($user->is_like_shown) ?? '';
             $data['is_notification_shown'] = intval($user->is_notification_shown) ?? '';
             $data['is_post_shown'] = intval($user->is_post_shown) ?? '';
+            $data['is_bookmark_shown'] = intval($user->is_bookmark_shown) ?? '';
+            $data['is_watch_shown'] = intval($user->is_watch_shown) ?? '';
             $data['active'] = intval($user->active) ?? '';
             $data['last_active'] = $user->last_shows?->first()->end_date ? 'last active ' . $user->last_shows?->first()->end_date  : 'active now';
 
