@@ -44,6 +44,10 @@ class FullPartnerResource extends JsonResource
             "education_type_id" => intval($this->education_type_id) ?? null,
             "skin_color_title" => $this->color?->title ?? "",
             "education_type_title" => $this->education_type?->title ?? "",
+            
+            "important_for_marriage" => $this->important_for_marriage ?? "message.not_answered",
+            "partner_specifications"    => $this->partner_specifications ?? "message.not_answered",
+            "about_me" => $this->about_me ?? "message.not_answered",
 
             "active" => intval($this->active) ?? "",
             "partner_more_info"=>UserInformationResource::collection($this->informations->where('type',1)),
