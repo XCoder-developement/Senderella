@@ -28,7 +28,7 @@ class PostController extends Controller
                 ->first();
             // dd($user->is_post_shown);
             if (!$post) {
-                return $this->errorResponse('no posts found', 500);
+                return $this->dataResponse('no posts found', [] , 200);
             }
             $user->update(['is_post_shown' => 0]);
 
