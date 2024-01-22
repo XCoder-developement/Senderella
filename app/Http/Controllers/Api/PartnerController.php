@@ -120,7 +120,9 @@ class PartnerController extends Controller
             } elseif ($like_partner) {
 
                 $like_partner->delete();
-                // $partner->update(['is_like_shown' => $partner->is_like_shown-1]);
+                if($partner->is_like_shown >0){
+                    $partner->update(['is_like_shown' => $partner->is_like_shown-1]);
+                }
 
                 $msg = __('messages.partner disliked');
                 $data = new PartnerResource($partner);
