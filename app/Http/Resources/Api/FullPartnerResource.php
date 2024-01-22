@@ -112,7 +112,7 @@ class UserInformationResource extends JsonResource
 
         return [
             "id" => $this->id,
-        "title" => intval($this->requirment?->title) ?? "",
+        "title" => ($this->requirment?->title) ?? "",
         "value" => ($ques)  ?? "Not Answered",
 
         "title_id" => intval($this->requirment_id) ?? "",
