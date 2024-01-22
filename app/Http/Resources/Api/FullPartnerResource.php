@@ -44,11 +44,9 @@ class FullPartnerResource extends JsonResource
             "education_type_id" => intval($this->education_type_id) ?? null,
             "skin_color_title" => $this->color?->title ?? "",
             "education_type_title" => $this->education_type?->title ?? "",
-            
             "important_for_marriage" => $this->important_for_marriage ?? "message.not_answered",
             "partner_specifications"    => $this->partner_specifications ?? "message.not_answered",
             "about_me" => $this->about_me ?? "message.not_answered",
-
             "active" => intval($this->active) ?? "",
             "partner_more_info"=>UserInformationResource::collection($this->informations->where('type',1)),
             "questions"=>DetailsResource::collection($this->informations->where('type',2)),
@@ -89,11 +87,11 @@ class UserInformationResource extends JsonResource
     {
         return [
             "id" => $this->id,
-        "title" => strval($this->requirment?->title) ?? "",
-        "value" => strval($this->requirment_item?->title)  ?? "",
+        "title" => strval($this->requirment?->title) ?? "message.not_answered",
+        "value" => strval($this->requirment_item?->title)  ?? "message.not_answered",
 
-        "title_id" => $this->requirment_id ?? "",
-        "value_id" => $this->requirment_item_id ?? "",
+        "title_id" => $this->requirment_id ?? "message.not_answered",
+        "value_id" => $this->requirment_item_id ?? "message.not_answered",
         ];
     }
 }
