@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\Api;
 
+use App\Models\Requirment\Requirment;
+use App\Models\User\UserInformation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -49,7 +51,7 @@ class FullPartnerResource extends JsonResource
             "about_me" => $this->about_me ?? "message.not_answered",
             "active" => intval($this->active) ?? "",
             "partner_more_info"=>UserInformationResource::collection($this->informations->where('type',1)),
-            "questions"=>DetailsResource::collection($this->informations->where('type',2)),
+            "questions"=>DetailsResource::collection(Requirment::where('answer_type',2)->get()),
         ];
     }
 }
@@ -72,10 +74,11 @@ class DetailsResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $info = UserInformation::where('requirment_id',$this->id)->where('type',2)->first()?->value('answer');
         return [
             'id'=>$this->id,
-            'question'=>strval($this->requirment?->title) ?? "",
-            'answer'=>$this->answer ?? '',
+            'question'=>strval($this->title) ?? "",
+            'answer'=>$info ?? 'message.not_answered',
         ];
     }
 }
@@ -87,10 +90,10 @@ class UserInformationResource extends JsonResource
     {
         return [
             "id" => $this->id,
-        "title" => strval($this->requirment?->title) ?? "message.not_answered",
+        "title" => strval($this->requirment?->title) ?? "",
         "value" => strval($this->requirment_item?->title)  ?? "message.not_answered",
 
-        "title_id" => $this->requirment_id ?? "message.not_answered",
+        "title_id" => $this->requirment_id ?? "",
         "value_id" => $this->requirment_item_id ?? "message.not_answered",
         ];
     }
