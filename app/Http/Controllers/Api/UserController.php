@@ -92,22 +92,32 @@ class UserController extends Controller
             if ($request->notes) {
                 $p++;
                 $data['percentage'] = intval((($p + 1) / 21) * 100);
+            }else{
+                $data[$request->notes] = 'message.not_answered';
             }
             if ($request->about_me) {
                 $p++;
                 $data['percentage'] = intval((($p + 1) / 21) * 100);
+            }else{
+                $data[$request->about_me] = 'message.not_answered';
             }
             if ($request->important_for_marriage) {
                 $p++;
                 $data['percentage'] = intval((($p + 1) / 21) * 100);
+            }else{
+                $data[$request->important_for_marriage] = 'message.not_answered';
             }
             if ($request->partner_specifications) {
                 $p++;
                 $data['percentage'] = intval((($p + 1) / 21) * 100);
+            }else{
+                $data[$request->partner_specifications] = 'message.not_answered';
             }
             if ($request->partner_specifications) {
                 $p++;
                 $data['percentage'] = intval((($p + 1) / 21) * 100);
+            }else{
+                $data[$request->partner_specifications] = 'message.not_answered';
             }
 
             $user->update($data);
