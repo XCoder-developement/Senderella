@@ -23,7 +23,7 @@ class FullPartnerResource extends JsonResource
             "is_verify" => $this->is_verify ?? 0,
             "trusted" => $this->trusted ?? 0,
             "is_new" => intval($this->is_new) ?? 0,
-            "notes" => $this->notes ?? "",
+            "notes" => $this->notes ?? "message.not_answered",
             "is_married_before" => intval($this->is_married_before) ?? 0,
             "active" => intval($this->active) ?? "",
             "last_active" => $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',

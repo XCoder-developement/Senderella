@@ -18,13 +18,13 @@ class UserCommentInfo extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $image = UserImage::where('user_id', $this->id)->where('is_primary', 1)->value('image');
+        $image = UserImage::where('user_id', $this->id)->where('is_primary', 1)->first();
         return [
             'id' => $this->id,
             'name' => $this->name,
             'age' => $this->user_age ?? "",
             // "image" => $this->image_link ?? "",
-            'image' => $image ?? "",
+            'image' => $image->image_link ?? "",
             'trusted' => $this->trusted,
             'is_verify' => $this->is_verify,
             'country' => $this->country?->title,
