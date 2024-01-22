@@ -14,7 +14,7 @@ class UserStateResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return ["title" => $this->title ?? "",];
+        return [ $this->title ?? "",];
 
     }
 }
