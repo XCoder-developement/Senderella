@@ -24,8 +24,8 @@ class UserCommentInfo extends JsonResource
             "image" => $this->image_link ?? "",
             'trusted' => $this->trusted,
             'is_verify' => $this->is_verify,
-            'country' => new UserCountryResource($this->country),
-            'city' => new UserStateResource($this->state),
+            'country' => $this->country?->title,
+            'city' =>$this->state->title,
         ];
     }
 }
