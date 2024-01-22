@@ -422,6 +422,13 @@ class UserController extends Controller
             $data['active'] = intval($user->active) ?? '';
             $data['last_active'] = $user->last_shows !== null && $user->last_shows->first() ? $user->last_shows?->first()?->end_date : 'active now';
 
+            $user->update([
+                'is_like_shown' => 0,
+                'is_notification_shown' => 0,
+                'is_post_shown' => 0,
+                'is_bookmark_shown' => 0,
+                'is_watch_shown' => 0,
+            ]);
             $msg = 'new_partner_activity';
             return $this->dataResponse($msg,$data, 200);
 

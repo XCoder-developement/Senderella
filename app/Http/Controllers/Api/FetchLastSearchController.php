@@ -20,9 +20,9 @@ class FetchLastSearchController extends Controller
             $fetch_search = UserSearch::with('requirments')->where('user_id', $user)->latest()->first();
             if (!$fetch_search) {
                 $msg = "message.there is no last search";
-                return $this->errorResponse($msg, 500);
+                return $this->dataResponse($msg, [] ,200);
             }
-            
+
             $params = SearchPartnerParams::buildBody($fetch_search);
             $search = new SearchService();
             $partners = $search->search($params->toMap(), $with_store = false);
