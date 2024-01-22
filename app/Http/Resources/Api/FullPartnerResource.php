@@ -74,6 +74,13 @@ class ImageResource extends JsonResource
 
 class DetailsResource extends JsonResource
 {
+    public $user_id;
+
+    public function __construct($resource, $user_id)
+    {
+        parent::__construct($resource);
+        $this->user_id = $user_id;
+    }
 
     public function toArray(Request $request): array
     {
