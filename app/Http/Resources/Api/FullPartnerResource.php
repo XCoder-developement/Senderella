@@ -74,6 +74,13 @@ class ImageResource extends JsonResource
 
 class DetailsResource extends JsonResource
 {
+    public $user_id;
+
+    public function __construct($resource, $user_id)
+    {
+        parent::__construct($resource);
+        $this->user_id = $user_id;
+    }
 
     public function toArray(Request $request): array
     {
@@ -93,7 +100,6 @@ class UserInformationResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user_id = $this->user_id ?? null;
-        dd($user_id);
         $ques = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $user_id)->first()?->value('answer');
 
         return [
