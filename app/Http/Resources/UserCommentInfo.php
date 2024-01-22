@@ -17,11 +17,12 @@ class UserCommentInfo extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $image = $this->image_link;
         return [
             'id' => $this->id,
             'name' => $this->name,
             'age' => $this->user_age ?? "",
-            "image" => $this->image_link ?? "",
+            "image" => $image ?? "",
             'trusted' => $this->trusted,
             'is_verify' => $this->is_verify,
             'country' => new UserCountryResource($this->country),
