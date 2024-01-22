@@ -25,7 +25,7 @@ class FullPartnerResource extends JsonResource
             "is_verify" => $this->is_verify ?? 0,
             "trusted" => $this->trusted ?? 0,
             "is_new" => intval($this->is_new) ?? 0,
-            "notes" => $this->notes ?? "message.not_answered",
+            "notes" => $this->notes ?? "Not Answered",
             "is_married_before" => intval($this->is_married_before) ?? 0,
             "active" => intval($this->active) ?? "",
             "last_active" => $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',
@@ -48,9 +48,9 @@ class FullPartnerResource extends JsonResource
             "education_type_title" => $this->education_type?->title ?? "",
             "important_for_marriage" => $this->important_for_marriage ?? "message.not_answered",
             "partner_specifications"    => $this->partner_specifications ?? "message.not_answered",
-            "about_me" => $this->about_me ?? "message.not_answered",
+            "about_me" => $this->about_me ?? "Not Answered",
             "active" => intval($this->active) ?? "",
-            "partner_more_info"=>UserInformationResource::collection($this->informations->where('type',1)),
+            "partner_more_info"=>UserInformationResource::collection(Requirment::where('answer_type',1)->get()),
             "questions"=>DetailsResource::collection(Requirment::where('answer_type',2)->get()),
         ];
     }
@@ -74,7 +74,7 @@ class DetailsResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $info = UserInformation::where('requirment_id',$this->id)->where('type',2)->first()?->value('answer');
+        $info = UserInformation::where('requirment_id',$this->id)->where('type',2)->where('user_id', $this->id)->first()?->value('answer');
         return [
             'id'=>$this->id,
             'question'=>strval($this->title) ?? "",
@@ -88,10 +88,12 @@ class UserInformationResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $ques = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $this->id)->first()?->value('answer');
+
         return [
             "id" => $this->id,
         "title" => strval($this->requirment?->title) ?? "",
-        "value" => strval($this->requirment_item?->title)  ?? "message.not_answered",
+        "value" => strval($ques)  ?? "message.not_answered",
 
         "title_id" => $this->requirment_id ?? "",
         "value_id" => $this->requirment_item_id ?? "message.not_answered",
