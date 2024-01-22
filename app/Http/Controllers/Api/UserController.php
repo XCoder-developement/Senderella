@@ -79,46 +79,38 @@ class UserController extends Controller
             $data['is_married_before'] = $request->is_married_before;
             $data['weight'] = $request->weight;
             $data['height'] = $request->height;
-            $data['notes'] = $request->notes;
+            $data['notes'] = $request->notes ?? 'Not answered';
             $data['marital_status_id'] = $request->marital_status_id;
             $data['marriage_readiness_id'] = $request->readiness_for_marriages_id;
             $data['color_id'] = $request->skin_color_id;
             $data['education_type_id'] = $request->education_type_id;
 
-            $data['about_me'] = $request->about_me;
-            $data['important_for_marriage'] = $request->important_for_marriage;
-            $data['partner_specifications'] = $request->partner_specifications;
+            $data['about_me'] = $request->about_me ?? 'Not answered';
+            $data['important_for_marriage'] = $request->important_for_marriage ?? 'Not answered';
+            $data['partner_specifications'] = $request->partner_specifications ?? 'Not answered';
             $data['percentage'] = intval(($p / 21) * 100);
             if ($request->notes) {
                 $p++;
                 $data['percentage'] = intval((($p + 1) / 21) * 100);
-            }else{
-                $data[$request->notes] = 'message.not_answered';
             }
             if ($request->about_me) {
                 $p++;
                 $data['percentage'] = intval((($p + 1) / 21) * 100);
-            }else{
-                $data[$request->about_me] = 'message.not_answered';
             }
             if ($request->important_for_marriage) {
                 $p++;
                 $data['percentage'] = intval((($p + 1) / 21) * 100);
-            }else{
-                $data[$request->important_for_marriage] = 'message.not_answered';
             }
             if ($request->partner_specifications) {
                 $p++;
                 $data['percentage'] = intval((($p + 1) / 21) * 100);
-            }else{
-                $data[$request->partner_specifications] = 'message.not_answered';
             }
-            if ($request->partner_specifications) {
-                $p++;
-                $data['percentage'] = intval((($p + 1) / 21) * 100);
-            }else{
-                $data[$request->partner_specifications] = 'message.not_answered';
-            }
+            // if ($request->partner_specifications) {
+            //     $p++;
+            //     $data['percentage'] = intval((($p + 1) / 21) * 100);
+            // }else{
+            //     $data[$request->partner_specifications] = 'Not answered';
+            // }
 
             $user->update($data);
 
