@@ -17,7 +17,6 @@ class FullPartnerResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $userid = $this->id;
         return [
             "id" => $this->id,
             "images" => count($this->images) == 0 ? null : ImageResource::collection($this->images) ,
@@ -74,9 +73,10 @@ class ImageResource extends JsonResource
 
 class DetailsResource extends JsonResource
 {
+
     public function toArray(Request $request): array
-    {
-        $info = UserInformation::where('requirment_id',$this->id)->where('type',2)->where('user_id', $this->id)->first()?->value('answer');
+    {$userid = FullPartnerResource::value('id');
+        $info = UserInformation::where('requirment_id',$this->id)->where('type',2)->where('user_id', $userid)->first()?->value('answer');
         return [
             'id'=>$this->id,
             'question'=>strval($this->title) ?? "",
@@ -90,7 +90,8 @@ class UserInformationResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $ques = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $this->id)->first()?->value('answer');
+        $userid = FullPartnerResource::value('id');
+        $ques = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $userid)->first()?->value('answer');
 
         return [
             "id" => $this->id,
