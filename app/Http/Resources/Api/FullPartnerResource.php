@@ -78,7 +78,7 @@ class DetailsResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user_id = $this->user_id ?? null;
-        $info = UserInformation::where('requirment_id',$this->id)->where('type',2)->where('user_id', $userid)->first()?->value('answer');
+        $info = UserInformation::where('requirment_id',$this->id)->where('type',2)->where('user_id', $user_id)->first()?->value('answer');
         return [
             'id'=>$this->id,
             'question'=>strval($this->title) ?? "",
@@ -93,7 +93,7 @@ class UserInformationResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user_id = $this->user_id ?? null;
-        $ques = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $userid)->first()?->value('answer');
+        $ques = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $user_id)->first()?->value('answer');
 
         return [
             "id" => $this->id,
