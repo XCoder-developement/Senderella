@@ -21,7 +21,7 @@ class PartnerResource extends JsonResource
         $user_duration = Carbon::parse($this->created_at)->diffInDays(); // getting the duration days for the user
         return [
             "id" => $this->id,
-            "images" => count($this->images) == 0 ? null : ImageResource::collection($this->images) ,
+            "images" => $this->images == null ? null : ImageResource::collection($this->images) ,
             "name" => $this->name ?? "",
             "age" => $this->user_age ?? "",
             "last_active" => $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',
