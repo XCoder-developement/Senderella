@@ -28,31 +28,31 @@ class NotificationController extends Controller
 
     public function send(StoreRequest $request)
     {
+
         $title = $request->title;
         $text = $request->body;
+
 
         $notify_data["title"] = $title;
         $notify_data["body"] = $text;
 
-        // Create a new notification
-        $notification = Notification::create($notify_data);
-
-        // Get users with non-null device tokens
-        $users = User::whereHas('user_devices', function ($q) {
+        $notification  = Notification::create($notify_data);
+        $users = User::whereHas('user_device' ,function($q){
             $q->whereNotNull('device_token');
         })->get();
 
-        // Associate the notification with each user
-        foreach ($users as $user) {
-            // Use the save method to associate the notification with the user
-            $user->notifications()->save($notification);
+        foreach($users as $user){
+            // $user->notifications()->attach($notification);
 
-            foreach ($user->user_devices as $user_device) {
-                // Assuming SendNotification::send() is a custom method for sending notifications
-                SendNotification::send($user_device->device_token ?? "", $title, $text);
+            foreach($user->user_devices as $user_device){
+
+            SendNotification::send($user_device->device_token ?? "",$title,$text);
+
             }
-        }
+            }
 
-        return redirect()->back()->with(['success' => __("messages.send_notification")]);
+
+        return redirect()->back()->with(['success'=> __("messages.send_notification")]);
     }
+
 }
