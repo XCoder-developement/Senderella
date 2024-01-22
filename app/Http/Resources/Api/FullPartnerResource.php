@@ -97,6 +97,14 @@ class DetailsResource extends JsonResource
 
 class UserInformationResource extends JsonResource
 {
+    public $user_id;
+
+    public function __construct($resource, $user_id)
+    {
+        parent::__construct($resource);
+        $this->user_id = $user_id;
+    }
+
     public function toArray(Request $request): array
     {
         $user_id = $this->user_id ?? null;
@@ -107,8 +115,8 @@ class UserInformationResource extends JsonResource
         "title" => intval($this->requirment?->title) ?? "",
         "value" => ($ques)  ?? "Not Answered",
 
-        "title_id" => $this->requirment_id ?? "",
-        "value_id" => $this->requirment_item_id ??"",
+        "title_id" => intval($this->requirment_id) ?? "",
+        "value_id" => intval($this->requirment_item_id) ??"",
         ];
     }
 }
