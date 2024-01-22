@@ -25,15 +25,15 @@ class PostController extends Controller
                 // ->whereHas('user', function ($query) {
                 //     $query->where('is_post_shown', '!=', 0);
                 // })
-                ->get();
+                ->first();
             // dd($user->is_post_shown);
-            if ($post->isEmpty()) {
+            if (!$post) {
                 return $this->errorResponse('no posts found', 500);
             }
             $user->update(['is_post_shown' => 0]);
 
             $msg = "fetch_posts";
-            $data = PostResource::collection($post);;
+            $data = new PostResource($post);;
             return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
