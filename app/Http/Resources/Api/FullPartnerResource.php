@@ -75,7 +75,8 @@ class DetailsResource extends JsonResource
 {
 
     public function toArray(Request $request): array
-    {$userid = FullPartnerResource::value('id');
+    {
+        $userid = FullPartnerResource::value('id');
         $info = UserInformation::where('requirment_id',$this->id)->where('type',2)->where('user_id', $userid)->first()?->value('answer');
         return [
             'id'=>$this->id,
@@ -96,7 +97,7 @@ class UserInformationResource extends JsonResource
         return [
             "id" => $this->id,
         "title" => intval($this->requirment?->title) ?? "",
-        "value" => intval($ques)  ?? "Not Answered",
+        "value" => ($ques)  ?? "Not Answered",
 
         "title_id" => $this->requirment_id ?? "",
         "value_id" => $this->requirment_item_id ??"",
