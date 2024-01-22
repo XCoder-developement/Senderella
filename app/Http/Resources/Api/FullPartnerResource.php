@@ -93,7 +93,6 @@ class UserInformationResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user_id = $this->user_id ?? null;
-        dd($user_id);
         $ques = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $user_id)->first()?->value('answer');
 
         return [
