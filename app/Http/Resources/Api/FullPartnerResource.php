@@ -97,7 +97,7 @@ class UserInformationResource extends JsonResource
     {
 
         $user_id = $request->partner_id;
-        $qust = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $user_id)->first()?->value('requirment_item_id');
+        $qust = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $user_id)->first()?->requirment_item_id;
         $ques = RequirmentItemTranslation::where('requirment_item_id',$qust)->first()?->title;
 
         return [
