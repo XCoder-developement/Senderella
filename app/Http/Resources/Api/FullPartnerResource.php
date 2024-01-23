@@ -33,8 +33,8 @@ class FullPartnerResource extends JsonResource
             "active" => intval($this->active) ?? "",
             "last_active" => $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',
 
-            "weight" => $this->weight ?? "",
-            "height" => $this->height ?? "",
+            "weight" => intval($this->weight) ?? "",
+            "height" => intval($this->height) ?? "",
             "country_id" => intval($this->country_id) ?? "",
             "state_id" => intval($this->state_id) ?? "",
             "country_title" => $this->country?->title ?? "",
