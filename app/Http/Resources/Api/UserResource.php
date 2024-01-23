@@ -35,20 +35,20 @@ class UserResource extends JsonResource
             // "marital_status_title" => $this->marital_status->title ?? "",
             "marriage_readiness_title" => $this->marriage_readiness?->title ?? "",
             "nationality_title" => $this->country?->title ?? "",
-            "important_for_marriage"=> $this->important_for_marriage?? "",
-            "partner_specifications"=> $this->partner_specifications?? "",
+            "important_for_marriage"=> $this->important_for_marriage?? __("messages.not_answered"),
+            "partner_specifications"=> $this->partner_specifications?? __("messages.not_answered"),
 
 //weight and rest details
             "weight" => $this->weight ?? "",
             "height" => $this->height ?? "",
-            "notes" => $this->notes ?? "",
-            "about_me" => $this->about_me ?? "",
+            "notes" => $this->notes ?? __("messages.not_answered"),
+            "about_me" => $this->about_me ?? __("messages.not_answered"),
             "country_id" => intval($this->country_id) ?? "",
             "state_id" => intval($this->state_id) ?? "",
             "country_title" => $this->country?->title ?? "",
             "state_title" => $this->state?->title ?? "",
 
-            "percentage" => intval($this->percentage > 100 ? 100 : $this->percentage) ?? "",
+            "percentage" => intval($this->percentage > 100 || $this->percentage == 95 ? 100 : $this->percentage) ?? "",
 
             "verification_code" => (string) $this->verification_code ?? "",
             "verification_type" => intval($this->verification_type) ?? "",
@@ -104,10 +104,10 @@ class UserInformationResource extends JsonResource
         return [
             "id" => $this->id,
         "title" => strval($this->requirment?->title) ?? "",
-        "value" => strval($this->requirment_item?->title)  ?? "message.not_answered",
+        "value" => strval($this->requirment_item?->title)  ?? __("messages.not_answered"),
 
         "title_id" => $this->requirment_id ?? "",
-        "value_id" => $this->requirment_item_id ?? "message.not_answered",
+        "value_id" => $this->requirment_item_id ?? __("messages.not_answered"),
         ];
     }
 }

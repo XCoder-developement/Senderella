@@ -79,15 +79,15 @@ class UserController extends Controller
             $data['is_married_before'] = $request->is_married_before;
             $data['weight'] = $request->weight;
             $data['height'] = $request->height;
-            $data['notes'] = $request->notes ?? __("messages.not_answered");
+            $data['notes'] = $request->notes ;
             $data['marital_status_id'] = $request->marital_status_id;
             $data['marriage_readiness_id'] = $request->readiness_for_marriages_id;
             $data['color_id'] = $request->skin_color_id;
             $data['education_type_id'] = $request->education_type_id;
 
-            $data['about_me'] = $request->about_me ?? __("messages.not_answered");
-            $data['important_for_marriage'] = $request->important_for_marriage ?? __("messages.not_answered");
-            $data['partner_specifications'] = $request->partner_specifications ?? __("messages.not_answered");
+            $data['about_me'] = $request->about_me ;
+            $data['important_for_marriage'] = $request->important_for_marriage ;
+            $data['partner_specifications'] = $request->partner_specifications ;
             $data['percentage'] = intval(($p / 20) * 100);
             if ($request->notes) {
                 $p++;
