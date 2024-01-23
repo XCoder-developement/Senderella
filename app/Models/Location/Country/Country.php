@@ -22,5 +22,11 @@ class Country extends Model
         return $this->hasMany(State::class);
     }
 
+    protected $appends = ["image_link"];
+
+    public function getImageLinkAttribute()
+    {
+        return $this->image ? asset($this->image) : '';
+    }
 
 }

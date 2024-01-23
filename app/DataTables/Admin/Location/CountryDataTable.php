@@ -24,21 +24,32 @@ class CountryDataTable extends DataTable
     public function dataTable($query, Request $request)
     {
         return datatables()
-        ->eloquent($query)
+            ->eloquent($query)
+            ->editColumn("image", function ($query) {
+                if ($query->image_link) {
+                    $image = $query->image_link;
+                    $status = '<img src="' . $image . '">';
+                } else {
+                    $status = __('messages.country doesnt have image');
+                }
+                return $status;
+            })
 
-        ->addColumn('action', 'admin_dashboard.location.countries.action')
-        ->rawColumns([
-
-            'action',
-        ])->filter(function ($query) use ($request) {
-            if ($request->has('search') && isset($request->input('search')['value'])
-            && !empty($request->input('search')['value'])) {
-                $searchValue = $request->input('search')['value'];
-                $query->whereTranslationLike("title", "%" . $searchValue . "%");
-            }
-        })->orderColumn('title', function ($query, $order) {
-            $query->orderByTranslation('title', $order);
-        });
+            ->addColumn('action', 'admin_dashboard.location.countries.action')
+            ->rawColumns([
+                'image',
+                'action',
+            ])->filter(function ($query) use ($request) {
+                if (
+                    $request->has('search') && isset($request->input('search')['value'])
+                    && !empty($request->input('search')['value'])
+                ) {
+                    $searchValue = $request->input('search')['value'];
+                    $query->whereTranslationLike("title", "%" . $searchValue . "%");
+                }
+            })->orderColumn('title', function ($query, $order) {
+                $query->orderByTranslation('title', $order);
+            });
     }
 
     /**
@@ -60,16 +71,16 @@ class CountryDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-        ->columns($this->getColumns())
-        ->minifiedAjax()
-        ->parameters([
-            'dom' => 'Blfrtip',
-            'order' => [0, 'desc'],
-            'lengthMenu' => [
-                [10,25,50,-1],[10,25,50,'all record']
-            ],
-       'buttons'      => ['export'],
-   ]);
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->parameters([
+                'dom' => 'Blfrtip',
+                'order' => [0, 'desc'],
+                'lengthMenu' => [
+                    [10, 25, 50, -1], [10, 25, 50, 'all record']
+                ],
+                'buttons'      => ['export'],
+            ]);
     }
 
     /**
@@ -80,8 +91,9 @@ class CountryDataTable extends DataTable
     protected function getColumns()
     {
         return [
-          ["data" => "title" ,"title" => __('messages.title')],
-          ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
+            ["data" => "image", "title" => __('messages.image'), 'searchable' => false],
+            ["data" => "title", "title" => __('messages.title')],
+            ['data' => 'action', 'title' => __("messages.actions"), 'printable' => false, 'exportable' => false, 'orderable' => false, 'searchable' => false],
         ];
     }
 

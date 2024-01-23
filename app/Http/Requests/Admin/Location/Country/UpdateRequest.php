@@ -31,6 +31,7 @@ class UpdateRequest extends FormRequest
              $validators['title-' . $localeCode] = ['required'];
 
          }
+         $validators['image'] = ['nullable', 'image'];
         return  $validators;
     }
 }
