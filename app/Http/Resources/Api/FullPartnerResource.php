@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Api;
 
 use App\Models\Requirment\Requirment;
-use App\Models\RequirmentItem\RequirmentItem;
 use App\Models\RequirmentItem\RequirmentItemTranslation;
 use App\Models\User\UserInformation;
 use Illuminate\Http\Request;
@@ -98,10 +97,13 @@ class UserInformationResource extends JsonResource
     {
 
         $user_id = $request->partner_id;
-        $qust = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $user_id)->first()?->value('requirment_item_id');
-        $ques = RequirmentItemTranslation::where('requirment_item_id',$qust)->first()?->title;
+        $ques = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $user_id)->first()?->value('answer');
+
+        $question = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $user_id)->first()?->value('requirment_item_id');
+        $qust = RequirmentItemTranslation::where('requirment_item_id',$question)->first()?->title;
+
         return [
-            "id" => $this->id,
+            "id" => $qust,
         "title" => ($this->requirment?->title) ?? "",
         "value" => ($ques)  ??__("messages.not_answered"),
 
