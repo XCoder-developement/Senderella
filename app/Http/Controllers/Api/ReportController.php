@@ -36,7 +36,6 @@ class ReportController extends Controller
                 $report = Report::create($data);
                 $report->report_types()->attach($request->report_type_ids);
 
-            dd($data);
             $msg = __("messages.save successful");
 
             return $this->successResponse($msg, 200);
