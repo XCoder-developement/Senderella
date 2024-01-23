@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class FullPartnerResource extends JsonResource
 {
-    public $user_id ;
+    public $user_id;
     /**
      * Transform the resource into an array.
      *
@@ -20,7 +20,7 @@ class FullPartnerResource extends JsonResource
         $user_id = $this->id;
         return [
             "id" => $this->id,
-            "images" => count($this->images) == 0 ? null : ImageResource::collection($this->images) ,
+            "images" => count($this->images) == 0 ? null : ImageResource::collection($this->images),
             "name" => $this->name ?? "",
             "age" => $this->user_age ?? "",
             "is_follow" => $this->is_follow(auth()->id()) ?? 0,
@@ -52,8 +52,8 @@ class FullPartnerResource extends JsonResource
             "partner_specifications"    => $this->partner_specifications ?? "Not Answered",
             "about_me" => $this->about_me ?? "Not Answered",
             "active" => intval($this->active) ?? "",
-            "partner_more_info"=>UserInformationResource::collection(Requirment::where('answer_type',1)->get()),
-            "questions"=>DetailsResource::collection(Requirment::where('answer_type',2)->get()),
+            "partner_more_info" => UserInformationResource::collection(Requirment::where('answer_type', 1)->get()),
+            "questions" => DetailsResource::collection(Requirment::where('answer_type', 2)->get()),
         ];
     }
 }
@@ -64,10 +64,10 @@ class ImageResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" =>$this->id,
+            "id" => $this->id,
             "image" => $this->image_link ?? "",
-            "is_primary" => boolval($this->is_primary) ??"",
-            "is_blurry" => boolval($this->is_blurry) ??"",
+            "is_primary" => boolval($this->is_primary) ?? "",
+            "is_blurry" => boolval($this->is_blurry) ?? "",
         ];
     }
 }
@@ -85,11 +85,11 @@ class DetailsResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user_id = $this->user_id ?? null;
-        $info = UserInformation::where('requirment_id',$this->id)->where('type',2)->where('user_id', $user_id)->first()?->value('answer');
+        $info = UserInformation::where('requirment_id', $this->id)->where('type', 2)->where('user_id', $user_id)->first()?->value('answer');
         return [
-            'id'=>$this->id,
-            'question'=>strval($this->title) ?? "",
-            'answer'=>$info ?? "Not Answered",
+            'id' => $this->id,
+            'question' => strval($this->title) ?? "",
+            'answer' => $info ?? "Not Answered",
         ];
     }
 }
@@ -108,15 +108,15 @@ class UserInformationResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user_id = $this->user_id ?? null;
-        $ques = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $user_id)->first()?->value('answer');
+        $ques = UserInformation::where('requirment_id', $this->id)->where('type', 1)->where('user_id', $user_id)->first()?->value('answer');
 
         return [
             "id" => $this->id,
-        "title" => ($this->requirment?->title) ?? "",
-        "value" => ($ques)  ?? "Not Answered",
+            "title" => ($this->requirment?->title) ?? "",
+            "value" => ($ques)  ?? "Not Answered",
 
-        "title_id" => intval($this->requirment_id) ?? "",
-        "value_id" => intval($this->requirment_item_id) ??"",
+            "title_id" => intval($this->requirment_id) ?? "",
+            "value_id" => intval($this->requirment_item_id) ?? "",
         ];
     }
 }
