@@ -30,6 +30,7 @@ class StoreRequest extends FormRequest
         $localeCode => $properties) {
              $validators['title-' . $localeCode] = ['required'];
          }
+         $validators['image'] = ['nullable', 'image'];
         return  $validators;
     }
 }

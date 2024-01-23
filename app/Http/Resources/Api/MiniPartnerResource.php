@@ -33,6 +33,7 @@ class MiniPartnerResource extends JsonResource
             "country_id"=>intval($this->country_id) ?? "",
             "State_id"=>intval($this->state_id) ?? "",
             "country_title" => $this->country?->title ?? "",
+            "flag"  => $this->country?->image_link ?? "",
             "state_title" => $this->state?->title ?? "",
 
             "marriage_readiness_title" => $this->marriage_readiness?->title ?? "",

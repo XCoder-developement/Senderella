@@ -37,7 +37,25 @@
                 <form method="post" action="{{ route('countries.store') }}" enctype="multipart/form-data">
                     @csrf
 
+                    <div class="row">
+                        <div class="col-8 mx-auto">
+                            <div class="uploadOuter">
+                                <span class="dragBox">
 
+                                    Darg and Drop image here
+                                    <input type="file" name="image" onChange="dragNdrop(event)" ondragover="drag()"
+                                        ondrop="drop()" id="uploadFile" />
+                                </span>
+                            </div>
+
+                            <div id="preview">
+                                @error('image')
+                                    <span class="invalid-feedback">
+                                        {{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                             <!-- For loop this div -->

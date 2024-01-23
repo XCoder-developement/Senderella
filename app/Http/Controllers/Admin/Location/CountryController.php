@@ -43,6 +43,9 @@ class CountryController extends Controller
           ];
         }
 
+        if($request->hasFile('image')){
+            $data["image"] = upload_image($request->image,"countries");
+        }
 
         Country::create($data);
 
@@ -68,6 +71,9 @@ class CountryController extends Controller
           ];
         }
 
+        if($request->hasFile('image')){
+            $data["image"] = upload_image($request->image,"countries");
+        }
 
         $country->update($data);
 

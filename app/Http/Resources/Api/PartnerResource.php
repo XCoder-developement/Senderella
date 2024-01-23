@@ -35,6 +35,7 @@ class PartnerResource extends JsonResource
             "weight" => intval($this->weight) ?? "",
             "height" => intval($this->height) ?? "",
             "country_id" => intval($this->country_id) ?? "",
+            "flag"  => $this->country?->image_link ?? "",
             "state_id" => intval($this->state_id) ?? "",
             "country_title" => $this->country?->title ?? "",
             "state_title" => $this->state?->title ?? "",

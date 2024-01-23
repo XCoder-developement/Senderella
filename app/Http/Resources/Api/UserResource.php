@@ -46,6 +46,7 @@ class UserResource extends JsonResource
             "country_id" => intval($this->country_id) ?? "",
             "state_id" => intval($this->state_id) ?? "",
             "country_title" => $this->country?->title ?? "",
+            "flag"  => $this->country?->image_link ?? "",
             "state_title" => $this->state?->title ?? "",
 
             "percentage" => intval($this->percentage > 100 || $this->percentage == 95 ? 100 : $this->percentage) ?? "",
