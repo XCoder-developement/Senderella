@@ -95,10 +95,11 @@ class UserInformationResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-
+        $locale = $request->header('Accept-Language');
+        // dd($locale);
         $user_id = $request->partner_id;
         $qust = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $user_id)->first()?->requirment_item_id;
-        $ques = RequirmentItemTranslation::where('requirment_item_id',$qust)->first()?->title;
+        $ques = RequirmentItemTranslation::where('requirment_item_id',$qust)->where('locale',$locale)->first()?->title;
 
         return [
             "id" => $this->id,
