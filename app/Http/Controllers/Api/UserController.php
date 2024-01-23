@@ -25,7 +25,7 @@ class UserController extends Controller
     use ApiTrait;
     public function set_user_data(Request $request)
     {
-        $p = 15;
+        $p = 14;
         try {
             //validation
             $rules = [
@@ -88,26 +88,26 @@ class UserController extends Controller
             $data['about_me'] = $request->about_me ?? __("messages.not_answered");
             $data['important_for_marriage'] = $request->important_for_marriage ?? __("messages.not_answered");
             $data['partner_specifications'] = $request->partner_specifications ?? __("messages.not_answered");
-            $data['percentage'] = intval(($p / 21) * 100);
+            $data['percentage'] = intval(($p / 20) * 100);
             if ($request->notes) {
                 $p++;
-                $data['percentage'] = intval((($p + 1) / 21) * 100);
+                $data['percentage'] = intval((($p + 1) / 20) * 100);
             }
             if ($request->about_me) {
                 $p++;
-                $data['percentage'] = intval((($p + 1) / 21) * 100);
+                $data['percentage'] = intval((($p + 1) / 20) * 100);
             }
             if ($request->important_for_marriage) {
                 $p++;
-                $data['percentage'] = intval((($p + 1) / 21) * 100);
+                $data['percentage'] = intval((($p + 1) / 20) * 100);
             }
             if ($request->partner_specifications) {
                 $p++;
-                $data['percentage'] = intval((($p + 1) / 21) * 100);
+                $data['percentage'] = intval((($p + 1) / 20) * 100);
             }
             // if ($request->partner_specifications) {
             //     $p++;
-            //     $data['percentage'] = intval((($p + 1) / 21) * 100);
+            //     $data['percentage'] = intval((($p + 1) / 20) * 100);
             // }else{
             //     $data[$request->partner_specifications] = 'Not answered';
             // }
