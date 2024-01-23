@@ -247,14 +247,18 @@ class PartnerController extends Controller
             UserWatch::create($data);
 
             $partner = User::whereId($partner_id)->first();
+            
+            if($partner->id != $user_id)
+            {
             $partner->update(['is_watch_shown' => $partner->is_watch_shown+1]);
             $partner->update(['is_notification_shown' => $partner->is_notification_shown+1]);
             SendNotification::send($partner->device_token ?? "", __('messages.someone_viewed'), __("messages.someone_viewed"));
             UserNotification::create([
                 'user_id' => $partner->id,
                 'title' => __('messages.someone_viewed'),
-            ]);
 
+            ]);
+            }
             //responce
             $msg = "user_watch";
             $data = new PartnerResource($partner);
