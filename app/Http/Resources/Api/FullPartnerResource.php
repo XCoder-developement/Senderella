@@ -42,16 +42,15 @@ class FullPartnerResource extends JsonResource
             "marital_status_id" => intval($this->marital_status_id) ?? null,
             "readiness_for_marriages_id" => intval($this->readiness_for_marriages_id) ?? null,
             "marital_status_title" => $this->marital_status?->title ?? "",
-            // "marital_status_title" => $this->marital_status?->title ?? "",
-            "marriage_readiness_title" => $this->marriage_readiness?->title ?? "",
+            "marital_status_title" => $this->marital_status?->title ?? "",
 
             "skin_color_id" => intval($this->color_id) ?? null,
             "education_type_id" => intval($this->education_type_id) ?? null,
             "skin_color_title" => $this->color?->title ?? "",
             "education_type_title" => $this->education_type?->title ?? "",
-            "important_for_marriage" => $this->important_for_marriage ?? __("messages.partner blocked"),
-            "partner_specifications"    => $this->partner_specifications ?? __("messages.partner blocked"),
-            "about_me" => $this->about_me ?? __("messages.partner blocked"),
+            "important_for_marriage" => $this->important_for_marriage ?? __("messages.not_answered"),
+            "partner_specifications"    => $this->partner_specifications ?? __("messages.not_answered"),
+            "about_me" => $this->about_me ?? __("messages.not_answered"),
             "active" => intval($this->active) ?? "",
             "partner_more_info"=>UserInformationResource::collection(Requirment::where('answer_type',1)->get())->additional(['user_id' => $user_id]),
             "questions"=>DetailsResource::collection(Requirment::where('answer_type',2)->get())->additional(['user_id' => $user_id]),
@@ -82,7 +81,7 @@ class DetailsResource extends JsonResource
         return [
             'id'=>$this->id,
             'question'=>strval($this->title) ?? "",
-            'answer'=>$info ?? __("messages.partner blocked"),
+            'answer'=>$info ?? __("messages.not_answered"),
         ];
     }
 }
@@ -99,7 +98,7 @@ class UserInformationResource extends JsonResource
         return [
             "id" => $this->id,
         "title" => ($this->requirment?->title) ?? "",
-        "value" => ($ques)  ?? __("messages.partner blocked"),
+        "value" => ($ques)  ??__("messages.not_answered"),
 
         "title_id" => intval($this->requirment_id) ?? "",
         "value_id" => intval($this->requirment_item_id) ??"",

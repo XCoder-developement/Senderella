@@ -412,4 +412,5 @@ return [
     "someone_viewed"    => "Someone Watched Your Profile",
     "bookmarked_by_user" => "Bookmarked By User",
     "there is no last search"    => "There is no last search",
+    "not_answered"    => "Not Answered",
 ];
