@@ -247,7 +247,7 @@ class PartnerController extends Controller
             UserWatch::create($data);
 
             $partner = User::whereId($partner_id)->first();
-            
+
             if($partner->id != $user_id)
             {
             $partner->update(['is_watch_shown' => $partner->is_watch_shown+1]);
@@ -347,7 +347,7 @@ class PartnerController extends Controller
     {
         try {
             $user = auth()->user();
-            $watcher_ids = $user->watcher->pluck("user_id")->toArray();
+            $watcher_ids = $user->watcher->where('user_id', '!=', $user->id)->pluck("user_id")->toArray();
             $watcher = User::whereIn('id', $watcher_ids)->get();
             $msg = "who_watch_my_account";
             return $this->dataResponse($msg, PartnerResource::collection($watcher), 200);
