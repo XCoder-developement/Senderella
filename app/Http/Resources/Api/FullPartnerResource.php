@@ -3,6 +3,8 @@
 namespace App\Http\Resources\Api;
 
 use App\Models\Requirment\Requirment;
+use App\Models\RequirmentItem\RequirmentItem;
+use App\Models\RequirmentItem\RequirmentItemTranslation;
 use App\Models\User\UserInformation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -48,12 +50,13 @@ class FullPartnerResource extends JsonResource
             "education_type_id" => intval($this->education_type_id) ?? null,
             "skin_color_title" => $this->color?->title ?? "",
             "education_type_title" => $this->education_type?->title ?? "",
-            "important_for_marriage" => $this->important_for_marriage ?? "Not Answered",
-            "partner_specifications"    => $this->partner_specifications ?? "Not Answered",
-            "about_me" => $this->about_me ?? "Not Answered",
+            "important_for_marriage" => $this->important_for_marriage ?? __("messages.not_answered"),
+            "partner_specifications"    => $this->partner_specifications ?? __("messages.not_answered"),
+            "about_me" => $this->about_me ?? __("messages.not_answered"),
             "active" => intval($this->active) ?? "",
-            "partner_more_info" => UserInformationResource::collection(Requirment::where('answer_type', 1)->get()),
-            "questions" => DetailsResource::collection(Requirment::where('answer_type', 2)->get()),
+
+            "partner_more_info"=>UserInformationResource::collection(Requirment::where('answer_type',1)->get())->additional(['user_id' => $user_id]),
+            "questions"=>DetailsResource::collection(Requirment::where('answer_type',2)->get())->additional(['user_id' => $user_id]),
         ];
     }
 }
@@ -74,22 +77,15 @@ class ImageResource extends JsonResource
 
 class DetailsResource extends JsonResource
 {
-    public $user_id;
-
-    public function __construct($resource, $user_id)
+    public function toArray(Request $request ): array
     {
-        parent::__construct($resource);
-        $this->user_id = $user_id;
-    }
 
-    public function toArray(Request $request): array
-    {
-        $user_id = $this->user_id ?? null;
-        $info = UserInformation::where('requirment_id', $this->id)->where('type', 2)->where('user_id', $user_id)->first()?->value('answer');
+        $user_id = $request->partner_id;
+        $info = UserInformation::where('requirment_id',$this->id)->where('type',2)->where('user_id', $user_id)->first()?->value('answer');
         return [
-            'id' => $this->id,
-            'question' => strval($this->title) ?? "",
-            'answer' => $info ?? "Not Answered",
+            'id'=>$this->id,
+            'question'=>strval($this->title) ?? "",
+            'answer'=>$info ?? __("messages.not_answered"),
         ];
     }
 }
@@ -97,23 +93,17 @@ class DetailsResource extends JsonResource
 
 class UserInformationResource extends JsonResource
 {
-    public $user_id;
-
-    public function __construct($resource, $user_id)
-    {
-        parent::__construct($resource);
-        $this->user_id = $user_id;
-    }
 
     public function toArray(Request $request): array
     {
-        $user_id = $this->user_id ?? null;
-        $ques = UserInformation::where('requirment_id', $this->id)->where('type', 1)->where('user_id', $user_id)->first()?->value('answer');
 
+        $user_id = $request->partner_id;
+        $qust = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $user_id)->first()?->value('requirment_item_id');
+        $ques = RequirmentItemTranslation::where('requirment_item_id',$qust)->first()?->title;
         return [
             "id" => $this->id,
-            "title" => ($this->requirment?->title) ?? "",
-            "value" => ($ques)  ?? "Not Answered",
+        "title" => ($this->requirment?->title) ?? "",
+        "value" => ($ques)  ??__("messages.not_answered"),
 
             "title_id" => intval($this->requirment_id) ?? "",
             "value_id" => intval($this->requirment_item_id) ?? "",

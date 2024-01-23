@@ -23,7 +23,7 @@ class MiniPartnerResource extends JsonResource
             "is_verify"=>$this->is_verify ??0,
             "trusted"=>$this->trused ??0,
             "is_new"=>intval($this->is_new)??0,
-            "notes" =>$this->notes ??"message.not_answered",
+            "notes" =>$this->notes ??__("messages.not_answered"),
             "is_married_before"=>intval ($this->is_married_before),
             "active" => intval($this->active) ?? "",
             "last_active" => $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',
@@ -35,6 +35,7 @@ class MiniPartnerResource extends JsonResource
             "country_title" => $this->country?->title ?? "",
             "state_title" => $this->state?->title ?? "",
 
+            "marriage_readiness_title" => $this->marriage_readiness?->title ?? "",
 
             "marital_status_id" =>intval($this->marital_status_id)??null ,
             "readiness_for_marriages_id" =>intval($this->readiness_for_marriage_id)??null,

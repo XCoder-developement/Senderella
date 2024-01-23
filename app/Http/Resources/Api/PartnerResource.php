@@ -29,7 +29,7 @@ class PartnerResource extends JsonResource
             "is_verify" => $this->is_verify ?? 0,
             "trusted" => $this->trusted ?? 0,
             "is_new" => intval(($user_duration) < $duration),
-            "notes" => $this->notes ?? "message.not_answered",
+            "notes" => $this->notes ?? __("messages.not_answered"),
             "is_married_before" => intval($this->is_married_before) ?? 0,
 
             "weight" => intval($this->weight) ?? "",
@@ -42,6 +42,7 @@ class PartnerResource extends JsonResource
             "marital_status_id" => intval($this->marital_status_id) ?? null,
             "readiness_for_marriages_id" => intval($this->readiness_for_marriages_id) ?? null,
             "marital_status_title" => $this->marital_status?->title ?? "",
+            "marriage_readiness_title" => $this->marriage_readiness?->title ?? "",
 
             "skin_color_id" => intval($this->color_id) ?? null,
             "education_type_id" => intval($this->education_type_id) ?? null,
@@ -74,7 +75,7 @@ class UserInformationResource extends JsonResource
         return [
             "id" => $this->id,
             "title" => strval($this->requirment?->title) ?? "",
-            "value" => strval($this->requirment_item?->title)  ?? "message.not_answered",
+            "value" => strval($this->requirment_item?->title)  ?? __("messages.not_answered"),
 
             "title_id" => $this->requirment_id ?? "",
             "value_id" => intval($this->requirment_item_id),
