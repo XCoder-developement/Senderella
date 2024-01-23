@@ -347,7 +347,7 @@ class PartnerController extends Controller
     {
         try {
             $user = auth()->user();
-            $watcher_ids = $user->watcher->where('user_id', '!=', $user->id)->pluck("user_id")->toArray();
+            $watcher_ids = $user->watcher->where('partner_id', '!=', $user->id)->pluck("user_id")->toArray();
             $watcher = User::whereIn('id', $watcher_ids)->get();
             $msg = "who_watch_my_account";
             return $this->dataResponse($msg, PartnerResource::collection($watcher), 200);
