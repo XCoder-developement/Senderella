@@ -35,6 +35,7 @@ class MiniPartnerResource extends JsonResource
             "country_title" => $this->country?->title ?? "",
             "state_title" => $this->state?->title ?? "",
 
+            "marriage_readiness_title" => $this->marriage_readiness?->title ?? "",
 
             "marital_status_id" =>intval($this->marital_status_id)??null ,
             "readiness_for_marriages_id" =>intval($this->readiness_for_marriage_id)??null,

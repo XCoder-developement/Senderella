@@ -42,18 +42,19 @@ class FullPartnerResource extends JsonResource
             "marital_status_id" => intval($this->marital_status_id) ?? null,
             "readiness_for_marriages_id" => intval($this->readiness_for_marriages_id) ?? null,
             "marital_status_title" => $this->marital_status?->title ?? "",
-            "marital_status_title" => $this->marital_status?->title ?? "",
+            // "marital_status_title" => $this->marital_status?->title ?? "",
+            "marriage_readiness_title" => $this->marriage_readiness?->title ?? "",
 
             "skin_color_id" => intval($this->color_id) ?? null,
             "education_type_id" => intval($this->education_type_id) ?? null,
             "skin_color_title" => $this->color?->title ?? "",
             "education_type_title" => $this->education_type?->title ?? "",
-            "important_for_marriage" => $this->important_for_marriage ?? "Not Answered",
-            "partner_specifications"    => $this->partner_specifications ?? "Not Answered",
-            "about_me" => $this->about_me ?? "Not Answered",
+            "important_for_marriage" => $this->important_for_marriage ?? __("messages.partner blocked"),
+            "partner_specifications"    => $this->partner_specifications ?? __("messages.partner blocked"),
+            "about_me" => $this->about_me ?? __("messages.partner blocked"),
             "active" => intval($this->active) ?? "",
-            "partner_more_info"=>UserInformationResource::collection(Requirment::where('answer_type',1)->get()),
-            "questions"=>DetailsResource::collection(Requirment::where('answer_type',2)->get()),
+            "partner_more_info"=>UserInformationResource::collection(Requirment::where('answer_type',1)->get())->additional(['user_id' => $user_id]),
+            "questions"=>DetailsResource::collection(Requirment::where('answer_type',2)->get())->additional(['user_id' => $user_id]),
         ];
     }
 }
@@ -74,22 +75,14 @@ class ImageResource extends JsonResource
 
 class DetailsResource extends JsonResource
 {
-    public $user_id;
-
-    public function __construct($resource, $user_id)
+    public function toArray(Request $request ): array
     {
-        parent::__construct($resource);
-        $this->user_id = $user_id;
-    }
-
-    public function toArray(Request $request): array
-    {
-        $user_id = $this->user_id ?? null;
+        $user_id = $request->partner_id;
         $info = UserInformation::where('requirment_id',$this->id)->where('type',2)->where('user_id', $user_id)->first()?->value('answer');
         return [
             'id'=>$this->id,
             'question'=>strval($this->title) ?? "",
-            'answer'=>$info ?? "Not Answered",
+            'answer'=>$info ?? __("messages.partner blocked"),
         ];
     }
 }
@@ -97,23 +90,16 @@ class DetailsResource extends JsonResource
 
 class UserInformationResource extends JsonResource
 {
-    public $user_id;
-
-    public function __construct($resource, $user_id)
-    {
-        parent::__construct($resource);
-        $this->user_id = $user_id;
-    }
 
     public function toArray(Request $request): array
     {
-        $user_id = $this->user_id ?? null;
+        $user_id = $request->partner_id;
         $ques = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $user_id)->first()?->value('answer');
 
         return [
             "id" => $this->id,
         "title" => ($this->requirment?->title) ?? "",
-        "value" => ($ques)  ?? "Not Answered",
+        "value" => ($ques)  ?? __("messages.partner blocked"),
 
         "title_id" => intval($this->requirment_id) ?? "",
         "value_id" => intval($this->requirment_item_id) ??"",

@@ -42,6 +42,7 @@ class PartnerResource extends JsonResource
             "marital_status_id" => intval($this->marital_status_id) ?? null,
             "readiness_for_marriages_id" => intval($this->readiness_for_marriages_id) ?? null,
             "marital_status_title" => $this->marital_status?->title ?? "",
+            "marriage_readiness_title" => $this->marriage_readiness?->title ?? "",
 
             "skin_color_id" => intval($this->color_id) ?? null,
             "education_type_id" => intval($this->education_type_id) ?? null,
