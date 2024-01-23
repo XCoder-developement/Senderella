@@ -463,4 +463,5 @@ return [
     "someone_viewed"    => "شخص قام بمشاهدة ملفك الخاص",
     "bookmarked_by_user"    => "قام شخص بوضعك فى المفضلة",
     "there is no last search"    => "لا يوجد بحث سابق",
+    "not_answered"    => "لم يتم الاجابة",
 ];
