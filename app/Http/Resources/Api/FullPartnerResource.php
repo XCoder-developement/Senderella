@@ -103,8 +103,8 @@ class UserInformationResource extends JsonResource
         $qust = RequirmentItemTranslation::where('requirment_item_id',$question)->first()?->title;
 
         return [
-            "id" => $qust,
-        "title" => ($this->requirment?->title) ?? "",
+            "id" => $this->id,
+        "title" => $qust ?? "",
         "value" => ($ques)  ??__("messages.not_answered"),
 
             "title_id" => intval($this->requirment_id) ?? "",
