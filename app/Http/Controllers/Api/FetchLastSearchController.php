@@ -22,16 +22,17 @@ class FetchLastSearchController extends Controller
                 $msg = "message.there is no last search";
                 return $this->dataResponse($msg, [] ,200);
             }
-            if (empty($fetch_search->data->data)) {
-                $msg = "message.there is no last search";
-                return $this->dataResponse($msg, [], 200);
-            }
+
 
 
             $params = SearchPartnerParams::buildBody($fetch_search);
             $search = new SearchService();
             $partners = $search->search($params->toMap(), $with_store = false);
             $response = PartnerResource::collection($partners)->response()->getData(true);
+            if (empty($response->data)) {
+                $msg = "message.there is no last search";
+                return $this->dataResponse($msg, [], 200);
+            }
             $msg = "fetch_last_search";
             return $this->dataResponse($msg, $response, 200);
         } catch (\Exception $e) {
