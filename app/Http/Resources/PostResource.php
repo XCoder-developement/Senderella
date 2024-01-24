@@ -29,7 +29,7 @@ class PostResource extends JsonResource
         }
         return [
             'id' => $this->id,
-            'post' => $this->post,
+            'post' => $this->post ?? '',
             "is_liked" => $liked ?? 0,
             'duration' => $this->date_format,
             'owner' => new PostOwnerResource($this->user), //user relation
