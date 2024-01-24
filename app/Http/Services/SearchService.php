@@ -2,12 +2,16 @@
 namespace App\Http\Services;
 
 use App\Models\User\User;
+use Carbon\Carbon;
 
 class SearchService
 {
     public function search($search, $with_store = true)
     {
         $search = (object) $search;
+        // $users = User::where('birthday_date' , '>=', Carbon::now()->subYears($search->age_to))->get();
+        // dd($users);
+
         $query = User::where('id', '!=', auth()->id())
             // ->where(function ($q) use ($search) {
                 ->when($search->word, function ($q) use ($search) {
@@ -26,7 +30,8 @@ class SearchService
                 })->when($search->marital_status_id, function ($q) use ($search) {
                     $q->where('marital_status_id', $search->marital_status_id);
                 })->when($search->age_from && $search->age_to, function ($q) use ($search) {
-                    $q->ageRange($search->age_from, $search->age_to);
+                    $q->where('birthday_date', '>=', Carbon::now()->subYears($search->age_to))
+                      ->where('birthday_date', '<=', Carbon::now()->subYears($search->age_from));
                 })->when($search->user_info_data, function ($q) use ($search) {
                     foreach ($search->user_info_data as $data) {
                         $q->whereHas('informations', function ($subQuery) use ($data) {
