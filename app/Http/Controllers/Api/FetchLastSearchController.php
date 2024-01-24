@@ -22,6 +22,11 @@ class FetchLastSearchController extends Controller
                 $msg = "message.there is no last search";
                 return $this->dataResponse($msg, [] ,200);
             }
+            if (empty($fetch_search)) {
+                $msg = "message.there is no last search";
+                return $this->dataResponse($msg, [], 200);
+            }
+
 
             $params = SearchPartnerParams::buildBody($fetch_search);
             $search = new SearchService();
