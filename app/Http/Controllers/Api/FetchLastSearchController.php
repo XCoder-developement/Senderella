@@ -22,7 +22,7 @@ class FetchLastSearchController extends Controller
                 $msg = "message.there is no last search";
                 return $this->dataResponse($msg, [] ,200);
             }
-            if (empty($fetch_search->data)) {
+            if (empty($fetch_search->data->data)) {
                 $msg = "message.there is no last search";
                 return $this->dataResponse($msg, [], 200);
             }
