@@ -44,7 +44,7 @@ class NotificationController extends Controller
         foreach($users as $user){
             // $user->notifications()->attach($notification);
             foreach($user->user_devices as $user_device){
-                dd($user_device->device_token);
+
             SendNotification::send($user_device->device_token ?? "",$title,$text);
 
             }
