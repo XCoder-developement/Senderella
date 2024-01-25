@@ -32,9 +32,10 @@ class FetchLastSearchController extends Controller
             if (empty($response->data)) {
                 $msg = "message.there is no last search";
                 return $this->dataResponse($msg, [], 200);
-            }
+            }else{
             $msg = "fetch_last_search";
             return $this->dataResponse($msg, $response, 200);
+        }
         } catch (\Exception $e) {
             return $this->returnException($e->getMessage(), 500);
         }
