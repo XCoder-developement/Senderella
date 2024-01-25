@@ -29,7 +29,7 @@ class FetchLastSearchController extends Controller
             $search = new SearchService();
             $partners = $search->search($params->toMap(), $with_store = false);
             $response = PartnerResource::collection($partners)->response()->getData(true);
-            if ($response->data == []) {
+            if (empty($response->data)) {
                 $msg = "message.there is no last search";
                 return $this->dataResponse($msg, [], 200);
             }else{
