@@ -19,6 +19,7 @@ class ReportController extends Controller
                 "report_type_ids" => "required|array",
                 "reason" => "required",
                 "image" => "sometimes",
+                "email" => "required|email",
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -33,6 +34,7 @@ class ReportController extends Controller
                 $data['user_id'] =auth()->id();
                 $data['reason'] =$request->reason;
                 $data['partner_id'] = $request->partner_id;
+                $data['email']  = $request->email;
                 $report = Report::create($data);
                 $report->report_types()->attach($request->report_type_ids);
 
