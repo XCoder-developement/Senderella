@@ -413,4 +413,6 @@ return [
     "bookmarked_by_user" => "Bookmarked By User",
     "there is no last search"    => "There is no last search",
     "not_answered"    => "Not Answered",
+    "reason"        => "Reason",
+    "report doesnt have image"    => "Report doesnt have image",
 ];
