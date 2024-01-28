@@ -71,9 +71,8 @@ class ChatController extends Controller
             ->orderBy('created_at', 'desc')
             ->pluck('id')
             ->toArray();
-
             if(count($messages) == 1){
-                SendNotification::send($receiver->device_token, __('message.congratulations'), __('message.congrats you have recieved a reply'));
+                SendNotification::send($receiver->user_device->device_token , __('message.congratulations'), __('message.congrats you have recieved a reply'));
             }
             // Broadcasting to a private channel based on receiver_id
             // broadcast(new ChatMessageSent($chatMessage))->toOthers();

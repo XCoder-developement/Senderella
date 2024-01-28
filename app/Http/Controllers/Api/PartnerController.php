@@ -73,7 +73,7 @@ class PartnerController extends Controller
 
             $user = auth()->user();
 
-            $new_partners = User::orderBy('id', 'desc')->paginate(10);
+            $new_partners = User::orderBy('id', 'desc')->where('id', '!=', $user->id)->paginate(10);
             $msg = "fetch_new_partners";
             return $this->dataResponse($msg, PartnerResource::collection($new_partners)->response()->getData(true), 200);
         } catch (\Exception $ex) {
@@ -107,7 +107,6 @@ class PartnerController extends Controller
 
                 $partner->update(['is_like_shown' => $partner->is_like_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
-
                 SendNotification::send($partner->user_device->device_token ?? "", __('messages.new like'), __('messages.new like'));
                 UserNotification::create([
                     'user_id' => $partner->id,
@@ -211,7 +210,7 @@ class PartnerController extends Controller
                 $partner = User::whereId($partner_id)->first();
                 //responce
                 $partner->update(['is_bookmark_shown' => $partner->is_bookmark_shown + 1]);
-                // SendNotification::send($partner->device_token ?? "", __('messages.bookmarked_by_user'), __('messages.bookmarked_by_user'));
+                // SendNotification::send($partner->user_device->device_token ?? "", __('messages.bookmarked_by_user'), __('messages.bookmarked_by_user'));
                 // UserNotification::create([
                 //     'user_id' => $partner->id,
                 //     'title' => __('messages.bookmarked_by_user'),
@@ -248,11 +247,10 @@ class PartnerController extends Controller
             UserWatch::create($data);
 
             $partner = User::whereId($partner_id)->first();
-
             if ($partner->id != $user_id) {
                 $partner->update(['is_watch_shown' => $partner->is_watch_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
-                SendNotification::send($partner->device_token ?? "", __('messages.someone_viewed'), __("messages.someone_viewed"));
+                SendNotification::send($partner->user_device->device_token ?? "", __('messages.someone_viewed'), __("messages.someone_viewed"));
                 UserNotification::create([
                     'user_id' => $partner->id,
                     'title' => __('messages.someone_viewed'),
