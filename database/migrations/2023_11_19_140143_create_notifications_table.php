@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('body')->nullable();
             $table->text('title')->nullable();
             $table->string('locale')->index();
-           
+
             $table->timestamps();
         });
     }
