@@ -24,21 +24,32 @@ class ReportDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('action', 'admin_dashboard.reports.action')
-            ->editColumn('report_type', function ($query) {
-                return $query->report_type?->title ?? "";
+            ->editColumn("image", function ($query) {
+                if ($query->image_link) {
+                    $image = $query->image_link;
+                    $status = '<img src="' . $image . '">';
+                } else {
+                    $status = __('messages.report doesnt have image');
+                }
+                return $status;
             })
+
+            // ->editColumn('report_type', function ($query) {
+            //     return $query->report_type?->title ?? "";
+            // })
             ->rawColumns([
                 'action',
+                'image'
             ]);
     }
 
 
-    public function query(report $model): QueryBuilder
+    public function query(Report $model): QueryBuilder
     {
         return $model->newQuery()->orderBy("id","desc");
     }
 
-    
+
     public function html(): HtmlBuilder
     {
         return $this->builder()
@@ -60,9 +71,9 @@ class ReportDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-
-            ["data" => "report_type" ,"title" => __('messages.report_type'),'orderable'=>false],
-            ["data" => "comment" ,"title" => __('messages.comment'),'orderable'=>false],
+            ["data" => "image" ,"title" => __('messages.image'),'orderable'=>false],
+            ["data" => "reason" ,"title" => __('messages.reason'),'orderable'=>false],
+            ["data" => "email" ,"title" => __('messages.email'),'orderable'=>false],
 
        ];
     }

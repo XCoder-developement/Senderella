@@ -11,12 +11,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Report extends Model
 {
-    use HasFactory,Translatable;
-    public $translatedAttributes = ['title'];
+    use HasFactory;
+    // public $translatedAttributes = ['title'];
     protected $translationForeignKey = 'report_id';
     protected $table = 'reports';
     protected $guarded = [];
 
+    protected $appends = ["image_link"];
+
+    public function getImageLinkAttribute()
+    {
+        return $this->image ? asset($this->image) : '';
+    }
+    
     public function report_types(): BelongsToMany{
         return $this->belongsToMany(ReportType::class,'report_points','report_id','report_type_id');
     }

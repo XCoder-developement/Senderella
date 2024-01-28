@@ -464,4 +464,6 @@ return [
     "bookmarked_by_user"    => "قام شخص بوضعك فى المفضلة",
     "there is no last search"    => "لا يوجد بحث سابق",
     "not_answered"    => "لم يتم الاجابة",
+    "reason"        => "سبب الابلاغ",
+    "report doesnt have image"    => "الابلاغ ليس لديه صورة",
 ];

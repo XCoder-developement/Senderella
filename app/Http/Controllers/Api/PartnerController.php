@@ -18,6 +18,7 @@ use App\Models\User\UserLike;
 use App\Models\User\UserNotification;
 use App\Models\User\UserWatch;
 use App\Services\SendNotification;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class PartnerController extends Controller
@@ -104,10 +105,10 @@ class PartnerController extends Controller
                 $data['user_id'] =  $user_id;
                 $data['partner_id'] =  $partner_id;
 
-                $partner->update(['is_like_shown' => $partner->is_like_shown+1]);
-                $partner->update(['is_notification_shown' => $partner->is_notification_shown+1]);
+                $partner->update(['is_like_shown' => $partner->is_like_shown + 1]);
+                $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
 
-                SendNotification::send($partner->device_token ?? "",__('messages.new like'),__('messages.new like'));
+                SendNotification::send($partner->device_token ?? "", __('messages.new like'), __('messages.new like'));
                 UserNotification::create([
                     'user_id' => $partner->id,
                     'title' => __('messages.new like'),
@@ -120,8 +121,8 @@ class PartnerController extends Controller
             } elseif ($like_partner) {
 
                 $like_partner->delete();
-                if($partner->is_like_shown >0){
-                    $partner->update(['is_like_shown' => $partner->is_like_shown-1]);
+                if ($partner->is_like_shown > 0) {
+                    $partner->update(['is_like_shown' => $partner->is_like_shown - 1]);
                 }
 
                 $msg = __('messages.partner disliked');
@@ -171,7 +172,7 @@ class PartnerController extends Controller
                 $msg = __("messages.partner blocked");
 
                 return $this->successResponse($msg, 200);
-            } elseif($like_partner) {
+            } elseif ($like_partner) {
                 $like_partner->delete();
                 $msg = __('messages.partner unblocked');
                 return $this->successResponse($msg, 200);
@@ -209,12 +210,12 @@ class PartnerController extends Controller
 
                 $partner = User::whereId($partner_id)->first();
                 //responce
-                $partner->update(['is_bookmark_shown' => $partner->is_bookmark_shown+1]);
-                SendNotification::send($partner->device_token ?? "",__('messages.bookmarked_by_user'),__('messages.bookmarked_by_user'));
-                UserNotification::create([
-                    'user_id' => $partner->id,
-                    'title' => __('messages.bookmarked_by_user'),
-                ]);
+                $partner->update(['is_bookmark_shown' => $partner->is_bookmark_shown + 1]);
+                // SendNotification::send($partner->device_token ?? "", __('messages.bookmarked_by_user'), __('messages.bookmarked_by_user'));
+                // UserNotification::create([
+                //     'user_id' => $partner->id,
+                //     'title' => __('messages.bookmarked_by_user'),
+                // ]);
 
                 $msg = "bookmark_partner";
                 $data = new PartnerResource($partner);
@@ -248,16 +249,15 @@ class PartnerController extends Controller
 
             $partner = User::whereId($partner_id)->first();
 
-            if($partner->id != $user_id)
-            {
-            $partner->update(['is_watch_shown' => $partner->is_watch_shown+1]);
-            $partner->update(['is_notification_shown' => $partner->is_notification_shown+1]);
-            SendNotification::send($partner->device_token ?? "", __('messages.someone_viewed'), __("messages.someone_viewed"));
-            UserNotification::create([
-                'user_id' => $partner->id,
-                'title' => __('messages.someone_viewed'),
+            if ($partner->id != $user_id) {
+                $partner->update(['is_watch_shown' => $partner->is_watch_shown + 1]);
+                $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
+                SendNotification::send($partner->device_token ?? "", __('messages.someone_viewed'), __("messages.someone_viewed"));
+                UserNotification::create([
+                    'user_id' => $partner->id,
+                    'title' => __('messages.someone_viewed'),
 
-            ]);
+                ]);
             }
             //responce
             $msg = "user_watch";
@@ -388,10 +388,29 @@ class PartnerController extends Controller
     {
         try {
             $user = auth()->user();
-            $compatible_partner = User::where('height', $user->height)->where('weight', $user->weight)->where('country_id', $user->country_id)->where('state_id', $user->state_id)->where('marital_status_id', $user->marital_status_id)->where('marriage_readiness_id', $user->marriage_readiness_id)->where('color_id', $user->color_id)->where('education_type_id', $user->education_type_id)->where('is_married_before', $user->is_married_before)->whereNot('id', $user->id)->get();
 
+            if ($user->gender == 1) { // if it's male it will show the female that compitable with him
+                $compatible_partner = User::where('gender', 2)->where('height', '<=', $user->height)
+                    ->where('weight', '<=', $user->weight + 10)->where('weight', '>=', $user->weight - 10)
+                    ->where('country_id', $user->country_id)
+                    ->where('state_id', $user->state_id)->where('marital_status_id', $user->marital_status_id)
+                    ->where('marriage_readiness_id', $user->marriage_readiness_id)->where('color_id', $user->color_id)
+                    ->where('education_type_id', $user->education_type_id)->where('is_married_before', $user->is_married_before)
+                    ->whereDate('birthday_date', '>=', $user->birthday_date)
+                    ->whereNot('id', $user->id)
+                    ->get();
+            } else {
+                $compatible_partner = User::where('gender', 1)->where('height', '>=', $user->height)
+                    ->where('weight', '<=', $user->weight + 10)->where('weight', '>=', $user->weight - 10)
+                    ->where('country_id', $user->country_id)
+                    ->where('state_id', $user->state_id)->where('marital_status_id', $user->marital_status_id)
+                    ->where('marriage_readiness_id', $user->marriage_readiness_id)->where('color_id', $user->color_id)
+                    ->where('education_type_id', $user->education_type_id)->where('is_married_before', $user->is_married_before)
+                    ->whereDate('birthday_date', '<=', $user->birthday_date)->whereNot('id', $user->id)
+                    ->get();
+            }
             $msg = "most_compatible_partners";
-
+            // dd($compatible_partner);
             return $this->dataResponse($msg, PartnerResource::collection($compatible_partner), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
@@ -413,7 +432,7 @@ class PartnerController extends Controller
 
 
             // Get the count for the most liked partner_id
-            $mostLikedCount = User::whereIn('id',$mostLikedPartnerId)->get();
+            $mostLikedCount = User::whereIn('id', $mostLikedPartnerId)->get();
 
             $msg = "fetch_most_liked_partners";
             $data = PartnerResource::collection($mostLikedCount);
@@ -424,15 +443,16 @@ class PartnerController extends Controller
         }
     }
 
-    public function fetch_nearst_partners(){
+    public function fetch_nearst_partners()
+    {
 
         try {
             $user = auth()->user();
             $partner = User::where('id', '!=', $user->id)->get();
-            $nearst_partners = $partner->where('state_id' , $user->state_id);
+            $nearst_partners = $partner->where('state_id', $user->state_id);
             $data = PartnerResource::collection($nearst_partners);
             $msg = "fetch_nearst_partners";
-            return $this->dataResponse($msg, $data , 200);
+            return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }

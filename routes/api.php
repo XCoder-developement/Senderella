@@ -249,4 +249,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     //notifications
     Route::get("fetch_notifications", [NotificationController::class, "fetch_notifications"]);
 
+    //fetch_all_notifications
+    Route::post("fetch_messages", [ChatController::class, "fetch_messages"]);
+
 });
