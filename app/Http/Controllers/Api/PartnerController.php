@@ -443,10 +443,19 @@ class PartnerController extends Controller
         }
     }
 
-    public function fetch_nearst_partners()
+    public function fetch_nearst_partners(Request $request)
     {
 
         try {
+            $rules = [
+                "longitude" => "required",
+                "latitude" => "required",
+            ];
+            $validator = Validator::make(request()->all(), $rules);
+            if ($validator->fails()) {
+                return $this->getvalidationErrors("validator");
+            }
+            
             $user = auth()->user();
             $partner = User::where('id', '!=', $user->id)->get();
             $nearst_partners = $partner->where('state_id', $user->state_id);
