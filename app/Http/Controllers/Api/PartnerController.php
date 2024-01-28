@@ -389,7 +389,7 @@ class PartnerController extends Controller
 
             if ($user->gender == 1) { // if it's male it will show the female that compitable with him
                 $compatible_partner = User::where('gender', 2)->where('height', '<=', $user->height)
-                    ->where('weight', '<=', $user->weight + 10)->where('weight', '>=', $user->weight - 10)
+                    // ->where('weight', '<=', $user->weight + 10)->where('weight', '>=', $user->weight - 10)
                     ->where('country_id', $user->country_id)
                     ->where('state_id', $user->state_id)->where('marital_status_id', $user->marital_status_id)
                     ->where('marriage_readiness_id', $user->marriage_readiness_id)->where('color_id', $user->color_id)
@@ -398,7 +398,7 @@ class PartnerController extends Controller
                     ->get();
             } else {
                 $compatible_partner = User::where('gender', 1)->where('height', '>=', $user->height)
-                    ->where('weight', '<=', $user->weight + 10)->where('weight', '>=', $user->weight - 10)
+                    // ->where('weight', '<=', $user->weight + 10)->where('weight', '>=', $user->weight - 10)
                     ->where('country_id', $user->country_id)
                     ->where('state_id', $user->state_id)->where('marital_status_id', $user->marital_status_id)
                     ->where('marriage_readiness_id', $user->marriage_readiness_id)->where('color_id', $user->color_id)
