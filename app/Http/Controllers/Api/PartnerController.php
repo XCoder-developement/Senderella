@@ -395,7 +395,6 @@ class PartnerController extends Controller
                     ->where('marriage_readiness_id', $user->marriage_readiness_id)->where('color_id', $user->color_id)
                     ->where('education_type_id', $user->education_type_id)->where('is_married_before', $user->is_married_before)
                     ->whereDate('birthday_date', '>=', $user->birthday_date)
-                    ->where('id','!=' , $user->id)
                     ->get();
             } else {
                 $compatible_partner = User::where('gender', 1)->where('height', '>=', $user->height)
@@ -404,7 +403,7 @@ class PartnerController extends Controller
                     ->where('state_id', $user->state_id)->where('marital_status_id', $user->marital_status_id)
                     ->where('marriage_readiness_id', $user->marriage_readiness_id)->where('color_id', $user->color_id)
                     ->where('education_type_id', $user->education_type_id)->where('is_married_before', $user->is_married_before)
-                    ->whereDate('birthday_date', '<=', $user->birthday_date)->where('id','!=' , $user->id)
+                    ->whereDate('birthday_date', '<=', $user->birthday_date)
                     ->get();
             }
             $msg = "most_compatible_partners";
