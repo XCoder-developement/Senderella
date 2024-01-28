@@ -31,7 +31,7 @@ class SendPushNotification extends Notification
         return (new FirebaseMessage)
             ->withTitle($this->title)
             ->withBody($this->message)
-            ->withPriority('high')->asMessage($this->firebase_token);
+            ->withPriority('high')->asMessage($this->fcmTokens);
             ;
     }
 }
