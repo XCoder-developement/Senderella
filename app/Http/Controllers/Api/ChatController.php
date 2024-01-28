@@ -73,7 +73,7 @@ class ChatController extends Controller
             ->toArray();
 
             if(count($messages) == 1){
-                SendNotification::send($receiver->token, __('message.congratulations'), __('message.congrats you have recieved a reply'));
+                SendNotification::send($receiver->device_token, __('message.congratulations'), __('message.congrats you have recieved a reply'));
             }
             // Broadcasting to a private channel based on receiver_id
             // broadcast(new ChatMessageSent($chatMessage))->toOthers();

@@ -108,7 +108,7 @@ class PartnerController extends Controller
                 $partner->update(['is_like_shown' => $partner->is_like_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
 
-                SendNotification::send($partner->device_token ?? "", __('messages.new like'), __('messages.new like'));
+                SendNotification::send($partner->user_device->device_token ?? "", __('messages.new like'), __('messages.new like'));
                 UserNotification::create([
                     'user_id' => $partner->id,
                     'title' => __('messages.new like'),
@@ -455,7 +455,7 @@ class PartnerController extends Controller
             if ($validator->fails()) {
                 return $this->getvalidationErrors("validator");
             }
-            
+
             $user = auth()->user();
             $partner = User::where('id', '!=', $user->id)->get();
             $nearst_partners = $partner->where('state_id', $user->state_id);
