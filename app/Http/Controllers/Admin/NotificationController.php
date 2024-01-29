@@ -41,11 +41,11 @@ class NotificationController extends Controller
             $q->whereNotNull('device_token');
         })->get();
         foreach($users as $user){
-            dd($user->user_devices->device_token);
             // $user->notifications()->attach($notification);
             foreach($user->user_devices as $user_device){
 
-            SendNotification::send($user_device->device_token ?? "",$title,$text);
+                SendNotification::send($user_device->device_token ?? "",$title,$text);
+                dd($user_device->device_token);
 
             }
             }
