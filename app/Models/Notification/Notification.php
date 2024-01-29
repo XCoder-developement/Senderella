@@ -10,9 +10,9 @@ class Notification extends Model
 {
     use HasFactory,Translatable;
 
-    // public $translatedAttributes = ['title', 'body'];
+    public $translatedAttributes = ['title', 'body'];
 
-    // protected $translationForeignKey = 'notification_id';
+    protected $translationForeignKey = 'notification_id';
     // protected $fillable = ['title','body'];
     protected $table = 'notifications';
     protected $guarded =[];
