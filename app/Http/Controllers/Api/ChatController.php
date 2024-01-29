@@ -35,6 +35,7 @@ class ChatController extends Controller
         }
     }
 
+    
     public function send_message(Request $request)
     {
         try {
@@ -51,16 +52,28 @@ class ChatController extends Controller
 
             $user = auth()->user();
             $receiver_id = $request->receiver_id;
-            $receiver = User::where('id' , $receiver_id)->first();
+            $receiver = User::where('id', $receiver_id)->first();
             $message = $request->message;
 
-            // if($user->is_verify == 1){
+            // Check if a chat already exists between the user and the receiver
+            $chat = Chat::where(function ($query) use ($user, $receiver) {
+                $query->where('user_id', $user->id)
+                    ->where('receiver_id', $receiver->id);
+            })->orWhere(function ($query) use ($user, $receiver) {
+                $query->where('user_id', $receiver->id)
+                    ->where('receiver_id', $user->id);
+            })->first();
 
-            $chat = Chat::updateOrCreate([
-                "user_id" => $user->id,
-                "receiver_id" => $receiver->id,
-                "name" => $receiver->name,
-            ]);
+    //         // if($user->is_verify == 1){
+
+            if (!$chat) {
+                // If no chat exists, create a new one
+                $chat = Chat::create([
+                    "user_id" => $user->id,
+                    "receiver_id" => $receiver->id,
+                    "name" => $receiver->name,
+                ]);
+            }
 
             $chatMessage = ChatMessage::create([
                 "chat_id" => $chat->id,
@@ -70,18 +83,21 @@ class ChatController extends Controller
             ]);
 
             $messages = ChatMessage::where('chat_id', $chat->id)
-            ->orderBy('created_at', 'desc')
-            ->pluck('id')
-            ->toArray();
-            if(count($messages) == 1){
-                SendNotification::send($receiver->user_device->device_token , __('message.congratulations'), __('message.congrats you have recieved a reply'));
+                ->orderBy('created_at', 'desc')
+                ->pluck('id')
+                ->toArray();
+
+            if (count($messages) == 1) {
+                SendNotification::send($receiver->user_device->device_token, __('message.congratulations'), __('message.congrats you have received a reply'));
             }
-        // }else{
-        //     $msg = __('message.your account is not verified');
-        //     return $this->dataResponse($msg, 200);
-        // }
 
             return $this->successResponse(__("message.sent successfully"), 200);
+
+            // }else{
+            //     $msg = __('message.your account is not verified');
+            //     return $this->dataResponse($msg, 200);
+            // }
+
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
@@ -92,11 +108,11 @@ class ChatController extends Controller
     {
         try {
             $user = auth()->user();
-            $sent_chats = Chat::where('user_id', $user->id)->get();
-            $recived_chats = Chat::where('receiver_id', $user->id)->get();
-            $chats = $sent_chats->merge($recived_chats);
+            $sent_chats = Chat::where('user_id', $user->id)->where('receiver_id', '!=', $user->id);
+            $received_chats = Chat::where('receiver_id', $user->id)->where('user_id', '!=', $user->id);
+            $chats = $sent_chats->union($received_chats)->get();
             // dd($recived_chats);
-            // dd($chats);
+            // dd($recived_chats);
             $data = ChatResource::collection($chats);
             $msg = __('message.Your chats');
             return $this->dataResponse($msg, $data, 200);
@@ -122,13 +138,13 @@ class ChatController extends Controller
             // if($user->is_verify == 1){
 
 
-            $messages = ChatMessage::where('chat_id', $chatId)->where('receiver_id' , $user->id)->orderBy('created_at', 'desc')->get();
+            $messages = ChatMessage::where('chat_id', $chatId)->orderBy('created_at', 'desc')->get();
             $msg = __('message.Messages');
             return $this->dataResponse($msg, $messages, 200);
-        // }else{
-        //     $msg = __('message.your account is not verified');
-        //     return $this->dataResponse($msg, 200);
-        // }
+            // }else{
+            //     $msg = __('message.your account is not verified');
+            //     return $this->dataResponse($msg, 200);
+            // }
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }

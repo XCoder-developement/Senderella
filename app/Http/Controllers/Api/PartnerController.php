@@ -107,7 +107,7 @@ class PartnerController extends Controller
 
                 $partner->update(['is_like_shown' => $partner->is_like_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
-                SendNotification::send($partner->user_device->device_token ?? "", __('messages.new like'), __('messages.new like'));
+                SendNotification::send($partner->user_device->device_token, __('messages.new like'), __('messages.new like'));
                 UserNotification::create([
                     'user_id' => $partner->id,
                     'title' => __('messages.new like'),
@@ -210,7 +210,7 @@ class PartnerController extends Controller
                 $partner = User::whereId($partner_id)->first();
                 //responce
                 $partner->update(['is_bookmark_shown' => $partner->is_bookmark_shown + 1]);
-                // SendNotification::send($partner->user_device->device_token ?? "", __('messages.bookmarked_by_user'), __('messages.bookmarked_by_user'));
+                // SendNotification::send($partner->user_device->device_token, __('messages.bookmarked_by_user'), __('messages.bookmarked_by_user'));
                 // UserNotification::create([
                 //     'user_id' => $partner->id,
                 //     'title' => __('messages.bookmarked_by_user'),
@@ -250,7 +250,7 @@ class PartnerController extends Controller
             if ($partner->id != $user_id) {
                 $partner->update(['is_watch_shown' => $partner->is_watch_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
-                SendNotification::send($partner->user_device->device_token ?? "", __('messages.someone_viewed'), __("messages.someone_viewed"));
+                SendNotification::send($partner->user_device->device_token, __('messages.someone_viewed'), __("messages.someone_viewed"));
                 UserNotification::create([
                     'user_id' => $partner->id,
                     'title' => __('messages.someone_viewed'),
