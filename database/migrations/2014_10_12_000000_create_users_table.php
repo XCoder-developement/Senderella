@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('country_id')->unsigned()->nullable();
             $table->integer('state_id')->unsigned()->nullable();
             $table->integer('nationality_id')->unsigned()->nullable();
-            
+
             $table->integer('marital_status_id')->unsigned()->nullable();
             $table->integer('marriage_readiness_id')->unsigned()->nullable();
             $table->integer('education_type_id')->unsigned()->nullable();
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->integer('active')->nullable()->default(0);
             $table->integer('trusted')->nullable()->default(0);
 
-            $table->integer('is_verify')->default(0);
+            $table->integer('is_verify')->default(0);  // the status of having packages or not the default is 0 everything is available exception messaging and hashing the recieved messages , 1 has a package 
 
             $table->longText('notes')->nullable();
             $table->longText('about_me')->nullable();

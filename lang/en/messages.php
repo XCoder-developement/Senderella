@@ -415,4 +415,8 @@ return [
     "not_answered"    => "Not Answered",
     "reason"        => "Reason",
     "report doesnt have image"    => "Report doesnt have image",
+    "reports"        => "Reports",
+    "status updated successfully"    => "Status updated successfully",
+    "new_partner_activity"    => "New Partner Activity",
+    "your account is not verified"    => "Your account is not upgraded",
 ];
