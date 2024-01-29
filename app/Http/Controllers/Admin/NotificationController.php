@@ -50,8 +50,8 @@ class NotificationController extends Controller
             }
             }
 
-
-        return redirect()->back()->with(['success'=> __("messages.send_notification")]);
+dd("done");
+        // return redirect()->back()->with(['success'=> __("messages.send_notification")]);
     }
 
 }
