@@ -31,13 +31,6 @@ class SendNotification
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
         $result=curl_exec($ch);
-        $result = curl_exec($ch);
-
-if (curl_errno($ch)) {
-    // Handle cURL error, log, or echo the error details.
-    \Log::error('cURL Error: ' . curl_error($ch));
-}
-
         return true;
     }
 
