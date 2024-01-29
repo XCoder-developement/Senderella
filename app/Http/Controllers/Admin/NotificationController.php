@@ -40,15 +40,13 @@ class NotificationController extends Controller
         $users = User::whereHas('user_device' ,function($q){
             $q->whereNotNull('device_token');
         })->get();
-        foreach($users as $user){
-            // $user->notifications()->attach($notification);
-            foreach($user->user_devices as $user_device){
+        // foreach($users as $user){
+        //     // $user->notifications()->attach($notification);
+        //     foreach($user->user_devices as $user_device){
 
-                SendNotification::send($user_device->device_token ?? "",$title,$text);
-                dd($user_device->device_token);
-
-            }
-            }
+                SendNotification::send('eFv4EhijTnmQukqkZjJckf:APA91bHCaPPjskbQ45lBcI4Yf3pSv8ivRsv-REpB0qHEJN43CPg1aK282mKIWCPjuFI21DgMVhpz2iUXW3fhUEN4o9LT9CCg0Nh_TqUSX7owe42Zr0wdzonac47O33hzUtge5RKgb8Ix' ?? "",$title,$text);
+            // }
+            // }
 
 
         return redirect()->back()->with(['success'=> __("messages.send_notification")]);
