@@ -459,7 +459,7 @@ return [
     "new_duration"    => "مدة لقب حديث",
     "send_notification"    => "تم ارسال الاشعار",
     "new_post"    => "منشور جديد",
-    "new like"        => "اعجاب جديد",
+    "new_like"        => "اعجاب جديد",
     "someone_viewed"    => "شخص قام بمشاهدة ملفك الخاص",
     "bookmarked_by_user"    => "قام شخص بوضعك فى المفضلة",
     "there is no last search"    => "لا يوجد بحث سابق",

@@ -4,10 +4,7 @@
 	"clients": [],
 	"database": "redis",
 	"databaseConfig": {
-        "redis": {
-            "host": "127.0.0.1",
-            "port": "6379"
-        },
+		"redis": {},
 		"sqlite": {
 			"databasePath": "/database/laravel-echo-server.sqlite"
 		}
@@ -32,7 +29,4 @@
 		"allowMethods": "",
 		"allowHeaders": ""
 	}
-
-    }
-
-
+}
