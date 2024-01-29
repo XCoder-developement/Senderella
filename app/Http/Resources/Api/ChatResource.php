@@ -16,11 +16,13 @@ class ChatResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $user = auth()->user();
         $message = ChatMessage::where('chat_id', $this->id)->orderBy('created_at', 'desc')->value('message');
         return [
             'chat_id' => $this->id,
             'name'   => $this->name ?? '',
             'message'   => $message ?? '',
+            // $message = $user->is_verify == 1 ? $message : substr($message, 0, 5) . encrypt(substr($message, 5)),
         ];
     }
 }
