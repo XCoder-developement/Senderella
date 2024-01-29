@@ -32,7 +32,7 @@ class NotificationController extends Controller
         $title = $request->title;
         $text = $request->body;
 
-
+        dd($title , $text); 
         $notify_data["title"] = $title;
         $notify_data["body"] = $text;
 
@@ -40,13 +40,15 @@ class NotificationController extends Controller
         $users = User::whereHas('user_device' ,function($q){
             $q->whereNotNull('device_token');
         })->get();
-        // foreach($users as $user){
-        //     // $user->notifications()->attach($notification);
-        //     foreach($user->user_devices as $user_device){
 
-                SendNotification::send('dXWS6yLdT_aZTcxE5EWLoN:APA91bHfTdjBmPHikfzo2e0_LPkSp1vdfN46CQDZBrK5IlUmGqoCifwJyojkg5NXLXBl3wO1_BZEOcL9YeCxh3M9kCrlTA7wOUFtlhrCWhg_ASc-O3BkF2XVAal_TG5i-sQ8xPfymKxi' ?? "",$title,$text);
-            // }
-            // }
+        foreach($users as $user){
+            // $user->notifications()->attach($notification);
+            foreach($user->user_devices as $user_device){
+
+            SendNotification::send($user_device->device_token ?? "",$title,$text);
+
+            }
+            }
 
 
         return redirect()->back()->with(['success'=> __("messages.send_notification")]);
