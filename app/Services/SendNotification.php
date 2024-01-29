@@ -31,14 +31,6 @@ class SendNotification
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
         $result=curl_exec($ch);
-
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-if ($httpCode !== 200) {
-    // Handle error, log, or check the response for more details.
-    // You can log or echo $result to see the FCM server's response.
-    dd('badluck');
-}
         return true;
     }
 
