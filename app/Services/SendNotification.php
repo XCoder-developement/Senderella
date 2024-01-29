@@ -16,6 +16,7 @@ class SendNotification
             "data" =>[
                     "title" => $title,
                     'body' => $text,
+                    // "type" => $type,
                     "click_action" => "FLUTTER_NOTIFICATION_CLICK"
                 ],
         ];
