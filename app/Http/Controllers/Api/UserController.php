@@ -331,10 +331,10 @@ class UserController extends Controller
                     'user_id' => $user->id,
                 ]);
 
-                $user->update(['is_verify' => 1]);
+                // $user->update(['is_verify' => 1]);
             }
 
-            $msg = ("messages.account_document_succseed");
+            $msg = __("messages.account_document_succseed");
 
             return $this->successResponse($msg, 200);
         } catch (\Exception $ex) {
@@ -352,7 +352,7 @@ class UserController extends Controller
                 // delte the user data
                 User::destroy('id', $user->id);
 
-                $msg = 'message.account is delted successfully';
+                $msg = __('message.account is delted successfully');
                 return $this->successResponse($msg, 200);
             }
         } catch (\Exception $ex) {
@@ -403,7 +403,7 @@ class UserController extends Controller
 
             }
 
-            $msg = 'status updated successfully';
+            $msg = __('message.status updated successfully');
                 return $this->successResponse($msg, 200);
 
         } catch (\Exception $ex) {
@@ -431,7 +431,7 @@ class UserController extends Controller
                 'is_bookmark_shown' => 0,
                 'is_watch_shown' => 0,
             ]);
-            $msg = 'new_partner_activity';
+            $msg = __('message.new_partner_activity');
             return $this->dataResponse($msg,$data, 200);
 
         } catch (\Exception $ex) {

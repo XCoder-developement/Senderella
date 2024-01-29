@@ -466,4 +466,10 @@ return [
     "not_answered"    => "لم يتم الاجابة",
     "reason"        => "سبب الابلاغ",
     "report doesnt have image"    => "الابلاغ ليس لديه صورة",
+    "reports"        => "الابلاغات",
+    "account_document_succseed"    => "تم تحميل الصورة بنجاح",
+    "account is delted successfully"    => "تم حذف الحساب بنجاح",
+    "status updated successfully"    => "تم تحديث الحالة بنجاح",
+    "new_partner_activity"    => "تم النشر بنجاح",
+    "your account is not verified"    => "عفوا انت غير مشترك",
 ];

@@ -54,6 +54,8 @@ class ChatController extends Controller
             $receiver = User::where('id' , $receiver_id)->first();
             $message = $request->message;
 
+            // if($user->is_verify == 1){
+
             $chat = Chat::updateOrCreate([
                 "user_id" => $user->id,
                 "receiver_id" => $receiver->id,
@@ -74,8 +76,10 @@ class ChatController extends Controller
             if(count($messages) == 1){
                 SendNotification::send($receiver->user_device->device_token , __('message.congratulations'), __('message.congrats you have recieved a reply'));
             }
-            // Broadcasting to a private channel based on receiver_id
-            // broadcast(new ChatMessageSent($chatMessage))->toOthers();
+        // }else{
+        //     $msg = __('message.your account is not verified');
+        //     return $this->dataResponse($msg, 200);
+        // }
 
             return $this->successResponse(__("message.sent successfully"), 200);
         } catch (\Exception $ex) {
@@ -115,9 +119,16 @@ class ChatController extends Controller
             }
             $chatId = $request->chat_id;
             $user = auth()->user();
+            // if($user->is_verify == 1){
+
+
             $messages = ChatMessage::where('chat_id', $chatId)->where('receiver_id' , $user->id)->orderBy('created_at', 'desc')->get();
             $msg = __('message.Messages');
             return $this->dataResponse($msg, $messages, 200);
+        // }else{
+        //     $msg = __('message.your account is not verified');
+        //     return $this->dataResponse($msg, 200);
+        // }
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
