@@ -36,62 +36,22 @@ class NotificationController extends Controller
         $notify_data["title"] = $title;
         $notify_data["body"] = $text;
 
-    //     $notification  = Notification::create($notify_data);
-    //     $users = User::whereHas('user_device' ,function($q){
-    //         $q->whereNotNull('device_token');
-    //     })->get();
+        $notification  = Notification::create($notify_data);
+        $users = User::whereHas('user_device' ,function($q){
+            $q->whereNotNull('device_token');
+        })->get();
 
-    //     foreach($users as $user){
-    //         // $user->notifications()->attach($notification);
-    //         foreach($user->user_devices as $user_device){
+        foreach($users as $user){
+            // $user->notifications()->attach($notification);
+            foreach($user->user_devices as $user_device){
 
-    //         SendNotification::send($user_device->device_token ?? "",$title,$text);
+            SendNotification::send($user_device->device_token ?? "",$title,$text);
 
-    //         }
-    //         }
+            }
+            }
 
 
-    //     return redirect()->back()->with(['success'=> __("messages.send_notification")]);
-    // }
-    $url = 'https://fcm.googleapis.com/fcm/send';
-
-    $FcmToken = 'dXWS6yLdT_aZTcxE5EWLoN:APA91bHfTdjBmPHikfzo2e0_LPkSp1vdfN46CQDZBrK5IlUmGqoCifwJyojkg5NXLXBl3wO1_BZEOcL9YeCxh3M9kCrlTA7wOUFtlhrCWhg_ASc-O3BkF2XVAal_TG5i-sQ8xPfymKxi';
-
-    $serverKey = 'AAAAC0sn-aE:APA91bGu_WwGma-HWgCYWeWKTOoQ9VXxpvTzp3ZIR_Fk-BAQ6Qeo_fCMvtT89T_f-1YPgt4OcDfK-gpj1yOHQYpMIdkfluo-GWt2HxnynOJmkvT2_jEvVsL2V_w5JekDT1Jlp7pDaYTo'; // ADD SERVER KEY HERE PROVIDED BY FCM
-
-    $data = [
-        "registration_ids" => $FcmToken,
-        "notification" => [
-            "title" => $request->title,
-            "body" => $request->body,
-        ]
-    ];
-    $encodedData = json_encode($data);
-
-    $headers = [
-        'Authorization:key=' . $serverKey,
-        'Content-Type: application/json',
-    ];
-
-    $ch = curl_init();
-
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-    // Disabling SSL Certificate support temporarly
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
-    // Execute post
-    $result = curl_exec($ch);
-    if ($result === FALSE) {
-        die('Curl failed: ' . curl_error($ch));
-    }
-    // Close connection
-    curl_close($ch);
-    // FCM response
+        return redirect()->back()->with(['success'=> __("messages.send_notification")]);
     }
 
 }
