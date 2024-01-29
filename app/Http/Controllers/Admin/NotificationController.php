@@ -35,8 +35,8 @@ class NotificationController extends Controller
         $notify_data["title"] = $title;
         $notify_data["body"] = $text;
 
-        dd($notify_data);
-        $notification  = Notification::create($notify_data);
+        // dd($notify_data);
+        Notification::create($notify_data);
         $users = User::whereHas('user_device' ,function($q){
             $q->whereNotNull('device_token');
         })->get();
