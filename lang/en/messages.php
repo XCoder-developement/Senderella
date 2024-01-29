@@ -419,4 +419,5 @@ return [
     "status updated successfully"    => "Status updated successfully",
     "new_partner_activity"    => "New Partner Activity",
     "your account is not verified"    => "Your account is not upgraded",
+    "Your chats" => "Your chats",
 ];

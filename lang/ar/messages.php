@@ -472,4 +472,5 @@ return [
     "status updated successfully"    => "تم تحديث الحالة بنجاح",
     "new_partner_activity"    => "تم النشر بنجاح",
     "your account is not verified"    => "عفوا انت غير مشترك",
+    "Your chats"    => "محادثاتك",
 ];
