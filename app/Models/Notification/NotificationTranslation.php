@@ -9,5 +9,5 @@ class NotificationTranslation extends Model
 {
     use HasFactory;
     protected $table = 'notification_translations';
-    protected $fillable =  ['title','body'];
+    protected $guarded =  [];
 }
