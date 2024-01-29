@@ -34,7 +34,7 @@ class PartnerController extends Controller
             if (!$partners) {
                 $msg = "message.there is no partners";
 
-                return $this->errorResponse($msg, 401);
+                return $this->dataResponse($msg, 200);
             }
             $msg = "fetch_all_users";
 
@@ -107,10 +107,10 @@ class PartnerController extends Controller
 
                 $partner->update(['is_like_shown' => $partner->is_like_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
-                SendNotification::send($partner->user_device->device_token, __('messages.new like'), __('messages.new like'));
+                SendNotification::send($partner->user_device->device_token, __('messages.new_like'), __('messages.new_like'));
                 UserNotification::create([
                     'user_id' => $partner->id,
-                    'title' => __('messages.new like'),
+                    'title' => __('messages.new_like'),
                 ]);
                 UserLike::create($data);
                 //responce
