@@ -87,27 +87,3 @@
 
  <!--end::Form-->
 @endsection
-
-<script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-analytics.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-      apiKey: "AIzaSyBBL4DhU6_-XWv0D9cPhPloT00zRb4tvBw",
-      authDomain: "sendrella-350f1.firebaseapp.com",
-      projectId: "sendrella-350f1",
-      storageBucket: "sendrella-350f1.appspot.com",
-      messagingSenderId: "48505551265",
-      appId: "1:48505551265:web:431b8bbbf63b56b58eb3e0",
-      measurementId: "G-SQYZJ06YGG"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-  </script>
