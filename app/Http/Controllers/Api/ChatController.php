@@ -77,7 +77,7 @@ class ChatController extends Controller
             // Broadcasting to a private channel based on receiver_id
             // broadcast(new ChatMessageSent($chatMessage))->toOthers();
 
-            return $this->successResponse("Message sent successfully", 200);
+            return $this->successResponse(__("message.sent successfully"), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
