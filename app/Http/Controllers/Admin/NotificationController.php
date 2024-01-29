@@ -44,7 +44,7 @@ class NotificationController extends Controller
         //     // $user->notifications()->attach($notification);
         //     foreach($user->user_devices as $user_device){
 
-                SendNotification::send('eFv4EhijTnmQukqkZjJckf:APA91bHCaPPjskbQ45lBcI4Yf3pSv8ivRsv-REpB0qHEJN43CPg1aK282mKIWCPjuFI21DgMVhpz2iUXW3fhUEN4o9LT9CCg0Nh_TqUSX7owe42Zr0wdzonac47O33hzUtge5RKgb8Ix' ?? "",$title,$text);
+                SendNotification::send('dXWS6yLdT_aZTcxE5EWLoN:APA91bHfTdjBmPHikfzo2e0_LPkSp1vdfN46CQDZBrK5IlUmGqoCifwJyojkg5NXLXBl3wO1_BZEOcL9YeCxh3M9kCrlTA7wOUFtlhrCWhg_ASc-O3BkF2XVAal_TG5i-sQ8xPfymKxi' ?? "",$title,$text);
             // }
             // }
 
