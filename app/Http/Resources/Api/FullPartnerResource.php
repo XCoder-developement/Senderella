@@ -100,6 +100,7 @@ class UserInformationResource extends JsonResource
         // dd($locale);
         $user_id = $request->partner_id;
         $qust = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $user_id)->first()?->requirment_item_id;
+        dd($qust);
         $ques = RequirmentItemTranslation::where('requirment_item_id',$qust)->where('locale',$locale)->first()?->title;
 
         return [
