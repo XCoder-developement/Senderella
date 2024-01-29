@@ -104,7 +104,7 @@ class PartnerController extends Controller
             if (!$like_partner) {
                 $data['user_id'] =  $user_id;
                 $data['partner_id'] =  $partner_id;
-dd($partner->user_device->device_token)    ;
+
                 $partner->update(['is_like_shown' => $partner->is_like_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
                 SendNotification::send($partner->user_device->device_token, __('messages.new like'), __('messages.new like'));
