@@ -36,7 +36,7 @@
             <div class="card-body">
                 <form method="post" action="{{ route('notifications.send') }}" enctype="multipart/form-data">
                     @csrf
-                    {{-- image upload --}}
+                    {{-- image upload section--}}
                     <div class="row">
                         <div class="col-8 mx-auto">
                             <div class="uploadOuter">
