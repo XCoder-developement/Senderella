@@ -38,13 +38,13 @@ class FullPartnerResource extends JsonResource
             "country_id" => intval($this->country_id) ?? "",
             "state_id" => intval($this->state_id) ?? "",
             "country_title" => $this->country?->title ?? "",
-            "nationalityTitle" => $this->country?->title ?? "",
+            "nationality_title" => $this->country?->title ?? "",
             "flag"  => $this->country?->image_link ?? "",
             "state_title" => $this->state?->title ?? "",
 
             "marital_status_id" => intval($this->marital_status_id) ?? null,
-            "readiness_for_marriages_id" => intval($this->readiness_for_marriages_id) ?? null,
-            "readiness_for_marriages_title" => $this->readiness_for_marriages?->title ?? "",
+            "readiness_for_marriages_id" => intval($this->marriage_readiness_id) ?? null,
+            "marriage_readiness_title" => $this->marriage_readiness?->title ?? "",
             "marital_status_title" => $this->marital_status?->title ?? "",
             "marital_status_title" => $this->marital_status?->title ?? "",
 
