@@ -31,10 +31,14 @@ class NotificationController extends Controller
 
         $title = $request->title;
         $text = $request->body;
-
+        $image = null;
+        if($request->hasFile('image')){
+            $image = upload_image($request->image,"notifications");
+        }
 
         $notify_data["title"] = $title;
         $notify_data["body"] = $text;
+        $notify_data["image"] = $image;
 
         $notification  = Notification::create($notify_data);
         $users = User::whereHas('user_device' ,function($q){
@@ -45,7 +49,7 @@ class NotificationController extends Controller
             // $user->notifications()->attach($notification);
             foreach($user->user_devices as $user_device){
 
-            SendNotification::send($user_device->device_token,$title,$text);
+            SendNotification::send($user_device->device_token,$title,$text , $image);
 
             }
             }

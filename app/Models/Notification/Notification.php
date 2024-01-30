@@ -17,5 +17,12 @@ class Notification extends Model
     protected $table = 'notifications';
     protected $guarded =[];
 
+    protected $appends = ["image_link"];
+
+    public function getImageLinkAttribute()
+    {
+        return $this->image ? asset($this->image) : '';
+    }
+    
 
 }
