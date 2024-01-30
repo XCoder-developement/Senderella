@@ -35,7 +35,7 @@ class ChatController extends Controller
         }
     }
 
-    
+
     public function send_message(Request $request)
     {
         try {
@@ -50,6 +50,7 @@ class ChatController extends Controller
                 return $this->getValidationErrors($validator);
             }
 
+
             $user = auth()->user();
             $receiver_id = $request->receiver_id;
             $receiver = User::where('id', $receiver_id)->first();
@@ -58,13 +59,13 @@ class ChatController extends Controller
             // Check if a chat already exists between the user and the receiver
             $chat = Chat::where(function ($query) use ($user, $receiver) {
                 $query->where('user_id', $user->id)
-                    ->where('receiver_id', $receiver->id);
+                ->where('receiver_id', $receiver->id);
             })->orWhere(function ($query) use ($user, $receiver) {
                 $query->where('user_id', $receiver->id)
-                    ->where('receiver_id', $user->id);
+                ->where('receiver_id', $user->id);
             })->first();
 
-    //         // if($user->is_verify == 1){
+            //         // if($user->is_verify == 1){
 
             if (!$chat) {
                 // If no chat exists, create a new one
@@ -83,12 +84,13 @@ class ChatController extends Controller
             ]);
 
             $messages = ChatMessage::where('chat_id', $chat->id)
-                ->orderBy('created_at', 'desc')
-                ->pluck('id')
-                ->toArray();
+            ->orderBy('created_at', 'desc')
+            ->pluck('id')
+            ->toArray();
 
+            $type = 4 ;
             if (count($messages) == 1) {
-                SendNotification::send($receiver->user_device->device_token, __('message.congratulations'), __('message.congrats you have received a reply'));
+                SendNotification::send($receiver->user_device->device_token, __('message.congratulations'), __('message.congrats you have received a reply') , $type , null);
             }
 
             return $this->successResponse(__("message.sent successfully"), 200);
