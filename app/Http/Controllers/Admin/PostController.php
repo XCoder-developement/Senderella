@@ -41,11 +41,11 @@ class PostController extends Controller
         }
         $data['admin_id'] = auth()->user()->id ?? null;
         $post = Post::create($data);
-
+        $tpye = 3 ;
         foreach($users as $user){
             $user->update(['is_post_shown' => $user->is_post_shown + 1]);
             $user->update(['is_notification_shown' => $user->is_notification_shown + 1]);
-            SendNotification::send($user->user_device->device_token,__('messages.new_post'),__('messages.new_post'));
+            SendNotification::send($user->user_device->device_token,__('messages.new_post'),__('messages.new_post') , $tpye , null);
             UserNotification::create([
                 'user_id' => $user->id,
                 'title' => __('messages.new_post'),

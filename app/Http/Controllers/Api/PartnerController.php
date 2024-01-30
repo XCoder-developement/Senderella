@@ -98,6 +98,8 @@ class PartnerController extends Controller
             $user_id = auth()->id();
             $partner_id = $request->partner_id;
 
+            $type = 2 ;
+
             $like_partner = UserLike::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
 
             $partner = User::whereId($partner_id)->first();
@@ -107,7 +109,7 @@ class PartnerController extends Controller
 
                 $partner->update(['is_like_shown' => $partner->is_like_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
-                SendNotification::send($partner->user_device->device_token, __('messages.new_like'), __('messages.new_like'));
+                SendNotification::send($partner->user_device->device_token, __('messages.new_like'), __('messages.new_like') , $type , null);
                 UserNotification::create([
                     'user_id' => $partner->id,
                     'title' => __('messages.new_like'),
@@ -240,7 +242,7 @@ class PartnerController extends Controller
             $partner_id = $request->partner_id;
 
 
-
+            $type = 1 ;
 
             $data['user_id'] =  $user_id;
             $data['partner_id'] =  $partner_id;
@@ -250,7 +252,7 @@ class PartnerController extends Controller
             if ($partner->id != $user_id) {
                 $partner->update(['is_watch_shown' => $partner->is_watch_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
-                SendNotification::send($partner->user_device->device_token, __('messages.someone_viewed'), __("messages.someone_viewed"));
+                SendNotification::send($partner->user_device->device_token, __('messages.someone_viewed'), __("messages.someone_viewed") , $type , null);
                 UserNotification::create([
                     'user_id' => $partner->id,
                     'title' => __('messages.someone_viewed'),

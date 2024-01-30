@@ -32,6 +32,7 @@ class NotificationController extends Controller
         $title = $request->title;
         $text = $request->body;
         $image = null;
+        $type = 0;
         if($request->hasFile('image')){
             $image = upload_image($request->image,"notifications");
         }
@@ -49,7 +50,7 @@ class NotificationController extends Controller
             // $user->notifications()->attach($notification);
             foreach($user->user_devices as $user_device){
 
-            SendNotification::send($user_device->device_token,$title,$text , url($image));
+            SendNotification::send($user_device->device_token,$title,$text ,$type , url($image));
 
             }
             }

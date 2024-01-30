@@ -9,7 +9,7 @@ class SendNotification
 
     private static $URL = "https://fcm.googleapis.com/fcm/send";
 
-    public static function send($token, $title,$text , $image = null)
+    public static function send($token, $title,$text ,$type = "general" , $image = null)
     {
         $data = [
             "to" =>$token,
@@ -17,7 +17,7 @@ class SendNotification
                     "title" => $title,
                     'body' => $text,
                     'image' => $image,
-                    // "type" => $type,
+                    "type" => $type,
                     "click_action" => "FLUTTER_NOTIFICATION_CLICK"
                 ],
         ];
