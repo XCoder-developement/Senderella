@@ -26,7 +26,7 @@ class PartnerResource extends JsonResource
             "name" => $this->name ?? "",
             "age" => $this->user_age ?? "",
             "last_active" => $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',
-            "is_follow" => $this->is_follow->$user->id ?? 0,
+            // "is_follow" => $this->is_follow->$user->id ?? 0,
             "is_verify" => $this->is_verify ?? 0,
             "trusted" => $this->trusted ?? 0,
             "is_new" => intval(($user_duration) < $duration),
