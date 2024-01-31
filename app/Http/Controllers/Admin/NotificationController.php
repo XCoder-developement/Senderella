@@ -50,7 +50,7 @@ class NotificationController extends Controller
             // $user->notifications()->attach($notification);
             foreach($user->user_devices as $user_device){
 
-            SendNotification::send($user_device->device_token,$title,$text ,$type , url($image)??'');
+            SendNotification::send($user_device->device_token,$title,$text ,$type ,'' ,url($image)??'');
 
             }
             }
