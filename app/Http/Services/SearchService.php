@@ -22,8 +22,9 @@ class SearchService
                 })
                 ->when($search->country_id, function ($q) use ($search) {
                     $q->where('country_id', $search->country_id);
-                    $q->where('country_id', $search->nationality_id);
-                })->when($search->weight, function ($q) use ($search) {
+                })->when($search->nationality_id, function ($q) use ($search) {
+                $q->where('nationality_id', $search->nationality_id);
+                 })->when($search->weight, function ($q) use ($search) {
                     $q->where('weight', $search->weight);
                 })->when($search->height, function ($q) use ($search) {
                     $q->where('height', $search->height);
