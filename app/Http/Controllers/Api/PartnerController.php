@@ -377,7 +377,7 @@ class PartnerController extends Controller
 
         try {
             $user = auth()->user();
-            $favorite_ids = $user->favorited_by->pluck("user_id")->toArray();
+            $favorite_ids = $user->favorited_by()->pluck("user_id")->toArray();
             $favorite = UserWatch::whereIn('id', $favorite_ids)->get();
             $msg = "who_favorite_me";
             return $this->dataResponse($msg, PartnerResource::collection($favorite), 200);
