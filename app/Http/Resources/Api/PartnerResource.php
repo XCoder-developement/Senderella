@@ -17,6 +17,7 @@ class PartnerResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $user = auth()->user() ;
         $duration = NewDuration::first()->new_duration; // getting the duration days for the new tag
         $user_duration = Carbon::parse($this->created_at)->diffInDays(); // getting the duration days for the user
         return [
@@ -25,7 +26,7 @@ class PartnerResource extends JsonResource
             "name" => $this->name ?? "",
             "age" => $this->user_age ?? "",
             "last_active" => $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',
-            // "is_follow" => $this->is_follow(auth()->id()) ?? 0,
+            "is_follow" => $this->is_follow->$user->id ?? 0,
             "is_verify" => $this->is_verify ?? 0,
             "trusted" => $this->trusted ?? 0,
             "is_new" => intval(($user_duration) < $duration),
@@ -51,7 +52,7 @@ class PartnerResource extends JsonResource
             "education_type_title" => $this->education_type?->title ?? "",
 
             "active" => intval($this->active) ?? "",
-            "partner_more_info" => UserInformationResource::collection($this->informations),
+            // "partner_more_info" => UserInformationResource::collection($this->informations),
         ];
     }
 }
