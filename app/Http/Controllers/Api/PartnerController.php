@@ -94,12 +94,13 @@ class PartnerController extends Controller
             if ($validator->fails()) {
                 return $this->getvalidationErrors("validator");
             }
-
+            $user = auth()->user();
             $user_id = auth()->id();
             $partner_id = $request->partner_id;
 
             $type = 2 ;
-
+            $image = url($user->image);
+            dd($image);
             $like_partner = UserLike::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
 
             $partner = User::whereId($partner_id)->first();
