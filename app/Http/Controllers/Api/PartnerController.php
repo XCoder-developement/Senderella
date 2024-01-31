@@ -99,7 +99,7 @@ class PartnerController extends Controller
             $partner_id = $request->partner_id;
 
             $type = 2 ;
-            $image = url($user->image);
+            $image = url($user->image_link);
             // dd($image);
             $like_partner = UserLike::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
 
