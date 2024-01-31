@@ -100,7 +100,7 @@ class PartnerController extends Controller
 
             $type = 2 ;
             $image = url($user->image);
-            dd($image);
+            // dd($image);
             $like_partner = UserLike::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
 
             $partner = User::whereId($partner_id)->first();
@@ -110,8 +110,8 @@ class PartnerController extends Controller
 
                 $partner->update(['is_like_shown' => $partner->is_like_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
-                $userId = $partner->id;
-                SendNotification::send($partner->user_device->device_token, __('messages.new_like'), __('messages.new_like') , $type , $userId , null);
+                $userId = $user->id;
+                SendNotification::send($partner->user_device->device_token, __('messages.new_like'), __('messages.new_like') , $type , $userId , $image);
                 UserNotification::create([
                     'user_id' => $partner->id,
                     'title' => __('messages.new_like'),
