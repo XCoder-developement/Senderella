@@ -28,7 +28,7 @@ class PartnerResource extends JsonResource
             // "is_follow" => $this->is_follow(auth()->id()) ?? 0,
             "is_verify" => $this->is_verify ?? 0,
             "trusted" => $this->trusted ?? 0,
-            "is_new" => intval(($user_duration) < $duration),
+            // "is_new" => intval(($user_duration) < $duration),
             "notes" => $this->notes ?? __("messages.not_answered"),
             "is_married_before" => intval($this->is_married_before) ?? 0,
 
