@@ -109,8 +109,8 @@ class PartnerController extends Controller
 
                 $partner->update(['is_like_shown' => $partner->is_like_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
-
-                SendNotification::send($partner->user_device->device_token, __('messages.new_like'), __('messages.new_like') , $type , null);
+                $userId = $partner->id;
+                SendNotification::send($partner->user_device->device_token, __('messages.new_like'), __('messages.new_like') , $type , $userId , null);
                 UserNotification::create([
                     'user_id' => $partner->id,
                     'title' => __('messages.new_like'),
@@ -251,9 +251,10 @@ class PartnerController extends Controller
 
             $partner = User::whereId($partner_id)->first();
             if ($partner->id != $user_id) {
+                $userId = $partner->id;
                 $partner->update(['is_watch_shown' => $partner->is_watch_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
-                SendNotification::send($partner->user_device->device_token, __('messages.someone_viewed'), __("messages.someone_viewed") , $type , null);
+                SendNotification::send($partner->user_device->device_token, __('messages.someone_viewed'), __("messages.someone_viewed") , $type , $userId, null);
                 UserNotification::create([
                     'user_id' => $partner->id,
                     'title' => __('messages.someone_viewed'),
