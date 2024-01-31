@@ -109,7 +109,7 @@ class PartnerController extends Controller
 
                 $partner->update(['is_like_shown' => $partner->is_like_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
-                
+
                 SendNotification::send($partner->user_device->device_token, __('messages.new_like'), __('messages.new_like') , $type , null);
                 UserNotification::create([
                     'user_id' => $partner->id,
@@ -348,7 +348,7 @@ class PartnerController extends Controller
     {
         try {
             $user = auth()->user();
-            $watcher_ids = $user->watcher->where('partner_id', '!=', $user->id)->pluck("user_id")->toArray();
+            $watcher_ids = $user->watcher->where('partner_id', $user->id)->pluck("user_id")->toArray();
             $watcher = User::whereIn('id', $watcher_ids)->get();
             $msg = "who_watch_my_account";
             return $this->dataResponse($msg, PartnerResource::collection($watcher), 200);
