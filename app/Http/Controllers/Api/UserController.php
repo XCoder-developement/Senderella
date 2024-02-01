@@ -25,7 +25,7 @@ class UserController extends Controller
     use ApiTrait;
     public function set_user_data(Request $request)
     {
-        $p = 14;
+        $p = 13;
         try {
             //validation
             $rules = [
@@ -41,7 +41,7 @@ class UserController extends Controller
                 "readiness_for_marriages_id" => "required|integer|exists:marriage_readinesses,id",
                 "education_type_id" => "required|integer|exists:education_types,id",
                 "skin_color_id" => "required|integer|exists:colors,id",
-                "is_married_before" => "required|integer",
+                "is_married_before" => "sometimes|integer",
                 "weight" => "required",
                 "height" => "required",
                 "notes" => "sometimes",
@@ -94,6 +94,10 @@ class UserController extends Controller
                 $data['percentage'] = intval((($p + 1) / 20) * 100);
             }
             if ($request->about_me) {
+                $p++;
+                $data['percentage'] = intval((($p + 1) / 20) * 100);
+            }
+            if ($request->is_married_before) {
                 $p++;
                 $data['percentage'] = intval((($p + 1) / 20) * 100);
             }
