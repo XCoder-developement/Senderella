@@ -12,6 +12,7 @@ use App\Http\Resources\Api\MiniPartnerResource;
 use App\Http\Resources\Api\UserResource;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Api\PartnerResource;
+use App\Models\NewDuration\NewDuration;
 use App\Models\User\UserBlock;
 use App\Models\User\UserBookmark;
 use App\Models\User\UserLike;
@@ -73,10 +74,28 @@ class PartnerController extends Controller
         try {
 
             $user = auth()->user();
+            $duration = NewDuration::first()->new_duration; // getting the duration days for the new tag
 
-            $new_partners = User::orderBy('id', 'desc')->where('id', '!=', $user->id)->paginate(10);
+            $actve_new_partners = User::orderBy('id', 'desc')
+            ->where('id', '!=', $user->id)
+            ->whereDate('created_at', '>', Carbon::now()->subDays($duration))
+            ->whereHas('last_shows', function ($query) {
+                $query->where('status', 1);
+            })
+            ->get();
+
+            $off_new_partners = User::orderBy('id', 'desc')
+            ->where('id', '!=', $user->id)
+            ->whereDate('created_at', '>', Carbon::now()->subDays($duration))
+            ->whereHas('last_shows', function ($query) {
+                $query->where('status', 0)->orderBy('end_date', 'desc');
+            })
+            ->get();
+
+            $combinedPartners = $actve_new_partners->concat($off_new_partners);
+            // dd($off_new_partners);
             $msg = "fetch_new_partners";
-            return $this->dataResponse($msg, PartnerResource::collection($new_partners)->response()->getData(true), 200);
+            return $this->dataResponse($msg, PartnerResource::collection($combinedPartners), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -283,11 +302,11 @@ class PartnerController extends Controller
             $following_ids = $user->following->pluck('partner_id')->toArray();
 
             $users = User::join('user_likes', 'users.id', '=', 'user_likes.partner_id')
-            ->whereIn('users.id', $following_ids)
-            ->orderBy('user_likes.created_at', 'desc')
-            ->select('users.*')
-            ->distinct()
-            ->get();
+                ->whereIn('users.id', $following_ids)
+                ->orderBy('user_likes.created_at', 'desc')
+                ->select('users.*')
+                ->distinct()
+                ->get();
 
 
             $msg = "fetch_following";
@@ -393,11 +412,11 @@ class PartnerController extends Controller
             $favorited_ids = $user->favorited->pluck("partner_id")->toArray();
 
             $favorited = User::join('user_bookmarks', 'users.id', '=', 'user_bookmarks.partner_id')
-            ->whereIn('users.id', $favorited_ids)
-            ->orderBy('user_bookmarks.created_at', 'desc')
-            ->select('users.*')
-            ->distinct()
-            ->get();
+                ->whereIn('users.id', $favorited_ids)
+                ->orderBy('user_bookmarks.created_at', 'desc')
+                ->select('users.*')
+                ->distinct()
+                ->get();
 
             $msg = "who_i_favorite";
             return $this->dataResponse($msg, PartnerResource::collection($favorited), 200);
@@ -413,11 +432,11 @@ class PartnerController extends Controller
             $user = auth()->user();
             $favorite_ids = $user->favorited_by()->pluck("user_id")->toArray();
             $favorite = User::join('user_bookmarks', 'users.id', '=', 'user_bookmarks.user_id')
-            ->whereIn('users.id', $favorite_ids)
-            ->orderBy('user_bookmarks.created_at', 'desc')
-            ->select('users.*')
-            ->distinct()
-            ->get();
+                ->whereIn('users.id', $favorite_ids)
+                ->orderBy('user_bookmarks.created_at', 'desc')
+                ->select('users.*')
+                ->distinct()
+                ->get();
             $msg = "who_favorite_me";
             return $this->dataResponse($msg, PartnerResource::collection($favorite), 200);
         } catch (\Exception $ex) {
