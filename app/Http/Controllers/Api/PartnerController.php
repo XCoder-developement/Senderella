@@ -447,24 +447,63 @@ class PartnerController extends Controller
         }
     }
 
+    // public function fetch_nearst_partners(Request $request)
+    // {
+
+    //     try {
+    //         $rules = [
+    //             "longitude" => "required",
+    //             "latitude" => "required",
+    //         ];
+    //         $validator = Validator::make(request()->all(), $rules);
+    //         if ($validator->fails()) {
+    //             return $this->getvalidationErrors("validator");
+    //         }
+
+    //         $user = auth()->user();
+    //         $partner = User::where('id', '!=', $user->id)->get();
+    //         $nearst_partners = $partner->where('state_id', $user->state_id);
+    //         $data = PartnerResource::collection($nearst_partners);
+    //         $msg = "fetch_nearst_partners";
+    //         return $this->dataResponse($msg, $data, 200);
+    //     } catch (\Exception $ex) {
+    //         return $this->returnException($ex->getMessage(), 500);
+    //     }
+    // }
+
     public function fetch_nearst_partners(Request $request)
     {
-
         try {
+            // Validate input
             $rules = [
                 "longitude" => "required",
                 "latitude" => "required",
             ];
+
             $validator = Validator::make(request()->all(), $rules);
+
             if ($validator->fails()) {
                 return $this->getvalidationErrors("validator");
             }
 
-            $user = auth()->user();
-            $partner = User::where('id', '!=', $user->id)->get();
-            $nearst_partners = $partner->where('state_id', $user->state_id);
-            $data = PartnerResource::collection($nearst_partners);
-            $msg = "fetch_nearst_partners";
+            // Get user's coordinates
+            $userLongitude = $request->input('longitude');
+            $userLatitude = $request->input('latitude');
+
+            // Find nearest partners using Haversine formula
+            $partners = User::where('id', '!=', auth()->user()->id)
+                ->where('state_id', auth()->user()->state_id)
+                ->selectRaw(
+                    '*, ( 6371 * acos( cos( radians(?) ) * cos( radians( lat ) ) * cos( radians( lng ) - radians(?) ) + sin( radians(?) ) * sin( radians( lat ) ) ) ) AS distance',
+                    [$userLatitude, $userLongitude, $userLatitude]
+                )
+                ->orderBy('distance')
+                ->get();
+
+            // Transform partners data using Resource
+            $data = PartnerResource::collection($partners);
+
+            $msg = "fetch_nearest_partners";
             return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
