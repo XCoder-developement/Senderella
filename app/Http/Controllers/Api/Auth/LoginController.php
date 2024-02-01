@@ -63,7 +63,7 @@ class LoginController extends Controller
                return $this->dataResponse($msg, new UserResource($user));
            }
             else {
-                $msg = __('messages.The password is wrong');
+                $msg = __('messages.password_is_incorrect');
                return $this->errorResponse($msg, 401);
            }
 

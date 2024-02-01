@@ -30,7 +30,8 @@ class PartnerController extends Controller
 
             $user = auth()->user();
 
-            $partners = User::whereNot('id', auth()->id())->orderBy('id', 'desc')->paginate(10);
+            $partners = User::whereNot('id', auth()->id())->orderBy('id', 'desc')->get();
+            // dd($partners);
             if (!$partners) {
                 $msg = "message.there is no partners";
 
@@ -98,7 +99,7 @@ class PartnerController extends Controller
             $user_id = auth()->id();
             $partner_id = $request->partner_id;
             $partner = User::whereId($partner_id)->first();
-            $type = 2 ;
+            $type = 2;
             $image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
             // dd($image);
             $like_partner = UserLike::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
@@ -111,7 +112,7 @@ class PartnerController extends Controller
                 $partner->update(['is_like_shown' => $partner->is_like_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
                 $userId = $user->id;
-                SendNotification::send($partner->user_device->device_token, __('messages.new_like'), __('messages.new_like') , $type , $userId , url($image)??'');
+                SendNotification::send($partner->user_device->device_token, __('messages.new_like'), __('messages.new_like'), $type, $userId, url($image) ?? '');
                 UserNotification::create([
                     'user_id' => $partner->id,
                     'title' => __('messages.new_like'),
@@ -244,7 +245,7 @@ class PartnerController extends Controller
             $partner_id = $request->partner_id;
 
 
-            $type = 1 ;
+            $type = 1;
 
             $data['user_id'] =  $user_id;
             $data['partner_id'] =  $partner_id;
@@ -257,7 +258,7 @@ class PartnerController extends Controller
                 $userId = $partner->id;
                 $partner->update(['is_watch_shown' => $partner->is_watch_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
-                SendNotification::send($partner->user_device->device_token, __('messages.someone_viewed'), __("messages.someone_viewed") , $type , $userId,url($image)??'');
+                SendNotification::send($partner->user_device->device_token, __('messages.someone_viewed'), __("messages.someone_viewed"), $type, $userId, url($image) ?? '');
                 UserNotification::create([
                     'user_id' => $partner->id,
                     'title' => __('messages.someone_viewed'),
@@ -281,7 +282,13 @@ class PartnerController extends Controller
             // Assuming 'likes' is the relationship for partner being followed
             $following_ids = $user->following->pluck('partner_id')->toArray();
 
-            $users = User::whereIn('id', $following_ids)->get();
+            $users = User::join('user_likes', 'users.id', '=', 'user_likes.partner_id')
+            ->whereIn('users.id', $following_ids)
+            ->orderBy('user_likes.created_at', 'desc')
+            ->select('users.*')
+            ->distinct()
+            ->get();
+
 
             $msg = "fetch_following";
             return $this->dataResponse($msg, PartnerResource::collection($users), 200);
@@ -296,8 +303,12 @@ class PartnerController extends Controller
         try {
             $user = auth()->user();
             $followers_ids = $user->followers->pluck('user_id')->toArray();
-            $followers = User::whereIn('id', $followers_ids)->get();
-
+            $followers = User::join('user_likes', 'users.id', '=', 'user_likes.user_id')
+                ->whereIn('users.id', $followers_ids)
+                ->orderBy('user_likes.created_at', 'desc')
+                ->select('users.*')
+                ->distinct()
+                ->get();
             $msg = "fetch_followers";
             return $this->dataResponse($msg, PartnerResource::collection($followers), 200);
         } catch (\Exception $ex) {
@@ -336,8 +347,14 @@ class PartnerController extends Controller
     {
         try {
             $user = auth()->user();
-            $watched_ids = $user->watched->pluck("partner_id")->toArray();
-            $watched = User::whereIn('id', $watched_ids)->get();
+            $watched_ids = $user->Watched->pluck('partner_id')->toArray();
+            $watched = User::join('user_watches', 'users.id', '=', 'user_watches.partner_id')
+                ->whereIn('users.id', $watched_ids)
+                ->orderBy('user_watches.created_at', 'desc')
+                ->select('users.*')
+                ->distinct()
+                ->get();
+
             // dd($watched);
             $msg = "who_i_watch";
             return $this->dataResponse($msg, PartnerResource::collection($watched), 200);
@@ -353,7 +370,14 @@ class PartnerController extends Controller
         try {
             $user = auth()->user();
             $watcher_ids = $user->watcher->where('partner_id', $user->id)->pluck("user_id")->toArray();
-            $watcher = User::whereIn('id', $watcher_ids)->get();
+            // $watcher = User::whereIn('id', $watcher_ids)->get();
+            $watcher = User::join('user_watches', 'users.id', '=', 'user_watches.user_id')
+                ->whereIn('users.id', $watcher_ids)
+                ->orderBy('user_watches.created_at', 'desc')
+                ->select('users.*')
+                ->distinct()
+                ->get();
+
             $msg = "who_watch_my_account";
             return $this->dataResponse($msg, PartnerResource::collection($watcher), 200);
         } catch (\Exception $ex) {
@@ -367,7 +391,14 @@ class PartnerController extends Controller
         try {
             $user = auth()->user();
             $favorited_ids = $user->favorited->pluck("partner_id")->toArray();
-            $favorited = User::whereIn('id', $favorited_ids)->get();
+
+            $favorited = User::join('user_bookmarks', 'users.id', '=', 'user_bookmarks.partner_id')
+            ->whereIn('users.id', $favorited_ids)
+            ->orderBy('user_bookmarks.created_at', 'desc')
+            ->select('users.*')
+            ->distinct()
+            ->get();
+
             $msg = "who_i_favorite";
             return $this->dataResponse($msg, PartnerResource::collection($favorited), 200);
         } catch (\Exception $ex) {
@@ -381,7 +412,12 @@ class PartnerController extends Controller
         try {
             $user = auth()->user();
             $favorite_ids = $user->favorited_by()->pluck("user_id")->toArray();
-            $favorite = UserWatch::whereIn('id', $favorite_ids)->get();
+            $favorite = User::join('user_bookmarks', 'users.id', '=', 'user_bookmarks.user_id')
+            ->whereIn('users.id', $favorite_ids)
+            ->orderBy('user_bookmarks.created_at', 'desc')
+            ->select('users.*')
+            ->distinct()
+            ->get();
             $msg = "who_favorite_me";
             return $this->dataResponse($msg, PartnerResource::collection($favorite), 200);
         } catch (\Exception $ex) {
@@ -393,7 +429,10 @@ class PartnerController extends Controller
     {
         try {
             $user = auth()->user();
-
+            // dd(Carbon::parse($user->birthday_date)->subYears(5));
+            $mdate = Carbon::parse($user->birthday_date)->subYears(5)->format('Y-m-d');
+            $fdate = Carbon::parse($user->birthday_date)->addYears(5)->format('Y-m-d');
+            // dd($date, $fdate);
             if ($user->gender == 1) { // if it's male it will show the female that compitable with him
                 $compatible_partner = User::where('gender', 2)->where('height', '<=', $user->height)
                     // ->where('weight', '<=', $user->weight + 10)->where('weight', '>=', $user->weight - 10)
@@ -401,7 +440,8 @@ class PartnerController extends Controller
                     ->where('state_id', $user->state_id)->where('marital_status_id', $user->marital_status_id)
                     ->where('marriage_readiness_id', $user->marriage_readiness_id)->where('color_id', $user->color_id)
                     ->where('education_type_id', $user->education_type_id)->where('is_married_before', $user->is_married_before)
-                    ->whereDate('birthday_date', '>=', $user->birthday_date)
+                    ->whereDate('birthday_date', '>=', $mdate)
+                    ->whereDate('birthday_date', '<=', $user->birthday_date)
                     ->get();
             } else {
                 $compatible_partner = User::where('gender', 1)->where('height', '>=', $user->height)
@@ -410,7 +450,7 @@ class PartnerController extends Controller
                     ->where('state_id', $user->state_id)->where('marital_status_id', $user->marital_status_id)
                     ->where('marriage_readiness_id', $user->marriage_readiness_id)->where('color_id', $user->color_id)
                     ->where('education_type_id', $user->education_type_id)->where('is_married_before', $user->is_married_before)
-                    ->whereDate('birthday_date', '<=', $user->birthday_date)
+                    ->whereDate('birthday_date', '<=', $fdate)->whereDate('birthday_date', '>=', $user->birthday_date)
                     ->get();
             }
             $msg = "most_compatible_partners";

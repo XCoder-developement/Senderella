@@ -29,7 +29,7 @@ class UserController extends Controller
         try {
             //validation
             $rules = [
-                "name" => "required",
+                "name" => "required|max:12",
                 // "phone" => "required",
                 "email" => "sometimes",
                 "gender" => "required|integer",

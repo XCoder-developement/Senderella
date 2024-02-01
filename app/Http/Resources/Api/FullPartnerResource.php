@@ -18,13 +18,14 @@ class FullPartnerResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $user = auth()->user() ;
         $user_id = $this->id;
         return [
             "id" => $this->id,
             "images" => count($this->images) == 0 ? null : ImageResource::collection($this->images),
             "name" => $this->name ?? "",
             "age" => $this->user_age ?? "",
-            "is_follow" => $this->is_follow(auth()->id()) ?? 0,
+            "is_follow" => $this->is_follow($user->id) ?? 0,
             "is_verify" => $this->is_verify ?? 0,
             "trusted" => $this->trusted ?? 0,
             "is_new" => intval($this->is_new) ?? 0,
