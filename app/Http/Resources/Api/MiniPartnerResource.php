@@ -24,7 +24,7 @@ class MiniPartnerResource extends JsonResource
             "trusted"=>$this->trused ??0,
             "is_new"=>intval($this->is_new)??0,
             "notes" =>$this->notes ??__("messages.not_answered"),
-            "is_married_before"=>intval ($this->is_married_before),
+            "is_married_before"=>intval ($this->is_married_before) ??__("messages.not_answered"),
             "active" => intval($this->active) ?? "",
             "last_active" => $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',
 
