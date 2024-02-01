@@ -90,7 +90,7 @@ class ChatController extends Controller
 
             $type = 4 ;
             if (count($messages) == 1) {
-                SendNotification::send($receiver->user_device->device_token, __('message.congratulations'), __('message.congrats you have received a reply') , $type , '' , null);
+                SendNotification::send($receiver->user_device->device_token, __('message.congratulations'), __('message.congrats you have received a reply') , $type , '' , '');
             }
 
             return $this->successResponse(__("message.sent successfully"), 200);
