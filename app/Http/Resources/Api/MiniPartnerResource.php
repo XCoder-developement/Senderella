@@ -14,12 +14,14 @@ class MiniPartnerResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $user = auth()->user() ;
+        
         return [
             "id"=>$this->id,
             "name"=>$this->name ??"",
             // "images" => $this->images !== null && count($this->images) == 0 ? null : ImageResource::collection($this->images),
             "age"=>intval($this->age)??"",
-            // "is_follow" => $this->is_follow(auth()->id()) ?? 0,
+            "is_follow" => $this->is_follow($user->id) ?? 0,
             "is_verify"=>$this->is_verify ??0,
             "trusted"=>$this->trused ??0,
             "is_new"=>intval($this->is_new)??0,
