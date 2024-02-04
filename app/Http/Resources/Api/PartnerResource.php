@@ -25,7 +25,7 @@ class PartnerResource extends JsonResource
             "images" => $this->images == null ? null : ImageResource::collection($this->images) ,
             "name" => $this->name ?? "",
             "age" => $this->user_age ?? "",
-            "last_active" => $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',
+            "last_active" => $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : '',
             "is_follow" => $this->is_follow($user->id) ?? 0,
             "is_verify" => $this->is_verify ?? 0,
             "trusted" => $this->trusted ?? 0,
