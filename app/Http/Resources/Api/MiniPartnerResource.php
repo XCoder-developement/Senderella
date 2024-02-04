@@ -15,7 +15,7 @@ class MiniPartnerResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user = auth()->user() ;
-        
+
         return [
             "id"=>$this->id,
             "name"=>$this->name ??"",
@@ -28,7 +28,7 @@ class MiniPartnerResource extends JsonResource
             "notes" =>$this->notes ??__("messages.not_answered"),
             "is_married_before"=>intval ($this->is_married_before) ??__("messages.not_answered"),
             "active" => intval($this->active) ?? "",
-            "last_active" => $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',
+            "last_active" => $this->last_active_date ?? '',// $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',
 
             "weight"=>$this->weight ??"",
             "height"=>$this->height ??"",

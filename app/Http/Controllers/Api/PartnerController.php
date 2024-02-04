@@ -31,7 +31,7 @@ class PartnerController extends Controller
 
             $user = auth()->user();
 
-            $partners = User::whereNot('id', auth()->id())->orderBy('is_verify', 'asc')->orderBy('active', 'asc')->get();
+            $partners = User::whereNot('id', auth()->id())->orderBy('is_verify', 'DESC')->orderBy('active', 'DESC')->get();
             // dd($partners);
             if (!$partners) {
                 $msg = "message.there is no partners";

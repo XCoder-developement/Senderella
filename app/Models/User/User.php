@@ -59,6 +59,10 @@ class User extends Authenticatable
     {
         return Carbon::parse($this->birthday_date)->age;
     }
+
+    public function getLastActiveDateAttribute(){
+        return $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : Carbon::now()->format('Y-m-d H:i:s');
+    }
     public function scopeAgeRange($query, $ageFrom, $ageTo)
     {
         //Calculate request age by subtracting[2023-25=1998] it from the current year
