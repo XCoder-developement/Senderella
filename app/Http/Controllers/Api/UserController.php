@@ -346,7 +346,7 @@ class UserController extends Controller
         }
     }
 
-    public function delte_account()
+    public function delete_account()
     {
         try {
 
