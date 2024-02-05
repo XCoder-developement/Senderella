@@ -38,7 +38,7 @@ class PartnerController extends Controller
 
             $disactive_partners = User::whereNot('id', auth()->id())
                 ->whereHas('last_shows', function ($query) {
-                    $query->where('status', 0)->orderBy('end_date', 'asc');
+                    $query->where('status', 0)->orderBy('end_date', 'desc');
                 })->get();
             // dd($partners);
             $partners = $active_partners->merge($disactive_partners);
