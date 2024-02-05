@@ -4,8 +4,10 @@ namespace App\Http\Resources\Api;
 
 use App\Http\Resources\api\RequirmentResource;
 use App\Models\NewDuration\NewDuration;
+use App\Models\User\UserBookmark;
 use App\Models\User\UserLastShow;
 use App\Models\User\UserLike;
+use App\Models\User\UserWatch;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -37,6 +39,19 @@ class PartnerResource extends JsonResource
         }else{
             $like_time = '';
         }
+        $favorite_time = UserBookmark::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at');
+        if($favorite_time){
+            $favorite_time = UserBookmark::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at')->diffForHumans(null, true);
+        }else{
+            $favorite_time = '';
+        }
+        $watch_time = UserWatch::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at');
+        if($watch_time){
+            $watch_time = UserWatch::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at')->diffForHumans(null, true);
+        }else{
+            $watch_time = '';
+        }
+
         return [
             "id" => $this->id,
             "is_verify" => $this->is_verify ?? 0,
@@ -71,6 +86,8 @@ class PartnerResource extends JsonResource
 
 
             "like_time" => $like_time ?? '',
+            "favorite_time" => $favorite_time ?? '',
+            "watch_time" => $watch_time ?? '',
             // "partner_more_info" => UserInformationResource::collection($this->informations),
         ];
     }
