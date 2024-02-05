@@ -31,7 +31,12 @@ class PartnerResource extends JsonResource
             $last_active = $last_active_date->diffForHumans(null, true);
         }
 
-        $like_time = UserLike::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at')->diffForHumans(null, true);
+        $like_time = UserLike::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at');
+        if($like_time){
+            $like_time = UserLike::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at')->diffForHumans(null, true);
+        }else{
+            $like_time = '';
+        }
         return [
             "id" => $this->id,
             "is_verify" => $this->is_verify ?? 0,
