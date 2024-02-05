@@ -5,6 +5,7 @@ namespace App\Http\Resources\Api;
 use App\Http\Resources\api\RequirmentResource;
 use App\Models\NewDuration\NewDuration;
 use App\Models\User\UserLastShow;
+use App\Models\User\UserLike;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -29,6 +30,8 @@ class PartnerResource extends JsonResource
             $last_active_date = \Carbon\Carbon::parse($last_active_date);
             $last_active = $last_active_date->diffForHumans(null, true);
         }
+
+        $like_time = UserLike::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at')->diffForHumans(null, true);
         return [
             "id" => $this->id,
             "is_verify" => $this->is_verify ?? 0,
@@ -61,6 +64,8 @@ class PartnerResource extends JsonResource
             "skin_color_title" => $this->color?->title ?? "",
             "education_type_title" => $this->education_type?->title ?? "",
 
+
+            "like_time" => $like_time ?? '',
             // "partner_more_info" => UserInformationResource::collection($this->informations),
         ];
     }
