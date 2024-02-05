@@ -36,10 +36,10 @@ class PartnerController extends Controller
                     $query->where('status', 1);
                 })->get();
 
-            $disactive_partners = User::whereNot('id', auth()->id())->last_shows()->where('status', 0)->orderBy('end_date', 'desc')->get();
-                // ->whereHas('last_shows', function ($query) {
-                //     $query->where('status', 0)->orderBy('end_date', 'desc');
-                // })->get();
+            $disactive_partners = User::whereNot('id', auth()->id())
+                ->whereHas('last_shows', function ($query) {
+                    $query->where('status', 0)->orderBy('end_date', 'desc');
+                })->get();
             // dd($partners);
             $partners = $active_partners->merge($disactive_partners);
             if (!$partners) {
