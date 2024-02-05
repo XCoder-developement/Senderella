@@ -22,12 +22,13 @@ class PartnerResource extends JsonResource
         $user_duration = Carbon::parse($this->created_at)->diffInDays(); // getting the duration days for the user
         return [
             "id" => $this->id,
+            "is_verify" => $this->is_verify ?? 0,
+            "active" => intval($this->active) ?? "",
+            "last_active" => $this->last_active_date ?? '',// $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : '',
             "images" => $this->images == null ? null : ImageResource::collection($this->images) ,
             "name" => $this->name ?? "",
             "age" => $this->user_age ?? "",
-            "last_active" => $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',
             "is_follow" => $this->is_follow($user->id) ?? 0,
-            "is_verify" => $this->is_verify ?? 0,
             "trusted" => $this->trusted ?? 0,
             "is_new" => intval(($user_duration) < $duration),
             "notes" => $this->notes ?? __("messages.not_answered"),
@@ -51,7 +52,6 @@ class PartnerResource extends JsonResource
             "skin_color_title" => $this->color?->title ?? "",
             "education_type_title" => $this->education_type?->title ?? "",
 
-            "active" => intval($this->active) ?? "",
             // "partner_more_info" => UserInformationResource::collection($this->informations),
         ];
     }

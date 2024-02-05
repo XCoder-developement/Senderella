@@ -130,7 +130,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post("set_user_images", [UserController::class, "set_user_images"]);
 
     //delte_account
-    Route::get("delte_account", [UserController::class, "delte_account"]);
+    Route::get("delte_account", [UserController::class, "delete_account"]);
 
     //subscribe_package
     Route::post("subscribe_package", [PackageController::class, "subscribe_package"]);
