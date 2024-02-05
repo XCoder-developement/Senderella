@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Api;
 
 use App\Models\User\UserImage;
+use App\Models\User\UserLastShow;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,6 +16,15 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $user_id = $this->id;
+        $active = UserLastShow::where('user_id', $user_id)->value('status') ?? 0;
+        $last_active = '';
+        if( $active == 0){
+            $last_active_date = UserLastShow::where('user_id', $user_id)->value('end_date');
+            $last_active_date = \Carbon\Carbon::parse($last_active_date);
+            $last_active = $last_active_date->diffForHumans(null, true);
+        }
+
         return [
             "id" =>$this->id,
             "name" => $this->name ?? "",
@@ -41,8 +51,8 @@ class UserResource extends JsonResource
 //weight and rest details
             "weight" => $this->weight ?? "",
             "height" => $this->height ?? "",
-            "notes" => $this->notes ?? __("messages.not_answered"),
-            "about_me" => $this->about_me ?? __("messages.not_answered"),
+            "notes" => $this->notes ?? '',
+            "about_me" => $this->about_me ?? '',
             "country_id" => intval($this->country_id) ?? "",
             "state_id" => intval($this->state_id) ?? "",
             "country_title" => $this->country?->title ?? "",
@@ -58,8 +68,8 @@ class UserResource extends JsonResource
 
 
             // "is_verified" => $this->is_verified ?? "",
-            "active" => intval($this->active) ?? "",
-            "last_active" => $this->last_active_date ?? '',// $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : '',
+            "active" => intval($active) ?? "",
+            "last_active" => $last_active ?? '',// $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : '',
 
             "api_token" => $this->api_token ?? "",
             "device_token" => $this->user_device->device_token ?? "",
