@@ -101,7 +101,7 @@ class PartnerController extends Controller
             })
             ->get();
 
-            $combinedPartners = $actve_new_partners->merge($off_new_partners);
+            $combinedPartners = $actve_new_partners->concat($off_new_partners);
             // dd($combinedPartners);
             $msg = "fetch_new_partners";
             return $this->dataResponse($msg, PartnerResource::collection($combinedPartners), 200);
