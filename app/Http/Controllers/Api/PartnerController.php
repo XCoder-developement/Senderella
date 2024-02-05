@@ -95,7 +95,7 @@ class PartnerController extends Controller
 
             $off_new_partners = User::where('id', '!=', $user->id)->whereDate('created_at', '>', Carbon::now()->subDays($duration))
             ->whereDate('created_at', '>', Carbon::now()->subDays($duration)->format('Y-m-d'))
-            ->orderBy('id', 'desc')
+            // ->orderBy('id', 'desc')
             ->whereHas('last_shows', function ($query) {
                 $query->where('status', 0)->orderBy('end_date', 'desc');
             })
