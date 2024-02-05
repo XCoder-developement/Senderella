@@ -4,6 +4,7 @@ namespace App\Http\Resources\Api;
 
 use App\Http\Resources\api\RequirmentResource;
 use App\Models\NewDuration\NewDuration;
+use App\Models\User\UserLastShow;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -20,11 +21,19 @@ class PartnerResource extends JsonResource
         $user = auth()->user() ;
         $duration = NewDuration::first()->new_duration; // getting the duration days for the new tag
         $user_duration = Carbon::parse($this->created_at)->diffInDays(); // getting the duration days for the user
+        $user_id = $this->id;
+        $active = UserLastShow::where('user_id', $user_id)->value('status') ?? 0;
+        $last_active = '';
+        if( $active == 0){
+            $last_active_date = UserLastShow::where('user_id', $user_id)->value('end_date');
+            $last_active_date = \Carbon\Carbon::parse($last_active_date);
+            $last_active = $last_active_date->diffForHumans(null, true);
+        }
         return [
             "id" => $this->id,
             "is_verify" => $this->is_verify ?? 0,
-            "active" => intval($this->active) ?? "",
-            "last_active" => $this->last_active_date ?? '',// $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : '',
+            "active" => intval($active) ?? "",
+            "last_active" => $last_active ?? '',// $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : '',
             "images" => $this->images == null ? null : ImageResource::collection($this->images) ,
             "name" => $this->name ?? "",
             "age" => $this->user_age ?? "",

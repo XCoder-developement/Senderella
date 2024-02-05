@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api;
 
+use App\Models\User\UserLastShow;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,7 +16,14 @@ class MiniPartnerResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user = auth()->user() ;
-
+        $user_id = $this->id;
+        $active = UserLastShow::where('user_id', $user_id)->value('status') ?? 0;
+        $last_active = '';
+        if( $active == 0){
+            $last_active_date = UserLastShow::where('user_id', $user_id)->value('end_date');
+            $last_active_date = \Carbon\Carbon::parse($last_active_date);
+            $last_active = $last_active_date->diffForHumans(null, true);
+        }
         return [
             "id"=>$this->id,
             "name"=>$this->name ??"",
@@ -27,8 +35,8 @@ class MiniPartnerResource extends JsonResource
             "is_new"=>intval($this->is_new)??0,
             "notes" =>$this->notes ??__("messages.not_answered"),
             "is_married_before"=>intval ($this->is_married_before) ??__("messages.not_answered"),
-            "active" => intval($this->active) ?? "",
-            "last_active" => $this->last_active_date ?? '',// $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',
+            "active" => intval($active) ?? "",
+            "last_active" => $last_active ?? '',// $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',
 
             "weight"=>$this->weight ??"",
             "height"=>$this->height ??"",
