@@ -486,12 +486,23 @@ class PartnerController extends Controller
         try {
 
 
-            $partnerCounts = UserLike::groupBy('partner_id')
+            $active_partnerCounts = UserLike::groupBy('partner_id')
                 ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
+                ->whereHas('last_shows', function ($query) {
+                    $query->where('status', 1);
+                })
                 ->pluck('count', 'partner_id');
 
+            $off_partnerCounts = UserLike::groupBy('partner_id')
+            ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
+            ->whereHas('last_shows', function ($query) {
+                $query->where('status', 0)->orderBy('end_date', 'desc');
+            })
+            ->pluck('count', 'partner_id');
 
-            $mostLikedPartnerId = $partnerCounts->sortDesc()->keys()->toArray();
+            $active_counts = $active_partnerCounts->sortDesc()->keys()->toArray();
+            $off_counts = $off_partnerCounts->sortDesc()->keys()->toArray();
+            $mostLikedPartnerId = $active_counts->concat($off_counts);
 
 
             // Get the count for the most liked partner_id
