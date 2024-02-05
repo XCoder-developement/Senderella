@@ -510,14 +510,13 @@ class PartnerController extends Controller
                 })
                 ->get()
                 ->pluck('count', 'partner_id')->toArray();
-
+                // dd($disactive_partner_counts->toArray());
 
             // $most_active_partner = $active_partner_counts->sortDesc()->keys()->toArray();
             // $most_disactive_partner = $disactive_partner_counts->sortDesc()->keys()->toArray();
             $mostLikedPartnerId = array_merge($active_partner_counts, $disactive_partner_counts);
             $mostLikedCount = User::whereIn('id', array_keys($mostLikedPartnerId))->get();
-            // Get the count for the most liked partner_id
-            // $mostLikedCount = User::whereIn('id', $mostLikedPartnerId)->get();
+
 
             $msg = "fetch_most_liked_partners";
             $data = PartnerResource::collection($mostLikedCount);
