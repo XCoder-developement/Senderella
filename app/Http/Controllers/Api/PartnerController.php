@@ -102,9 +102,13 @@ class PartnerController extends Controller
                 ->whereDate('created_at', '>', Carbon::now()->subDays($duration)->format('Y-m-d'))
                 // ->orderBy('id', 'desc')
                 ->whereHas('last_shows', function ($query) {
-                    $query->where('status', 0)->orderBy('end_date', 'desc');
+                    $query->where('status', 0);
                 })
                 ->get();
+
+            $off_new_partners = $off_new_partners->sortByDesc(function ($partner) {
+                return $partner->last_shows->first()->end_date ?? null;
+            });
 
             $combinedPartners = $actve_new_partners->concat($off_new_partners);
             // dd($combinedPartners);
@@ -562,9 +566,13 @@ class PartnerController extends Controller
                 ->where('country_id', $user->country_id)
                 ->where('state_id', $user->state_id)
                 ->whereHas('last_shows', function ($query) {
-                    $query->where('status', 0)->orderBy('end_date', 'desc');
+                    $query->where('status', 0);
                 })
                 ->get();
+
+            $disactive_nearst_partners = $disactive_nearst_partners->sortByDesc(function ($partner) {
+                return $partner->last_shows->first()->end_date ?? null;
+            });
 
             $nearst_partners = $active_nearst_partners->merge($disactive_nearst_partners);
 
