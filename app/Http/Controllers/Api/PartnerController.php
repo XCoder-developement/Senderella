@@ -32,14 +32,14 @@ class PartnerController extends Controller
             $user = auth()->user();
 
             $active_partners = User::whereNot('id', auth()->id())->orderBy('id', 'desc')
-                ->whereHas('last_shows', function ($query) {
-                    $query->where('status', 1);
-                })->get();
+            ->whereHas('last_shows', function ($query) {
+                $query->where('status', 1);
+            })->get();
 
             $disactive_partners = User::whereNot('id', auth()->id())->orderBy('id', 'desc')
-                ->whereHas('last_shows', function ($query) {
-                    $query->where('status', 0)->orderBy('end_date', 'desc');
-                })->get();
+            ->whereHas('last_shows', function ($query) {
+                $query->where('status', 0)->orderBy('end_date', 'desc');
+            })->get();
             // dd($partners);
             $partners = $active_partners->merge($disactive_partners);
             if (!$partners) {
@@ -86,20 +86,20 @@ class PartnerController extends Controller
             $duration = NewDuration::first()->new_duration; // getting the duration days for the new tag
             // dd(Carbon::now()->subDays($duration)->format('Y-m-d h:m'));
             $actve_new_partners = User::where('id', '!=', $user->id)
-                ->whereDate('created_at', '>', Carbon::now()->subDays($duration)->format('Y-m-d'))
-                ->orderBy('id', 'desc')
-                ->whereHas('last_shows', function ($query) {
-                    $query->where('status', 1);
-                })
-                ->get();
+            ->whereDate('created_at', '>', Carbon::now()->subDays($duration)->format('Y-m-d'))
+            ->orderBy('id', 'desc')
+            ->whereHas('last_shows', function ($query) {
+                $query->where('status', 1);
+            })
+            ->get();
 
             $off_new_partners = User::where('id', '!=', $user->id)->whereDate('created_at', '>', Carbon::now()->subDays($duration))
-                ->whereDate('created_at', '>', Carbon::now()->subDays($duration)->format('Y-m-d'))
-                ->orderBy('id', 'desc')
-                ->whereHas('last_shows', function ($query) {
-                    $query->where('status', 0)->orderBy('end_date', 'desc');
-                })
-                ->get();
+            ->whereDate('created_at', '>', Carbon::now()->subDays($duration)->format('Y-m-d'))
+            ->orderBy('id', 'desc')
+            ->whereHas('last_shows', function ($query) {
+                $query->where('status', 0)->orderBy('end_date', 'desc');
+            })
+            ->get();
 
             $combinedPartners = $actve_new_partners->concat($off_new_partners);
             // dd($combinedPartners);
@@ -493,6 +493,8 @@ class PartnerController extends Controller
     public function fetch_most_liked_partners()
     {
         try {
+
+
             $active_partner_counts = UserLike::groupBy('partner_id')
                 ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
                 ->whereIn('user_id', function ($query) {
@@ -504,27 +506,21 @@ class PartnerController extends Controller
             $disactive_partner_counts = UserLike::groupBy('partner_id')
                 ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
                 ->whereIn('user_id', function ($query) {
-                    $query->select('user_id')->from('user_last_shows')->where('status', 0);
+                    $query->select('user_id')->from('user_last_shows')->where('status', 0)->orderBy('end_date', 'desc');
                 })
-                ->orderByDesc('count') // Order the disactive_partner_counts by count in descending order
                 ->get()
                 ->pluck('count', 'partner_id')->toArray();
 
-            // Merge and sum the counts of active and inactive partners
-            $mostLikedPartnerCounts = [];
-            foreach ($active_partner_counts as $partnerId => $count) {
-                $mostLikedPartnerCounts[$partnerId] = $count + ($disactive_partner_counts[$partnerId] ?? 0);
-            }
 
-            // Sort the mostLikedPartnerCounts by count in descending order
-            arsort($mostLikedPartnerCounts);
-
-            // Get the most liked partners based on the counts
-            $mostLikedPartnerIds = array_keys($mostLikedPartnerCounts);
-            $mostLikedPartners = User::whereIn('id', $mostLikedPartnerIds)->get();
+            // $most_active_partner = $active_partner_counts->sortDesc()->keys()->toArray();
+            // $most_disactive_partner = $disactive_partner_counts->sortDesc()->keys()->toArray();
+            $mostLikedPartnerId = array_merge($active_partner_counts, $disactive_partner_counts);
+            $mostLikedCount = User::whereIn('id', array_keys($mostLikedPartnerId))->get();
+            // Get the count for the most liked partner_id
+            // $mostLikedCount = User::whereIn('id', $mostLikedPartnerId)->get();
 
             $msg = "fetch_most_liked_partners";
-            $data = PartnerResource::collection($mostLikedPartners);
+            $data = PartnerResource::collection($mostLikedCount);
 
             return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
