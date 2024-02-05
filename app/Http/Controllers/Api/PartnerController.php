@@ -36,7 +36,7 @@ class PartnerController extends Controller
                     $query->where('status', 1);
                 })->get();
 
-            $disactive_partners = User::whereNot('id', auth()->id())
+            $disactive_partners = User::whereNot('id', auth()->id())->orderBy('id', 'desc')
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 0);
                 })
