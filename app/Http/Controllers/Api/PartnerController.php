@@ -32,14 +32,14 @@ class PartnerController extends Controller
             $user = auth()->user();
 
             $active_partners = User::whereNot('id', auth()->id())->orderBy('id', 'desc')
-            ->whereHas('last_shows', function ($query) {
-                $query->where('status', 1);
-            })->get();
+                ->whereHas('last_shows', function ($query) {
+                    $query->where('status', 1);
+                })->get();
 
-            $disactive_partners = User::whereNot('id', auth()->id())->orderBy('id', 'desc')
-            ->whereHas('last_shows', function ($query) {
-                $query->where('status', 0)->orderBy('end_date', 'desc');
-            })->get();
+            $disactive_partners = User::whereNot('id', auth()->id())
+                ->whereHas('last_shows', function ($query) {
+                    $query->where('status', 0)->orderBy('end_date', 'desc');
+                })->get();
             // dd($partners);
             $partners = $active_partners->merge($disactive_partners);
             if (!$partners) {
@@ -86,20 +86,20 @@ class PartnerController extends Controller
             $duration = NewDuration::first()->new_duration; // getting the duration days for the new tag
             // dd(Carbon::now()->subDays($duration)->format('Y-m-d h:m'));
             $actve_new_partners = User::where('id', '!=', $user->id)
-            ->whereDate('created_at', '>', Carbon::now()->subDays($duration)->format('Y-m-d'))
-            ->orderBy('id', 'desc')
-            ->whereHas('last_shows', function ($query) {
-                $query->where('status', 1);
-            })
-            ->get();
+                ->whereDate('created_at', '>', Carbon::now()->subDays($duration)->format('Y-m-d'))
+                // ->orderBy('id', 'desc')
+                ->whereHas('last_shows', function ($query) {
+                    $query->where('status', 1);
+                })
+                ->get();
 
             $off_new_partners = User::where('id', '!=', $user->id)->whereDate('created_at', '>', Carbon::now()->subDays($duration))
-            ->whereDate('created_at', '>', Carbon::now()->subDays($duration)->format('Y-m-d'))
-            // ->orderBy('id', 'desc')
-            ->whereHas('last_shows', function ($query) {
-                $query->where('status', 0)->orderBy('end_date', 'desc');
-            })
-            ->get();
+                ->whereDate('created_at', '>', Carbon::now()->subDays($duration)->format('Y-m-d'))
+                // ->orderBy('id', 'desc')
+                ->whereHas('last_shows', function ($query) {
+                    $query->where('status', 0)->orderBy('end_date', 'desc');
+                })
+                ->get();
 
             $combinedPartners = $actve_new_partners->concat($off_new_partners);
             // dd($combinedPartners);
@@ -241,9 +241,13 @@ class PartnerController extends Controller
                 UserBookmark::create($data);
 
                 $partner = User::whereId($partner_id)->first();
-                //responce
+                //
+                $user = auth()->user();
+                $userId = $user->id;
+                $image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
+                $type = 5;
                 $partner->update(['is_bookmark_shown' => $partner->is_bookmark_shown + 1]);
-                // SendNotification::send($partner->user_device->device_token, __('messages.bookmarked_by_user'), __('messages.bookmarked_by_user'));
+                SendNotification::send($partner->user_device->device_token, __('messages.bookmarked_by_user'), __('messages.bookmarked_by_user'), $type, $userId, url($image) ?? '');
                 // UserNotification::create([
                 //     'user_id' => $partner->id,
                 //     'title' => __('messages.bookmarked_by_user'),
@@ -510,7 +514,7 @@ class PartnerController extends Controller
                 })
                 ->get()
                 ->pluck('count', 'partner_id')->toArray();
-                // dd($disactive_partner_counts->toArray());
+            // dd($disactive_partner_counts->toArray());
 
             // $most_active_partner = $active_partner_counts->sortDesc()->keys()->toArray();
             // $most_disactive_partner = $disactive_partner_counts->sortDesc()->keys()->toArray();
