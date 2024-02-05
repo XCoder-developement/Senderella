@@ -84,25 +84,25 @@ class PartnerController extends Controller
 
             $user = auth()->user();
             $duration = NewDuration::first()->new_duration; // getting the duration days for the new tag
+            // dd(Carbon::now()->subDays($duration)->format('Y-m-d h:m'));
+            $actve_new_partners = User::where('id', '!=', $user->id)
+            ->whereDate('created_at', '>', Carbon::now()->subDays($duration)->format('Y-m-d'))
+            ->orderBy('id', 'desc')
+            ->whereHas('last_shows', function ($query) {
+                $query->where('status', 1);
+            })
+            ->get();
 
-            $actve_new_partners = User::orderBy('id', 'desc')
-                ->where('id', '!=', $user->id)
-                ->whereDate('created_at', '>', Carbon::now()->subDays($duration))
-                ->whereHas('last_shows', function ($query) {
-                    $query->where('status', 1);
-                })
-                ->get();
-
-            $off_new_partners = User::orderBy('id', 'desc')
-                ->where('id', '!=', $user->id)
-                ->whereDate('created_at', '>', Carbon::now()->subDays($duration))
-                ->whereHas('last_shows', function ($query) {
-                    $query->where('status', 0)->orderBy('end_date', 'desc');
-                })
-                ->get();
+            $off_new_partners = User::where('id', '!=', $user->id)->whereDate('created_at', '>', Carbon::now()->subDays($duration))
+            ->whereDate('created_at', '>', Carbon::now()->subDays($duration)->format('Y-m-d'))
+            ->orderBy('id', 'desc')
+            ->whereHas('last_shows', function ($query) {
+                $query->where('status', 0)->orderBy('end_date', 'desc');
+            })
+            ->get();
 
             $combinedPartners = array_merge($actve_new_partners->toArray(), $off_new_partners->toArray());
-            // dd($off_new_partners);
+            // dd($combinedPartners);
             $msg = "fetch_new_partners";
             return $this->dataResponse($msg, PartnerResource::collection($combinedPartners), 200);
         } catch (\Exception $ex) {
