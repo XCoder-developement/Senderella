@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Services\SearchService;
 use App\Models\UserSearch\UserSearch;
 use App\Http\Resources\Api\PartnerResource;
+use App\Models\User\User;
 
 class FetchLastSearchController extends Controller
 {
@@ -20,17 +21,41 @@ class FetchLastSearchController extends Controller
             $fetch_search = UserSearch::with('requirments')->where('user_id', $user)->latest()->first();
             if (!$fetch_search) {
                 $msg = "message.there is no last search";
-                return $this->dataResponse($msg, [] ,200);
+                return $this->dataResponse($msg, [], 200);
             }
 
             $params = SearchPartnerParams::buildBody($fetch_search);
             $search = new SearchService();
             $partners = $search->search($params->toMap(), $with_store = false);
             $response = PartnerResource::collection($partners)->response()->getData(true);
-            if($fetch_search){
-                $msg = "fetch_last_search";
-                return $this->dataResponse($msg,$response['data'], 200);
+            $i = count($response['data']);
+            $userIds = []; // Initialize an array to store the IDs
 
+            for ($j = 0; $j < $i; $j++) {
+                $userIds[] = $response['data'][$j]['id']; // Extract the ID and add it to the $userIds array
+            }
+
+            $online_partners = User::whereIn('id', $userIds)
+                ->whereHas('last_shows', function ($query) {
+                    $query->where('status', 1);
+                })
+                ->get();
+
+            $offlines = User::whereIn('id' ,$userIds )
+            ->whereHas('last_shows', function ($query) {
+                $query->where('status', 0);
+            })
+            ->get();
+
+            $offlines = $offlines->sortByDesc(function ($partner) {
+                return $partner->last_shows->first()->end_date ?? null;
+            });
+            // dd($offlines);
+            $all_partners = $online_partners->merge($offlines);
+            $AllPartners = PartnerResource::collection($all_partners) ;
+            if ($fetch_search) {
+                $msg = "fetch_last_search";
+                return $this->dataResponse($msg, $AllPartners, 200);
             }
 
             // $msg = "fetch_last_search";

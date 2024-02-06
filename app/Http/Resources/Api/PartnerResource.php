@@ -35,19 +35,19 @@ class PartnerResource extends JsonResource
 
         $like_time = UserLike::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at');
         if($like_time){
-            $like_time = UserLike::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at')->diffForHumans(null, true);
+            $like_time = UserLike::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at')->format('Y-m-d');
         }else{
             $like_time = '';
         }
         $favorite_time = UserBookmark::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at');
         if($favorite_time){
-            $favorite_time = UserBookmark::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at')->diffForHumans(null, true);
+            $favorite_time = UserBookmark::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at')->format('Y-m-d');
         }else{
             $favorite_time = '';
         }
         $watch_time = UserWatch::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at');
         if($watch_time){
-            $watch_time = UserWatch::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at')->diffForHumans(null, true);
+            $watch_time = UserWatch::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at')->format('Y-m-d');
         }else{
             $watch_time = '';
         }
