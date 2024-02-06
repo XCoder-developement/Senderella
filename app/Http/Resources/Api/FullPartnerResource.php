@@ -4,6 +4,7 @@ namespace App\Http\Resources\Api;
 
 use App\Models\Requirment\Requirment;
 use App\Models\RequirmentItem\RequirmentItemTranslation;
+use App\Models\User\UserImage;
 use App\Models\User\UserInformation;
 use App\Models\User\UserLastShow;
 use Illuminate\Http\Request;
@@ -19,11 +20,11 @@ class FullPartnerResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $user = auth()->user() ;
+        $user = auth()->user();
         $user_id = $this->id;
         $active = UserLastShow::where('user_id', $user_id)->value('status') ?? 0;
         $last_active = '';
-        if( $active == 0){
+        if ($active == 0) {
             $last_active_date = UserLastShow::where('user_id', $user_id)->value('end_date');
             $last_active_date = \Carbon\Carbon::parse($last_active_date);
             $last_active = $last_active_date->diffForHumans(null, true);
@@ -40,7 +41,7 @@ class FullPartnerResource extends JsonResource
             "notes" => $this->notes ?? __("messages.not_answered"),
             "is_married_before" => intval($this->is_married_before) ?? __("messages.not_answered"),
             "active" => intval($active) ?? "",
-            "last_active" => $last_active ?? '',// $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',
+            "last_active" => $last_active ?? '', // $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : 'active now',
 
             "weight" => intval($this->weight) ?? "",
             "height" => intval($this->height) ?? "",
@@ -68,8 +69,8 @@ class FullPartnerResource extends JsonResource
 
             "visibility"   => intval($this->visibility),
 
-            "partner_more_info"=>UserInformationResource::collection(Requirment::where('answer_type',1)->get())->additional(['user_id' => $user_id]),
-            "questions"=>DetailsResource::collection(Requirment::where('answer_type',2)->get())->additional(['user_id' => $user_id]),
+            "partner_more_info" => UserInformationResource::collection(Requirment::where('answer_type', 1)->get())->additional(['user_id' => $user_id]),
+            "questions" => DetailsResource::collection(Requirment::where('answer_type', 2)->get())->additional(['user_id' => $user_id]),
         ];
     }
 }
@@ -79,26 +80,47 @@ class ImageResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        return [
-            "id" => $this->id,
-            "image" => $this->image_link ?? "",
-            "is_primary" => boolval($this->is_primary) ?? "",
-            "is_blurry" => boolval($this->is_blurry) ?? "",
-        ];
+        $primaryImages = UserImage::where('user_id', $request->partner_id)
+            ->where('is_primary', true)
+            ->get();
+
+        $nonPrimaryImages = UserImage::where('user_id', $request->partner_id)
+            ->where('is_primary', false)
+            ->get();
+
+        $images = $primaryImages->merge($nonPrimaryImages);
+
+        $imageArray = [];
+        foreach ($images as $image) {
+            $imageArray[] = [
+                "id" => $image->id,
+                "image" => $image->image_link ?? "",
+                "is_primary" => boolval($image->is_primary) ?? "",
+                "is_blurry" => boolval($image->is_blurry) ?? "",
+            ];
+        }
+
+        return $imageArray;
+        // return [
+        //     "id" => $this->id,
+        //     "image" => $this->image_link ?? "",
+        //     "is_primary" => boolval($this->is_primary) ?? "",
+        //     "is_blurry" => boolval($this->is_blurry) ?? "",
+        // ];
     }
 }
 
 class DetailsResource extends JsonResource
 {
-    public function toArray(Request $request ): array
+    public function toArray(Request $request): array
     {
 
         $user_id = $request->partner_id;
-        $info = UserInformation::where('requirment_id',$this->id)->where('type',2)->where('user_id', $user_id)->first()?->value('answer');
+        $info = UserInformation::where('requirment_id', $this->id)->where('type', 2)->where('user_id', $user_id)->first()?->value('answer');
         return [
-            'id'=>$this->id,
-            'question'=>strval($this->title) ?? "",
-            'answer'=>$info ?? __("messages.not_answered"),
+            'id' => $this->id,
+            'question' => strval($this->title) ?? "",
+            'answer' => $info ?? __("messages.not_answered"),
         ];
     }
 }
@@ -112,13 +134,13 @@ class UserInformationResource extends JsonResource
         $locale = $request->header('Accept-Language');
         // dd($locale);
         $user_id = $request->partner_id;
-        $qust = UserInformation::where('requirment_id',$this->id)->where('type',1)->where('user_id', $user_id)->first()?->requirment_item_id;
-        $ques = RequirmentItemTranslation::where('requirment_item_id',$qust)->where('locale',$locale)->first()?->title;
+        $qust = UserInformation::where('requirment_id', $this->id)->where('type', 1)->where('user_id', $user_id)->first()?->requirment_item_id;
+        $ques = RequirmentItemTranslation::where('requirment_item_id', $qust)->where('locale', $locale)->first()?->title;
 
         return [
             "id" => $this->id,
-        "title" => ($this->title) ?? "",
-        "value" => ($ques)  ??__("messages.not_answered"),
+            "title" => ($this->title) ?? "",
+            "value" => ($ques)  ?? __("messages.not_answered"),
 
             "title_id" => intval($this->requirment_id) ?? "",
             "value_id" => intval($this->requirment_item_id) ?? "",
