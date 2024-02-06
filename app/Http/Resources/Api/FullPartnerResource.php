@@ -79,12 +79,27 @@ class ImageResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        return [
-            "id" => $this->id,
-            "image" => $this->image_link ?? "",
-            "is_primary" => boolval($this->is_primary) ?? "",
-            "is_blurry" => boolval($this->is_blurry) ?? "",
-        ];
+        $primaryImage = $this->collection->where('is_primary', true)->first();
+
+        $images = $this->collection->reject(function ($image) {
+            return $image->is_primary;
+        })->map(function ($image) {
+            return [
+                "id" => $image->id,
+                "image" => $image->image_link ?? "",
+                "is_primary" => boolval($image->is_primary) ?? "",
+                "is_blurry" => boolval($image->is_blurry) ?? "",
+            ];
+        })->toArray();
+
+        array_unshift($images, [
+            "id" => $primaryImage->id,
+            "image" => $primaryImage->image_link ?? "",
+            "is_primary" => boolval($primaryImage->is_primary) ?? "",
+            "is_blurry" => boolval($primaryImage->is_blurry) ?? "",
+        ]);
+
+        return $images;
     }
 }
 

@@ -474,4 +474,5 @@ return [
     "your account is not verified"    => "عفوا انت غير مشترك",
     "Your chats"    => "محادثاتك",
     "password_is_incorrect" => "كلمة المرور غير صاحيحة",
+    "done_updating_visibility" => 'تم تحديث خاصية الاظهار'
 ];
