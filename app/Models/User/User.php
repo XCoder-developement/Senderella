@@ -24,6 +24,7 @@ use App\Models\MarriageReadiness\MarriageReadiness;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Notification\Notification;
 use App\Models\UserQuestion\UserQuestion;
+use App\Models\UserSearch\UserSearch;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -244,6 +245,9 @@ class User extends Authenticatable
         return $this->hasMany(UserLastShow::class);
     }
 
+    public function search(): HasMany{
+        return $this->hasMany(UserSearch::class);
+    }
     //like me and followers partners
     // public function followers(): HasMany
     // {
