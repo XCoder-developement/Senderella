@@ -32,21 +32,21 @@ class NotificationPartnerResource extends JsonResource
             $last_active = $last_active_date->diffForHumans(null, true);
         }
 
-        $like_time = UserLike::where('user_id' , $user->id)->where('partner_id', $this->id)->value('created_at');
+        $like_time = UserLike::where('user_id' , $user->id)->where('partner_id', $this->id)->latest()->value('created_at');
         if($like_time){
-            $like_time = UserLike::where('user_id' , $user->id)->where('partner_id', $this->id)->value('created_at')->format('Y-m-d');
+            $like_time = UserLike::where('user_id' , $user->id)->where('partner_id', $this->id)->latest()->value('created_at')->format('Y-m-d');
         }else{
             $like_time = '';
         }
-        $favorite_time = UserBookmark::where('user_id' , $user->id)->where('partner_id', $this->id)->value('created_at');
+        $favorite_time = UserBookmark::where('user_id' , $user->id)->where('partner_id', $this->id)->latest()->value('created_at');
         if($favorite_time){
-            $favorite_time = UserBookmark::where('user_id' , $user->id)->where('partner_id', $this->id)->value('created_at')->format('Y-m-d');
+            $favorite_time = UserBookmark::where('user_id' , $user->id)->where('partner_id', $this->id)->latest()->value('created_at')->format('Y-m-d');
         }else{
             $favorite_time = '';
         }
-        $watch_time = UserWatch::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at');
+        $watch_time = UserWatch::where('user_id' , $this->id)->where('partner_id', $user->id)->latest()->value('created_at');
         if($watch_time){
-            $watch_time = UserWatch::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at')->format('Y-m-d');
+            $watch_time = UserWatch::where('user_id' , $this->id)->where('partner_id', $user->id)->latest()->value('created_at')->format('Y-m-d');
         }else{
             $watch_time = '';
         }

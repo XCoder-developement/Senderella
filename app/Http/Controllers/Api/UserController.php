@@ -442,4 +442,28 @@ class UserController extends Controller
             return $this->returnException($ex->getMessage(), 500);
         }
     }
+
+    public function set_visibility(Request $request){
+        try{
+            $rules = [
+                'visibility' => 'required',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return $this->getvalidationErrors($validator);
+            }
+            $user = auth()->user();
+            $user->update(['visibility' => $request->visibility]);
+
+            $data = new UserResource($user);
+            $msg = __('message.done_updating_visibility');
+            return $this->dataResponse($msg,$data, 200);
+
+            }
+        catch (\Exception $ex){
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
 }

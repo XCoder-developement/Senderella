@@ -55,7 +55,7 @@ class FullPartnerResource extends JsonResource
             "readiness_for_marriages_id" => intval($this->marriage_readiness_id) ?? null,
             "marriage_readiness_title" => $this->marriage_readiness?->title ?? "",
             "marital_status_title" => $this->marital_status?->title ?? "",
-            "marital_status_title" => $this->marital_status?->title ?? "",
+            // "marital_status_title" => $this->marital_status?->title ?? "",
 
             "skin_color_id" => intval($this->color_id) ?? null,
             "education_type_id" => intval($this->education_type_id) ?? null,
@@ -64,7 +64,9 @@ class FullPartnerResource extends JsonResource
             "important_for_marriage" => $this->important_for_marriage ?? __("messages.not_answered"),
             "partner_specifications"    => $this->partner_specifications ?? __("messages.not_answered"),
             "about_me" => $this->about_me ?? __("messages.not_answered"),
-            "active" => intval($this->active) ?? "",
+            // "active" => intval($this->active) ?? "",
+
+            "visibility"   => intval($this->visibility),
 
             "partner_more_info"=>UserInformationResource::collection(Requirment::where('answer_type',1)->get())->additional(['user_id' => $user_id]),
             "questions"=>DetailsResource::collection(Requirment::where('answer_type',2)->get())->additional(['user_id' => $user_id]),
