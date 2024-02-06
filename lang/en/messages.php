@@ -421,4 +421,6 @@ return [
     "your account is not verified"    => "Your account is not upgraded",
     "Your chats" => "Your chats",
     "password_is_incorrect" => "Password is incorrect",
+    "done_updating_visibility" => "Updating Visibility Done",
+    
 ];
