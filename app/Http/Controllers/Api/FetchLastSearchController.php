@@ -17,11 +17,7 @@ class FetchLastSearchController extends Controller
     {
         try {
             $user = auth()->id();
-            $fetch_search = UserSearch::with('requirments')
-            ->whereHas('lastShow', function ($query) {
-                $query->where('status', 1);
-            })
-            ->where('user_id', $user)->latest()->first();
+            $fetch_search = UserSearch::with('requirments')->where('user_id', $user)->latest()->first();
             if (!$fetch_search) {
                 $msg = "message.there is no last search";
                 return $this->dataResponse($msg, [] ,200);
