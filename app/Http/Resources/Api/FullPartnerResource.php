@@ -20,6 +20,7 @@ class FullPartnerResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         $user = auth()->user();
         $user_id = $this->id;
         $active = UserLastShow::where('user_id', $user_id)->value('status') ?? 0;
@@ -29,9 +30,20 @@ class FullPartnerResource extends JsonResource
             $last_active_date = \Carbon\Carbon::parse($last_active_date);
             $last_active = $last_active_date->diffForHumans(null, true);
         }
+
+        $primaryImages = UserImage::where('user_id', $user_id)
+            ->where('is_primary', true)
+            ->get();
+
+        $nonPrimaryImages = UserImage::where('user_id', $user_id)
+            ->where('is_primary', false)
+            ->get();
+
+        $images = $primaryImages->merge($nonPrimaryImages);
+
         return [
             "id" => $this->id,
-            "images" => count($this->images) == 0 ? null : ImageResource::collection($this->images),
+            "images" => count($this->images) == 0 ? null : ImageResource::collection($images),
             "name" => $this->name ?? "",
             "age" => $this->user_age ?? "",
             "is_follow" => $this->is_follow($user->id) ?? 0,
@@ -80,33 +92,14 @@ class ImageResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $primaryImages = UserImage::where('user_id', $request->partner_id)
-            ->where('is_primary', true)
-            ->get();
 
-        $nonPrimaryImages = UserImage::where('user_id', $request->partner_id)
-            ->where('is_primary', false)
-            ->get();
-
-        $images = $primaryImages->merge($nonPrimaryImages);
-
-        $imageArray = [];
-        foreach ($images as $image) {
-            $imageArray[] = [
-                "id" => $image->id,
-                "image" => $image->image_link ?? "",
-                "is_primary" => boolval($image->is_primary) ?? "",
-                "is_blurry" => boolval($image->is_blurry) ?? "",
-            ];
-        }
-
-        return $imageArray;
-        // return [
-        //     "id" => $this->id,
-        //     "image" => $this->image_link ?? "",
-        //     "is_primary" => boolval($this->is_primary) ?? "",
-        //     "is_blurry" => boolval($this->is_blurry) ?? "",
-        // ];
+        return [
+            "id" => $this->id,
+            "image" => $this->image_link ?? "",
+            "is_primary" => boolval($this->is_primary) ?? "",
+            "is_blurry" => boolval($this->is_blurry) ?? "",
+        ];
+        
     }
 }
 
