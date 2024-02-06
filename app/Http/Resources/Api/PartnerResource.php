@@ -5,6 +5,7 @@ namespace App\Http\Resources\Api;
 use App\Http\Resources\api\RequirmentResource;
 use App\Models\NewDuration\NewDuration;
 use App\Models\User\UserBookmark;
+use App\Models\User\UserImage;
 use App\Models\User\UserLastShow;
 use App\Models\User\UserLike;
 use App\Models\User\UserWatch;
@@ -21,43 +22,52 @@ class PartnerResource extends JsonResource
      */
     public function toArray(Request $request): array
     { // fetching the action is done on user like who watch the user and who likes him
-        $user = auth()->user() ;
+        $user = auth()->user();
         $duration = NewDuration::first()->new_duration; // getting the duration days for the new tag
         $user_duration = Carbon::parse($this->created_at)->diffInDays(); // getting the duration days for the user
         $user_id = $this->id;
         $active = UserLastShow::where('user_id', $user_id)->value('status') ?? 0;
         $last_active = '';
-        if( $active == 0){
+        if ($active == 0) {
             $last_active_date = UserLastShow::where('user_id', $user_id)->value('end_date');
             $last_active_date = \Carbon\Carbon::parse($last_active_date);
             $last_active = $last_active_date->diffForHumans(null, true);
         }
 
-        $like_time = UserLike::where('user_id' , $this->id)->where('partner_id', $user->id)->latest()->value('created_at');
-        if($like_time){
-            $like_time = UserLike::where('user_id' , $this->id)->where('partner_id', $user->id)->latest()->value('created_at')->format('Y-m-d');
-        }else{
+        $like_time = UserLike::where('user_id', $this->id)->where('partner_id', $user->id)->latest()->value('created_at');
+        if ($like_time) {
+            $like_time = UserLike::where('user_id', $this->id)->where('partner_id', $user->id)->latest()->value('created_at')->format('Y-m-d');
+        } else {
             $like_time = '';
         }
-        $favorite_time = UserBookmark::where('user_id' , $this->id)->where('partner_id', $user->id)->latest()->value('created_at');
-        if($favorite_time){
-            $favorite_time = UserBookmark::where('user_id' , $this->id)->where('partner_id', $user->id)->latest()->value('created_at')->format('Y-m-d');
-        }else{
+        $favorite_time = UserBookmark::where('user_id', $this->id)->where('partner_id', $user->id)->latest()->value('created_at');
+        if ($favorite_time) {
+            $favorite_time = UserBookmark::where('user_id', $this->id)->where('partner_id', $user->id)->latest()->value('created_at')->format('Y-m-d');
+        } else {
             $favorite_time = '';
         }
-        $watch_time = UserWatch::where('user_id' , $this->id)->where('partner_id', $user->id)->latest()->value('created_at');
-        if($watch_time){
-            $watch_time = UserWatch::where('user_id' , $this->id)->where('partner_id', $user->id)->latest()->value('created_at')->format('Y-m-d');
-        }else{
+        $watch_time = UserWatch::where('user_id', $this->id)->where('partner_id', $user->id)->latest()->value('created_at');
+        if ($watch_time) {
+            $watch_time = UserWatch::where('user_id', $this->id)->where('partner_id', $user->id)->latest()->value('created_at')->format('Y-m-d');
+        } else {
             $watch_time = '';
         }
 
+        $primaryImages = UserImage::where('user_id', $user_id)
+            ->where('is_primary', true)
+            ->get();
+
+        $nonPrimaryImages = UserImage::where('user_id', $user_id)
+            ->where('is_primary', false)
+            ->get();
+
+        $images = $primaryImages->merge($nonPrimaryImages);
         return [
             "id" => $this->id,
             "is_verify" => $this->is_verify ?? 0,
             "active" => intval($active) ?? "",
-            "last_active" => $last_active ?? '',// $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : '',
-            "images" => $this->images == null ? null : ImageResource::collection($this->images) ,
+            "last_active" => $last_active ?? '', // $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : '',
+            "images" => $this->images == null ? null : ImageResource::collection($images),
             "name" => $this->name ?? "",
             "age" => $this->user_age ?? "",
             "is_follow" => $this->is_follow($user->id) ?? 0,
@@ -101,8 +111,8 @@ class ImageResource extends JsonResource
         return [
             "id" => $this->id,
             "image" => $this->image_link ?? "",
-            "is_primary" => boolval($this->is_primary) ??"",
-            "is_blurry" => boolval($this->is_blurry) ??"",
+            "is_primary" => boolval($this->is_primary) ?? "",
+            "is_blurry" => boolval($this->is_blurry) ?? "",
         ];
     }
 }
