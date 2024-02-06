@@ -558,6 +558,7 @@ class PartnerController extends Controller
             $active_nearst_partners = User::where('id', '!=', $user->id)
                 ->where('country_id', $user->country_id)
                 ->where('state_id', $user->state_id)
+                ->where('visibility' ,0)
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 1);
                 })
@@ -566,6 +567,7 @@ class PartnerController extends Controller
             $disactive_nearst_partners = User::where('id', '!=', $user->id)
                 ->where('country_id', $user->country_id)
                 ->where('state_id', $user->state_id)
+                ->where('visibility' ,0)
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 0);
                 })

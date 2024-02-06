@@ -65,7 +65,7 @@ class UserResource extends JsonResource
             "verification_type" => intval($this->verification_type) ?? "",
             "phone_verify" => intval($this->phone_verify) ,
             "email_verify" => intval($this->email_verify) ,
-
+            "visibility"   => intval($this->visibility),
 
             // "is_verified" => $this->is_verified ?? "",
             "active" => intval($active) ?? "",

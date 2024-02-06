@@ -252,4 +252,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     //fetch_all_notifications
     Route::post("fetch_messages", [ChatController::class, "fetch_messages"]);
 
+    //set_visibility
+    Route::post("set_visibility", [UserController::class, "set_visibility"]);
+
+
 });
