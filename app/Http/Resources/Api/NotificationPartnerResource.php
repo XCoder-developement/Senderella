@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\Api;
 
-use App\Http\Resources\api\RequirmentResource;
 use App\Models\NewDuration\NewDuration;
 use App\Models\User\UserBookmark;
 use App\Models\User\UserLastShow;
@@ -12,7 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PartnerResource extends JsonResource
+class NotificationPartnerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,7 +19,7 @@ class PartnerResource extends JsonResource
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
-    { // fetching the action is done on user like who watch the user and who likes him
+    {   //fetch the notifications that the user do here's fetching what the user does to others
         $user = auth()->user() ;
         $duration = NewDuration::first()->new_duration; // getting the duration days for the new tag
         $user_duration = Carbon::parse($this->created_at)->diffInDays(); // getting the duration days for the user
@@ -33,15 +32,15 @@ class PartnerResource extends JsonResource
             $last_active = $last_active_date->diffForHumans(null, true);
         }
 
-        $like_time = UserLike::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at');
+        $like_time = UserLike::where('user_id' , $user->id)->where('partner_id', $this->id)->value('created_at');
         if($like_time){
-            $like_time = UserLike::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at')->diffForHumans(null, true);
+            $like_time = UserLike::where('user_id' , $user->id)->where('partner_id', $this->id)->value('created_at')->diffForHumans(null, true);
         }else{
             $like_time = '';
         }
-        $favorite_time = UserBookmark::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at');
+        $favorite_time = UserBookmark::where('user_id' , $user->id)->where('partner_id', $this->id)->value('created_at');
         if($favorite_time){
-            $favorite_time = UserBookmark::where('user_id' , $this->id)->where('partner_id', $user->id)->value('created_at')->diffForHumans(null, true);
+            $favorite_time = UserBookmark::where('user_id' , $user->id)->where('partner_id', $this->id)->value('created_at')->diffForHumans(null, true);
         }else{
             $favorite_time = '';
         }
