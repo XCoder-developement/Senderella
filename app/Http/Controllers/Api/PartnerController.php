@@ -9,6 +9,7 @@ use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\MiniPartnerResource;
+use App\Http\Resources\Api\NotificationPartnerResource;
 use App\Http\Resources\Api\UserResource;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Api\PartnerResource;
@@ -332,7 +333,7 @@ class PartnerController extends Controller
 
 
             $msg = "fetch_following";
-            return $this->dataResponse($msg, PartnerResource::collection($users), 200);
+            return $this->dataResponse($msg, NotificationPartnerResource::collection($users), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -398,7 +399,7 @@ class PartnerController extends Controller
 
             // dd($watched);
             $msg = "who_i_watch";
-            return $this->dataResponse($msg, PartnerResource::collection($watched), 200);
+            return $this->dataResponse($msg, NotificationPartnerResource::collection($watched), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -441,7 +442,7 @@ class PartnerController extends Controller
                 ->get();
 
             $msg = "who_i_favorite";
-            return $this->dataResponse($msg, PartnerResource::collection($favorited), 200);
+            return $this->dataResponse($msg, NotificationPartnerResource::collection($favorited), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
