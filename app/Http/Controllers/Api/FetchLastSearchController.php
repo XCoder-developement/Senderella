@@ -30,7 +30,7 @@ class FetchLastSearchController extends Controller
             $response = PartnerResource::collection($partners)->response()->getData(true);
             $i = count($response['data']);
             $userIds = []; // Initialize an array to store the IDs
-
+// dd($params);
             for ($j = 0; $j < $i; $j++) {
                 $userIds[] = $response['data'][$j]['id']; // Extract the ID and add it to the $userIds array
             }

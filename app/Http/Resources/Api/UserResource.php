@@ -79,6 +79,9 @@ class UserResource extends JsonResource
 
             "questions"=>DetailsResource::collection($this->informations->where('type',2)),
 
+            "search"=>SearchResource::collection($this->search)->last(),
+
+
         ];
     }
 }
@@ -119,6 +122,25 @@ class UserInformationResource extends JsonResource
 
         "title_id" => $this->requirment_id ?? "",
         "value_id" => $this->requirment_item_id ?? __("messages.not_answered"),
+        ];
+    }
+}
+
+class SearchResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
+        return [
+        "id" => $this->id,
+        "word" => strval($this->word) ?? "",
+        "state_id" => intval($this->state_id)  ?? '',
+        "country_id" => intval($this->country_id)  ?? '',
+        "nationality_id"    => intval($this->nationality_id)  ?? '',
+        "weight"    => intval($this->weight)  ?? '',
+        "height"    => intval($this->height)  ?? '',
+        "marital_status_id" => intval($this->marital_status_id)  ?? '',
+        "age_from" => intval($this->age_from)  ?? '',
+        "age_to"    => intval($this->age_to)  ?? '',
         ];
     }
 }
