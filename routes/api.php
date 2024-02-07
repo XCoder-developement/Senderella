@@ -202,6 +202,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post("create_chat", [ChatController::class, "create_chat"])->name('create_chat');
     Route::post('send_message', [ChatController::class, 'send_message'])->name('send_message');
     Route::get('fetch_chats', [ChatController::class, 'fetch_chats'])->name('fetch_chats');
+    //fetch_all_messages
+    Route::post("fetch_messages", [ChatController::class, "fetch_messages"]);
 
 
     //fetch_my_block_partners
@@ -249,8 +251,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     //notifications
     Route::get("fetch_notifications", [NotificationController::class, "fetch_notifications"]);
 
-    //fetch_all_notifications
-    Route::post("fetch_messages", [ChatController::class, "fetch_messages"]);
 
     //set_visibility
     Route::post("set_visibility", [UserController::class, "set_visibility"]);
