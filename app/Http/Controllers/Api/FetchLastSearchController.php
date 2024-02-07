@@ -41,9 +41,9 @@ class FetchLastSearchController extends Controller
             })
             ->get();
             $offlines = User::whereIn('users.id', $userIds)
-            ->whereHas('last_shows', function ($query) {
-                $query->where('status', 0);
-            })
+            // ->whereHas('last_shows', function ($query) {
+            //     $query->where('status', 0);
+            // })
             ->get();
             // dd($offlines);
 
