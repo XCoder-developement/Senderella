@@ -9,7 +9,13 @@ class SearchPartnerParams
     public ?int $age_to;
     public ?int $marital_status_id;
     public ?int $weight;
+
+    public ?int $weight_from;
+
     public ?int $height;
+
+    public ?int $height_from;
+
     public ?int $state_id;
     public ?int $country_id;
     public ?int $nationality_id;
@@ -21,7 +27,9 @@ class SearchPartnerParams
         ?int $age_to = null,
         ?int $marital_status_id = null,
         ?int $weight = null,
+        ?int $weight_from = null,
         ?int $height = null,
+        ?int $height_from = null,
         ?int $state_id = null,
         ?int $country_id = null,
         ?int $nationality_id = null,
@@ -32,7 +40,9 @@ class SearchPartnerParams
         $this->age_to = $age_to;
         $this->marital_status_id = $marital_status_id;
         $this->weight = $weight;
+        $this->weight_from = $weight_from;
         $this->height = $height;
+        $this->height_from = $height_from;
         $this->state_id = $state_id;
         $this->country_id = $country_id;
         $this->nationality_id = $nationality_id;
@@ -53,7 +63,9 @@ class SearchPartnerParams
             'age_to' => $this->age_to,
             'marital_status_id' => $this->marital_status_id,
             'weight' => $this->weight,
+            'weight_from' => $this->weight_from,
             'height' => $this->height,
+            'height_from' => $this->height_from,
             'state_id' => $this->state_id,
             'country_id' => $this->country_id,
             'nationality_id' => $this->nationality_id,
@@ -76,7 +88,9 @@ class SearchPartnerParams
             age_to: $data['age_to'],
             marital_status_id: $data['marital_status_id'],
             weight: $data['weight'],
+            weight_from: $data['weight_from'],
             height: $data['height'],
+            height_from: $data['height_from'],
             state_id: $data['state_id'],
             country_id: $data['country_id'],
             nationality_id: $data['nationality_id'],

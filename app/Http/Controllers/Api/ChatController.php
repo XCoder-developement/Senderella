@@ -56,6 +56,9 @@ class ChatController extends Controller
             $receiver = User::where('id', $receiver_id)->first();
             $message = $request->message;
 
+            $userId = $user->id;
+            $image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
+
             // Check if a chat already exists between the user and the receiver
             $chat = Chat::where(function ($query) use ($user, $receiver) {
                 $query->where('user_id', $user->id)
@@ -93,7 +96,11 @@ class ChatController extends Controller
                 SendNotification::send($receiver->user_device->device_token, __('message.congratulations'), __('message.congrats you have received a reply') , $type , '' , '');
             }
 
+            SendNotification::send($receiver->user_device->device_token, __('messages.new_like'), __('messages.new_like'), $type, $userId, url($image) ?? '');
+
             broadcast(new ChatMessageSent($message));
+
+
 
             return $this->successResponse(__("message.sent successfully"), 200);
 

@@ -19,7 +19,9 @@ class StoreSearchService
             'marital_status_id' => $request->marital_status_id ?? null,
             'word' => $request->word ?? null,
             'height' => $request->height ?? null,
+            'height_from' => $request->height_from ?? null,
             'weight' => $request->weight ?? null,
+            'weight_from' => $request->weight_from ?? null
         ]);
         $count = UserSearch::where("user_id", auth()->id())->count();
         if (!empty($searchData) && $count < $store_time) {
