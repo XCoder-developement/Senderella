@@ -98,7 +98,7 @@ class ChatController extends Controller
 
             SendNotification::send($receiver->user_device->device_token, __('messages.new_like'), __('messages.new_like'), $type, $userId, url($image) ?? '');
 
-            // broadcast(new ChatMessageSent($message));
+            broadcast(new ChatMessageSent($message));
 
 
 
