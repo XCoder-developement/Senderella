@@ -255,5 +255,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     //set_visibility
     Route::post("set_visibility", [UserController::class, "set_visibility"]);
 
+    //test-event for chat
+    Route::get('test-event/{body}', function($body) {
+        event(new \App\Events\ChatMessageSent($body));
+        return 'Message Successfully Sent.';
+    });
+
 
 });
