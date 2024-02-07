@@ -12,45 +12,45 @@ class ChatMessageSent implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
 
-    public $data;
+    public $message;
 
     /**
-    * Create a new event instance.
-    *
-    * @return void
-    */
+     * Create a new event instance.
+     *
+     * @return void
+     */
     public function __construct($message)
     {
-        $this->data = $message;
+        $this->message = $message;
     }
 
     /**
-    * Get the channels the event should broadcast on.
-    *
-    * @return \Illuminate\Broadcasting\Channel|array
-    */
+     * Get the channels the event should broadcast on.
+     *
+     * @return Channel|array
+     */
     public function broadcastOn()
     {
         return new Channel('send-chat-message');
     }
 
     /**
-    * The event's broadcast name.
-    *
-    * @return string
-    */
+     * The event's broadcast name.
+     *
+     * @return string
+     */
     public function broadcastAs()
     {
         return 'SendChatMessage';
     }
 
     /**
-    * The event's broadcast name.
-    *
-    * @return string
-    */
+     * The data to broadcast.
+     *
+     * @return array
+     */
     public function broadcastWith()
     {
-        return ['title'=> $this->data ];
+        return ['message' => $this->message];
     }
 }

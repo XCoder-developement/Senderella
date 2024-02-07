@@ -93,6 +93,8 @@ class ChatController extends Controller
                 SendNotification::send($receiver->user_device->device_token, __('message.congratulations'), __('message.congrats you have received a reply') , $type , '' , '');
             }
 
+            broadcast(new ChatMessageSent($message));
+
             return $this->successResponse(__("message.sent successfully"), 200);
 
             // }else{
