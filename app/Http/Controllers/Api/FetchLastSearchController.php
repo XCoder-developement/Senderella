@@ -40,7 +40,7 @@ class FetchLastSearchController extends Controller
                 $query->where('status', 1);
             })
             ->get();
-            dd($online_partners);
+            // dd($online_partners);
             $offlines = User::whereIn('users.id', $userIds)
             // ->whereHas('last_shows', function ($query) {
             //     $query->where('status', 0);
