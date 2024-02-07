@@ -10,7 +10,7 @@ class SearchService
     {
         $search = (object) $search;
         // $users = User::where('birthday_date' , '>=', Carbon::now()->subYears($search->age_to))->get();
-        // dd($users);
+        // dd($search->height_from);
 
         $query = User::where('id', '!=', auth()->id())
             // ->where(function ($q) use ($search) {
@@ -25,9 +25,11 @@ class SearchService
                 })->when($search->nationality_id, function ($q) use ($search) {
                 $q->where('nationality_id', $search->nationality_id);
                  })->when($search->weight, function ($q) use ($search) {
-                    $q->where('weight', $search->weight);
-                })->when($search->height, function ($q) use ($search) {
-                    $q->where('height', $search->height);
+                    $q->where('weight','<=' , $search->weight)
+                    ->where('weight', '>=' , $search->weight_from);
+                })->when($search->height && $search->height_from, function ($q) use ($search) {
+                    $q->where('height', '<=' , $search->height)
+                    ->where('height', '>=' , $search->height_from);
                 })->when($search->marital_status_id, function ($q) use ($search) {
                     $q->where('marital_status_id', $search->marital_status_id);
                 })->when($search->age_from && $search->age_to, function ($q) use ($search) {
