@@ -422,5 +422,6 @@ return [
     "Your chats" => "Your chats",
     "password_is_incorrect" => "Password is incorrect",
     "done_updating_visibility" => "Updating Visibility Done",
-    
+    "message"    => "Message",
+
 ];
