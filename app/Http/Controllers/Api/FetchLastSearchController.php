@@ -46,8 +46,6 @@ class FetchLastSearchController extends Controller
             // })
             ->get();
             // dd($offlines);
-
-            dd($offlines);
             $offlines = $offlines->sortByDesc(function ($partner) {
                 return $partner->last_shows->first()->end_date ?? null;
             });
