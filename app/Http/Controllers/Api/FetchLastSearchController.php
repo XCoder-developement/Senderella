@@ -30,29 +30,30 @@ class FetchLastSearchController extends Controller
             $response = PartnerResource::collection($partners)->response()->getData(true);
             $i = count($response['data']);
             $userIds = []; // Initialize an array to store the IDs
-// dd($params);
+            // dd($params);
             for ($j = 0; $j < $i; $j++) {
                 $userIds[] = $response['data'][$j]['id']; // Extract the ID and add it to the $userIds array
             }
 
-            $online_partners = User::whereIn('id', $userIds)
-                ->whereHas('last_shows', function ($query) {
-                    $query->where('status', 1);
-                })
-                ->get();
-
-            $offlines = User::whereIn('id' ,$userIds )
+            $online_partners = User::whereIn('users.id', $userIds)
+            ->whereHas('last_shows', function ($query) {
+                $query->where('status', 1);
+            })
+            ->get();
+            $offlines = User::whereIn('users.id', $userIds)
             ->whereHas('last_shows', function ($query) {
                 $query->where('status', 0);
             })
             ->get();
+            // dd($offlines);
 
             $offlines = $offlines->sortByDesc(function ($partner) {
                 return $partner->last_shows->first()->end_date ?? null;
             });
             // dd($offlines);
             $all_partners = $online_partners->merge($offlines);
-            $AllPartners = PartnerResource::collection($all_partners) ;
+            $AllPartners = PartnerResource::collection($all_partners);
+            // dd($offlines);
             if ($fetch_search) {
                 $msg = "fetch_last_search";
                 return $this->dataResponse($msg, $AllPartners, 200);
