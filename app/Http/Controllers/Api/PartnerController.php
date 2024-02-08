@@ -389,7 +389,9 @@ class PartnerController extends Controller
     {
         try {
             $user = auth()->user();
-            $watched_ids = $user->Watched->pluck('partner_id')->toArray();
+            $watched_ids = $user->Watched->pluck('partner_id')->reject(function ($user_id) use ($user) {
+                return $user_id == $user->id;
+            })->toArray();
             $watched = User::join('user_watches', 'users.id', '=', 'user_watches.partner_id')
                 ->whereIn('users.id', $watched_ids)
                 ->orderBy('user_watches.created_at', 'desc')
@@ -558,7 +560,7 @@ class PartnerController extends Controller
             $active_nearst_partners = User::where('id', '!=', $user->id)
                 ->where('country_id', $user->country_id)
                 ->where('state_id', $user->state_id)
-                ->where('visibility' ,0)
+                ->where('visibility', 0)
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 1);
                 })
@@ -567,7 +569,7 @@ class PartnerController extends Controller
             $disactive_nearst_partners = User::where('id', '!=', $user->id)
                 ->where('country_id', $user->country_id)
                 ->where('state_id', $user->state_id)
-                ->where('visibility' ,0)
+                ->where('visibility', 0)
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 0);
                 })
