@@ -45,9 +45,9 @@ class NotificationPartnerResource extends JsonResource
         } else {
             $favorite_time = '';
         }
-        $watch_time = UserWatch::where('user_id', $this->id)->where('partner_id', $user->id)->latest()->value('created_at');
+        $watch_time = UserWatch::where('user_id', $user->id)->where('partner_id', $this->id)->latest()->value('created_at');
         if ($watch_time) {
-            $watch_time = UserWatch::where('user_id', $this->id)->where('partner_id', $user->id)->latest()->value('created_at')->format('Y-m-d');
+            $watch_time = UserWatch::where('user_id', $user->id)->where('partner_id', $this->id)->latest()->value('created_at')->format('Y-m-d');
         } else {
             $watch_time = '';
         }
