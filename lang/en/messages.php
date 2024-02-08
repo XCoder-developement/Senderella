@@ -423,5 +423,5 @@ return [
     "password_is_incorrect" => "Password is incorrect",
     "done_updating_visibility" => "Updating Visibility Done",
     "message"    => "Message",
-
+    "congrats_you_have_received_a_reply"    => "Congratulations! You have received a reply",
 ];
