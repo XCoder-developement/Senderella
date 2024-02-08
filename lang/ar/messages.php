@@ -476,4 +476,5 @@ return [
     "password_is_incorrect" => "كلمة المرور غير صاحيحة",
     "done_updating_visibility" => 'تم تحديث خاصية الاظهار',
     "message"    => "رسالة",
+    "done_updating_location"    => "تم تحديث موقعك",
 ];

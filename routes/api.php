@@ -255,4 +255,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     //set_visibility
     Route::post("set_visibility", [UserController::class, "set_visibility"]);
 
+    //update_location
+    Route::post("update_location", [UserController::class, "update_location"]);
+
 });
