@@ -413,7 +413,10 @@ class PartnerController extends Controller
     {
         try {
             $user = auth()->user();
-            $watcher_ids = $user->watcher->where('partner_id', $user->id)->pluck("user_id")->toArray();
+            $watcher_ids = $user->watcher->where('partner_id', $user->id)->pluck("user_id")
+            ->reject(function ($user_id) use ($user) {
+                return $user_id == $user->id;
+            })->toArray();
             // $watcher = User::whereIn('id', $watcher_ids)->get();
             $watcher = User::join('user_watches', 'users.id', '=', 'user_watches.user_id')
                 ->whereIn('users.id', $watcher_ids)
@@ -434,7 +437,10 @@ class PartnerController extends Controller
 
         try {
             $user = auth()->user();
-            $favorited_ids = $user->favorited->pluck("partner_id")->toArray();
+            $favorited_ids = $user->favorited->pluck("partner_id")
+            ->reject(function ($user_id) use ($user) {
+                return $user_id == $user->id;
+            })->toArray();
 
             $favorited = User::join('user_bookmarks', 'users.id', '=', 'user_bookmarks.partner_id')
                 ->whereIn('users.id', $favorited_ids)
@@ -455,7 +461,10 @@ class PartnerController extends Controller
 
         try {
             $user = auth()->user();
-            $favorite_ids = $user->favorited_by()->pluck("user_id")->toArray();
+            $favorite_ids = $user->favorited_by()->pluck("user_id")
+            ->reject(function ($user_id) use ($user) {
+                return $user_id == $user->id;
+            })->toArray();
             $favorite = User::join('user_bookmarks', 'users.id', '=', 'user_bookmarks.user_id')
                 ->whereIn('users.id', $favorite_ids)
                 ->orderBy('user_bookmarks.created_at', 'desc')
