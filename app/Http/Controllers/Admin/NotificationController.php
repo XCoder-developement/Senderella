@@ -44,7 +44,7 @@ class NotificationController extends Controller
         $notification  = Notification::create($notify_data);
         $users = User::whereHas('user_device' ,function($q){
             $q->whereNotNull('device_token');
-        })->latest()->get();
+        })->get();
 
         foreach($users as $user){
             // $user->notifications()->attach($notification);
