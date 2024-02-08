@@ -394,7 +394,7 @@ class PartnerController extends Controller
             })->toArray();
             $watched = User::join('user_watches', 'users.id', '=', 'user_watches.partner_id')
                 ->whereIn('users.id', $watched_ids)
-                ->orderBy('user_watches.created_at', 'desc')
+                ->orderBy('user_watches.id', 'desc')
                 ->select('users.*')
                 ->distinct()
                 ->get();
