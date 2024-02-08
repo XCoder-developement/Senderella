@@ -389,17 +389,16 @@ class PartnerController extends Controller
     {
         try {
             $user = auth()->user();
-
+            $watched_ids = $user->Watched->pluck('partner_id')->reject(function ($user_id) use ($user) {
+                return $user_id == $user->id;
+            })->toArray();
             $watched = User::join('user_watches', 'users.id', '=', 'user_watches.partner_id')
-            ->where('user_watches.user_id', $user->id)
-            ->join(DB::raw('(SELECT partner_id, MAX(created_at) AS latest_created_at FROM user_watches GROUP BY partner_id) AS latest_watch'), function ($join) {
-                $join->on('user_watches.partner_id', '=', 'latest_watch.partner_id');
-                    //  ->on('user_watches.created_at', '=', 'latest_watch.latest_created_at');
-            })
-            ->orderByDesc('user_watches.created_at')
-            ->select('users.*')
-            ->distinct()
-            ->get();
+                ->whereIn('users.id', $watched_ids)
+                ->orderBy('user_watches.created_at', 'desc')
+                ->select('users.*')
+                ->distinct()
+                ->get();
+
             // dd($watched);
             $msg = "who_i_watch";
             return $this->dataResponse($msg, NotificationPartnerResource::collection($watched), 200);
