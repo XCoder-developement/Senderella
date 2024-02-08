@@ -389,12 +389,13 @@ class PartnerController extends Controller
     {
         try {
             $user = auth()->user();
-            $watched_ids = $user->Watched->pluck('partner_id')->reject(function ($user_id) use ($user) {
-                return $user_id == $user->id;
+            $watched_ids = $user->Watched->pluck('partner_id')->reject(function ($partner_id) use ($user) {
+                return $partner_id == $user->id;
             })->toArray();
+
             $watched = User::join('user_watches', 'users.id', '=', 'user_watches.partner_id')
                 ->whereIn('users.id', $watched_ids)
-                ->orderBy('user_watches.created_at', 'desc')
+                ->orderByDesc('user_watches.id')
                 ->select('users.*')
                 ->distinct()
                 ->get();
@@ -414,9 +415,9 @@ class PartnerController extends Controller
         try {
             $user = auth()->user();
             $watcher_ids = $user->watcher->where('partner_id', $user->id)->pluck("user_id")
-            ->reject(function ($user_id) use ($user) {
-                return $user_id == $user->id;
-            })->toArray();
+                ->reject(function ($user_id) use ($user) {
+                    return $user_id == $user->id;
+                })->toArray();
             // $watcher = User::whereIn('id', $watcher_ids)->get();
             $watcher = User::join('user_watches', 'users.id', '=', 'user_watches.user_id')
                 ->whereIn('users.id', $watcher_ids)
@@ -438,9 +439,9 @@ class PartnerController extends Controller
         try {
             $user = auth()->user();
             $favorited_ids = $user->favorited->pluck("partner_id")
-            ->reject(function ($user_id) use ($user) {
-                return $user_id == $user->id;
-            })->toArray();
+                ->reject(function ($user_id) use ($user) {
+                    return $user_id == $user->id;
+                })->toArray();
 
             $favorited = User::join('user_bookmarks', 'users.id', '=', 'user_bookmarks.partner_id')
                 ->whereIn('users.id', $favorited_ids)
@@ -462,9 +463,9 @@ class PartnerController extends Controller
         try {
             $user = auth()->user();
             $favorite_ids = $user->favorited_by()->pluck("user_id")
-            ->reject(function ($user_id) use ($user) {
-                return $user_id == $user->id;
-            })->toArray();
+                ->reject(function ($user_id) use ($user) {
+                    return $user_id == $user->id;
+                })->toArray();
             $favorite = User::join('user_bookmarks', 'users.id', '=', 'user_bookmarks.user_id')
                 ->whereIn('users.id', $favorite_ids)
                 ->orderBy('user_bookmarks.created_at', 'desc')
@@ -565,10 +566,14 @@ class PartnerController extends Controller
                 return $this->getvalidationErrors("validator");
             }
 
+            $latitude = $request->input('latitude');
+            $longitude = $request->input('longitude');
+            $distance = 0.000045;
+
             $user = auth()->user();
             $active_nearst_partners = User::where('id', '!=', $user->id)
-                ->where('country_id', $user->country_id)
-                ->where('state_id', $user->state_id)
+                ->whereBetween('latitude', [$latitude - $distance, $latitude + $distance])
+                ->whereBetween('longitude', [$longitude - $distance, $longitude + $distance])
                 ->where('visibility', 0)
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 1);
@@ -576,8 +581,8 @@ class PartnerController extends Controller
                 ->get();
 
             $disactive_nearst_partners = User::where('id', '!=', $user->id)
-                ->where('country_id', $user->country_id)
-                ->where('state_id', $user->state_id)
+            ->whereBetween('latitude', [$latitude - $distance, $latitude + $distance])
+            ->whereBetween('longitude', [$longitude - $distance, $longitude + $distance])
                 ->where('visibility', 0)
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 0);

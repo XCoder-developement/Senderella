@@ -424,4 +424,5 @@ return [
     "done_updating_visibility" => "Updating Visibility Done",
     "message"    => "Message",
     "congrats_you_have_received_a_reply"    => "Congratulations! You have received a reply",
+    "done_updating_location"    => "Updating Location Done",
 ];

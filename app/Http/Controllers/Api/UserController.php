@@ -466,4 +466,30 @@ class UserController extends Controller
             return $this->returnException($ex->getMessage(), 500);
         }
     }
+
+    public function update_location(Request $request){
+        try{
+            $rules = [
+                'latitude' => 'required',
+                'longitude' => 'required',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if($validator->fails()){
+                return $this->getvalidationErrors($validator);
+            }
+
+            $user = auth()->user();
+            $user->update(['latitude' => $request->latitude, 'longitude' => $request->longitude]);
+
+            $data = new UserResource($user);
+            $msg = __('message.done_updating_location');
+            return $this->dataResponse($msg,$data, 200);
+        }
+
+        catch (\Exception $ex){
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
 }
