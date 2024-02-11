@@ -283,7 +283,8 @@ class PartnerController extends Controller
                 return $this->getvalidationErrors("validator");
             }
 
-            $user_id = auth()->id();
+            $user = auth()->user();
+            $user_id = $user->id;
             $partner_id = $request->partner_id;
 
 
@@ -295,7 +296,6 @@ class PartnerController extends Controller
 
             $type = 1;
 
-            $user = auth()->user();
             $data['user_id'] =  $user->id;
             $data['partner_id'] =  $partner_id;
             UserWatch::create($data);
