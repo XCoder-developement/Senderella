@@ -287,7 +287,7 @@ class PartnerController extends Controller
             $partner_id = $request->partner_id;
 
 
-            $liked_before = UserWatch::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
+            $liked_before = UserWatch::where('user_id', $user_id)->where('partner_id', $partner_id)->first();
             if ($liked_before) {
                 $liked_before->delete();
             }
