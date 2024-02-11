@@ -295,10 +295,10 @@ class PartnerController extends Controller
 
             $type = 1;
 
-            $data['user_id'] =  $user_id;
+            $user = auth()->user();
+            $data['user_id'] =  $user->id;
             $data['partner_id'] =  $partner_id;
             UserWatch::create($data);
-            $user = auth()->user();
             $image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
 
             $partner = User::whereId($partner_id)->first();
