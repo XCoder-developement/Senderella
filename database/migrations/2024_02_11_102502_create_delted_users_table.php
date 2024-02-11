@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('delted_users', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('name')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
@@ -40,6 +39,8 @@ return new class extends Migration
             $table->longText('partner_specifications')->nullable();
             $table->tinyInteger('gender')->nullable()->comment('1 => male , 2 => female');
             $table->tinyInteger('is_married_before')->nullable()->comment('2 => no , 1 => yes');
+            
+            $table->timestamps();
         });
     }
 
