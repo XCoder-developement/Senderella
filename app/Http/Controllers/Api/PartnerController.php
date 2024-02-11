@@ -287,6 +287,12 @@ class PartnerController extends Controller
             $partner_id = $request->partner_id;
 
 
+            $liked_before = UserWatch::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
+            if ($liked_before) {
+                $liked_before->delete();
+            }
+
+
             $type = 1;
 
             $data['user_id'] =  $user_id;
@@ -389,7 +395,7 @@ class PartnerController extends Controller
     {
         try {
             $user = auth()->user();
-            $watched_ids = $user->Watched->pluck('partner_id')->reject(function ($partner_id) use ($user) {
+            $watched_ids = $user->Watched->last()->pluck('partner_id')->reject(function ($partner_id) use ($user) {
                 return $partner_id == $user->id;
             })->toArray();
 
