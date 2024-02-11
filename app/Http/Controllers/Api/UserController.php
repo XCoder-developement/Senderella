@@ -360,6 +360,7 @@ class UserController extends Controller
 
             if ($user->api_token) { // check the api_token ig gotten right?
                 // storing the user data in delted users table
+                // dd($user->images?->where('is_primary', 1)->first()->image_link ?? '');
                 $delted = DeltedUser::create([
                     'name'    => $user->name,
                     'email'   => $user->email,
@@ -380,12 +381,13 @@ class UserController extends Controller
                     'about_me'      => $user->about_me,
                     'important_for_marriage' => $user->important_for_marriage,
                     'is_married_before' => $user->is_married_before,
-                    'image'         => UserImage::where('user_id', $user->id)->where('is_primary', 1)->first() ?? '' ,
                     'partner_specifications' => $user->partner_specifications,
                     'gender'        => $user->gender,
+                    'image'         => $user->images?->where('is_primary', 1)->first()->image_link ?? '',
                 ]);
+                // $delted->image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
 
-                // dd($delted->image);
+
                 // delte the user data
                 UserImage::where('user_id', $user->id)->delete();
                 UserLike::where('user_id', $user->id)->delete();
