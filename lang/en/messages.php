@@ -425,4 +425,6 @@ return [
     "message"    => "Message",
     "congrats_you_have_received_a_reply"    => "Congratulations! You have received a reply",
     "done_updating_location"    => "Updating Location Done",
+    "user_didnot_have_image"    => "This user didn't have image",
+    "delted_users"    => "Deleted Users",
 ];

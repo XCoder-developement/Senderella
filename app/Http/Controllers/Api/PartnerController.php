@@ -566,28 +566,30 @@ class PartnerController extends Controller
                 return $this->getvalidationErrors("validator");
             }
 
-            $latitude = $request->input('latitude');
-            $longitude = $request->input('longitude');
-            $distance = 0.000045;
+            $latitude = $request->latitude;
+            $longitude = $request->longitude;
+            $distance = 5;    //* the redaius is about 5meter
+
+            $distanceInDegrees = $distance / (111.32 * 1000);
 
             $user = auth()->user();
             $active_nearst_partners = User::where('id', '!=', $user->id)
-                ->whereBetween('latitude', [$latitude - $distance, $latitude + $distance])
-                ->whereBetween('longitude', [$longitude - $distance, $longitude + $distance])
+                ->whereBetween('latitude', [$latitude - $distanceInDegrees, $latitude + $distanceInDegrees])
+                ->whereBetween('longitude', [$longitude - $distanceInDegrees, $longitude + $distanceInDegrees])
                 ->where('visibility', 0)
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 1);
                 })
                 ->get();
-
-            $disactive_nearst_partners = User::where('id', '!=', $user->id)
-            ->whereBetween('latitude', [$latitude - $distance, $latitude + $distance])
-            ->whereBetween('longitude', [$longitude - $distance, $longitude + $distance])
+                $disactive_nearst_partners = User::where('id', '!=', $user->id)
+                ->whereBetween('latitude', [$latitude - $distanceInDegrees, $latitude + $distanceInDegrees])
+                ->whereBetween('longitude', [$longitude - $distanceInDegrees, $longitude + $distanceInDegrees])
                 ->where('visibility', 0)
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 0);
                 })
                 ->get();
+                // dd($active_nearst_partners);
 
             $disactive_nearst_partners = $disactive_nearst_partners->sortByDesc(function ($partner) {
                 return $partner->last_shows->first()->end_date ?? null;

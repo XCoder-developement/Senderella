@@ -62,6 +62,19 @@ class PartnerResource extends JsonResource
             ->get();
 
         $images = $primaryImages->merge($nonPrimaryImages);
+
+
+
+        $lat1 = $user->latitude;
+        $lon1 = $user->longitude;
+        $lat2 = $this->latitude;
+        $lon2 = $this->longitude;
+        if ($lat1 == null && $lon1 == null && $lat2 == null && $lon2 == null) {
+            $distance = calculateDistance($lat1, $lon1, $lat2, $lon2);
+            $distance = number_format($distance, 2);
+        }else{
+            $distance = '' ;
+        }
         return [
             "id" => $this->id,
             "is_verify" => $this->is_verify ?? 0,
@@ -84,7 +97,7 @@ class PartnerResource extends JsonResource
             "country_title" => $this->country?->title ?? "",
             "state_title" => $this->state?->title ?? "",
             "nationality_title" => $this->country?->title ?? "",
-
+            "distance" => $distance ?? '',
             "marital_status_id" => intval($this->marital_status_id) ?? null,
             "readiness_for_marriages_id" => intval($this->readiness_for_marriages_id) ?? null,
             "marital_status_title" => $this->marital_status?->title ?? "",
