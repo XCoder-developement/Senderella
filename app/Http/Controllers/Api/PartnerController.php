@@ -296,8 +296,10 @@ class PartnerController extends Controller
 
             $type = 1;
 
-            $data['user_id'] =  $user->id;
-            $data['partner_id'] =  $partner_id;
+            $data = [
+                'user_id' => $user->id,
+                'partner_id' => $partner_id
+            ];
             UserWatch::create($data);
             $image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
 
@@ -587,7 +589,7 @@ class PartnerController extends Controller
                     $query->where('status', 1);
                 })
                 ->get();
-                $disactive_nearst_partners = User::where('id', '!=', $user->id)
+            $disactive_nearst_partners = User::where('id', '!=', $user->id)
                 ->whereBetween('latitude', [$latitude - $distanceInDegrees, $latitude + $distanceInDegrees])
                 ->whereBetween('longitude', [$longitude - $distanceInDegrees, $longitude + $distanceInDegrees])
                 ->where('visibility', 0)
@@ -595,7 +597,7 @@ class PartnerController extends Controller
                     $query->where('status', 0);
                 })
                 ->get();
-                // dd($active_nearst_partners);
+            // dd($active_nearst_partners);
 
             $disactive_nearst_partners = $disactive_nearst_partners->sortByDesc(function ($partner) {
                 return $partner->last_shows->first()->end_date ?? null;
