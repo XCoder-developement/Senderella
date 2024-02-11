@@ -43,7 +43,7 @@ class UserController extends Controller
             'about_me'      => $user->about_me,
             'important_for_marriage' => $user->important_for_marriage,
             'is_married_before' => $user->is_married_before,
-            'image'         => $user->image,
+            'image'         => $user->images?->where('is_primary', 1)->first()->image_link ?? '',
             'partner_specifications' => $user->partner_specifications,
             'gender'        => $user->gender,
         ]);
