@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DeltedUserController;
 use App\Http\Controllers\Admin\NewDurationController;
 use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
@@ -78,6 +79,9 @@ Route::group(
                 //users
                 Route::resource('users', UserController::class);
                 Route::post('users/active/{id}', [UserController::class, 'active'])->name('users.active');
+
+                //delted_users
+                Route::resource('delted_users', DeltedUserController::class);
 
                 //states
                 Route::resource('states', StateController::class);

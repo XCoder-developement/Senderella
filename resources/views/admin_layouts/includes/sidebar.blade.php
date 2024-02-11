@@ -91,6 +91,11 @@
                                         <span class="menu-text">{{ __('messages.all') }}</span>
                                     </a>
                                 </li>
+                                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                    <a href="{{ route('delted_users.index') }}" class="menu-link">
+                                        <span class="menu-text">{{ __('messages.delted_users') }}</span>
+                                    </a>
+                                </li>
 
 
                             </ul>

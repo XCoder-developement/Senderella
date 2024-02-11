@@ -5,11 +5,17 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\PartnerResource;
 use App\Http\Resources\Api\UserResource;
+use App\Models\User\DeltedUser;
 use App\Models\User\User;
+use App\Models\User\UserBookmark;
+use App\Models\User\UserDevice;
 use App\Models\User\UserDocument;
 use App\Models\User\UserImage;
 use App\Models\User\UserInformation;
 use App\Models\User\UserLastShow;
+use App\Models\User\UserLike;
+use App\Models\User\UserNotification;
+use App\Models\User\UserWatch;
 use App\Traits\ApiTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -353,8 +359,48 @@ class UserController extends Controller
             $user = auth()->user();
 
             if ($user->api_token) { // check the api_token ig gotten right?
+                // storing the user data in delted users table
+                $delted = DeltedUser::create([
+                    'name'    => $user->name,
+                    'email'   => $user->email,
+                    'phone'   => $user->phone,
+                    'birthday_date' => $user->birthday_date,
+                    'country_id'    => $user->country_id,
+                    'nationality_id'    => $user->nationality_id,
+                    'state_id'      => $user->state_id,
+                    'marital_status_id' => $user->marital_status_id,
+                    'marriage_readiness_id' => $user->marriage_readiness_id,
+                    'color_id'      => $user->color_id,
+                    'education_type_id' => $user->education_type_id,
+                    'weight'        => $user->weight,
+                    'height'        => $user->height,
+                    'trusted'       => $user->trusted,
+                    'is_verify'     => $user->is_verify,
+                    'notes'         => $user->notes,
+                    'about_me'      => $user->about_me,
+                    'important_for_marriage' => $user->important_for_marriage,
+                    'is_married_before' => $user->is_married_before,
+                    'image'         => UserImage::where('user_id', $user->id)->where('is_primary', 1)->first() ?? '' ,
+                    'partner_specifications' => $user->partner_specifications,
+                    'gender'        => $user->gender,
+                ]);
+
+                // dd($delted->image);
                 // delte the user data
+                UserImage::where('user_id', $user->id)->delete();
+                UserLike::where('user_id', $user->id)->delete();
+                UserLike::where('partner_id', $user->id)->delete();
+                UserWatch::where('user_id', $user->id)->delete();
+                UserBookmark::where('user_id', $user->id)->delete();
+                UserLastShow::where('user_id', $user->id)->delete();
+                UserNotification::where('user_id', $user->id)->delete();
+                UserDocument::where('user_id', $user->id)->delete();
+                UserDevice::where('user_id', $user->id)->delete();
+
                 User::destroy('id', $user->id);
+
+
+
 
                 $msg = __('message.account is delted successfully');
                 return $this->successResponse($msg, 200);
