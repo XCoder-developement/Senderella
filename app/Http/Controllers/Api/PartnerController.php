@@ -151,11 +151,11 @@ class PartnerController extends Controller
                 $partner->update(['is_like_shown' => $partner->is_like_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
                 $userId = $user->id;
-                $partner_devices = UserDevice::where('user_id' , $partner->id)->get();
+                $partner_devices = UserDevice::where('user_id' , $partner->id)->pluck('device_token');
                 foreach($partner_devices as $device){
-                    dd($device);
+                    // dd($device);
                     SendNotification::send($device, __('messages.new_like'), __('messages.new_like'), $type, $userId, url($image) ?? '');
-                // }
+                }
                 UserNotification::create([
                     'user_id' => $partner->id,
                     'title' => __('messages.new_like'),
