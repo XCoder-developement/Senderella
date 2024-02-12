@@ -150,7 +150,9 @@ class PartnerController extends Controller
                 $partner->update(['is_like_shown' => $partner->is_like_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
                 $userId = $user->id;
-                SendNotification::send($partner->user_device->device_token, __('messages.new_like'), __('messages.new_like'), $type, $userId, url($image) ?? '');
+                foreach($partner->user_device as $device){
+                    SendNotification::send($device->device_token, __('messages.new_like'), __('messages.new_like'), $type, $userId, url($image) ?? '');
+                }
                 UserNotification::create([
                     'user_id' => $partner->id,
                     'title' => __('messages.new_like'),
@@ -328,20 +330,21 @@ class PartnerController extends Controller
             $user = auth()->user();
 
             // Assuming 'likes' is the relationship for partner being followed
-            $following_ids = $user->following()
-            ->orderBy('created_at', 'desc')
-            ->pluck('partner_id')
+            $following_ids = $user->following()->orderBy('created_at', 'desc')->pluck('partner_id')
             ->reject(function ($partner_id) use ($user) {
                 return $partner_id == $user->id;
             })->toArray();
+            $followingUserIds = implode(',', $following_ids); // Convert array to comma-separated string
 
-            $users = User::whereIn('users.id', $following_ids)
-                ->join('user_likes', 'users.id', '=', 'user_likes.partner_id')
-                ->orderBy('user_likes.id', 'desc')
-                ->select('users.*')
+            $users = User::select('users.*')
+            ->join('user_likes', 'users.id', '=', 'user_likes.partner_id')
+                ->whereIn('users.id', $following_ids)
+                ->orderByRaw("FIELD(users.id, $followingUserIds)") // Order by the sequence of IDs in the $followingUserIds array
+                // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
                 ->distinct()
                 ->get();
 
+                // dd($users);
 
             $msg = "fetch_following";
             return $this->dataResponse($msg, NotificationPartnerResource::collection($users), 200);
@@ -355,11 +358,18 @@ class PartnerController extends Controller
     {
         try {
             $user = auth()->user();
-            $followers_ids = $user->followers->pluck('user_id')->toArray();
-            $followers = User::join('user_likes', 'users.id', '=', 'user_likes.user_id')
+            $followers_ids = $user->followers()->orderBy('created_at', 'desc')->pluck('user_id')
+            ->reject(function ($partner_id) use ($user) {
+                return $partner_id == $user->id;
+            })->toArray();
+
+            $followerUserIds = implode(',', $followers_ids); // Convert array to comma-separated string
+
+            $followers = User::select('users.*')
+            ->join('user_likes', 'users.id', '=', 'user_likes.user_id')
                 ->whereIn('users.id', $followers_ids)
-                ->orderBy('user_likes.created_at', 'desc')
-                ->select('users.*')
+                ->orderByRaw("FIELD(users.id, $followerUserIds)") // Order by the sequence of IDs in the $followingUserIds array
+                // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
                 ->distinct()
                 ->get();
             $msg = "fetch_followers";
@@ -400,14 +410,19 @@ class PartnerController extends Controller
     {
         try {
             $user = auth()->user();
-            $watched_ids = $user->Watched->last()->pluck('partner_id')->reject(function ($partner_id) use ($user) {
+            $watched_ids = $user->Watched()->orderBy('created_at', 'desc')->pluck('partner_id')
+            ->reject(function ($partner_id) use ($user) {
                 return $partner_id == $user->id;
             })->toArray();
 
-            $watched = User::join('user_watches', 'users.id', '=', 'user_watches.partner_id')
+            $watcheds = implode(',', $watched_ids); // Convert array to comma-separated string
+
+
+            $watched = User::select('users.*')
+            ->join('user_watches', 'users.id', '=', 'user_watches.partner_id')
                 ->whereIn('users.id', $watched_ids)
-                ->orderByDesc('user_watches.id')
-                ->select('users.*')
+                ->orderByRaw("FIELD(users.id, $watcheds)") // Order by the sequence of IDs in the $followingUserIds array
+                // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
                 ->distinct()
                 ->get();
 
@@ -425,15 +440,19 @@ class PartnerController extends Controller
     {
         try {
             $user = auth()->user();
-            $watcher_ids = $user->watcher->where('partner_id', $user->id)->pluck("user_id")
+            $watcher_ids = $user->watcher()->orderBy('created_at', 'desc')->where('partner_id', $user->id)->pluck("user_id")
                 ->reject(function ($user_id) use ($user) {
                     return $user_id == $user->id;
                 })->toArray();
+
+            $watchersIds = implode(',', $watcher_ids); // Convert array to comma-separated string
+
             // $watcher = User::whereIn('id', $watcher_ids)->get();
-            $watcher = User::join('user_watches', 'users.id', '=', 'user_watches.user_id')
+            $watcher = User::select('users.*')
+            ->join('user_watches', 'users.id', '=', 'user_watches.user_id')
                 ->whereIn('users.id', $watcher_ids)
-                ->orderBy('user_watches.created_at', 'desc')
-                ->select('users.*')
+                ->orderByRaw("FIELD(users.id, $watchersIds)") // Order by the sequence of IDs in the $followingUserIds array
+                // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
                 ->distinct()
                 ->get();
 
