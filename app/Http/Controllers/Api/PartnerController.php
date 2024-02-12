@@ -437,6 +437,7 @@ class PartnerController extends Controller
                     return $partner_id == $user->id;
                 })->toArray();
 
+                if (!empty($watched_ids)) {
             $watcheds = implode(',', $watched_ids); // Convert array to comma-separated string
 
 
@@ -451,6 +452,11 @@ class PartnerController extends Controller
             // dd($watched);
             $msg = "who_i_watch";
             return $this->dataResponse($msg, NotificationPartnerResource::collection($watched), 200);
+                }else{
+                    $msg = "who_i_watch";
+            return $this->dataResponse($msg, [], 200);
+                }
+
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -467,6 +473,9 @@ class PartnerController extends Controller
                     return $user_id == $user->id;
                 })->toArray();
 
+
+                if (!empty($watcher_ids)) {
+
             $watchersIds = implode(',', $watcher_ids); // Convert array to comma-separated string
 
             // $watcher = User::whereIn('id', $watcher_ids)->get();
@@ -479,7 +488,13 @@ class PartnerController extends Controller
                 ->get();
 
             $msg = "who_watch_my_account";
+            
             return $this->dataResponse($msg, PartnerResource::collection($watcher), 200);
+                } else{
+                    $msg = "who_watch_my_account";
+            return $this->dataResponse($msg, [], 200);
+                }
+
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -495,19 +510,23 @@ class PartnerController extends Controller
                     return $user_id == $user->id;
                 })->toArray();
 
-            $favoriteds = implode(',', $favorited_ids); // Convert array to comma-separated string
+            if (!empty($favorited_ids)) {
+                $favoriteds = implode(',', $favorited_ids); // Convert array to comma-separated string
 
-            $favorited = User::select('users.*')
-                ->join('user_bookmarks', 'users.id', '=', 'user_bookmarks.partner_id')
-                ->whereIn('users.id', $favorited_ids)
-                ->orderByRaw("FIELD(users.id, $favoriteds)") // Order by the sequence of IDs in the $followingUserIds array
-                // ->orderBy('user_bookmarks.created_at', 'desc') // Then order by user_likes.created_at
-                ->distinct()
-                ->get();
+                $favorited = User::select('users.*')
+                    ->join('user_bookmarks', 'users.id', '=', 'user_bookmarks.partner_id')
+                    ->whereIn('users.id', $favorited_ids)
+                    ->orderByRaw("FIELD(users.id, $favoriteds)") // Order by the sequence of IDs in the $followingUserIds array
+                    // ->orderBy('user_bookmarks.created_at', 'desc') // Then order by user_likes.created_at
+                    ->distinct()
+                    ->get();
 
-
-            $msg = "who_i_favorite";
-            return $this->dataResponse($msg, NotificationPartnerResource::collection($favorited), 200);
+                    $msg = "who_i_favorite";
+                    return $this->dataResponse($msg, NotificationPartnerResource::collection($favorited), 200);
+                } else {
+                    $msg = "who_i_favorite";
+                    return $this->dataResponse($msg, [], 200);
+                }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
