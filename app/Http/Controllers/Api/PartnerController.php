@@ -328,13 +328,18 @@ class PartnerController extends Controller
             $user = auth()->user();
 
             // Assuming 'likes' is the relationship for partner being followed
-            $following_ids = $user->following->pluck('partner_id')->toArray();
+            $following_ids = $user->following()
+            ->orderBy('created_at', 'desc')
+            ->pluck('partner_id')
+            ->reject(function ($partner_id) use ($user) {
+                return $partner_id == $user->id;
+            })->toArray();
 
-            $users = User::join('user_likes', 'users.id', '=', 'user_likes.partner_id')
-                ->whereIn('users.id', $following_ids)
-                ->orderBy('user_likes.created_at', 'desc')
+            $users = User::whereIn('users.id', $following_ids)
+                ->join('user_likes', 'users.id', '=', 'user_likes.partner_id')
+                ->orderBy('user_likes.id', 'desc')
                 ->select('users.*')
-                ->distinct()
+                // ->distinct()
                 ->get();
 
 
@@ -587,7 +592,7 @@ class PartnerController extends Controller
                     $query->where('status', 1);
                 })
                 ->get();
-                $disactive_nearst_partners = User::where('id', '!=', $user->id)
+            $disactive_nearst_partners = User::where('id', '!=', $user->id)
                 ->whereBetween('latitude', [$latitude - $distanceInDegrees, $latitude + $distanceInDegrees])
                 ->whereBetween('longitude', [$longitude - $distanceInDegrees, $longitude + $distanceInDegrees])
                 ->where('visibility', 0)
@@ -595,7 +600,7 @@ class PartnerController extends Controller
                     $query->where('status', 0);
                 })
                 ->get();
-                // dd($active_nearst_partners);
+            // dd($active_nearst_partners);
 
             $disactive_nearst_partners = $disactive_nearst_partners->sortByDesc(function ($partner) {
                 return $partner->last_shows->first()->end_date ?? null;
