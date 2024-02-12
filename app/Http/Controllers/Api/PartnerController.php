@@ -339,7 +339,7 @@ class PartnerController extends Controller
                 ->join('user_likes', 'users.id', '=', 'user_likes.partner_id')
                 ->orderBy('user_likes.id', 'desc')
                 ->select('users.*')
-                // ->distinct()
+                ->distinct()
                 ->get();
 
 
