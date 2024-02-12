@@ -262,7 +262,12 @@ class PartnerController extends Controller
                 $image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
                 $type = 5;
                 $partner->update(['is_bookmark_shown' => $partner->is_bookmark_shown + 1]);
-                SendNotification::send($partner->user_device->device_token, __('messages.bookmarked_by_user'), __('messages.bookmarked_by_user'), $type, $userId, url($image) ?? '');
+
+                $partner_devices = UserDevice::where('user_id' , $partner->id)->pluck('device_token');
+                foreach($partner_devices as $device){
+                    // dd($device);
+                    SendNotification::send($device, __('messages.bookmarked_by_user'), __('messages.bookmarked_by_user'), $type, $userId, url($image) ?? '');
+                }
                 // UserNotification::create([
                 //     'user_id' => $partner->id,
                 //     'title' => __('messages.bookmarked_by_user'),
@@ -307,16 +312,20 @@ class PartnerController extends Controller
             $image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
 
             $partner = User::whereId($partner_id)->first();
+            $partner_devices = UserDevice::where('user_id' , $partner->id)->pluck('device_token');
             if ($partner->id != $user_id) {
                 $userId = $partner->id;
                 $partner->update(['is_watch_shown' => $partner->is_watch_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
-                SendNotification::send($partner->user_device->device_token, __('messages.someone_viewed'), __("messages.someone_viewed"), $type, $userId, url($image) ?? '');
                 UserNotification::create([
                     'user_id' => $partner->id,
                     'title' => __('messages.someone_viewed'),
 
                 ]);
+                    foreach($partner_devices as $device){
+                        // dd($device);
+                        SendNotification::send($device, __('messages.someone_viewed'), __("messages.someone_viewed"), $type, $userId, url($image) ?? '');
+                    }
             }
             //responce
             $msg = "user_watch";
