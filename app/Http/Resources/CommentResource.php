@@ -18,6 +18,7 @@ class CommentResource extends JsonResource
     {
         $liked = 0;
         $user = auth()->user();
+
         if ($user) {
             $like = Like::where('user_id', auth()->id())
                 ->where('likeable_id', $this->id)
@@ -29,7 +30,7 @@ class CommentResource extends JsonResource
             'id' => $this->id,
             'comment' => $this->comment,
             "is_liked" => $liked ?? 0,
-            'comment_time' => $this->date_format,
+            'comment_time' =>   $this->date_format,
             'comment_likes' => $this->likes->count(),
             'user' => new UserCommentInfo($this->user), //user comment info
         ];
