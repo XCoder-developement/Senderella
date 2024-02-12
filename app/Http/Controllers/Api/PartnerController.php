@@ -171,6 +171,12 @@ class PartnerController extends Controller
                 if ($partner->is_like_shown > 0) {
                     $partner->update(['is_like_shown' => $partner->is_like_shown - 1]);
                 }
+                $partner_devices = UserDevice::where('user_id' , $partner->id)->pluck('device_token');
+
+                foreach($partner_devices as $device){
+                    // dd($device);
+                    SendNotification::send($device, $user->name, __('messages.dislike_you'), $type, $userId, url($image) ?? '');
+                }
 
                 $msg = __('messages.partner disliked');
                 $data = new PartnerResource($partner);
