@@ -52,7 +52,7 @@ class FullPartnerResource extends JsonResource
             $distance = calculateDistance($lat1, $lon1, $lat2, $lon2);
             $distance = number_format($distance, 2);
         }else{
-            $distance = '' ;
+            $distance = 0 ;
         }
         return [
             "id" => $this->id,
@@ -83,7 +83,7 @@ class FullPartnerResource extends JsonResource
             "marital_status_title" => $this->marital_status?->title ?? "",
             // "marital_status_title" => $this->marital_status?->title ?? "",
 
-            "distance" => $distance ?? "",
+            "distance" => intval($distance) ?? "",
             "skin_color_id" => intval($this->color_id) ?? null,
             "education_type_id" => intval($this->education_type_id) ?? null,
             "skin_color_title" => $this->color?->title ?? "",
