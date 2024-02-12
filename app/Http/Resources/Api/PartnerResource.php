@@ -70,10 +70,10 @@ class PartnerResource extends JsonResource
         $lat2 = $this->latitude;
         $lon2 = $this->longitude;
         if ($lat1 == null && $lon1 == null && $lat2 == null && $lon2 == null) {
+            $distance = '' ;
+        }else{
             $distance = calculateDistance($lat1, $lon1, $lat2, $lon2);
             $distance = number_format($distance, 2);
-        }else{
-            $distance = '' ;
         }
         return [
             "id" => $this->id,
