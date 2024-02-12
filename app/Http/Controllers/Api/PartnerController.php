@@ -16,6 +16,7 @@ use App\Http\Resources\Api\PartnerResource;
 use App\Models\NewDuration\NewDuration;
 use App\Models\User\UserBlock;
 use App\Models\User\UserBookmark;
+use App\Models\User\UserDevice;
 use App\Models\User\UserLike;
 use App\Models\User\UserNotification;
 use App\Models\User\UserWatch;
@@ -150,8 +151,10 @@ class PartnerController extends Controller
                 $partner->update(['is_like_shown' => $partner->is_like_shown + 1]);
                 $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
                 $userId = $user->id;
-                foreach($partner->user_device as $device){
-                    SendNotification::send($device->device_token, __('messages.new_like'), __('messages.new_like'), $type, $userId, url($image) ?? '');
+                $partner_devices = UserDevice::where('user_id' , $partner->id)->get();
+                foreach($partner_devices as $device){
+                    // dd($device);
+                    SendNotification::send($device, __('messages.new_like'), __('messages.new_like'), $type, $userId, url($image) ?? '');
                 }
                 UserNotification::create([
                     'user_id' => $partner->id,
