@@ -480,17 +480,21 @@ class PartnerController extends Controller
 
         try {
             $user = auth()->user();
-            $favorited_ids = $user->favorited->pluck("partner_id")
+            $favorited_ids = $user->favorited()->orderBy('created_at', 'desc')->pluck("partner_id")
                 ->reject(function ($user_id) use ($user) {
                     return $user_id == $user->id;
                 })->toArray();
 
-            $favorited = User::join('user_bookmarks', 'users.id', '=', 'user_bookmarks.partner_id')
+            $favoriteds = implode(',', $favorited_ids); // Convert array to comma-separated string
+
+            $favorited = User::select('users.*')
+            ->join('user_bookmarks', 'users.id', '=', 'user_bookmarks.partner_id')
                 ->whereIn('users.id', $favorited_ids)
-                ->orderBy('user_bookmarks.created_at', 'desc')
-                ->select('users.*')
+                ->orderByRaw("FIELD(users.id, $favoriteds)") // Order by the sequence of IDs in the $followingUserIds array
+                // ->orderBy('user_bookmarks.created_at', 'desc') // Then order by user_likes.created_at
                 ->distinct()
                 ->get();
+
 
             $msg = "who_i_favorite";
             return $this->dataResponse($msg, NotificationPartnerResource::collection($favorited), 200);
@@ -504,16 +508,22 @@ class PartnerController extends Controller
 
         try {
             $user = auth()->user();
-            $favorite_ids = $user->favorited_by()->pluck("user_id")
+            $favorite_ids = $user->favorited_by()->orderBy('created_at', 'desc')->pluck("user_id")
                 ->reject(function ($user_id) use ($user) {
                     return $user_id == $user->id;
                 })->toArray();
-            $favorite = User::join('user_bookmarks', 'users.id', '=', 'user_bookmarks.user_id')
+
+            $favorites = implode(',', $favorite_ids); // Convert array to comma-separated string
+
+
+            $favorite = User::select('users.*')
+            ->join('user_bookmarks', 'users.id', '=', 'user_bookmarks.user_id')
                 ->whereIn('users.id', $favorite_ids)
-                ->orderBy('user_bookmarks.created_at', 'desc')
-                ->select('users.*')
+                ->orderByRaw("FIELD(users.id, $favorites)") // Order by the sequence of IDs in the $followingUserIds array
+                // ->orderBy('user_bookmarks.created_at', 'desc') // Then order by user_likes.created_at
                 ->distinct()
                 ->get();
+
             $msg = "who_favorite_me";
             return $this->dataResponse($msg, PartnerResource::collection($favorite), 200);
         } catch (\Exception $ex) {
