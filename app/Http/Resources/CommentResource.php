@@ -29,7 +29,7 @@ class CommentResource extends JsonResource
             'id' => $this->id,
             'comment' => $this->comment,
             "is_liked" => $liked ?? 0,
-            'comment_time' => $this->date_format,
+            'comment_time' => $this->date_format->format('Y-m-d'),
             'comment_likes' => $this->likes->count(),
             'user' => new UserCommentInfo($this->user), //user comment info
         ];
