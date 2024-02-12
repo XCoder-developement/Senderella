@@ -356,6 +356,8 @@ class PartnerController extends Controller
                 ->reject(function ($partner_id) use ($user) {
                     return $partner_id == $user->id;
                 })->toArray();
+
+                if (!empty($following_ids)) {
             $followingUserIds = implode(',', $following_ids); // Convert array to comma-separated string
 
             $users = User::select('users.*')
@@ -370,6 +372,11 @@ class PartnerController extends Controller
 
             $msg = "fetch_following";
             return $this->dataResponse($msg, NotificationPartnerResource::collection($users), 200);
+                }
+                else{
+                    $msg = "fetch_following";
+            return $this->dataResponse($msg, [], 200);
+                }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -384,6 +391,7 @@ class PartnerController extends Controller
                 ->reject(function ($partner_id) use ($user) {
                     return $partner_id == $user->id;
                 })->toArray();
+                if (!empty($followers_ids)) {
 
             $followerUserIds = implode(',', $followers_ids); // Convert array to comma-separated string
 
@@ -396,6 +404,11 @@ class PartnerController extends Controller
                 ->get();
             $msg = "fetch_followers";
             return $this->dataResponse($msg, PartnerResource::collection($followers), 200);
+                }
+                else{
+                    $msg = "fetch_followers";
+            return $this->dataResponse($msg, [], 200);
+                }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -488,7 +501,7 @@ class PartnerController extends Controller
                 ->get();
 
             $msg = "who_watch_my_account";
-            
+
             return $this->dataResponse($msg, PartnerResource::collection($watcher), 200);
                 } else{
                     $msg = "who_watch_my_account";
