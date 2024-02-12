@@ -479,4 +479,5 @@ return [
     "done_updating_location"    => "تم تحديث موقعك",
     "user_didnot_have_image"    => "هذا المستخدم ليس لديه صورة",
     "delted_users"    => "المستخدمين المحذوفين",
+    "dislike_you"   => "قام بحذ الإعجاب",
 ];
