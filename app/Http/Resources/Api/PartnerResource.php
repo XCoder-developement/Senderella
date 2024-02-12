@@ -73,7 +73,7 @@ class PartnerResource extends JsonResource
             $distance = '' ;
         }else{
             $distance = calculateDistance($lat1, $lon1, $lat2, $lon2);
-            $distance = number_format($distance, 4);
+            $distance = number_format($distance, 2);
         }
         return [
             "id" => $this->id,
