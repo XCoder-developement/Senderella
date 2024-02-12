@@ -172,6 +172,7 @@ class PartnerController extends Controller
                     $partner->update(['is_like_shown' => $partner->is_like_shown - 1]);
                 }
 
+                $type = 6;
                 $image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
                 $userId = $user->id;
                 $partner_devices = UserDevice::where('user_id', $partner->id)->pluck('device_token');
