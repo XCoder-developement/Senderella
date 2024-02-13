@@ -15,7 +15,7 @@ $image = $image->image_link;
 </div>
 
 <div>
-    <a href="{{ url($image) }}" id="previewButton" target="_blank" class="btn btn-sm btn-hover-bg-light m-0" onclick="checkImage()" style="pointer-events: {{ $image ? 'auto' : 'none' }}">
+    <a href="{{ url($image) }}" id="previewButton" target="_blank" class="btn btn-sm btn-hover-bg-light m-0" style="pointer-events: {{ $image ? 'auto' : 'none' }}">
         <i class="fas fa-image"></i>
       </a>
 <div style="cursor:pointer;" onclick="deleteusers({{ $id }})" class="btn btn-sm btn-hover-bg-light mr-1">
@@ -125,10 +125,3 @@ $image = $image->image_link;
     }
 </script>
 
-<script>
-    function checkImage() {
-      if ("{{ $image }}" === '') {
-        return false; // Prevent the button from being clicked
-      }
-    }
-    </script>
