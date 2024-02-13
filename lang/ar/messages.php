@@ -481,4 +481,6 @@ return [
     "delted_users"    => "المستخدمين المحذوفين",
     "dislike_you"   => "قام بحذ الإعجاب",
     "there_is_no_partners"    => "لا يوجد مستخدمين",
+    "requirment_items"      => "بعض المتطلبات",
+    "requirment"                => "المتطلبات",
 ];

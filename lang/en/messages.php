@@ -429,4 +429,6 @@ return [
     "delted_users"    => "Deleted Users",
     "dislike_you"   => "dislikes you" ,
     "there_is_no_partners"    => "There is no users",
+    "requirment_items"   => "Requirements Items",
+    "requirment"       => "Requirement",
 ];

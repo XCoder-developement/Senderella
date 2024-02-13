@@ -51,12 +51,13 @@ class LoginController extends Controller
             }
          //add device to user
 
-          $user->user_devices()->firstOrCreate([
-            'device_token' => $request->device_token,
+         $userDevice = $user->user_devices()->firstOrNew([
             'device_type' => $request->device_type,
             'device_id' => $request->device_id,
-
         ]);
+
+        $userDevice->device_token = $request->device_token;
+        $userDevice->save();
 
                //response
 

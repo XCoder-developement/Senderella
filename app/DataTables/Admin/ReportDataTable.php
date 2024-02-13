@@ -74,6 +74,8 @@ class ReportDataTable extends DataTable
             ["data" => "image" ,"title" => __('messages.image'),'orderable'=>false],
             ["data" => "reason" ,"title" => __('messages.reason'),'orderable'=>false],
             ["data" => "email" ,"title" => __('messages.email'),'orderable'=>false],
+            ['data'=>'action','title'=>__("messages.actions"),'printable'=>false,'exportable'=>false,'orderable'=>false,'searchable'=>false],
+
 
        ];
     }
