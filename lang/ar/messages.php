@@ -480,4 +480,5 @@ return [
     "user_didnot_have_image"    => "هذا المستخدم ليس لديه صورة",
     "delted_users"    => "المستخدمين المحذوفين",
     "dislike_you"   => "قام بحذ الإعجاب",
+    "there_is_no_partners"    => "لا يوجد مستخدمين",
 ];

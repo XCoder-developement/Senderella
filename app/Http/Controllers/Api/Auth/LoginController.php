@@ -80,6 +80,8 @@ class LoginController extends Controller
 
             $user->update(["api_token" => null]);
 
+            $user->user_devices()->delete();
+
             //response
 
             $msg = __('messages.Signed out successfully');

@@ -33,12 +33,14 @@ class PartnerController extends Controller
 
             $user = auth()->user();
 
-            $active_partners = User::whereNot('id', auth()->id())->orderBy('id', 'desc')
+            $all_partners = User::whereNot('id', $user->id)->get();
+
+            $active_partners = User::whereNot('id', $user->id)->orderBy('id', 'desc')
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 1);
                 })->get();
 
-            $disactive_partners = User::whereNot('id', auth()->id())
+            $disactive_partners = User::whereNot('id', $user->id)
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 0);
                 })
@@ -48,9 +50,16 @@ class PartnerController extends Controller
                 return $partner->last_shows->first()->end_date ?? null;
             });
 
-            $partners = $active_partners->merge($disactive_partners);
+            $main_partners = $active_partners->merge($disactive_partners);
+
+            $partnerIds = $main_partners->pluck('id')->toArray();
+
+            $rest_partners = $all_partners->whereNotIn('id', $partnerIds);
+
+            $partners = $main_partners->merge($rest_partners);
+
             if (!$partners) {
-                $msg = "message.there is no partners";
+                $msg = "message.there_is_no_partners";
 
                 return $this->dataResponse($msg, 200);
             }
@@ -357,26 +366,25 @@ class PartnerController extends Controller
                     return $partner_id == $user->id;
                 })->toArray();
 
-                if (!empty($following_ids)) {
-            $followingUserIds = implode(',', $following_ids); // Convert array to comma-separated string
+            if (!empty($following_ids)) {
+                $followingUserIds = implode(',', $following_ids); // Convert array to comma-separated string
 
-            $users = User::select('users.*')
-                ->join('user_likes', 'users.id', '=', 'user_likes.partner_id')
-                ->whereIn('users.id', $following_ids)
-                ->orderByRaw("FIELD(users.id, $followingUserIds)") // Order by the sequence of IDs in the $followingUserIds array
-                // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
-                ->distinct()
-                ->get();
+                $users = User::select('users.*')
+                    ->join('user_likes', 'users.id', '=', 'user_likes.partner_id')
+                    ->whereIn('users.id', $following_ids)
+                    ->orderByRaw("FIELD(users.id, $followingUserIds)") // Order by the sequence of IDs in the $followingUserIds array
+                    // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
+                    ->distinct()
+                    ->get();
 
-            // dd($users);
+                // dd($users);
 
-            $msg = "fetch_following";
-            return $this->dataResponse($msg, NotificationPartnerResource::collection($users), 200);
-                }
-                else{
-                    $msg = "fetch_following";
-            return $this->dataResponse($msg, [], 200);
-                }
+                $msg = "fetch_following";
+                return $this->dataResponse($msg, NotificationPartnerResource::collection($users), 200);
+            } else {
+                $msg = "fetch_following";
+                return $this->dataResponse($msg, [], 200);
+            }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -391,24 +399,23 @@ class PartnerController extends Controller
                 ->reject(function ($partner_id) use ($user) {
                     return $partner_id == $user->id;
                 })->toArray();
-                if (!empty($followers_ids)) {
+            if (!empty($followers_ids)) {
 
-            $followerUserIds = implode(',', $followers_ids); // Convert array to comma-separated string
+                $followerUserIds = implode(',', $followers_ids); // Convert array to comma-separated string
 
-            $followers = User::select('users.*')
-                ->join('user_likes', 'users.id', '=', 'user_likes.user_id')
-                ->whereIn('users.id', $followers_ids)
-                ->orderByRaw("FIELD(users.id, $followerUserIds)") // Order by the sequence of IDs in the $followingUserIds array
-                // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
-                ->distinct()
-                ->get();
-            $msg = "fetch_followers";
-            return $this->dataResponse($msg, PartnerResource::collection($followers), 200);
-                }
-                else{
-                    $msg = "fetch_followers";
-            return $this->dataResponse($msg, [], 200);
-                }
+                $followers = User::select('users.*')
+                    ->join('user_likes', 'users.id', '=', 'user_likes.user_id')
+                    ->whereIn('users.id', $followers_ids)
+                    ->orderByRaw("FIELD(users.id, $followerUserIds)") // Order by the sequence of IDs in the $followingUserIds array
+                    // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
+                    ->distinct()
+                    ->get();
+                $msg = "fetch_followers";
+                return $this->dataResponse($msg, PartnerResource::collection($followers), 200);
+            } else {
+                $msg = "fetch_followers";
+                return $this->dataResponse($msg, [], 200);
+            }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -450,26 +457,25 @@ class PartnerController extends Controller
                     return $partner_id == $user->id;
                 })->toArray();
 
-                if (!empty($watched_ids)) {
-            $watcheds = implode(',', $watched_ids); // Convert array to comma-separated string
+            if (!empty($watched_ids)) {
+                $watcheds = implode(',', $watched_ids); // Convert array to comma-separated string
 
 
-            $watched = User::select('users.*')
-                ->join('user_watches', 'users.id', '=', 'user_watches.partner_id')
-                ->whereIn('users.id', $watched_ids)
-                ->orderByRaw("FIELD(users.id, $watcheds)") // Order by the sequence of IDs in the $followingUserIds array
-                // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
-                ->distinct()
-                ->get();
+                $watched = User::select('users.*')
+                    ->join('user_watches', 'users.id', '=', 'user_watches.partner_id')
+                    ->whereIn('users.id', $watched_ids)
+                    ->orderByRaw("FIELD(users.id, $watcheds)") // Order by the sequence of IDs in the $followingUserIds array
+                    // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
+                    ->distinct()
+                    ->get();
 
-            // dd($watched);
-            $msg = "who_i_watch";
-            return $this->dataResponse($msg, NotificationPartnerResource::collection($watched), 200);
-                }else{
-                    $msg = "who_i_watch";
-            return $this->dataResponse($msg, [], 200);
-                }
-
+                // dd($watched);
+                $msg = "who_i_watch";
+                return $this->dataResponse($msg, NotificationPartnerResource::collection($watched), 200);
+            } else {
+                $msg = "who_i_watch";
+                return $this->dataResponse($msg, [], 200);
+            }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -487,27 +493,26 @@ class PartnerController extends Controller
                 })->toArray();
 
 
-                if (!empty($watcher_ids)) {
+            if (!empty($watcher_ids)) {
 
-            $watchersIds = implode(',', $watcher_ids); // Convert array to comma-separated string
+                $watchersIds = implode(',', $watcher_ids); // Convert array to comma-separated string
 
-            // $watcher = User::whereIn('id', $watcher_ids)->get();
-            $watcher = User::select('users.*')
-                ->join('user_watches', 'users.id', '=', 'user_watches.user_id')
-                ->whereIn('users.id', $watcher_ids)
-                ->orderByRaw("FIELD(users.id, $watchersIds)") // Order by the sequence of IDs in the $followingUserIds array
-                // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
-                ->distinct()
-                ->get();
+                // $watcher = User::whereIn('id', $watcher_ids)->get();
+                $watcher = User::select('users.*')
+                    ->join('user_watches', 'users.id', '=', 'user_watches.user_id')
+                    ->whereIn('users.id', $watcher_ids)
+                    ->orderByRaw("FIELD(users.id, $watchersIds)") // Order by the sequence of IDs in the $followingUserIds array
+                    // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
+                    ->distinct()
+                    ->get();
 
-            $msg = "who_watch_my_account";
+                $msg = "who_watch_my_account";
 
-            return $this->dataResponse($msg, PartnerResource::collection($watcher), 200);
-                } else{
-                    $msg = "who_watch_my_account";
-            return $this->dataResponse($msg, [], 200);
-                }
-
+                return $this->dataResponse($msg, PartnerResource::collection($watcher), 200);
+            } else {
+                $msg = "who_watch_my_account";
+                return $this->dataResponse($msg, [], 200);
+            }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -534,12 +539,12 @@ class PartnerController extends Controller
                     ->distinct()
                     ->get();
 
-                    $msg = "who_i_favorite";
-                    return $this->dataResponse($msg, NotificationPartnerResource::collection($favorited), 200);
-                } else {
-                    $msg = "who_i_favorite";
-                    return $this->dataResponse($msg, [], 200);
-                }
+                $msg = "who_i_favorite";
+                return $this->dataResponse($msg, NotificationPartnerResource::collection($favorited), 200);
+            } else {
+                $msg = "who_i_favorite";
+                return $this->dataResponse($msg, [], 200);
+            }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
