@@ -1,5 +1,6 @@
 <?php
 $image = App\Models\User\UserImage::where('user_id',$id)->where('is_primary' ,1)->first();
+$image = $image->image_link;
 if($image == null){
     $image = '';
 }
