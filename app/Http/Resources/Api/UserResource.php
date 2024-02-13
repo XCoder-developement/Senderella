@@ -24,7 +24,7 @@ class UserResource extends JsonResource
             $last_active_date = \Carbon\Carbon::parse($last_active_date);
             $last_active = $last_active_date->diffForHumans(null, true);
         }
-
+        
         return [
             "id" =>$this->id,
             "name" => $this->name ?? "",
