@@ -543,13 +543,14 @@ class UserController extends Controller
 
     public function users_off(){
         try{
-            $users = UserLastShow::pluck('user_id')->toArray();
+            $rest_users = UserLastShow::pluck('user_id')->toArray();
 
-            foreach($users as $userId){
-                $user = User::find($userId);
-                if ($user) {
-                    $user->last_shows()->update(['status' => 0]);
-                }
+            $users = User::whereNotIn('id', $rest_users)->pluck('id')->toArray();
+
+            foreach($users as $user){
+
+                    $user->last_shows()->create(['user_id' => $user,'status' => 0 , 'end_date' => Carbon::now()->subMonths(2)->addSeconds(rand(0, 5184000))]);
+
             }
 
             $msg = __('message.users_off');
