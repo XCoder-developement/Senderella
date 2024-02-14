@@ -541,25 +541,25 @@ class UserController extends Controller
         }
     }
 
-    public function users_off(){
-        try{
-            $rest_users = UserLastShow::pluck('user_id')->toArray();
+    // public function users_off(){
+    //     try{
+    //         $rest_users = UserLastShow::pluck('user_id')->toArray();
 
-            $users = User::whereNotIn('id', $rest_users)->get();
+    //         $users = User::whereNotIn('id', $rest_users)->get();
 
-            foreach ($users as $user) {
-                $user->last_shows()->create([
-                    'user_id' => $user->id,
-                    'status' => 0,
-                    'end_date' => Carbon::now()->subMonths(2)->addSeconds(rand(0, 5184000))
-                ]);
-            }
+    //         foreach ($users as $user) {
+    //             $user->last_shows()->create([
+    //                 'user_id' => $user->id,
+    //                 'status' => 0,
+    //                 'end_date' => Carbon::now()->subMonths(2)->addSeconds(rand(0, 5184000))
+    //             ]);
+    //         }
 
-            $msg = __('message.users_off');
-            return $this->dataResponse($msg,$users, 200);
-        }
-        catch (\Exception $ex){
-            return $this->returnException($ex->getMessage(), 500);
-        }
-    }
+    //         $msg = __('message.users_off');
+    //         return $this->dataResponse($msg,$users, 200);
+    //     }
+    //     catch (\Exception $ex){
+    //         return $this->returnException($ex->getMessage(), 500);
+    //     }
+    // }
 }
