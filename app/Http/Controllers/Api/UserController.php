@@ -549,7 +549,7 @@ class UserController extends Controller
 
             foreach($users as $user){
 
-                    $user->last_shows()->create(['user_id' => $user,'status' => 0 , 'end_date' => Carbon::now()->subMonths(2)->addSeconds(rand(0, 5184000))]);
+                    $user->last_shows()->create(['user_id' => $user->id,'status' => 0 , 'end_date' => Carbon::now()->subMonths(2)->addSeconds(rand(0, 5184000))]);
 
             }
 
