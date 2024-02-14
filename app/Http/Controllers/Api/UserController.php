@@ -545,12 +545,14 @@ class UserController extends Controller
         try{
             $rest_users = UserLastShow::pluck('user_id')->toArray();
 
-            $users = User::whereNotIn('id', $rest_users)->pluck('id')->toArray();
+            $users = User::whereNotIn('id', $rest_users)->get();
 
-            foreach($users as $user){
-
-                    $user->last_shows()->create(['user_id' => $user->id,'status' => 0 , 'end_date' => Carbon::now()->subMonths(2)->addSeconds(rand(0, 5184000))]);
-
+            foreach ($users as $user) {
+                $user->last_shows()->create([
+                    'user_id' => $user->id,
+                    'status' => 0,
+                    'end_date' => Carbon::now()->subMonths(2)->addSeconds(rand(0, 5184000))
+                ]);
             }
 
             $msg = __('message.users_off');
