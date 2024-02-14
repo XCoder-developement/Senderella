@@ -19,7 +19,7 @@ $image = $image->image_link;
         <i class="fas fa-image"></i>
       </a>
 <div style="cursor:pointer;" onclick="deleteusers({{ $id }})" class="btn btn-sm btn-hover-bg-light mr-1">
-    <span
+    <span  
         class="svg-icon svg-icon-danger m-0 p-0 svg-icon-md"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-12-28-020759/theme/html/demo8/dist/../src/media/svg/icons/Home/Trash.svg-->
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
             viewBox="0 0 24 24" version="1.1">

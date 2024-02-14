@@ -259,4 +259,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     //update_location
     Route::post("update_location", [UserController::class, "update_location"]);
 
+    // users_off
+    Route::get("users_off", [UserController::class, "users_off"]);
 });
