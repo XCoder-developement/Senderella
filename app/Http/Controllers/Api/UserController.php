@@ -545,8 +545,11 @@ class UserController extends Controller
         try{
             $users = UserLastShow::pluck('user_id')->toArray();
 
-            foreach($users as $user){
-                $user->last_shows()->update(['status' => 0]);
+            foreach($users as $userId){
+                $user = User::find($userId);
+                if ($user) {
+                    $user->last_shows()->update(['status' => 0]);
+                }
             }
 
             $msg = __('message.users_off');
