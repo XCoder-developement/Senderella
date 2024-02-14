@@ -431,4 +431,6 @@ return [
     "there_is_no_partners"    => "There is no users",
     "requirment_items"   => "Requirements Items",
     "requirment"       => "Requirement",
+    "comment_created"     => "Comment Creator",
+    "comment_time"        => "Time",
 ];

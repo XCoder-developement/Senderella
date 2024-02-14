@@ -483,4 +483,6 @@ return [
     "there_is_no_partners"    => "لا يوجد مستخدمين",
     "requirment_items"      => "بعض المتطلبات",
     "requirment"                => "المتطلبات",
+    "comment_created"               => "صاحب التعليق",
+    "comment_time"                   => "وقت التعليق",
 ];

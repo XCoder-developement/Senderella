@@ -540,4 +540,20 @@ class UserController extends Controller
             return $this->returnException($ex->getMessage(), 500);
         }
     }
+
+    public function users_off(){
+        try{
+            $users = UserLastShow::pluck('user_id')->toArray();
+
+            foreach($users as $user){
+                $user->last_shows()->create(['user_id' => $user->id,'status' => 0]);
+            }
+
+            $msg = __('message.users_off');
+            return $this->dataResponse($msg,$users, 200);
+        }
+        catch (\Exception $ex){
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
 }
