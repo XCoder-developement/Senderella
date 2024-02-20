@@ -33,14 +33,14 @@ class PartnerController extends Controller
 
             $user = auth()->user();
 
-            $all_partners = User::whereNot('id', $user->id)->get();
+            $all_partners = User::where('gender', '!=', $user->gender)->whereNot('id', $user->id)->get();
 
-            $active_partners = User::whereNot('id', $user->id)->orderBy('id', 'desc')
+            $active_partners = User::where('gender', '!=', $user->gender)->whereNot('id', $user->id)->orderBy('id', 'desc')
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 1);
                 })->get();
 
-            $disactive_partners = User::whereNot('id', $user->id)
+            $disactive_partners = User::where('gender', '!=', $user->gender)->whereNot('id', $user->id)
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 0);
                 })
@@ -101,7 +101,7 @@ class PartnerController extends Controller
             $user = auth()->user();
             $duration = NewDuration::first()->new_duration; // getting the duration days for the new tag
             // dd(Carbon::now()->subDays($duration)->format('Y-m-d h:m'));
-            $actve_new_partners = User::where('id', '!=', $user->id)
+            $actve_new_partners = User::where('id', '!=', $user->id)->where('gender', '!=', $user->gender)
                 ->whereDate('created_at', '>', Carbon::now()->subDays($duration)->format('Y-m-d'))
                 // ->orderBy('id', 'desc')
                 ->whereHas('last_shows', function ($query) {
@@ -109,7 +109,7 @@ class PartnerController extends Controller
                 })
                 ->get();
 
-            $off_new_partners = User::where('id', '!=', $user->id)->whereDate('created_at', '>', Carbon::now()->subDays($duration))
+            $off_new_partners = User::where('id', '!=', $user->id)->where('gender', '!=', $user->gender)->whereDate('created_at', '>', Carbon::now()->subDays($duration))
                 ->whereDate('created_at', '>', Carbon::now()->subDays($duration)->format('Y-m-d'))
                 // ->orderBy('id', 'desc')
                 ->whereHas('last_shows', function ($query) {
@@ -371,6 +371,7 @@ class PartnerController extends Controller
 
                 $users = User::select('users.*')
                     ->join('user_likes', 'users.id', '=', 'user_likes.partner_id')
+                    ->where('gender', '!=', $user->gender)
                     ->whereIn('users.id', $following_ids)
                     ->orderByRaw("FIELD(users.id, $followingUserIds)") // Order by the sequence of IDs in the $followingUserIds array
                     // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
@@ -405,6 +406,7 @@ class PartnerController extends Controller
 
                 $followers = User::select('users.*')
                     ->join('user_likes', 'users.id', '=', 'user_likes.user_id')
+                    ->where('gender', '!=', $user->gender)
                     ->whereIn('users.id', $followers_ids)
                     ->orderByRaw("FIELD(users.id, $followerUserIds)") // Order by the sequence of IDs in the $followingUserIds array
                     // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
@@ -463,6 +465,7 @@ class PartnerController extends Controller
 
                 $watched = User::select('users.*')
                     ->join('user_watches', 'users.id', '=', 'user_watches.partner_id')
+                    ->where('gender', '!=', $user->gender)
                     ->whereIn('users.id', $watched_ids)
                     ->orderByRaw("FIELD(users.id, $watcheds)") // Order by the sequence of IDs in the $followingUserIds array
                     // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
@@ -500,6 +503,7 @@ class PartnerController extends Controller
                 // $watcher = User::whereIn('id', $watcher_ids)->get();
                 $watcher = User::select('users.*')
                     ->join('user_watches', 'users.id', '=', 'user_watches.user_id')
+                    ->where('gender', '!=', $user->gender)
                     ->whereIn('users.id', $watcher_ids)
                     ->orderByRaw("FIELD(users.id, $watchersIds)") // Order by the sequence of IDs in the $followingUserIds array
                     // ->orderBy('user_likes.created_at', 'desc') // Then order by user_likes.created_at
@@ -533,6 +537,7 @@ class PartnerController extends Controller
 
                 $favorited = User::select('users.*')
                     ->join('user_bookmarks', 'users.id', '=', 'user_bookmarks.partner_id')
+                    ->where('gender', '!=', $user->gender)
                     ->whereIn('users.id', $favorited_ids)
                     ->orderByRaw("FIELD(users.id, $favoriteds)") // Order by the sequence of IDs in the $followingUserIds array
                     // ->orderBy('user_bookmarks.created_at', 'desc') // Then order by user_likes.created_at
@@ -565,6 +570,7 @@ class PartnerController extends Controller
 
             $favorite = User::select('users.*')
                 ->join('user_bookmarks', 'users.id', '=', 'user_bookmarks.user_id')
+                ->where('gender', '!=', $user->gender)
                 ->whereIn('users.id', $favorite_ids)
                 ->orderByRaw("FIELD(users.id, $favorites)") // Order by the sequence of IDs in the $followingUserIds array
                 // ->orderBy('user_bookmarks.created_at', 'desc') // Then order by user_likes.created_at
@@ -619,7 +625,7 @@ class PartnerController extends Controller
     {
         try {
 
-
+            $user = auth()->user();
             $active_partner_counts = UserLike::groupBy('partner_id')
                 ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
                 ->whereIn('user_id', function ($query) {
@@ -640,7 +646,7 @@ class PartnerController extends Controller
             // $most_active_partner = $active_partner_counts->sortDesc()->keys()->toArray();
             // $most_disactive_partner = $disactive_partner_counts->sortDesc()->keys()->toArray();
             $mostLikedPartnerId = array_merge($active_partner_counts, $disactive_partner_counts);
-            $mostLikedCount = User::whereIn('id', array_keys($mostLikedPartnerId))->get();
+            $mostLikedCount = User::whereIn('id', array_keys($mostLikedPartnerId))->where('gender' , '!=' , $user->gender)->get();
 
 
             $msg = "fetch_most_liked_partners";
@@ -676,6 +682,7 @@ class PartnerController extends Controller
                 ->whereBetween('latitude', [$latitude - $distanceInDegrees, $latitude + $distanceInDegrees])
                 ->whereBetween('longitude', [$longitude - $distanceInDegrees, $longitude + $distanceInDegrees])
                 ->where('visibility', 0)
+                ->where('gender', '!=', $user->gender)
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 1);
                 })
@@ -684,6 +691,7 @@ class PartnerController extends Controller
                 ->whereBetween('latitude', [$latitude - $distanceInDegrees, $latitude + $distanceInDegrees])
                 ->whereBetween('longitude', [$longitude - $distanceInDegrees, $longitude + $distanceInDegrees])
                 ->where('visibility', 0)
+                ->where('gender', '!=', $user->gender)
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 0);
                 })

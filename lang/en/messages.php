@@ -433,4 +433,8 @@ return [
     "requirment"       => "Requirement",
     "comment_created"     => "Comment Creator",
     "comment_time"        => "Time",
+    "edit package_rules"    => "Edit Package Rules",
+    "fetch_package_rules"    => "Fetch Package Rules",
+    "edit package_terms"    => "Edit Package Terms",
+    "fetch_package_terms"    => "Fetch Package Terms",
 ];

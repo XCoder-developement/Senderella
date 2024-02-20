@@ -37,6 +37,8 @@ use App\Http\Controllers\Admin\Location\CountryController;
 use App\Http\Controllers\Admin\MarriageReadinessController;
 use App\Http\Controllers\Admin\MultiplicityStatusController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\PackageRuleController;
+use App\Http\Controllers\Admin\PackageTermController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReportTypeController;
 use App\Http\Controllers\Admin\UserController;
@@ -210,7 +212,13 @@ Route::group(
                 Route::resource('new_durations', NewDurationController::class);
                 Route::post('new_durations/update', [NewDurationController::class, 'update'])->name('new_durations.update');
 
+                //package_rules
+                Route::resource('package_rules', PackageRuleController::class);
+                Route::post('package_rules/update', [PackageRuleController::class, 'update'])->name('package_rules.update');
 
+                //package_terms
+                Route::resource('package_terms', PackageTermController::class);
+                Route::post('package_terms/update', [PackageTermController::class, 'update'])->name('package_terms.update');
             });
         });
     }

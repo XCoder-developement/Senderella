@@ -41,9 +41,12 @@ use App\Http\Controllers\Api\SearchPartnerController;
 use App\Http\Controllers\Api\FetchLastSearchController;
 use App\Http\Controllers\Api\UserInformationController;
 use App\Http\Controllers\Admin\MarriageReadinessController;
+use App\Http\Controllers\Admin\PackageRuleController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\ReportTypeController;
 use App\Http\Controllers\Api\MarriageReadinessController as ApiMarriageReadinessController;
+use App\Http\Controllers\Api\PackageRuleController as ApiPackageRuleController;
+use App\Http\Controllers\Api\PackageTermController;
 use App\Http\Controllers\Api\ReportController;
 
 /*
@@ -258,6 +261,14 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //update_location
     Route::post("update_location", [UserController::class, "update_location"]);
+
+
+    //package_rules
+    Route::get("fetch_package_rules", [ApiPackageRuleController::class, "fetch_package_rules"]);
+
+    //fetch_package_terms
+    Route::get("fetch_package_terms", [PackageTermController::class, "fetch_package_terms"]);
+
 
     // users_off
     // Route::get("users_off", [UserController::class, "users_off"]);

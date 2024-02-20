@@ -485,4 +485,8 @@ return [
     "requirment"                => "المتطلبات",
     "comment_created"               => "صاحب التعليق",
     "comment_time"                   => "وقت التعليق",
+    "edit package_rules"             => "تعديل قواعد الباقة",
+    "fetch_package_rules"            => "تحديث قواعد الباقة",
+    "edit package_terms"             => "تعديل شروط الباقة",
+    "fetch_package_terms"            => "تحديث شروط الباقة",
 ];
