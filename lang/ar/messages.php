@@ -489,4 +489,6 @@ return [
     "fetch_package_rules"            => "تحديث قواعد الباقة",
     "edit package_terms"             => "تعديل شروط الباقة",
     "fetch_package_terms"            => "تحديث شروط الباقة",
+    "package_terms"                  => "شروط الباقة",
+    "package_rules"                  => "قواعد الباقة",
 ];
