@@ -437,4 +437,6 @@ return [
     "fetch_package_rules"    => "Fetch Package Rules",
     "edit package_terms"    => "Edit Package Terms",
     "fetch_package_terms"    => "Fetch Package Terms",
+    "package_rules"    => "Package Rules",
+    "package_terms"    => "Package Terms",
 ];
