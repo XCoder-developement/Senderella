@@ -27,9 +27,16 @@ use Illuminate\Support\Facades\DB;
 class PartnerController extends Controller
 {
     use ApiTrait;
-    public function fetch_all_partners()
+    public function fetch_all_partners(Request $request)
     {
         try {
+            $rules = [
+                "page" => "required",
+            ];
+            $validator = Validator::make(request()->all(), $rules);
+            if ($validator->fails()) {
+                return $this->getvalidationErrors("validator");
+            }
 
             $user = auth()->user();
 
@@ -57,6 +64,12 @@ class PartnerController extends Controller
             $rest_partners = $all_partners->whereNotIn('id', $partnerIds);
 
             $partners = $main_partners->merge($rest_partners);
+
+            $page = $request->page; // Set the page number
+            $perPage = 10; // Set the number of items per page
+            $offset = ($page - 1) * $perPage;
+
+            $partners = $partners->slice($offset, $perPage);
 
             if (!$partners) {
                 $msg = "message.there_is_no_partners";
@@ -94,10 +107,16 @@ class PartnerController extends Controller
     }
 
 
-    public function fetch_new_partners()
+    public function fetch_new_partners(Request $request)
     {
         try {
-
+            $rules = [
+                "page" => "required",
+            ];
+            $validator = Validator::make(request()->all(), $rules);
+            if ($validator->fails()) {
+                return $this->getvalidationErrors("validator");
+            }
             $user = auth()->user();
             $duration = NewDuration::first()->new_duration; // getting the duration days for the new tag
             // dd(Carbon::now()->subDays($duration)->format('Y-m-d h:m'));
@@ -122,6 +141,12 @@ class PartnerController extends Controller
             });
 
             $combinedPartners = $actve_new_partners->concat($off_new_partners);
+
+            $page = $request->page; // Set the page number
+            $perPage = 10; // Set the number of items per page
+            $offset = ($page - 1) * $perPage;
+
+            $combinedPartners = $combinedPartners->slice($offset, $perPage);
             // dd($combinedPartners);
             $msg = "fetch_new_partners";
             return $this->dataResponse($msg, PartnerResource::collection($combinedPartners), 200);
@@ -584,9 +609,17 @@ class PartnerController extends Controller
         }
     }
 
-    public function most_compatible_partners()
+    public function most_compatible_partners(Request $request)
     {
         try {
+            $rules = [
+                "page" => "required",
+            ];
+            $validator = Validator::make(request()->all(), $rules);
+            if ($validator->fails()) {
+                return $this->getvalidationErrors("validator");
+            }
+
             $user = auth()->user();
             // dd(Carbon::parse($user->birthday_date)->subYears(5));
             $mdate = Carbon::parse($user->birthday_date)->subYears(5)->format('Y-m-d');
@@ -612,6 +645,12 @@ class PartnerController extends Controller
                     ->whereDate('birthday_date', '<=', $fdate)->whereDate('birthday_date', '>=', $user->birthday_date)
                     ->get();
             }
+
+            $page = $request->page; // Set the page number
+            $perPage = 10; // Set the number of items per page
+            $offset = ($page - 1) * $perPage;
+
+            $compatible_partner = $compatible_partner->slice($offset, $perPage);
             $msg = "most_compatible_partners";
             // dd($compatible_partner);
             return $this->dataResponse($msg, PartnerResource::collection($compatible_partner), 200);
@@ -621,9 +660,16 @@ class PartnerController extends Controller
     }
 
 
-    public function fetch_most_liked_partners()
+    public function fetch_most_liked_partners(Request $request)
     {
         try {
+            $rules = [
+                "page" => "required",
+            ];
+            $validator = Validator::make(request()->all(), $rules);
+            if ($validator->fails()) {
+                return $this->getvalidationErrors("validator");
+            }
 
             $user = auth()->user();
             $active_partner_counts = UserLike::groupBy('partner_id')
@@ -646,8 +692,13 @@ class PartnerController extends Controller
             // $most_active_partner = $active_partner_counts->sortDesc()->keys()->toArray();
             // $most_disactive_partner = $disactive_partner_counts->sortDesc()->keys()->toArray();
             $mostLikedPartnerId = array_merge($active_partner_counts, $disactive_partner_counts);
-            $mostLikedCount = User::whereIn('id', array_keys($mostLikedPartnerId))->where('gender' , '!=' , $user->gender)->get();
+            $mostLikedCount = User::whereIn('id', array_keys($mostLikedPartnerId))->where('gender', '!=', $user->gender)->get();
 
+            $page = $request->page; // Set the page number
+            $perPage = 10; // Set the number of items per page
+            $offset = ($page - 1) * $perPage;
+
+            $mostLikedCount = $mostLikedCount->slice($offset, $perPage);
 
             $msg = "fetch_most_liked_partners";
             $data = PartnerResource::collection($mostLikedCount);
@@ -665,6 +716,7 @@ class PartnerController extends Controller
             $rules = [
                 "longitude" => "required",
                 "latitude" => "required",
+                "page" => "required",
             ];
             $validator = Validator::make(request()->all(), $rules);
             if ($validator->fails()) {
@@ -703,6 +755,12 @@ class PartnerController extends Controller
             });
 
             $nearst_partners = $active_nearst_partners->merge($disactive_nearst_partners);
+
+            $page = $request->page; // Set the page number
+            $perPage = 10; // Set the number of items per page
+            $offset = ($page - 1) * $perPage;
+
+            $nearst_partners = $nearst_partners->slice($offset, $perPage);
 
             $data = PartnerResource::collection($nearst_partners);
             $msg = "fetch_nearst_partners";
