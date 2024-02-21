@@ -341,6 +341,12 @@
                                     </li>
 
                                     <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('banners.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.banners')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="{{route('settings.index')}}" class="menu-link" >
                                             <span class="menu-text">{{__('messages.abouts')}}</span>
                                         </a>

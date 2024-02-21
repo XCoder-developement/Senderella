@@ -22,7 +22,7 @@ class BannerDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'banners.action')
+            ->addColumn('action', 'admin_dashboard.banners.action')
             ->setRowId('id')
             ->editColumn("image", function ($query) {
                 if ($query->image_link) {

@@ -439,4 +439,5 @@ return [
     "fetch_package_terms"    => "Fetch Package Terms",
     "package_rules"    => "Package Rules",
     "package_terms"    => "Package Terms",
+    "banners"    => "Banners",
 ];

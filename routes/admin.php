@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\DeltedUserController;
 use App\Http\Controllers\Admin\NewDurationController;
 use App\Http\Controllers\Admin\SettingController;
@@ -205,8 +206,8 @@ Route::group(
 
 
                 //notification
-                Route::get('notifications',  [NotificationController::class , 'index'])->name('notifications.index');
-                Route::post('notifications/send',[ NotificationController::class, 'send'])->name('notifications.send');
+                Route::get('notifications',  [NotificationController::class, 'index'])->name('notifications.index');
+                Route::post('notifications/send', [NotificationController::class, 'send'])->name('notifications.send');
 
                 //new_duration
                 Route::resource('new_durations', NewDurationController::class);
@@ -215,6 +216,9 @@ Route::group(
                 //package_rules
                 Route::resource('package_rules', PackageRuleController::class);
                 Route::post('package_rules/update', [PackageRuleController::class, 'update'])->name('package_rules.update');
+
+                //banners
+                Route::resource('banners', BannerController::class);
 
                 //package_terms
                 Route::resource('package_terms', PackageTermController::class);
