@@ -491,4 +491,5 @@ return [
     "fetch_package_terms"            => "تحديث شروط الباقة",
     "package_terms"                  => "شروط الباقة",
     "package_rules"                  => "قواعد الباقة",
+    "banners"                       => "البانرات",
 ];

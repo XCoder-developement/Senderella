@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\DataTables\Admin\BannerDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Banner\StoreRequest;
+use App\Http\Requests\Admin\Banner\UpdateRequest;
+use App\Models\Banner\Banner;
 use Illuminate\Http\Request;
 
 class BannerController extends Controller
@@ -28,12 +30,12 @@ class BannerController extends Controller
     {
 
         if ($request->hasFile('image')) {
-            $data["image"] = upload_image($request->file('image'), "home_banners");
+            $data["image"] = upload_image($request->file('image'), "banners");
         }
 
         $data["link"] = $request->link;
         // $data = $request->validated();
-        HomeBanner::create($data);
+        Banner::create($data);
 
         return redirect()->route($this->route . "index")
             ->with(['success' => __("messages.createmessage")]);
@@ -42,9 +44,9 @@ class BannerController extends Controller
 
     public function edit($id)
     {
-        $home_banner = HomeBanner::findOrFail($id);
+        $banner = Banner::findOrFail($id);
 
-        return view($this->view . 'edit', compact('home_banner'));
+        return view($this->view . 'edit', compact('banner'));
     }
 
 
@@ -52,17 +54,17 @@ class BannerController extends Controller
     {
         $data = $request->validated();
 
-        $home_banner = HomeBanner::whereId($id)->first();
+        $banner = Banner::whereId($id)->first();
 
         $data["link"] = $request->link;
 
         if ($request->hasFile('image')) {
-            delete_image($home_banner->image);
-            $data["image"] = upload_image($request->image, "home_banners");
+            delete_image($banner->image);
+            $data["image"] = upload_image($request->image, "banners");
         }
 
 
-        $home_banner->update($data);
+        $banner->update($data);
 
         return redirect()->route($this->route . "index")
             ->with(['success' => __("messages.editmessage")]);
@@ -70,15 +72,15 @@ class BannerController extends Controller
 
     public function destroy($id)
     {
-        $home_banner = HomeBanner::find($id);
+        $banner = Banner::find($id);
 
-        if (!$home_banner) {
+        if (!$banner) {
             return response()->json(['status' => false]);
         }
 
-        delete_image($home_banner->image);
+        delete_image($banner->image);
 
-        $home_banner->delete();
+        $banner->delete();
 
         return response()->json(['status' => true]);
     }
