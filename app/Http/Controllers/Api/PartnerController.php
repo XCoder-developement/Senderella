@@ -13,6 +13,7 @@ use App\Http\Resources\Api\NotificationPartnerResource;
 use App\Http\Resources\Api\UserResource;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Api\PartnerResource;
+use App\Models\Banner\Banner;
 use App\Models\NewDuration\NewDuration;
 use App\Models\User\UserBlock;
 use App\Models\User\UserBookmark;
@@ -37,6 +38,7 @@ class PartnerController extends Controller
             // if ($validator->fails()) {
             //     return $this->getvalidationErrors("validator");
             // }
+            $banner = Banner::latest()->first();
 
             $user = auth()->user();
 
@@ -89,6 +91,9 @@ class PartnerController extends Controller
 
             // $partners = $partners->slice($offset, $perPage);
             // $partners = $partners->paginate(10);
+            if ($banner) {
+                $partners->splice(4, 0, [$banner]);
+            }
 
             if (!$partners) {
                 $msg = "message.there_is_no_partners";
