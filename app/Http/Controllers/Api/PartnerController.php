@@ -27,49 +27,68 @@ use Illuminate\Support\Facades\DB;
 class PartnerController extends Controller
 {
     use ApiTrait;
-    public function fetch_all_partners(Request $request)
+    public function fetch_all_partners()
     {
         try {
-            $rules = [
-                "page" => "required",
-            ];
-            $validator = Validator::make(request()->all(), $rules);
-            if ($validator->fails()) {
-                return $this->getvalidationErrors("validator");
-            }
+            // $rules = [
+            //     "page" => "required",
+            // ];
+            // $validator = Validator::make(request()->all(), $rules);
+            // if ($validator->fails()) {
+            //     return $this->getvalidationErrors("validator");
+            // }
 
             $user = auth()->user();
 
             $all_partners = User::where('gender', '!=', $user->gender)->whereNot('id', $user->id)->get();
 
-            $active_partners = User::where('gender', '!=', $user->gender)->whereNot('id', $user->id)->orderBy('id', 'desc')
+            $active_partners = User::where('gender', '!=', $user->gender)
+                ->whereNot('id', $user->id)
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 1);
-                })->get();
+                })
+                ->orderBy('id', 'desc')
+                ->pluck('id')
+                ->toArray();
 
-            $disactive_partners = User::where('gender', '!=', $user->gender)->whereNot('id', $user->id)
+            $disactive_partners = User::where('gender', '!=', $user->gender)
+                ->whereNot('id', $user->id)
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 0);
                 })
-                ->get();
-            // dd($partners);
-            $disactive_partners = $disactive_partners->sortByDesc(function ($partner) {
-                return $partner->last_shows->first()->end_date ?? null;
-            });
+                ->orderByDesc(function ($query) {
+                    $query->select('end_date')
+                        ->from('user_last_shows')
+                        ->whereColumn('user_id', 'users.id')
+                        ->orderByDesc('end_date')
+                        ->limit(1);
+                })
+                ->pluck('id')
+                ->toArray();
 
-            $main_partners = $active_partners->merge($disactive_partners);
+            $partnerIds = array_merge($active_partners, $disactive_partners);
 
-            $partnerIds = $main_partners->pluck('id')->toArray();
+            // Paginate the results after sorting and merging
+            $partners = User::whereIn('id', $partnerIds)
+                ->orderByRaw("FIELD(id, " . implode(',', $partnerIds) . ")")
+                ->paginate(10);
 
-            $rest_partners = $all_partners->whereNotIn('id', $partnerIds);
 
-            $partners = $main_partners->merge($rest_partners);
+            // $main_partners = $active_partners->merge($disactive_partners);
+            // $partnerIds = $partnersId->pluck('id')->toArray();
+            // dd($partnerss);
 
-            $page = $request->page; // Set the page number
-            $perPage = 10; // Set the number of items per page
-            $offset = ($page - 1) * $perPage;
+            // $rest_partners = $all_partners->whereNotIn('id', $partnerIds);
 
-            $partners = $partners->slice($offset, $perPage);
+
+            // $partners = $partnersId->merge($rest_partners);
+
+            // $page = $request->page; // Set the page number
+            // $perPage = 10; // Set the number of items per page
+            // $offset = ($page - 1) * $perPage;
+
+            // $partners = $partners->slice($offset, $perPage);
+            // $partners = $partners->paginate(10);
 
             if (!$partners) {
                 $msg = "message.there_is_no_partners";
@@ -107,16 +126,16 @@ class PartnerController extends Controller
     }
 
 
-    public function fetch_new_partners(Request $request)
+    public function fetch_new_partners()
     {
         try {
-            $rules = [
-                "page" => "required",
-            ];
-            $validator = Validator::make(request()->all(), $rules);
-            if ($validator->fails()) {
-                return $this->getvalidationErrors("validator");
-            }
+            // $rules = [
+            //     "page" => "required",
+            // ];
+            // $validator = Validator::make(request()->all(), $rules);
+            // if ($validator->fails()) {
+            //     return $this->getvalidationErrors("validator");
+            // }
             $user = auth()->user();
             $duration = NewDuration::first()->new_duration; // getting the duration days for the new tag
             // dd(Carbon::now()->subDays($duration)->format('Y-m-d h:m'));
@@ -126,30 +145,37 @@ class PartnerController extends Controller
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 1);
                 })
-                ->get();
+                ->orderBy('id', 'desc')
+                ->pluck('id')
+                ->toArray();
 
             $off_new_partners = User::where('id', '!=', $user->id)->where('gender', '!=', $user->gender)->whereDate('created_at', '>', Carbon::now()->subDays($duration))
                 ->whereDate('created_at', '>', Carbon::now()->subDays($duration)->format('Y-m-d'))
-                // ->orderBy('id', 'desc')
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 0);
                 })
-                ->get();
+                ->orderByDesc(function ($query) {
+                    $query->select('end_date')
+                        ->from('user_last_shows')
+                        ->whereColumn('user_id', 'users.id')
+                        ->orderByDesc('end_date')
+                        ->limit(1);
+                })
+                ->pluck('id')
+                ->toArray();
 
-            $off_new_partners = $off_new_partners->sortByDesc(function ($partner) {
-                return $partner->last_shows->first()->end_date ?? null;
-            });
+            $combinedPartnersids = array_merge($actve_new_partners, $off_new_partners);
+            $combinedPartners = User::whereIn('id', $combinedPartnersids)
+                ->orderByRaw("FIELD(id, " . implode(',', $combinedPartnersids) . ")")
+                ->paginate(10);
+            // $page = $request->page; // Set the page number
+            // $perPage = 10; // Set the number of items per page
+            // $offset = ($page - 1) * $perPage;
 
-            $combinedPartners = $actve_new_partners->concat($off_new_partners);
-
-            $page = $request->page; // Set the page number
-            $perPage = 10; // Set the number of items per page
-            $offset = ($page - 1) * $perPage;
-
-            $combinedPartners = $combinedPartners->slice($offset, $perPage);
+            // $combinedPartners = $combinedPartners->slice($offset, $perPage);
             // dd($combinedPartners);
             $msg = "fetch_new_partners";
-            return $this->dataResponse($msg, PartnerResource::collection($combinedPartners), 200);
+            return $this->dataResponse($msg, PartnerResource::collection($combinedPartners)->response()->getData(true), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -609,16 +635,16 @@ class PartnerController extends Controller
         }
     }
 
-    public function most_compatible_partners(Request $request)
+    public function most_compatible_partners()
     {
         try {
-            $rules = [
-                "page" => "required",
-            ];
-            $validator = Validator::make(request()->all(), $rules);
-            if ($validator->fails()) {
-                return $this->getvalidationErrors("validator");
-            }
+            // $rules = [
+            //     "page" => "required",
+            // ];
+            // $validator = Validator::make(request()->all(), $rules);
+            // if ($validator->fails()) {
+            //     return $this->getvalidationErrors("validator");
+            // }
 
             $user = auth()->user();
             // dd(Carbon::parse($user->birthday_date)->subYears(5));
@@ -633,8 +659,7 @@ class PartnerController extends Controller
                     ->where('marriage_readiness_id', $user->marriage_readiness_id)->where('color_id', $user->color_id)
                     ->where('education_type_id', $user->education_type_id)->where('is_married_before', $user->is_married_before)
                     ->whereDate('birthday_date', '>=', $mdate)
-                    ->whereDate('birthday_date', '<=', $user->birthday_date)
-                    ->get();
+                    ->whereDate('birthday_date', '<=', $user->birthday_date);
             } else {
                 $compatible_partner = User::where('gender', 1)->where('height', '>=', $user->height)
                     // ->where('weight', '<=', $user->weight + 10)->where('weight', '>=', $user->weight - 10)
@@ -642,34 +667,35 @@ class PartnerController extends Controller
                     ->where('state_id', $user->state_id)->where('marital_status_id', $user->marital_status_id)
                     ->where('marriage_readiness_id', $user->marriage_readiness_id)->where('color_id', $user->color_id)
                     ->where('education_type_id', $user->education_type_id)->where('is_married_before', $user->is_married_before)
-                    ->whereDate('birthday_date', '<=', $fdate)->whereDate('birthday_date', '>=', $user->birthday_date)
-                    ->get();
+                    ->whereDate('birthday_date', '<=', $fdate)->whereDate('birthday_date', '>=', $user->birthday_date);
             }
 
-            $page = $request->page; // Set the page number
-            $perPage = 10; // Set the number of items per page
-            $offset = ($page - 1) * $perPage;
+            // $page = $request->page; // Set the page number
+            // $perPage = 10; // Set the number of items per page
+            // $offset = ($page - 1) * $perPage;
 
-            $compatible_partner = $compatible_partner->slice($offset, $perPage);
+            // $compatible_partner = $compatible_partner->slice($offset, $perPage);
+
+            $compatible_partner = $compatible_partner->paginate(10);
             $msg = "most_compatible_partners";
             // dd($compatible_partner);
-            return $this->dataResponse($msg, PartnerResource::collection($compatible_partner), 200);
+            return $this->dataResponse($msg, PartnerResource::collection($compatible_partner)->response()->getData(true), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
     }
 
 
-    public function fetch_most_liked_partners(Request $request)
+    public function fetch_most_liked_partners()
     {
         try {
-            $rules = [
-                "page" => "required",
-            ];
-            $validator = Validator::make(request()->all(), $rules);
-            if ($validator->fails()) {
-                return $this->getvalidationErrors("validator");
-            }
+            // $rules = [
+            //     "page" => "required",
+            // ];
+            // $validator = Validator::make(request()->all(), $rules);
+            // if ($validator->fails()) {
+            //     return $this->getvalidationErrors("validator");
+            // }
 
             $user = auth()->user();
             $active_partner_counts = UserLike::groupBy('partner_id')
@@ -692,16 +718,17 @@ class PartnerController extends Controller
             // $most_active_partner = $active_partner_counts->sortDesc()->keys()->toArray();
             // $most_disactive_partner = $disactive_partner_counts->sortDesc()->keys()->toArray();
             $mostLikedPartnerId = array_merge($active_partner_counts, $disactive_partner_counts);
-            $mostLikedCount = User::whereIn('id', array_keys($mostLikedPartnerId))->where('gender', '!=', $user->gender)->get();
+            $mostLikedCount = User::whereIn('id', array_keys($mostLikedPartnerId))->where('gender', '!=', $user->gender);
 
-            $page = $request->page; // Set the page number
-            $perPage = 10; // Set the number of items per page
-            $offset = ($page - 1) * $perPage;
+            // $page = $request->page; // Set the page number
+            // $perPage = 10; // Set the number of items per page
+            // $offset = ($page - 1) * $perPage;
 
-            $mostLikedCount = $mostLikedCount->slice($offset, $perPage);
+            // $mostLikedCount = $mostLikedCount->slice($offset, $perPage);
+            $mostLikedCount = $mostLikedCount->paginate(10);
 
             $msg = "fetch_most_liked_partners";
-            $data = PartnerResource::collection($mostLikedCount);
+            $data = PartnerResource::collection($mostLikedCount)->response()->getData(true);
 
             return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
@@ -716,7 +743,6 @@ class PartnerController extends Controller
             $rules = [
                 "longitude" => "required",
                 "latitude" => "required",
-                "page" => "required",
             ];
             $validator = Validator::make(request()->all(), $rules);
             if ($validator->fails()) {
@@ -738,7 +764,10 @@ class PartnerController extends Controller
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 1);
                 })
-                ->get();
+                ->orderBy('id', 'desc')
+                ->pluck('id')
+                ->toArray();
+
             $disactive_nearst_partners = User::where('id', '!=', $user->id)
                 ->whereBetween('latitude', [$latitude - $distanceInDegrees, $latitude + $distanceInDegrees])
                 ->whereBetween('longitude', [$longitude - $distanceInDegrees, $longitude + $distanceInDegrees])
@@ -747,22 +776,28 @@ class PartnerController extends Controller
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 0);
                 })
-                ->get();
-            // dd($active_nearst_partners);
+                ->orderByDesc(function ($query) {
+                    $query->select('end_date')
+                        ->from('user_last_shows')
+                        ->whereColumn('user_id', 'users.id')
+                        ->orderByDesc('end_date')
+                        ->limit(1);
+                })
+                ->pluck('id')
+                ->toArray();
 
-            $disactive_nearst_partners = $disactive_nearst_partners->sortByDesc(function ($partner) {
-                return $partner->last_shows->first()->end_date ?? null;
-            });
+            $nearst_partnersids = array_merge($active_nearst_partners, $disactive_nearst_partners);
 
-            $nearst_partners = $active_nearst_partners->merge($disactive_nearst_partners);
+            $nearst_partners = User::whereIn('id', $nearst_partnersids)
+                ->orderByRaw("FIELD(id, " . implode(',', $nearst_partnersids) . ")")
+                ->paginate(10);
+            // $page = $request->page; // Set the page number
+            // $perPage = 10; // Set the number of items per page
+            // $offset = ($page - 1) * $perPage;
 
-            $page = $request->page; // Set the page number
-            $perPage = 10; // Set the number of items per page
-            $offset = ($page - 1) * $perPage;
+            // $nearst_partners = $nearst_partners->slice($offset, $perPage);
 
-            $nearst_partners = $nearst_partners->slice($offset, $perPage);
-
-            $data = PartnerResource::collection($nearst_partners);
+            $data = PartnerResource::collection($nearst_partners)->response()->getData(true);
             $msg = "fetch_nearst_partners";
             return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {

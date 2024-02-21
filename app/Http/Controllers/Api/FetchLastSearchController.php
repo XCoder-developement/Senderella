@@ -15,16 +15,16 @@ use Illuminate\Support\Facades\Validator;
 class FetchLastSearchController extends Controller
 {
     use ApiTrait;
-    public function fetch_last_search(Request $request)
+    public function fetch_last_search()
     {
         try {
-            $rules = [
-                "page" => "required",
-            ];
-            $validator = Validator::make(request()->all(), $rules);
-            if ($validator->fails()) {
-                return $this->getvalidationErrors("validator");
-            }
+            // $rules = [
+            //     "page" => "required",
+            // ];
+            // $validator = Validator::make(request()->all(), $rules);
+            // if ($validator->fails()) {
+            //     return $this->getvalidationErrors("validator");
+            // }
             $user = auth()->id();
             $fetch_search = UserSearch::with('requirments')->where('user_id', $user)->latest()->first();
             if (!$fetch_search) {
@@ -47,26 +47,37 @@ class FetchLastSearchController extends Controller
                 ->whereHas('last_shows', function ($query) {
                     $query->where('status', 1);
                 })
-                ->get();
+                ->orderBy('id', 'desc')
+                ->pluck('id')
+                ->toArray();
             // dd($online_partners);
             $offlines = User::whereIn('users.id', $userIds)
-                // ->whereHas('last_shows', function ($query) {
-                //     $query->where('status', 0);
-                // })
-                ->get();
-            // dd($offlines);
-            $offlines = $offlines->sortByDesc(function ($partner) {
-                return $partner->last_shows->first()->end_date ?? null;
-            });
-            $all_partners = $online_partners->merge($offlines);
+            ->whereHas('last_shows', function ($query) {
+                $query->where('status', 0);
+            })
+            ->orderByDesc(function ($query) {
+                $query->select('end_date')
+                    ->from('user_last_shows')
+                    ->whereColumn('user_id', 'users.id')
+                    ->orderByDesc('end_date')
+                    ->limit(1);
+            })
+            ->pluck('id')
+            ->toArray();
 
-            $page = $request->page; // Set the page number
-            $perPage = 10; // Set the number of items per page
-            $offset = ($page - 1) * $perPage;
 
-            $all_partners = $all_partners->slice($offset, $perPage);
+            $all_partnersids = array_merge($online_partners,$offlines);
 
-            $AllPartners = PartnerResource::collection($all_partners);
+            $all_partners = User::whereIn('id', $all_partnersids)
+            ->orderByRaw("FIELD(id, " . implode(',', $all_partnersids) . ")")
+            ->paginate(10);
+            // $page = $request->page; // Set the page number
+            // $perPage = 10; // Set the number of items per page
+            // $offset = ($page - 1) * $perPage;
+
+            // $all_partners = $all_partners->slice($offset, $perPage);
+
+            $AllPartners = PartnerResource::collection($all_partners)->response()->getData(true);
             // dd($offlines);
             if ($fetch_search) {
                 $msg = "fetch_last_search";

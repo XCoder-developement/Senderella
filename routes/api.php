@@ -158,7 +158,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get("fetch_countries", [CountryController::class, "fetch_countries"]);
 
     //fetch_all_partners
-    Route::post("fetch_all_partners", [PartnerController::class, "fetch_all_partners"]);
+    Route::get("fetch_all_partners", [PartnerController::class, "fetch_all_partners"]);
 
     //POST
     Route::get("fetch_post", [PostController::class, "fetch_post"]);
@@ -173,7 +173,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post("fetch_partner_details", [PartnerController::class, "fetch_partner_details"]);
 
     //fetch_new_partners
-    Route::post("fetch_new_partners", [PartnerController::class, "fetch_new_partners"]);
+    Route::get("fetch_new_partners", [PartnerController::class, "fetch_new_partners"]);
 
     //like_partner
     Route::post("like_partner", [PartnerController::class, "like_partner"]);
@@ -229,10 +229,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get("who_favorite_me", [PartnerController::class, "who_favorite_me"]);
 
     //most_compatible_partners
-    Route::post("most_compatible_partners", [PartnerController::class, "most_compatible_partners"]);
+    Route::get("most_compatible_partners", [PartnerController::class, "most_compatible_partners"]);
 
     //fetch_most_liked_partners
-    Route::post("fetch_most_liked_partners", [PartnerController::class, "fetch_most_liked_partners"]);
+    Route::get("fetch_most_liked_partners", [PartnerController::class, "fetch_most_liked_partners"]);
 
     //SEARCH PARTNER
     Route::post("search_partner", [SearchPartnerController::class, "search_partner"]);
@@ -241,7 +241,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post("fetch_nearst_partners", [PartnerController::class, "fetch_nearst_partners"]);
 
     //FETCH LAST SEARCH
-    Route::post("fetch_last_search", [FetchLastSearchController::class, "fetch_last_search"]);
+    Route::get("fetch_last_search", [FetchLastSearchController::class, "fetch_last_search"]);
 
     //account_document
     Route::post("account_document", [UserController::class, "account_document"]);
