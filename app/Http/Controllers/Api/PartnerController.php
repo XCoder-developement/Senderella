@@ -38,11 +38,9 @@ class PartnerController extends Controller
             $banners = [
             'banner1' => Banner::inRandomOrder()->first(),
             'banner2' => Banner::inRandomOrder()->first(),
-            'text_banner' => TextBanner::inRandomOrder()->first(),
+            // 'text_banner' => TextBanner::inRandomOrder()->first(),
             ];
-            $banner1 = Banner::inRandomOrder()->first();
-            $banner2 = Banner::inRandomOrder()->first();
-            $text_banner = TextBanner::inRandomOrder()->first();
+          
             $user = auth()->user();
             // $baner1 = $banners[0];
             // dd(Arr::random($banners));
