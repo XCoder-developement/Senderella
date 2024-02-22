@@ -14,7 +14,7 @@ class WhatsappService
     public function screenshot_session()
     {
         try {
-            $apiUrl = 'http://crazyidea.online:3009/api/screenshot?session=default';
+            $apiUrl = 'http://crazyidea.online:****/api/screenshot?session=default';
 
             $headers = [
                 'Accept' => 'image/png',
