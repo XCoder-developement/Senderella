@@ -39,7 +39,7 @@ class PartnerController extends Controller
             'banner2' => Banner::inRandomOrder()->first(),
             'text_banner' => TextBanner::inRandomOrder()->first(),
             ];
-            $banners = shuffle($banners);
+            // $banners = shuffle($banners);
             $user = auth()->user();
 
             $all_partners = User::where('gender', '!=', $user->gender)->whereNot('id', $user->id)->pluck('id')->toArray();
