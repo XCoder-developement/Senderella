@@ -77,8 +77,7 @@ class PartnerResource extends JsonResource
         }
         if ($this->type == 1) {
             return [
-                "partner" => [
-                    "id" => $this->id,
+                "id" => $this->id,
                 "is_verify" => $this->is_verify ?? 0,
                 "active" => intval($active) ?? "",
                 "last_active" => $last_active ?? '', // $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : '',
@@ -115,17 +114,14 @@ class PartnerResource extends JsonResource
                 "like_time" => $like_time ?? '',
                 "favorite_time" => $favorite_time ?? '',
                 "watch_time" => $watch_time ?? '',
-                ],
                 "type" => intval($this->type) ?? '',
                 // "partner_more_info" => UserInformationResource::collection($this->informations),
             ];
         } else if ($this->type == 2) {
             return[
-                "banner" => [
-                    "id" => $this->id ?? "" ,
-                   "link" =>$this->link ?? "",
-                   "image" => $this->image_link ?? "",
-                ],
+                "id" => $this->id ?? "" ,
+                "link" =>$this->link ?? "",
+                "image" => $this->image_link ?? "",
                 "type"  => intval($this->type) ?? '',
             ];
         }
