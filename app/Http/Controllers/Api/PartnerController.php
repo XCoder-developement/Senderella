@@ -227,7 +227,7 @@ class PartnerController extends Controller
             }
 
             $msg = "fetch_new_partners";
-            return $this->dataResponse($msg, PartnerResource::collection($paginator)->response()->getData(true), 200);
+            return $this->dataResponse($msg, CustomPartnerResource::collection($paginator)->response()->getData(true), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -765,7 +765,7 @@ class PartnerController extends Controller
             }
             $msg = "most_compatible_partners";
             // dd($compatible_partner);
-            return $this->dataResponse($msg, PartnerResource::collection($paginator)->response()->getData(true), 200);
+            return $this->dataResponse($msg, CustomPartnerResource::collection($paginator)->response()->getData(true), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -847,7 +847,7 @@ class PartnerController extends Controller
                 $paginator = $mostLikedCount;
             }
             $msg = "fetch_most_liked_partners";
-            $data = PartnerResource::collection($paginator)->response()->getData(true);
+            $data = CustomPartnerResource::collection($paginator)->response()->getData(true);
 
             return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
@@ -954,7 +954,7 @@ class PartnerController extends Controller
                     $paginator = $nearst_partners;
                 }
 
-            $data = PartnerResource::collection($paginator)->response()->getData(true);
+            $data = CustomPartnerResource::collection($paginator)->response()->getData(true);
             $msg = "fetch_nearst_partners";
             return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
