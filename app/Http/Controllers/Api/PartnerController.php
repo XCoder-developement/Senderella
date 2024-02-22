@@ -44,23 +44,23 @@ class PartnerController extends Controller
             $user = auth()->user();
             // $baner1 = $banners[0];
             // dd(Arr::random($banners));
-            if($banner1 &&!$text_banner){
+            if ($banner1 && !$text_banner) {
                 unset($banners['text_banner']);
             }
-            if($text_banner &&!$banner1){
+            if ($text_banner && !$banner1) {
                 unset($banners['banner1']);
                 unset($banners['banner2']);
             }
             $all_partners = User::where('gender', '!=', $user->gender)->whereNot('id', $user->id)->pluck('id')->toArray();
 
             $active_partners = User::where('gender', '!=', $user->gender)
-            ->whereNot('id', $user->id)
-            ->whereHas('last_shows', function ($query) {
-                $query->where('status', 1);
-            })
-            ->orderBy('id', 'desc')
-            ->pluck('id')
-            ->toArray();
+                ->whereNot('id', $user->id)
+                ->whereHas('last_shows', function ($query) {
+                    $query->where('status', 1);
+                })
+                ->orderBy('id', 'desc')
+                ->pluck('id')
+                ->toArray();
 
             $disactive_partners = User::where('gender', '!=', $user->gender)
                 ->whereNot('id', $user->id)
@@ -77,13 +77,13 @@ class PartnerController extends Controller
                 ->pluck('id')
                 ->toArray();
 
-            $partnerIds = array_merge($active_partners, $disactive_partners , $all_partners);
+            $partnerIds = array_merge($active_partners, $disactive_partners, $all_partners);
 
 
             // Paginate the results after sorting and merging
             $partners = User::whereIn('id', $partnerIds)
-            ->orderByRaw("FIELD(id, " . implode(',', $partnerIds) . ")")
-            ->paginate(10);
+                ->orderByRaw("FIELD(id, " . implode(',', $partnerIds) . ")")
+                ->paginate(10);
 
             if ($banner1 || $text_banner) {
 
@@ -108,8 +108,7 @@ class PartnerController extends Controller
                 );
 
                 $paginator->appends(request()->all());
-            }
-            else {
+            } else {
 
                 $paginator = $partners;
             }
@@ -152,13 +151,20 @@ class PartnerController extends Controller
     public function fetch_new_partners()
     {
         try {
-            // $rules = [
-            //     "page" => "required",
-            // ];
-            // $validator = Validator::make(request()->all(), $rules);
-            // if ($validator->fails()) {
-            //     return $this->getvalidationErrors("validator");
-            // }
+            $banners = [
+                'banner1' => Banner::inRandomOrder()->first(),
+                'banner2' => Banner::inRandomOrder()->first(),
+                'text_banner' => TextBanner::inRandomOrder()->first(),
+            ];
+            $banner1 = Banner::inRandomOrder()->first();
+            $text_banner = TextBanner::inRandomOrder()->first();
+            if ($banner1 && !$text_banner) {
+                unset($banners['text_banner']);
+            }
+            if ($text_banner && !$banner1) {
+                unset($banners['banner1']);
+                unset($banners['banner2']);
+            }
             $user = auth()->user();
             $duration = NewDuration::first()->new_duration; // getting the duration days for the new tag
             // dd(Carbon::now()->subDays($duration)->format('Y-m-d h:m'));
@@ -191,14 +197,37 @@ class PartnerController extends Controller
             $combinedPartners = User::whereIn('id', $combinedPartnersids)
                 ->orderByRaw("FIELD(id, " . implode(',', $combinedPartnersids) . ")")
                 ->paginate(10);
-            // $page = $request->page; // Set the page number
-            // $perPage = 10; // Set the number of items per page
-            // $offset = ($page - 1) * $perPage;
 
-            // $combinedPartners = $combinedPartners->slice($offset, $perPage);
-            // dd($combinedPartners);
+            if ($banner1 || $text_banner) {
+
+                $combinedData = [];
+                foreach ($combinedPartners as $key => $partner) {
+                    $combinedData[] = $partner;
+                    if ($key == 3 && $banners) {
+                        $combinedData[] = Arr::random($banners);
+                    }
+                    if ($key == 7 && $banners) {
+                        $combinedData[] = Arr::random($banners);
+                    }
+                }
+
+                // Create a paginator instance manually
+                $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+                    $combinedData,
+                    $combinedPartners->total(),
+                    $combinedPartners->perPage(),
+                    $combinedPartners->currentPage(),
+                    ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+                );
+
+                $paginator->appends(request()->all());
+            } else {
+
+                $paginator = $combinedPartners;
+            }
+
             $msg = "fetch_new_partners";
-            return $this->dataResponse($msg, PartnerResource::collection($combinedPartners)->response()->getData(true), 200);
+            return $this->dataResponse($msg, PartnerResource::collection($paginator)->response()->getData(true), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -661,13 +690,20 @@ class PartnerController extends Controller
     public function most_compatible_partners()
     {
         try {
-            // $rules = [
-            //     "page" => "required",
-            // ];
-            // $validator = Validator::make(request()->all(), $rules);
-            // if ($validator->fails()) {
-            //     return $this->getvalidationErrors("validator");
-            // }
+            $banners = [
+                'banner1' => Banner::inRandomOrder()->first(),
+                'banner2' => Banner::inRandomOrder()->first(),
+                'text_banner' => TextBanner::inRandomOrder()->first(),
+            ];
+            $banner1 = Banner::inRandomOrder()->first();
+            $text_banner = TextBanner::inRandomOrder()->first();
+            if ($banner1 && !$text_banner) {
+                unset($banners['text_banner']);
+            }
+            if ($text_banner && !$banner1) {
+                unset($banners['banner1']);
+                unset($banners['banner2']);
+            }
 
             $user = auth()->user();
             // dd(Carbon::parse($user->birthday_date)->subYears(5));
@@ -700,9 +736,36 @@ class PartnerController extends Controller
             // $compatible_partner = $compatible_partner->slice($offset, $perPage);
 
             $compatible_partner = $compatible_partner->paginate(10);
+            if ($banner1 || $text_banner) {
+
+                $combinedData = [];
+                foreach ($compatible_partner as $key => $partner) {
+                    $combinedData[] = $partner;
+                    if ($key == 3 && $banners) {
+                        $combinedData[] = Arr::random($banners);
+                    }
+                    if ($key == 7 && $banners) {
+                        $combinedData[] = Arr::random($banners);
+                    }
+                }
+
+                // Create a paginator instance manually
+                $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+                    $combinedData,
+                    $compatible_partner->total(),
+                    $compatible_partner->perPage(),
+                    $compatible_partner->currentPage(),
+                    ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+                );
+
+                $paginator->appends(request()->all());
+            } else {
+
+                $paginator = $compatible_partner;
+            }
             $msg = "most_compatible_partners";
             // dd($compatible_partner);
-            return $this->dataResponse($msg, PartnerResource::collection($compatible_partner)->response()->getData(true), 200);
+            return $this->dataResponse($msg, PartnerResource::collection($paginator)->response()->getData(true), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -712,14 +775,20 @@ class PartnerController extends Controller
     public function fetch_most_liked_partners()
     {
         try {
-            // $rules = [
-            //     "page" => "required",
-            // ];
-            // $validator = Validator::make(request()->all(), $rules);
-            // if ($validator->fails()) {
-            //     return $this->getvalidationErrors("validator");
-            // }
-
+            $banners = [
+                'banner1' => Banner::inRandomOrder()->first(),
+                'banner2' => Banner::inRandomOrder()->first(),
+                'text_banner' => TextBanner::inRandomOrder()->first(),
+            ];
+            $banner1 = Banner::inRandomOrder()->first();
+            $text_banner = TextBanner::inRandomOrder()->first();
+            if ($banner1 && !$text_banner) {
+                unset($banners['text_banner']);
+            }
+            if ($text_banner && !$banner1) {
+                unset($banners['banner1']);
+                unset($banners['banner2']);
+            }
             $user = auth()->user();
             $active_partner_counts = UserLike::groupBy('partner_id')
                 ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
@@ -750,8 +819,35 @@ class PartnerController extends Controller
             // $mostLikedCount = $mostLikedCount->slice($offset, $perPage);
             $mostLikedCount = $mostLikedCount->paginate(10);
 
+            if ($banner1 || $text_banner) {
+
+                $combinedData = [];
+                foreach ($mostLikedCount as $key => $partner) {
+                    $combinedData[] = $partner;
+                    if ($key == 3 && $banners) {
+                        $combinedData[] = Arr::random($banners);
+                    }
+                    if ($key == 7 && $banners) {
+                        $combinedData[] = Arr::random($banners);
+                    }
+                }
+
+                // Create a paginator instance manually
+                $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+                    $combinedData,
+                    $mostLikedCount->total(),
+                    $mostLikedCount->perPage(),
+                    $mostLikedCount->currentPage(),
+                    ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+                );
+
+                $paginator->appends(request()->all());
+            } else {
+
+                $paginator = $mostLikedCount;
+            }
             $msg = "fetch_most_liked_partners";
-            $data = PartnerResource::collection($mostLikedCount)->response()->getData(true);
+            $data = PartnerResource::collection($paginator)->response()->getData(true);
 
             return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
@@ -770,6 +866,21 @@ class PartnerController extends Controller
             $validator = Validator::make(request()->all(), $rules);
             if ($validator->fails()) {
                 return $this->getvalidationErrors("validator");
+            }
+            $banners = [
+                'banner1' => Banner::inRandomOrder()->first(),
+                'banner2' => Banner::inRandomOrder()->first(),
+                'text_banner' => TextBanner::inRandomOrder()->first(),
+            ];
+            $banner1 = Banner::inRandomOrder()->first();
+            $text_banner = TextBanner::inRandomOrder()->first();
+
+            if ($banner1 && !$text_banner) {
+                unset($banners['text_banner']);
+            }
+            if ($text_banner && !$banner1) {
+                unset($banners['banner1']);
+                unset($banners['banner2']);
             }
 
             $latitude = $request->latitude;
@@ -814,13 +925,36 @@ class PartnerController extends Controller
             $nearst_partners = User::whereIn('id', $nearst_partnersids)
                 ->orderByRaw("FIELD(id, " . implode(',', $nearst_partnersids) . ")")
                 ->paginate(10);
-            // $page = $request->page; // Set the page number
-            // $perPage = 10; // Set the number of items per page
-            // $offset = ($page - 1) * $perPage;
 
-            // $nearst_partners = $nearst_partners->slice($offset, $perPage);
+                if ($banner1 || $text_banner) {
 
-            $data = PartnerResource::collection($nearst_partners)->response()->getData(true);
+                    $combinedData = [];
+                    foreach ($nearst_partners as $key => $partner) {
+                        $combinedData[] = $partner;
+                        if ($key == 3 && $banners) {
+                            $combinedData[] = Arr::random($banners);
+                        }
+                        if ($key == 7 && $banners) {
+                            $combinedData[] = Arr::random($banners);
+                        }
+                    }
+
+                    // Create a paginator instance manually
+                    $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+                        $combinedData,
+                        $nearst_partners->total(),
+                        $nearst_partners->perPage(),
+                        $nearst_partners->currentPage(),
+                        ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+                    );
+
+                    $paginator->appends(request()->all());
+                } else {
+
+                    $paginator = $nearst_partners;
+                }
+
+            $data = PartnerResource::collection($paginator)->response()->getData(true);
             $msg = "fetch_nearst_partners";
             return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
