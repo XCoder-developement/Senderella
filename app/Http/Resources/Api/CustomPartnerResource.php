@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\Api;
 
-use App\Http\Resources\api\RequirmentResource;
 use App\Models\NewDuration\NewDuration;
 use App\Models\User\UserBookmark;
 use App\Models\User\UserImage;
@@ -13,7 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PartnerResource extends JsonResource
+class CustomPartnerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,7 +20,7 @@ class PartnerResource extends JsonResource
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
-    { // fetching the action is done on user like who watch the user and who likes him
+    {
         $user = auth()->user();
         $duration = NewDuration::first()->new_duration; // getting the duration days for the new tag
         $user_duration = Carbon::parse($this->created_at)->diffInDays(); // getting the duration days for the user
@@ -75,7 +74,8 @@ class PartnerResource extends JsonResource
             $distance = calculateDistance($lat1, $lon1, $lat2, $lon2);
             $distance = number_format($distance, 2);
         }
-        if ($this->type == 1) {
+
+   if ($this->type == 1) {
             return [
                 "partner" => [
                     "id" => $this->id,
@@ -129,8 +129,17 @@ class PartnerResource extends JsonResource
                 "type"  => intval($this->type) ?? '',
             ];
         }
+        // else if ($this->type == 3) {
+        //     "text_banner" => [
+        //         "id" => $this->id ?? "" ,
+        //        "text" =>$this->text ?? "",
+        //     ],
+
+        //     "type"  => intval($this->type) ?? '',
+        // }
     }
 }
+
 
 class ImageResource extends JsonResource
 {

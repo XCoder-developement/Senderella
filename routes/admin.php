@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\DeltedUserController;
 use App\Http\Controllers\Admin\NewDurationController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\TextBannerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\TermController;
@@ -219,6 +220,9 @@ Route::group(
 
                 //banners
                 Route::resource('banners', BannerController::class);
+
+                //text_banners
+                Route::resource('text_banners', TextBannerController::class);
 
                 //package_terms
                 Route::resource('package_terms', PackageTermController::class);
