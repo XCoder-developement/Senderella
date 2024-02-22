@@ -85,7 +85,7 @@ class PartnerController extends Controller
                         $combinedData[] = $banners[0];
                     }
                     if ($key == 7 && $banners) {
-                        $combinedData[] = $banners[2];
+                        $combinedData[] = $banners[1];
                     }
                 }
 
