@@ -31,18 +31,13 @@ class PartnerController extends Controller
     public function fetch_all_partners()
     {
         try {
-            // $rules = [
-            //     "page" => "required",
-            // ];
-            // $validator = Validator::make(request()->all(), $rules);
-            // if ($validator->fails()) {
-            //     return $this->getvalidationErrors("validator");
-            // }
-            $banner = Banner::latest()->first();
+
+            $banner1 = Banner::inRandomOrder()->first();
+            $banner2 = Banner::inRandomOrder()->first();
 
             $user = auth()->user();
 
-            $all_partners = User::where('gender', '!=', $user->gender)->whereNot('id', $user->id)->get();
+            $all_partners = User::where('gender', '!=', $user->gender)->whereNot('id', $user->id)->pluck('id')->toArray();
 
             $active_partners = User::where('gender', '!=', $user->gender)
                 ->whereNot('id', $user->id)
@@ -68,7 +63,8 @@ class PartnerController extends Controller
                 ->pluck('id')
                 ->toArray();
 
-            $partnerIds = array_merge($active_partners, $disactive_partners);
+            $partnerIds = array_merge($active_partners, $disactive_partners , $all_partners);
+
 
             // Paginate the results after sorting and merging
             $partners = User::whereIn('id', $partnerIds)
@@ -76,33 +72,36 @@ class PartnerController extends Controller
                 ->paginate(10);
 
 
-            // $main_partners = $active_partners->merge($disactive_partners);
-            // $partnerIds = $partnersId->pluck('id')->toArray();
-            // dd($partnerss);
 
-            // $rest_partners = $all_partners->whereNotIn('id', $partnerIds);
+                $combinedData = [];
+                foreach ($partners as $key => $partner) {
+                    $combinedData[] = $partner;
+                    if ($key == 3 && $banner1) {
+                        $combinedData[] = $banner1;
+                    }
+                    if ($key == 7 && $banner2) {
+                        $combinedData[] = $banner2;
+                    }
+                }
 
+                // Create a paginator instance manually
+                $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+                    $combinedData,
+                    $partners->total(),
+                    $partners->perPage(),
+                    $partners->currentPage(),
+                    ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+                );
 
-            // $partners = $partnersId->merge($rest_partners);
-
-            // $page = $request->page; // Set the page number
-            // $perPage = 10; // Set the number of items per page
-            // $offset = ($page - 1) * $perPage;
-
-            // $partners = $partners->slice($offset, $perPage);
-            // $partners = $partners->paginate(10);
-            if ($banner) {
-                $partners->splice(4, 0, [$banner]);
-            }
+                $paginator->appends(request()->all());
 
             if (!$partners) {
                 $msg = "message.there_is_no_partners";
-
                 return $this->dataResponse($msg, 200);
             }
             $msg = "fetch_all_users";
 
-            return $this->dataResponse($msg, PartnerResource::collection($partners)->response()->getData(true), 200);
+            return $this->dataResponse($msg, PartnerResource::collection($paginator)->response()->getData(true), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
