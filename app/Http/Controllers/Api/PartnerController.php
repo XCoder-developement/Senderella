@@ -34,26 +34,25 @@ class PartnerController extends Controller
     public function fetch_all_partners()
     {
         try {
-
             $banners = [
-            'banner1' => Banner::inRandomOrder()->first(),
-            'banner2' => Banner::inRandomOrder()->first(),
-            // 'text_banner' => TextBanner::inRandomOrder()->first(),
+                // 'banner1' => Banner::inRandomOrder()->first(),
+                // 'banner2' => Banner::inRandomOrder()->first(),
+                'text_banner' => TextBanner::inRandomOrder()->first(),
             ];
-          
+            $banner1 = Banner::inRandomOrder()->first();
             $user = auth()->user();
             // $baner1 = $banners[0];
             // dd(Arr::random($banners));
             $all_partners = User::where('gender', '!=', $user->gender)->whereNot('id', $user->id)->pluck('id')->toArray();
 
             $active_partners = User::where('gender', '!=', $user->gender)
-                ->whereNot('id', $user->id)
-                ->whereHas('last_shows', function ($query) {
-                    $query->where('status', 1);
-                })
-                ->orderBy('id', 'desc')
-                ->pluck('id')
-                ->toArray();
+            ->whereNot('id', $user->id)
+            ->whereHas('last_shows', function ($query) {
+                $query->where('status', 1);
+            })
+            ->orderBy('id', 'desc')
+            ->pluck('id')
+            ->toArray();
 
             $disactive_partners = User::where('gender', '!=', $user->gender)
                 ->whereNot('id', $user->id)
@@ -75,10 +74,10 @@ class PartnerController extends Controller
 
             // Paginate the results after sorting and merging
             $partners = User::whereIn('id', $partnerIds)
-                ->orderByRaw("FIELD(id, " . implode(',', $partnerIds) . ")")
-                ->paginate(10);
+            ->orderByRaw("FIELD(id, " . implode(',', $partnerIds) . ")")
+            ->paginate(10);
 
-
+            if ($banner1) {
 
                 $combinedData = [];
                 foreach ($partners as $key => $partner) {
@@ -101,11 +100,16 @@ class PartnerController extends Controller
                 );
 
                 $paginator->appends(request()->all());
+            }
+            else {
 
-            if (!$partners) {
+                $paginator = $partners;
+            }
+            if (!$paginator) {
                 $msg = "message.there_is_no_partners";
                 return $this->dataResponse($msg, 200);
             }
+
             $msg = "fetch_all_users";
 
             return $this->dataResponse($msg, CustomPartnerResource::collection($paginator)->response()->getData(true), 200);
