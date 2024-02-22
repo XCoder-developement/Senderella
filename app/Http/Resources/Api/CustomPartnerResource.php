@@ -131,14 +131,18 @@ class CustomPartnerResource extends JsonResource
                 "type"  => intval($this->type) ?? '',
             ];
         }
-        // else if ($this->type == 3) {
-        //     "text_banner" => [
-        //         "id" => $this->id ?? "" ,
-        //        "text" =>$this->text ?? "",
-        //     ],
-
-        //     "type"  => intval($this->type) ?? '',
-        // }
+        else if ($this->type == 3) {
+            $text_banners = (array) [];
+            $text_banners[] =[
+                "id" => $this->id ?? "",
+                "text" => $this->text ?? "",
+            ];
+            return [
+                "text_banners" => $text_banners,
+                "type"  => intval($this->type) ?? '',
+            ];
+        }
+        
     }
 }
 
