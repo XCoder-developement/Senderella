@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Services\WhatsappService;
+use App\Http\Services\WhatsappService;
 use Illuminate\Http\Request;
 
 class WhatsappController extends Controller
@@ -14,7 +14,7 @@ class WhatsappController extends Controller
         try {
             $service = new WhatsappService();
             $imageData = $service->screenshot_session();
-
+            
             // Return the image data as a response
             return response($imageData)->header('Content-Type', 'image/png');
         } catch (\Exception $ex) {
