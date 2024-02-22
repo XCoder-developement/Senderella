@@ -82,10 +82,10 @@ class PartnerController extends Controller
                 foreach ($partners as $key => $partner) {
                     $combinedData[] = $partner;
                     if ($key == 3 && $banners) {
-                        $combinedData[] = $banners[0];
+                        $combinedData[] = $banners[1];
                     }
                     if ($key == 7 && $banners) {
-                        $combinedData[] = $banners[1];
+                        $combinedData[] = $banners[2];
                     }
                 }
 
