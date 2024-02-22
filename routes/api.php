@@ -275,5 +275,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     // Route::get("users_off", [UserController::class, "users_off"]);
 
     //screenshot_session_api
-Route::get("screenshot_session_api", [WhatsappController::class, "screenshot_session_api"]);
+// Route::get("screenshot_session_api", [WhatsappController::class, "screenshot_session_api"]);
 });
