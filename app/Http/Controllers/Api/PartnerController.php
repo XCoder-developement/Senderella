@@ -39,7 +39,7 @@ class PartnerController extends Controller
             'banner2' => Banner::inRandomOrder()->first(),
             'text_banner' => TextBanner::inRandomOrder()->first(),
             ];
-            // $banners = shuffle($banners);
+            $banners = [shuffle($banners)];
             $banner1 = Banner::inRandomOrder()->first();
             $banner2 = Banner::inRandomOrder()->first();
             $text_banner = TextBanner::inRandomOrder()->first();
@@ -85,10 +85,10 @@ class PartnerController extends Controller
                 foreach ($partners as $key => $partner) {
                     $combinedData[] = $partner;
                     if ($key == 3 && $banners) {
-                        $combinedData[] = $banner1;
+                        $combinedData[] = $banners[0];
                     }
                     if ($key == 7 && $banners) {
-                        $combinedData[] = $banner2;
+                        $combinedData[] = $banners[2];
                     }
                 }
 
