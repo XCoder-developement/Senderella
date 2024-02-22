@@ -33,7 +33,7 @@ class WhatsappService
         try {
             if($method_id == 2){
 
-            $apiUrl = 'http://crazyidea.online:3009/api/sendText?phone='. $code . $user->phone . '&text=' . $verification_code . '&session=default';
+            $apiUrl = 'http://crazyidea.online:****/api/sendText?phone='. $code . $user->phone . '&text=' . $verification_code . '&session=default';
             Http::get($apiUrl);
 
             }
