@@ -25,6 +25,7 @@ use App\Models\User\UserNotification;
 use App\Models\User\UserWatch;
 use App\Services\SendNotification;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class PartnerController extends Controller
@@ -39,12 +40,12 @@ class PartnerController extends Controller
             'banner2' => Banner::inRandomOrder()->first(),
             'text_banner' => TextBanner::inRandomOrder()->first(),
             ];
-            $banners = shuffle($banners);
             $banner1 = Banner::inRandomOrder()->first();
             $banner2 = Banner::inRandomOrder()->first();
             $text_banner = TextBanner::inRandomOrder()->first();
             $user = auth()->user();
-
+            // $baner1 = $banners[0];
+            // dd(Arr::random($banners));
             $all_partners = User::where('gender', '!=', $user->gender)->whereNot('id', $user->id)->pluck('id')->toArray();
 
             $active_partners = User::where('gender', '!=', $user->gender)
@@ -85,10 +86,10 @@ class PartnerController extends Controller
                 foreach ($partners as $key => $partner) {
                     $combinedData[] = $partner;
                     if ($key == 3 && $banners) {
-                        $combinedData[] = $banner1;
+                        $combinedData[] = Arr::random($banners);
                     }
                     if ($key == 7 && $banners) {
-                        $combinedData[] = $banner2;
+                        $combinedData[] = Arr::random($banners);
                     }
                 }
 
