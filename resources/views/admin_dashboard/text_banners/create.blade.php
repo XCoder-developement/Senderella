@@ -17,22 +17,14 @@
                 <form method="post" action="{{ route('text_banners.store') }}" enctype="multipart/form-data">
                     @csrf
 
-                    <!-- Image field -->
-                    <div class="form-group">
-                        <label for="image">{{ __('messages.image') }}</label>
-                        <input type="file" class="form-control-file @error('image') is-invalid @enderror"
-                               id="image" name="image" accept="image/*">
-                        @error('image')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-                    </div>
 
-                    <!-- Single link field -->
+
+                    <!-- Single text field -->
                     <div class="form-group">
-                        <label for="link">{{ __('messages.link') }}</label>
-                        <input type="text" class="form-control @error('link') is-invalid @enderror"
-                               id="link" name="link" value="{{ old('link') }}">
-                        @error('single_link')
+                        <label for="text">{{ __('messages.text') }}</label>
+                        <input type="text" class="form-control @error('text') is-invalid @enderror"
+                               id="text" name="text" value="{{ old('text') }}">
+                        @error('single_text')
                         <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>

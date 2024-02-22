@@ -441,4 +441,7 @@ return [
     "package_terms"    => "Package Terms",
     "banners"    => "Banners",
     "add banners"    => "Add Banner",
+    "text_banners"   => "Text Banners",
+    "add text_banners"   => "Add Text Banner",
+    "edit text_banner"   => "Edit Text Banner",
 ];

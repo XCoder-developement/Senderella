@@ -493,4 +493,7 @@ return [
     "package_rules"                  => "قواعد الباقة",
     "banners"                       => "البانرات",
     "add banners"                   => "اضافة بانر",
+    "text_banners"                  => "البانرات النصية",
+    "add text_banners"              => "اضافة بانر نصي",
+    "edit text_banner"              => "تعديل بانر نصي",
 ];

@@ -19,31 +19,16 @@
                     @csrf
                     @method('PUT')
 
-                    <div class="row">
-                        <!-- Image Upload -->
-                        <div class="col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label for="image">{{ __('messages.image') }}</label>
-                                <input type="file" class="form-control-file" id="image" name="image">
-                                <!-- You may also display the current image here if needed -->
-                                <!-- <img src="{{ $text_banner->image_path }}" alt="Current Image"> -->
-                                @error('image')
-                                    <span class="invalid-feedback">
-                                        {{ $message }}
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
 
                         <!-- Link Input -->
                         <div class="col-md-6 col-sm-12">
                             <div class="form-group">
-                                <label for="link">{{ __('messages.link') }}</label>
+                                <label for="text">{{ __('messages.text') }}</label>
                                 <input
-                                    class="form-control @error('link') is-invalid @enderror"
-                                    required value="{{ $text_banner->link ?? '' }}"
-                                    name="link">
-                                @error('link')
+                                    class="form-control @error('text') is-invalid @enderror"
+                                    required value="{{ $text_banner->text ?? '' }}"
+                                    name="text">
+                                @error('text')
                                     <span class="invalid-feedback">
                                         {{ $message }}
                                     </span>
