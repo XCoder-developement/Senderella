@@ -8,6 +8,7 @@ use App\Traits\ApiTrait;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\CustomPartnerResource;
 use App\Http\Resources\Api\MiniPartnerResource;
 use App\Http\Resources\Api\NotificationPartnerResource;
 use App\Http\Resources\Api\UserResource;
@@ -101,7 +102,7 @@ class PartnerController extends Controller
             }
             $msg = "fetch_all_users";
 
-            return $this->dataResponse($msg, PartnerResource::collection($paginator)->response()->getData(true), 200);
+            return $this->dataResponse($msg, CustomPartnerResource::collection($paginator)->response()->getData(true), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
