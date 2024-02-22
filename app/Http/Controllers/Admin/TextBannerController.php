@@ -31,7 +31,7 @@ class TextBannerController extends Controller
 
 
 
-        $data["text"] = $request->link;
+        $data["text"] = $request->text;
         // $data = $request->validated();
         TextBanner::create($data);
 
@@ -54,12 +54,8 @@ class TextBannerController extends Controller
 
         $text_banner = TextBanner::whereId($id)->first();
 
-        $data["link"] = $request->link;
+        $data["text"] = $request->text;
 
-        if ($request->hasFile('image')) {
-            delete_image($text_banner->image);
-            $data["image"] = upload_image($request->image, "text_banners");
-        }
 
 
         $text_banner->update($data);
@@ -76,7 +72,6 @@ class TextBannerController extends Controller
             return response()->json(['status' => false]);
         }
 
-        delete_image($text_banner->image);
 
         $text_banner->delete();
 
