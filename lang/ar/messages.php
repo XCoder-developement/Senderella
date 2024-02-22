@@ -492,4 +492,5 @@ return [
     "package_terms"                  => "شروط الباقة",
     "package_rules"                  => "قواعد الباقة",
     "banners"                       => "البانرات",
+    "add banners"                   => "اضافة بانر",
 ];

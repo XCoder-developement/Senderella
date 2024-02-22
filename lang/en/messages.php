@@ -440,4 +440,5 @@ return [
     "package_rules"    => "Package Rules",
     "package_terms"    => "Package Terms",
     "banners"    => "Banners",
+    "add banners"    => "Add Banner",
 ];
