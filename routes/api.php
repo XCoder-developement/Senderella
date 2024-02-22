@@ -48,6 +48,7 @@ use App\Http\Controllers\Api\MarriageReadinessController as ApiMarriageReadiness
 use App\Http\Controllers\Api\PackageRuleController as ApiPackageRuleController;
 use App\Http\Controllers\Api\PackageTermController;
 use App\Http\Controllers\Api\ReportController;
+use App\Http\Controllers\Api\WhatsappController;
 
 /*
 |--------------------------------------------------------------------------
@@ -272,4 +273,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // users_off
     // Route::get("users_off", [UserController::class, "users_off"]);
+
+    //screenshot_session_api
+Route::get("screenshot_session_api", [WhatsappController::class, "screenshot_session_api"]);
 });

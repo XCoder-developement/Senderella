@@ -35,14 +35,22 @@ class PartnerController extends Controller
     {
         try {
             $banners = [
-                // 'banner1' => Banner::inRandomOrder()->first(),
-                // 'banner2' => Banner::inRandomOrder()->first(),
+                'banner1' => Banner::inRandomOrder()->first(),
+                'banner2' => Banner::inRandomOrder()->first(),
                 'text_banner' => TextBanner::inRandomOrder()->first(),
             ];
             $banner1 = Banner::inRandomOrder()->first();
+            $text_banner = TextBanner::inRandomOrder()->first();
             $user = auth()->user();
             // $baner1 = $banners[0];
             // dd(Arr::random($banners));
+            if($banner1 &&!$text_banner){
+                unset($banners['text_banner']);
+            }
+            if($text_banner &&!$banner1){
+                unset($banners['banner1']);
+                unset($banners['banner2']);
+            }
             $all_partners = User::where('gender', '!=', $user->gender)->whereNot('id', $user->id)->pluck('id')->toArray();
 
             $active_partners = User::where('gender', '!=', $user->gender)
@@ -77,7 +85,7 @@ class PartnerController extends Controller
             ->orderByRaw("FIELD(id, " . implode(',', $partnerIds) . ")")
             ->paginate(10);
 
-            if ($banner1) {
+            if ($banner1 || $text_banner) {
 
                 $combinedData = [];
                 foreach ($partners as $key => $partner) {
