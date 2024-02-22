@@ -9,7 +9,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Services\SearchService;
 use App\Models\UserSearch\UserSearch;
 use App\Http\Resources\Api\PartnerResource;
+use App\Models\Banner\Banner;
+use App\Models\TextBanner\TextBanner;
 use App\Models\User\User;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 
 class FetchLastSearchController extends Controller
@@ -18,6 +21,21 @@ class FetchLastSearchController extends Controller
     public function fetch_last_search()
     {
         try {
+            $banners = [
+                'banner1' => Banner::inRandomOrder()->first(),
+                'banner2' => Banner::inRandomOrder()->first(),
+                'text_banner' => TextBanner::inRandomOrder()->first(),
+            ];
+            $banner1 = Banner::inRandomOrder()->first();
+            $text_banner = TextBanner::inRandomOrder()->first();
+
+            if ($banner1 && !$text_banner) {
+                unset($banners['text_banner']);
+            }
+            if ($text_banner && !$banner1) {
+                unset($banners['banner1']);
+                unset($banners['banner2']);
+            }
 
             $user = auth()->id();
             $fetch_search = UserSearch::with('requirments')->where('user_id', $user)->latest()->first();
@@ -26,7 +44,7 @@ class FetchLastSearchController extends Controller
                 $all_partners = User::whereIn('id', [])
                     ->orderByRaw("FIELD(id, " . implode(',', []) . ")")
                     ->paginate(10);
-                $AllPartners = PartnerResource::collection( $all_partners)->response()->getData(true);
+                $AllPartners = PartnerResource::collection($all_partners)->response()->getData(true);
                 return $this->dataResponse($msg, $AllPartners, 200);
             }
 
@@ -69,7 +87,34 @@ class FetchLastSearchController extends Controller
                 ->orderByRaw("FIELD(id, " . implode(',', $all_partnersids) . ")")
                 ->paginate(10);
 
-            $AllPartners = PartnerResource::collection($all_partners)->response()->getData(true);
+            if ($banner1 || $text_banner) {
+
+                $combinedData = [];
+                foreach ($all_partners as $key => $partner) {
+                    $combinedData[] = $partner;
+                    if ($key == 3 && $banners) {
+                        $combinedData[] = Arr::random($banners);
+                    }
+                    if ($key == 7 && $banners) {
+                        $combinedData[] = Arr::random($banners);
+                    }
+                }
+
+                // Create a paginator instance manually
+                $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+                    $combinedData,
+                    $all_partners->total(),
+                    $all_partners->perPage(),
+                    $all_partners->currentPage(),
+                    ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+                );
+
+                $paginator->appends(request()->all());
+            } else {
+
+                $paginator = $all_partners;
+            }
+            $AllPartners = PartnerResource::collection($paginator)->response()->getData(true);
             // dd($offlines);
             if ($fetch_search) {
                 $msg = "fetch_last_search";
