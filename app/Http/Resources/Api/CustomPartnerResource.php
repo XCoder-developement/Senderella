@@ -11,6 +11,10 @@ use App\Models\User\UserWatch;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Api\ImageResource;
+use App\Http\Resources\Api\UserInformationResource;
+
+
 
 class CustomPartnerResource extends JsonResource
 {
@@ -30,7 +34,7 @@ class CustomPartnerResource extends JsonResource
         if ($active == 0) {
             $last_active_date = UserLastShow::where('user_id', $user_id)->value('end_date');
             $last_active_date = \Carbon\Carbon::parse($last_active_date);
-            $last_active = $last_active_date->diffForHumans(null, true);
+            $last_active = $last_active_date->diffForHumans(null, true) ." " . __("messages.ago");
         }
 
         $like_time = UserLike::where('user_id', $this->id)->where('partner_id', $user->id)->latest()->value('created_at');
@@ -142,35 +146,36 @@ class CustomPartnerResource extends JsonResource
                 "type"  => intval($this->type) ?? '',
             ];
         }
-        
+
     }
 }
 
 
-class ImageResource extends JsonResource
-{
-    public function toArray(Request $request): array
-    {
-        return [
-            "id" => $this->id,
-            "image" => $this->image_link ?? "",
-            "is_primary" => boolval($this->is_primary) ?? "",
-            "is_blurry" => boolval($this->is_blurry) ?? "",
-        ];
-    }
-}
+// class ImageResource extends JsonResource
+// {
+//     public function toArray(Request $request): array
+//     {
+//         return [
+//             "id" => $this->id,
+//             "image" => $this->image_link ?? "",
+//             "is_primary" => boolval($this->is_primary) ?? "",
+//             "is_blurry" => boolval($this->is_blurry) ?? "",
+//         ];
+//     }
+// }
 
-class UserInformationResource extends JsonResource
-{
-    public function toArray(Request $request): array
-    {
-        return [
-            "id" => $this->id,
-            "title" => strval($this->requirment?->title) ?? "",
-            "value" => strval($this->requirment_item?->title)  ?? __("messages.not_answered"),
 
-            "title_id" => $this->requirment_id ?? "",
-            "value_id" => intval($this->requirment_item_id),
-        ];
-    }
-}
+// class UserInformationResource extends JsonResource
+// {
+//     public function toArray(Request $request): array
+//     {
+//         return [
+//             "id" => $this->id,
+//             "title" => strval($this->requirment?->title) ?? "",
+//             "value" => strval($this->requirment_item?->title)  ?? __("messages.not_answered"),
+
+//             "title_id" => $this->requirment_id ?? "",
+//             "value_id" => intval($this->requirment_item_id),
+//         ];
+//     }
+// }
