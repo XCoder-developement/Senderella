@@ -6,6 +6,7 @@ use App\Http\Controllers\Params\SearchPartner\SearchPartnerParams;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\CustomPartnerResource;
 use App\Http\Services\SearchService;
 use App\Models\UserSearch\UserSearch;
 use App\Http\Resources\Api\PartnerResource;
@@ -115,7 +116,7 @@ class FetchLastSearchController extends Controller
                     $paginator = $all_partners;
                 }
 
-            $AllPartners = PartnerResource::collection($paginator)->response()->getData(true);
+            $AllPartners = CustomPartnerResource::collection($paginator)->response()->getData(true);
             // dd($offlines);
             if ($fetch_search) {
                 $msg = "fetch_last_search";
