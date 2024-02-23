@@ -444,4 +444,5 @@ return [
     "text_banners"   => "Text Banners",
     "add text_banners"   => "Add Text Banner",
     "edit text_banner"   => "Edit Text Banner",
+    "ago"    => "ago",
 ];
