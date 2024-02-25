@@ -52,7 +52,7 @@ class PartnerController extends Controller
                 unset($banners['banner2']);
             }
             $all_partners = User::where('gender', '!=', $user->gender)->whereNot('id', $user->id)->pluck('id')->toArray();
-
+            $blocked = UserBlock::where('user_id', $user->id)->pluck('partner_id')->toArray();
             $active_partners = User::where('gender', '!=', $user->gender)
                 ->whereNot('id', $user->id)
                 ->whereHas('last_shows', function ($query) {
@@ -79,7 +79,7 @@ class PartnerController extends Controller
 
             $partnerIds = array_merge($active_partners, $disactive_partners, $all_partners);
 
-
+            $partnerIds = array_diff($partnerIds, $blocked);
             // Paginate the results after sorting and merging
             $partners = User::whereIn('id', $partnerIds)
                 ->orderByRaw("FIELD(id, " . implode(',', $partnerIds) . ")")
@@ -166,6 +166,8 @@ class PartnerController extends Controller
                 unset($banners['banner2']);
             }
             $user = auth()->user();
+            $blocked = UserBlock::where('user_id', $user->id)->pluck('partner_id')->toArray();
+
             $duration = NewDuration::first()->new_duration; // getting the duration days for the new tag
             // dd(Carbon::now()->subDays($duration)->format('Y-m-d h:m'));
             $actve_new_partners = User::where('id', '!=', $user->id)->where('gender', '!=', $user->gender)
@@ -194,6 +196,8 @@ class PartnerController extends Controller
                 ->toArray();
 
             $combinedPartnersids = array_merge($actve_new_partners, $off_new_partners);
+            $combinedPartnersids = array_diff($combinedPartnersids, $blocked);
+
             $combinedPartners = User::whereIn('id', $combinedPartnersids)
                 ->orderByRaw("FIELD(id, " . implode(',', $combinedPartnersids) . ")")
                 ->paginate(10);
@@ -706,6 +710,8 @@ class PartnerController extends Controller
             }
 
             $user = auth()->user();
+            $blocked = UserBlock::where('user_id', $user->id)->pluck('partner_id')->toArray();
+
             // dd(Carbon::parse($user->birthday_date)->subYears(5));
             $mdate = Carbon::parse($user->birthday_date)->subYears(5)->format('Y-m-d');
             $fdate = Carbon::parse($user->birthday_date)->addYears(5)->format('Y-m-d');
@@ -790,13 +796,15 @@ class PartnerController extends Controller
                 unset($banners['banner2']);
             }
             $user = auth()->user();
+            $blocked = UserBlock::where('user_id', $user->id)->pluck('partner_id')->toArray();
+
             $active_partner_counts = UserLike::groupBy('partner_id')
                 ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
                 ->whereIn('user_id', function ($query) {
                     $query->select('user_id')->from('user_last_shows')->where('status', 1);
                 })
                 ->get()
-                ->pluck('count', 'partner_id')->toArray();
+                ->pluck( 'partner_id')->toArray();
 
             $disactive_partner_counts = UserLike::groupBy('partner_id')
                 ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
@@ -804,12 +812,15 @@ class PartnerController extends Controller
                     $query->select('user_id')->from('user_last_shows')->where('status', 0)->orderBy('end_date', 'desc');
                 })
                 ->get()
-                ->pluck('count', 'partner_id')->toArray();
-            // dd($disactive_partner_counts->toArray());
+                ->pluck( 'partner_id')->toArray();
+            // dd($blocked);
 
             // $most_active_partner = $active_partner_counts->sortDesc()->keys()->toArray();
             // $most_disactive_partner = $disactive_partner_counts->sortDesc()->keys()->toArray();
-            $mostLikedPartnerId = array_merge($active_partner_counts, $disactive_partner_counts);
+            $mostLikedPartnerIds = array_merge($active_partner_counts, $disactive_partner_counts);
+            $mostLikedPartnerId = array_diff($mostLikedPartnerIds, $blocked);
+            // dd($mostLikedPartnerId);
+
             $mostLikedCount = User::whereIn('id', array_keys($mostLikedPartnerId))->where('gender', '!=', $user->gender);
 
             // $page = $request->page; // Set the page number
@@ -890,6 +901,8 @@ class PartnerController extends Controller
             $distanceInDegrees = $distance / (111.32 * 1000);
 
             $user = auth()->user();
+            $blocked = UserBlock::where('user_id', $user->id)->pluck('partner_id')->toArray();
+
             $active_nearst_partners = User::where('id', '!=', $user->id)
                 ->whereBetween('latitude', [$latitude - $distanceInDegrees, $latitude + $distanceInDegrees])
                 ->whereBetween('longitude', [$longitude - $distanceInDegrees, $longitude + $distanceInDegrees])
@@ -921,6 +934,7 @@ class PartnerController extends Controller
                 ->toArray();
 
             $nearst_partnersids = array_merge($active_nearst_partners, $disactive_nearst_partners);
+            $nearst_partnersids = array_diff($nearst_partnersids, $blocked);
 
             $nearst_partners = User::whereIn('id', $nearst_partnersids)
                 ->orderByRaw("FIELD(id, " . implode(',', $nearst_partnersids) . ")")
