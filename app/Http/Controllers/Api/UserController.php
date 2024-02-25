@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\PartnerResource;
 use App\Http\Resources\Api\UserResource;
+use App\Models\Requirment\Requirment;
 use App\Models\User\DeltedUser;
 use App\Models\User\User;
 use App\Models\User\UserBookmark;
@@ -31,7 +32,7 @@ class UserController extends Controller
     use ApiTrait;
     public function set_user_data(Request $request)
     {
-        $p = 13;
+        $p = 12;
         try {
             //validation
             $rules = [
@@ -125,6 +126,9 @@ class UserController extends Controller
             $user->update($data);
 
             if ($request->user_information) {
+                $infos = Requirment::where('answer_type' ,1)->pluck('id')->toArray();
+                $infos_count = count($infos);
+                $count = 0;
                 foreach ($request->user_information as $user_information) {
                     $requirment_id = $user_information["requirment_id"];
                     $requirment_item_id = $user_information["requirment_item_id"];
@@ -136,6 +140,7 @@ class UserController extends Controller
 
                         if($user_information["requirment_item_id"]){
                     $requirment_item_id = $user_information["requirment_item_id"];
+                            $count++;
                         }else{
                             $requirment_item_id = 'message.not_answered';
                         }
@@ -153,13 +158,18 @@ class UserController extends Controller
                             'user_id' => $user->id,
                             'type' => 1,
                         ];
-
+                        if($count == $infos_count){
+                            $p++;
+                        }
                         UserInformation::create($user_info_data);
                     }
                 }
             }
 
             if ($request->questions) {
+                $ques = Requirment::where('answer_type' ,2)->pluck('id')->toArray();
+                $ques_count = count($ques);
+                $qcount = 0;
                     foreach ($request->questions as $question) {
                         $requirment_id = $question["question_id"];
                         $answer = $question["answer"];
@@ -172,6 +182,7 @@ class UserController extends Controller
 
                         if ($question["answer"]){
                             $answer = $question["answer"];
+                            $qcount++;
                         }else{
                             $answer = 'message.not_answered';
                         }
@@ -188,6 +199,9 @@ class UserController extends Controller
                                 'type' => 2,
                             ];
 
+                            if($qcount == $ques_count){
+                                $p++;
+                            }
                             UserInformation::create($user_info_data);
                         }
                     }
