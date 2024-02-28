@@ -47,7 +47,7 @@ class SearchService
 
         $user = $query->paginate(10);
         if ($with_store) {
-            (new StoreSearchService())->storeUserSearch($search,auth()->id());
+            (new StoreSearchService())->storeUserSearch($search);
         }
         return $user;
     }

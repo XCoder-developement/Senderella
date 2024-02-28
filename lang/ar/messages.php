@@ -497,4 +497,6 @@ return [
     "add text_banners"              => "اضافة بانر نصي",
     "edit text_banner"              => "تعديل بانر نصي",
     "ago"                          => "منذ",
+    "you_bookmarked_this_user"    => "تم إداراجه بالمفضلة",
+    "you_removed_this_user__from_your_bookmarks"    => "تم إزالته من المفضلة",
 ];
