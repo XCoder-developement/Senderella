@@ -314,17 +314,16 @@ class PartnerController extends Controller
             $rules = [ //partner_id
                 "partner_id" => "required|exists:users,id",
                 // reason
-                "reason" => "nullable",
+                "reason" => "sometimes",
                 //reason_id
                 "reason_ids" => "sometimes|array",
                 "reason_ids.*" => "sometimes|exists:block_reasons,id",
             ];
 
 
-
             $validator = Validator::make(request()->all(), $rules);
             if ($validator->fails()) {
-                return $this->getvalidationErrors("validator");
+                return $this->getvalidationErrors($validator);
             }
 
             $user_id = auth()->id();
@@ -810,7 +809,7 @@ class PartnerController extends Controller
                 ->pluck('partner_id')
                 ->toArray();
 
-                $disactive_partner_counts = UserLike::groupBy('partner_id')
+            $disactive_partner_counts = UserLike::groupBy('partner_id')
                 ->select('partner_id', DB::raw('SUM(partner_id) as count'))
                 ->whereIn('user_id', function ($query) {
                     $query->select('user_id')->from('user_last_shows')->where('status', 0)->orderBy('end_date', 'desc');
@@ -819,9 +818,9 @@ class PartnerController extends Controller
                 ->get()
                 ->pluck('partner_id')
                 ->toArray();
-                // dd($blocked);
-                // $most_active_partner = $active_partner_counts->sortDesc()->keys()->toArray();
-                // $most_disactive_partner = $disactive_partner_counts->sortDesc()->keys()->toArray();
+            // dd($blocked);
+            // $most_active_partner = $active_partner_counts->sortDesc()->keys()->toArray();
+            // $most_disactive_partner = $disactive_partner_counts->sortDesc()->keys()->toArray();
             $mostLikedPartnerIds = array_merge($active_partner_counts, $disactive_partner_counts);
             // $mostLikedPartnerId = array_diff($mostLikedPartnerIds, $blocked);
             // dd($mostLikedPartnerId);
