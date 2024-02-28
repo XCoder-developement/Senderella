@@ -823,10 +823,10 @@ class PartnerController extends Controller
             // $most_disactive_partner = $disactive_partner_counts->sortDesc()->keys()->toArray();
             $mostLikedPartnerIds = array_merge($active_partner_counts, $disactive_partner_counts);
             // $mostLikedPartnerId = array_diff($mostLikedPartnerIds, $blocked);
-            dd($mostLikedPartnerIds);
+            // dd($mostLikedPartnerIds);
 
             $mostLikedCount = User::whereIn('id', array_keys($mostLikedPartnerIds))->whereNotIn('id', $blocked)->where('gender', '!=', $user->gender);
-
+            dd($mostLikedCount);
             $mostLikedCount = $mostLikedCount->paginate(10);
 
             if ($banner1 || $text_banner) {
