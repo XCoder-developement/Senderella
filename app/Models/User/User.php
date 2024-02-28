@@ -217,6 +217,14 @@ class User extends Authenticatable
         return $this->hasMany(UserWatch::class, 'partner_id');
     }
 
+    public function is_favorite($user_id){
+        $favorite_product = UserBookmark::whereUserId($user_id)->wherePartnerId($this->id)->first();
+        if($favorite_product){
+            return 1;
+        }elseif(!$favorite_product){
+            return 0;
+        }
+    }
     //who the user favorites
     public function favorited(): HasMany
     {

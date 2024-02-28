@@ -120,6 +120,8 @@ class CustomPartnerResource extends JsonResource
 
                     "visibility"   => intval($this->visibility),
 
+                    "is_favorite" => $this->is_favorite($user->id) ?? 0,
+                    
                     "like_time" => $like_time ?? '',
                     "favorite_time" => $favorite_time ?? '',
                     "watch_time" => $watch_time ?? '',
