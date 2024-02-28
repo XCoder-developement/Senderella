@@ -825,8 +825,9 @@ class PartnerController extends Controller
             // $mostLikedPartnerId = array_diff($mostLikedPartnerIds, $blocked);
             // dd($mostLikedPartnerIds);
 
-            $mostLikedCount = User::whereIn('id', array_keys($mostLikedPartnerIds))->whereNotIn('id', $blocked)->where('gender', '!=', $user->gender);
-            dd($mostLikedCount);
+            $mostLikedCount = User::whereIn('id', array_keys($mostLikedPartnerIds))->whereNotIn('id', $blocked)
+            // ->where('gender', '!=', $user->gender)
+            ;
             $mostLikedCount = $mostLikedCount->paginate(10);
 
             if ($banner1 || $text_banner) {
