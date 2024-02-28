@@ -800,7 +800,7 @@ class PartnerController extends Controller
             $blocked = UserBlock::where('user_id', $user->id)->pluck('partner_id')->toArray();
 
             $active_partner_counts = UserLike::groupBy('partner_id')
-                ->select('partner_id', DB::raw('SUM(partner_id) as count'))
+                ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
                 ->whereIn('user_id', function ($query) {
                     $query->select('user_id')->from('user_last_shows')->where('status', 1);
                 })
@@ -810,7 +810,7 @@ class PartnerController extends Controller
                 ->toArray();
 
             $disactive_partner_counts = UserLike::groupBy('partner_id')
-                ->select('partner_id', DB::raw('SUM(partner_id) as count'))
+                ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
                 ->whereIn('user_id', function ($query) {
                     $query->select('user_id')->from('user_last_shows')->where('status', 0)->orderBy('end_date', 'desc');
                 })
@@ -823,7 +823,7 @@ class PartnerController extends Controller
             // $most_disactive_partner = $disactive_partner_counts->sortDesc()->keys()->toArray();
             $mostLikedPartnerIds = array_merge($active_partner_counts, $disactive_partner_counts);
             // $mostLikedPartnerId = array_diff($mostLikedPartnerIds, $blocked);
-            // dd($mostLikedPartnerId);
+            dd($mostLikedPartnerIds);
 
             $mostLikedCount = User::whereIn('id', array_keys($mostLikedPartnerIds))->whereNotIn('id', $blocked)->where('gender', '!=', $user->gender);
 
