@@ -801,7 +801,7 @@ class PartnerController extends Controller
             $blocked = UserBlock::where('user_id', $user->id)->pluck('partner_id')->toArray();
 
             $active_partner_counts = UserLike::groupBy('partner_id')
-                ->select('partner_id', DB::raw('COUNT(user_id) as count'))
+                ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
                 ->whereIn('user_id', function ($query) {
                     $query->select('user_id')->from('user_last_shows')->where('status', 1);
                 })
@@ -811,7 +811,7 @@ class PartnerController extends Controller
                 ->toArray();
 
                 $disactive_partner_counts = UserLike::groupBy('partner_id')
-                ->select('partner_id', DB::raw('COUNT(user_id) as count'))
+                ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
                 ->whereIn('user_id', function ($query) {
                     $query->select('user_id')->from('user_last_shows')->where('status', 0)->orderBy('end_date', 'desc');
                 })
