@@ -64,7 +64,6 @@ class PartnerResource extends JsonResource
         $images = $primaryImages->merge($nonPrimaryImages);
 
 
-
         $lat1 = $user->latitude;
         $lon1 = $user->longitude;
         $lat2 = $this->latitude;
@@ -110,7 +109,7 @@ class PartnerResource extends JsonResource
                 "education_type_title" => $this->education_type?->title ?? "",
 
                 "visibility"   => intval($this->visibility),
-
+                "is_favorite" => $this->is_favorite($user->id) ?? 0,
                 "like_time" => $like_time ?? '',
                 "favorite_time" => $favorite_time ?? '',
                 "watch_time" => $watch_time ?? '',
