@@ -445,4 +445,5 @@ return [
     "add text_banners"   => "Add Text Banner",
     "edit text_banner"   => "Edit Text Banner",
     "ago"    => "ago",
+    "you_removed_this_user__from_your_bookmarks"    => "You removed this user from your bookmarks",
 ];

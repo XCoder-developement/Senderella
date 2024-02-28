@@ -369,19 +369,21 @@ class PartnerController extends Controller
             $user_id = auth()->id();
             $partner_id = $request->partner_id;
 
+            $partner = User::whereId($partner_id)->first();
 
             $bookmark_partner = UserBookmark::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
 
             if ($bookmark_partner) {
-                $msg = __('messages.you already bookmarked this partner');
-                return $this->errorResponse($msg, 200);
+                UserBookmark::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->delete();
+                $msg = __('messages.you_removed_this_user__from_your_bookmarks');
+                $data = new PartnerResource($partner);
+                return $this->dataResponse($msg, $data, 200);
             } else {
 
                 $data['user_id'] =  $user_id;
                 $data['partner_id'] =  $partner_id;
                 UserBookmark::create($data);
 
-                $partner = User::whereId($partner_id)->first();
                 //
                 $user = auth()->user();
                 $userId = $user->id;
@@ -399,7 +401,7 @@ class PartnerController extends Controller
                 //     'title' => __('messages.bookmarked_by_user'),
                 // ]);
 
-                $msg = "bookmark_partner";
+                $msg = __('messages.you_bookmarked_this_user');
                 $data = new PartnerResource($partner);
                 return $this->dataResponse($msg, $data, 200);
             }
@@ -803,16 +805,20 @@ class PartnerController extends Controller
                 ->whereIn('user_id', function ($query) {
                     $query->select('user_id')->from('user_last_shows')->where('status', 1);
                 })
+                ->orderBy('count', 'desc') // Order by the count of likes in descending order
                 ->get()
-                ->pluck('partner_id')->toArray();
+                ->pluck('partner_id')
+                ->toArray();
 
             $disactive_partner_counts = UserLike::groupBy('partner_id')
                 ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
                 ->whereIn('user_id', function ($query) {
                     $query->select('user_id')->from('user_last_shows')->where('status', 0)->orderBy('end_date', 'desc');
                 })
+                ->orderBy('count', 'desc') // Order by the count of likes in descending order
                 ->get()
-                ->pluck('partner_id')->toArray();
+                ->pluck('partner_id')
+                ->toArray();
             // dd($blocked);
 
             // $most_active_partner = $active_partner_counts->sortDesc()->keys()->toArray();
@@ -935,33 +941,33 @@ class PartnerController extends Controller
                 ->orderByRaw("FIELD(id, " . implode(',', $nearst_partnersids) . ")")
                 ->paginate(10);
 
-                if ($banner1 || $text_banner) {
+            if ($banner1 || $text_banner) {
 
-                    $combinedData = [];
-                    foreach ($nearst_partners as $key => $partner) {
-                        $combinedData[] = $partner;
-                        if ($key == 3 && $banners) {
-                            $combinedData[] = Arr::random($banners);
-                        }
-                        if ($key == 7 && $banners) {
-                            $combinedData[] = Arr::random($banners);
-                        }
+                $combinedData = [];
+                foreach ($nearst_partners as $key => $partner) {
+                    $combinedData[] = $partner;
+                    if ($key == 3 && $banners) {
+                        $combinedData[] = Arr::random($banners);
                     }
-
-                    // Create a paginator instance manually
-                    $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
-                        $combinedData,
-                        $nearst_partners->total(),
-                        $nearst_partners->perPage(),
-                        $nearst_partners->currentPage(),
-                        ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
-                    );
-
-                    $paginator->appends(request()->all());
-                } else {
-
-                    $paginator = $nearst_partners;
+                    if ($key == 7 && $banners) {
+                        $combinedData[] = Arr::random($banners);
+                    }
                 }
+
+                // Create a paginator instance manually
+                $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+                    $combinedData,
+                    $nearst_partners->total(),
+                    $nearst_partners->perPage(),
+                    $nearst_partners->currentPage(),
+                    ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+                );
+
+                $paginator->appends(request()->all());
+            } else {
+
+                $paginator = $nearst_partners;
+            }
 
             $data = CustomPartnerResource::collection($paginator)->response()->getData(true);
             $msg = "fetch_nearst_partners";
