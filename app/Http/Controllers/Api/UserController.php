@@ -142,7 +142,7 @@ class UserController extends Controller
                     $requirment_item_id = $user_information["requirment_item_id"];
                             $count++;
                         }else{
-                            $requirment_item_id = 'message.not_answered';
+                            $requirment_item_id = 'messages.not_answered';
                         }
 
                     if ($existingRecord) {
@@ -184,7 +184,7 @@ class UserController extends Controller
                             $answer = $question["answer"];
                             $qcount++;
                         }else{
-                            $answer = 'message.not_answered';
+                            $answer = 'messages.not_answered';
                         }
 
                         if ($existingRecord) {
@@ -250,7 +250,7 @@ class UserController extends Controller
             // dd($user_images);
 
             if ($request->stored_images == [] && $request->imagesArray == []) {
-                $msg = __("message.error, you have to upload images");
+                $msg = __("messages.error, you have to upload images");
                 return $this->successResponse($msg, 200);
             } else {
 
@@ -418,7 +418,7 @@ class UserController extends Controller
 
 
 
-                $msg = __('message.account is delted successfully');
+                $msg = __('messages.account is delted successfully');
                 return $this->successResponse($msg, 200);
             }
         } catch (\Exception $ex) {
@@ -469,7 +469,7 @@ class UserController extends Controller
 
             }
 
-            $msg = __('message.status updated successfully');
+            $msg = __('messages.status updated successfully');
                 return $this->successResponse($msg, 200);
 
         } catch (\Exception $ex) {
@@ -497,7 +497,7 @@ class UserController extends Controller
                 'is_bookmark_shown' => 0,
                 'is_watch_shown' => 0,
             ]);
-            $msg = __('message.new_partner_activity');
+            $msg = __('messages.new_partner_activity');
             return $this->dataResponse($msg,$data, 200);
 
         } catch (\Exception $ex) {
@@ -520,7 +520,7 @@ class UserController extends Controller
             $user->update(['visibility' => $request->visibility]);
 
             $data = new UserResource($user);
-            $msg = __('message.done_updating_visibility');
+            $msg = __('messages.done_updating_visibility');
             return $this->dataResponse($msg,$data, 200);
 
             }
@@ -546,7 +546,7 @@ class UserController extends Controller
             $user->update(['latitude' => $request->latitude, 'longitude' => $request->longitude]);
 
             $data = new UserResource($user);
-            $msg = __('message.done_updating_location');
+            $msg = __('messages.done_updating_location');
             return $this->dataResponse($msg,$data, 200);
         }
 
@@ -569,7 +569,7 @@ class UserController extends Controller
     //             ]);
     //         }
 
-    //         $msg = __('message.users_off');
+    //         $msg = __('messages.users_off');
     //         return $this->dataResponse($msg,$users, 200);
     //     }
     //     catch (\Exception $ex){
