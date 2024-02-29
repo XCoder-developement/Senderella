@@ -421,7 +421,6 @@ return [
     "your account is not verified"    => "Your account is not upgraded",
     "Your chats" => "Your chats",
     "password_is_incorrect" => "Password is incorrect",
-    "done_updating_visibility" => "Updating Visibility Done",
     "message"    => "Message",
     "congrats_you_have_received_a_reply"    => "Congratulations! You have received a reply",
     "done_updating_location"    => "Updating Location Done",
@@ -446,4 +445,5 @@ return [
     "edit text_banner"   => "Edit Text Banner",
     "ago"    => "ago",
     "you_removed_this_user__from_your_bookmarks"    => "You removed this user from your bookmarks",
+    "done_updating_visibility"    => "Updating Visibility Done",
 ];
