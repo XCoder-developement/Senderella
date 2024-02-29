@@ -45,11 +45,13 @@ class PostController extends Controller
         foreach($users as $user){
             $user->update(['is_post_shown' => $user->is_post_shown + 1]);
             $user->update(['is_notification_shown' => $user->is_notification_shown + 1]);
+            if($user->user_device->device_token){
             SendNotification::send($user->user_device->device_token,__('messages.new_post'),__('messages.new_post') , $tpye ,'' , '');
             UserNotification::create([
                 'user_id' => $user->id,
                 'title' => __('messages.new_post'),
             ]);
+        }
         }
 
         if ($request->has('images') && count($request->images) > 0) {
