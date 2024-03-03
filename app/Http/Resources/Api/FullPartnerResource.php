@@ -93,6 +93,8 @@ class FullPartnerResource extends JsonResource
             "about_me" => $this->about_me ?? __("messages.not_answered"),
             // "active" => intval($this->active) ?? "",
 
+            "is_favorite" => $this->is_favorite($user->id) ?? 0,
+            
             "visibility"   => intval($this->visibility),
 
             "partner_more_info" => UserInformationResource::collection(Requirment::where('answer_type', 1)->get())->additional(['user_id' => $user_id]),
