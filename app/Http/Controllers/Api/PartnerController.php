@@ -423,37 +423,44 @@ class PartnerController extends Controller
             $user = auth()->user();
             $user_id = $user->id;
             $partner_id = $request->partner_id;
-
-
-            $liked_before = UserWatch::where('user_id', $user_id)->where('partner_id', $partner_id)->first();
-            if ($liked_before) {
-                $liked_before->delete();
-            }
-
-
-            $type = 1;
-
             $data['user_id'] =  $user->id;
             $data['partner_id'] =  $partner_id;
-            UserWatch::create($data);
+            // notifiaction_settings
+            $type = 1;
+
             $image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
 
             $partner = User::whereId($partner_id)->first();
             $partner_devices = UserDevice::where('user_id', $partner->id)->pluck('device_token');
-            if ($partner->id != $user_id) {
-                $userId = $partner->id;
-                $partner->update(['is_watch_shown' => $partner->is_watch_shown + 1]);
-                $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
-                UserNotification::create([
-                    'user_id' => $partner->id,
-                    'title' => __('messages.someone_viewed'),
 
-                ]);
-                foreach ($partner_devices as $device) {
-                    // dd($device);
-                    SendNotification::send($device, __('messages.someone_viewed'), __("messages.someone_viewed"), $type, $userId, url($image) ?? '');
+            // notifiaction_settings
+            $watched_before = UserWatch::where('user_id', $user_id)->where('partner_id', $partner_id)->first();
+            if ($watched_before) {
+                $watched_before->delete();
+                //user watch
+                UserWatch::create($data);
+            } else {
+
+                UserWatch::create($data);
+                //user watch
+
+                if ($partner->id != $user_id) {
+                    $userId = $partner->id;
+                    $partner->update(['is_watch_shown' => $partner->is_watch_shown + 1]);
+                    $partner->update(['is_notification_shown' => $partner->is_notification_shown + 1]);
+                    UserNotification::create([
+                        'user_id' => $partner->id,
+                        'title' => __('messages.someone_viewed'),
+
+                    ]);
+                    foreach ($partner_devices as $device) {
+                        // dd($device);
+                        SendNotification::send($device, __('messages.someone_viewed'), __("messages.someone_viewed"), $type, $userId, url($image) ?? '');
+                    }
                 }
             }
+
+
             //responce
             $msg = "user_watch";
             $data = new PartnerResource($partner);
