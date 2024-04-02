@@ -28,7 +28,7 @@ return new class extends Migration
             $table->text('weight')->nullable();
             $table->text('height')->nullable();
             $table->integer('active')->nullable();
-            $table->integer('trusted')->nullable();
+            $table->integer('trusted')->nullable(); // if trusted 1 user deleted if 2 admin deleted 
 
             $table->integer('is_verify');  // the status of having packages or not the default is 0 everything is available exception messaging and hashing the recieved messages , 1 has a package
 

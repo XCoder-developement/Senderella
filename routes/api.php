@@ -42,6 +42,7 @@ use App\Http\Controllers\Api\FetchLastSearchController;
 use App\Http\Controllers\Api\UserInformationController;
 use App\Http\Controllers\Admin\MarriageReadinessController;
 use App\Http\Controllers\Admin\PackageRuleController;
+use App\Http\Controllers\Api\AppMessageController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\ReportTypeController;
 use App\Http\Controllers\Api\MarriageReadinessController as ApiMarriageReadinessController;
@@ -270,7 +271,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     //fetch_package_terms
     Route::get("fetch_package_terms", [PackageTermController::class, "fetch_package_terms"]);
 
-
+    //send_app_message
+    Route::post("send_app_message", [AppMessageController::class, "send_app_message"]);
     // users_off
     // Route::get("users_off", [UserController::class, "users_off"]);
 
