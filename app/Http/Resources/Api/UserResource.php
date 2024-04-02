@@ -24,7 +24,7 @@ class UserResource extends JsonResource
             $last_active_date = \Carbon\Carbon::parse($last_active_date);
             $last_active = $last_active_date->diffForHumans(null, true);
         }
-        
+
         return [
             "id" =>$this->id,
             "name" => $this->name ?? "",
@@ -59,7 +59,7 @@ class UserResource extends JsonResource
             "flag"  => $this->country?->image_link ?? "",
             "state_title" => $this->state?->title ?? "",
 
-            "percentage" => intval($this->percentage > 100 || $this->percentage >= 90 ? 100 : $this->percentage) ?? "",
+            "percentage" => intval($this->percentage > 100 || $this->percentage >= 85 ? 100 : $this->percentage) ?? "",
 
             "verification_code" => (string) $this->verification_code ?? "",
             "verification_type" => intval($this->verification_type) ?? "",
