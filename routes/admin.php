@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\TermController;
 use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AppMessageController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\PackageController;
@@ -227,6 +228,9 @@ Route::group(
                 //package_terms
                 Route::resource('package_terms', PackageTermController::class);
                 Route::post('package_terms/update', [PackageTermController::class, 'update'])->name('package_terms.update');
+
+                //app_messages
+                Route::resource('app_messages' , AppMessageController::class);
             });
         });
     }

@@ -447,4 +447,5 @@ return [
     "you_removed_this_user__from_your_bookmarks"    => "You removed this user from your bookmarks",
     "done_updating_visibility"    => "Updating Visibility Done",
     "you_bookmarked_this_user"    => "You bookmarked this user",
+    "app_messages"        => "User Messages",
 ];

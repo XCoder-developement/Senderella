@@ -501,4 +501,5 @@ return [
     "you_removed_this_user__from_your_bookmarks"    => "تم إزالته من المفضلة",
     "done_updating_visibility"    => "تم تحديث خاصية الاظهار",
     "you_bookmarked_this_user"    => "تم إداراجه بالمفضلة",
+    "app_messages"                => "رسايل االمستخدمين",
 ];

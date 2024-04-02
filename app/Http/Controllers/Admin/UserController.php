@@ -37,7 +37,7 @@ class UserController extends Controller
             'education_type_id' => $user->education_type_id,
             'weight'        => $user->weight,
             'height'        => $user->height,
-            'trusted'       => $user->trusted,
+            'trusted'       => 2,
             'is_verify'     => $user->is_verify,
             'notes'         => $user->notes,
             'about_me'      => $user->about_me,

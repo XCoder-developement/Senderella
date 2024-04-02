@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\RegisterResource;
 use App\Http\Resources\Api\UserResource;
+use App\Models\User\DeltedUser;
 use App\Models\User\User;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
@@ -40,7 +41,11 @@ class RegisterController extends Controller
             // $data["verification_type"] = $request->verification_type;
 
             //create new user
+            $blocked_user = DeltedUser::where('phone' , $request->phone)->first()->value('trusted');
+            if($blocked_user == 2){
+                return $this->dataResponse(__('messages.this_phone_is_blocked'),  200);
 
+            }
             $user = User::create($data);
 
 

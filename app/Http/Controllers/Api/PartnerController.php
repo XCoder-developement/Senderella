@@ -354,6 +354,61 @@ class PartnerController extends Controller
         }
     }
 
+    // public function bookmark_partner(Request $request)
+    // {
+    //     try {
+    //         $rules = [
+    //             "partner_id" => "required|exists:users,id",
+    //         ];
+    //         $validator = Validator::make(request()->all(), $rules);
+    //         if ($validator->fails()) {
+    //             return $this->getvalidationErrors("validator");
+    //         }
+
+    //         $user_id = auth()->id();
+    //         $partner_id = $request->partner_id;
+
+    //         $partner = User::whereId($partner_id)->first();
+
+    //         $bookmark_partner = UserBookmark::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
+
+    //         if ($bookmark_partner) {
+    //             UserBookmark::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->delete();
+    //             $msg = __('messages.you_removed_this_user__from_your_bookmarks');
+    //             $data = new PartnerResource($partner);
+    //             return $this->dataResponse($msg, $data, 200);
+    //         } else {
+
+    //             $data['user_id'] =  $user_id;
+    //             $data['partner_id'] =  $partner_id;
+    //             UserBookmark::create($data);
+
+    //             //
+    //             $user = auth()->user();
+    //             $userId = $user->id;
+    //             $image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
+    //             $type = 5;
+    //             $partner->update(['is_bookmark_shown' => $partner->is_bookmark_shown + 1]);
+
+    //             $partner_devices = UserDevice::where('user_id', $partner->id)->pluck('device_token');
+    //             foreach ($partner_devices as $device) {
+    //                 // dd($device);
+    //                 SendNotification::send($device, __('messages.bookmarked_by_user'), __('messages.bookmarked_by_user'), $type, $userId, url($image) ?? '');
+    //             }
+    //             // UserNotification::create([
+    //             //     'user_id' => $partner->id,
+    //             //     'title' => __('messages.bookmarked_by_user'),
+    //             // ]);
+
+    //             $msg = __('messages.you_bookmarked_this_user');
+    //             $data = new PartnerResource($partner);
+    //             return $this->dataResponse($msg, $data, 200);
+    //         }
+    //     } catch (\Exception $ex) {
+    //         return $this->returnException($ex->getMessage(), 500);
+    //     }
+    // }
+
     public function bookmark_partner(Request $request)
     {
         try {
@@ -368,21 +423,19 @@ class PartnerController extends Controller
             $user_id = auth()->id();
             $partner_id = $request->partner_id;
 
-            $partner = User::whereId($partner_id)->first();
 
             $bookmark_partner = UserBookmark::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
 
             if ($bookmark_partner) {
-                UserBookmark::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->delete();
-                $msg = __('messages.you_removed_this_user__from_your_bookmarks');
-                $data = new PartnerResource($partner);
-                return $this->dataResponse($msg, $data, 200);
+                $msg = __('messages.you already bookmarked this partner');
+                return $this->errorResponse($msg, 200);
             } else {
 
                 $data['user_id'] =  $user_id;
                 $data['partner_id'] =  $partner_id;
                 UserBookmark::create($data);
 
+                $partner = User::whereId($partner_id)->first();
                 //
                 $user = auth()->user();
                 $userId = $user->id;
@@ -400,7 +453,7 @@ class PartnerController extends Controller
                 //     'title' => __('messages.bookmarked_by_user'),
                 // ]);
 
-                $msg = __('messages.you_bookmarked_this_user');
+                $msg = "bookmark_partner";
                 $data = new PartnerResource($partner);
                 return $this->dataResponse($msg, $data, 200);
             }
@@ -408,6 +461,7 @@ class PartnerController extends Controller
             return $this->returnException($ex->getMessage(), 500);
         }
     }
+
 
     public function user_watch(Request $request)
     {
