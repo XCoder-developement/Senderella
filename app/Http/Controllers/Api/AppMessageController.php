@@ -18,10 +18,10 @@ class AppMessageController extends Controller
     {
         try {
             $rules = [
-                "name" => "required",
-                "email" => "sometimes|email",
-                "phone" => "sometimes",
-                "subject" => "sometimes",
+                // "name" => "required",
+                // "email" => "sometimes|email",
+                // "phone" => "sometimes",
+                // "subject" => "sometimes",
                 "message" => "required",
             ];
 
@@ -29,13 +29,13 @@ class AppMessageController extends Controller
             if ($validator->fails()) {
                 return $this->getvalidationErrors($validator); // Pass $validator instance
             }
-            
 
+            $user = auth()->user();
             $data = [
-                "name" => $request->name,
-                "email" => $request->email,
-                "phone" => $request->phone,
-                "subject" => $request->subject,
+                "name" => $user->name,
+                "email" => $user->email,
+                "phone" => $user->phone,
+                "user_id" => $user->id,
                 "message" => $request->message,
             ];
 

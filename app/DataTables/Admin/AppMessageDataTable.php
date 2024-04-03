@@ -67,7 +67,7 @@ class AppMessageDataTable extends DataTable
             ["data" => "name" ,"title" => __('messages.name'),'searchable'=>false],
             ["data" => "email" ,"title" => __('messages.email')],
             ["data" => "phone" ,"title" => __('messages.phone')],
-            ["data" => "subject" ,"title" => __('messages.subject')],
+            // ["data" => "subject" ,"title" => __('messages.subject')],
             ["data" => "message" ,"title" => __('messages.message')],
         ];
     }

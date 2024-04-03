@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('app_messages', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('user_id')->nullable();
             $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->text('phone')->nullable();
-            $table->text('subject')->nullable();
+            // $table->text('subject')->nullable();
             $table->text('message')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
