@@ -448,4 +448,7 @@ return [
     "done_updating_visibility"    => "Updating Visibility Done",
     "you_bookmarked_this_user"    => "You bookmarked this user",
     "app_messages"        => "User Messages",
+    'enter_email_or_phone_at_least' => 'Enter email or phone at least',
+    'send_premium_notification' => 'Send Premium Notification',
+    'premium_notifications' => 'Premium Notifications',
 ];

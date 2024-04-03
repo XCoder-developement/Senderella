@@ -14,19 +14,28 @@ class ProblemController extends Controller
     public function send_problem(Request $request)
     {
         try{
-        $rules = [
-            "email" => "required|email",
-            "problem_type_id" => "required|integer|exists:problem_types,id",
-            "comment" => "required",
-            // "phone" => "required",
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if($validator->fails()){
-            return $this->getvalidationErrors($validator,422);
-        }
+            $rules = [
+                'email' => 'sometimes|email',
+                'phone' => 'sometimes',
+                'problem_type_id' => 'required|integer|exists:problem_types,id',
+                'comment' => 'required',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            // Manually check if either email or phone is provided
+            if (empty($request->email) && empty($request->phone)) {
+                return $this->successResponse(__('messages.enter_email_or_phone_at_least'),200);
+            }
+
+            if ($validator->fails()) {
+                return $this->getvalidationErrors($validator, 422);
+            }
+
         $data['email']= $request->email;
         $data['problem_type_id']= $request->problem_type_id;
         $data['comment']= $request->comment;
+        $data['phone']  = $request->phone;
 
         $problem = Problem::create($data);
 
