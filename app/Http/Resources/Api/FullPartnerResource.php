@@ -175,13 +175,29 @@ class UserInformationResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        return [
-            "id" => $this->id,
-        "title" => strval($this->requirment?->title) ?? "",
-        "value" => strval($this->requirment_item?->title)  ?? __("messages.not_answered"),
+        $locale = $request->header('Accept-Language');
+        $user_id = $request->partner_id;
 
-        "title_id" => $this->requirment_id ?? "",
-        "value_id" => $this->requirment_item_id ?? __("messages.not_answered"),
-        ];
+        $questions = UserInformation::where('requirment_id', $this->id)
+            ->where('user_id', $user_id)
+            ->get();
+
+        $data = [];
+
+        foreach ($questions as $question) {
+            $ques = RequirmentItemTranslation::where('requirment_item_id', $question->requirment_item_id)
+                ->where('locale', $locale)
+                ->first();
+
+            $data[] = [
+                "id" => $this->id,
+                "title" => $this->title ?? "",
+                "value" => $ques ? $ques->title : __("messages.not_answered"),
+                "title_id" => $this->requirment_id ?? "",
+                "value_id" => $question->requirment_item_id ?? "",
+            ];
+        }
+
+        return $data;
     }
 }
