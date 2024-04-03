@@ -121,67 +121,67 @@ class ImageResource extends JsonResource
     }
 }
 
-class DetailsResource extends JsonResource
-{
-    public function toArray(Request $request): array
-    {
-
-        $user_id = $request->partner_id;
-        $info = UserInformation::where('requirment_id', $this->id)->where('type', 2)->where('user_id', $user_id)->first()?->value('answer');
-        return [
-            'id' => $this->id,
-            'question' => strval($this->title) ? strval($this->title): __("messages.not_answered"),
-            'answer' => $info ?? __("messages.not_answered"),
-        ];
-    }
-}
-
-
-class UserInformationResource extends JsonResource
-{
-
-    public function toArray(Request $request): array
-    {
-        $locale = $request->header('Accept-Language');
-        // dd($locale);
-        $user_id = $request->partner_id;
-        $qust = UserInformation::where('requirment_id', $this->id)->where('type', 1)->where('user_id', $user_id)->first()?->requirment_item_id;
-        $ques = RequirmentItemTranslation::where('requirment_item_id', $qust)->where('locale', $locale)->first()?->title;
-
-        return [
-            "id" => $this->id,
-            "title" => ($this->title) ?? "",
-            "value" => ($ques)  ?$ques : __("messages.not_answered"),
-
-            "title_id" => intval($this->requirment_id) ?? "",
-            "value_id" => intval($this->requirment_item_id) ?? "",
-        ];
-    }
-}
-
 // class DetailsResource extends JsonResource
 // {
 //     public function toArray(Request $request): array
 //     {
+
+//         $user_id = $request->partner_id;
+//         $info = UserInformation::where('requirment_id', $this->id)->where('type', 2)->where('user_id', $user_id)->first()?->value('answer');
 //         return [
-//             'id'=>$this->id,
-//             'question'=>strval($this->requirment?->title) ?? __("messages.not_answered"),
-//             'answer'=>$this->answer ?? '',
+//             'id' => $this->id,
+//             'question' => strval($this->title) ?? "",
+//             'answer' => $info ?? __("messages.not_answered"),
 //         ];
 //     }
 // }
+
 
 // class UserInformationResource extends JsonResource
 // {
+
 //     public function toArray(Request $request): array
 //     {
+//         $locale = $request->header('Accept-Language');
+//         // dd($locale);
+//         $user_id = $request->partner_id;
+//         $qust = UserInformation::where('requirment_id', $this->id)->where('type', 1)->where('user_id', $user_id)->first()?->requirment_item_id;
+//         $ques = RequirmentItemTranslation::where('requirment_item_id', $qust)->where('locale', $locale)->first()?->title;
+
 //         return [
 //             "id" => $this->id,
-//         "title" => strval($this->requirment?->title) ?? "",
-//         "value" => strval($this->requirment_item?->title)  ?? __("messages.not_answered"),
+//             "title" => ($this->title) ?? "",
+//             "value" => ($ques)  ?? __("messages.not_answered"),
 
-//         "title_id" => $this->requirment_id ?? "",
-//         "value_id" => $this->requirment_item_id ?? __("messages.not_answered"),
+//             "title_id" => intval($this->requirment_id) ?? "",
+//             "value_id" => intval($this->requirment_item_id) ?? "",
 //         ];
 //     }
 // }
+
+class DetailsResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
+        return [
+            'id'=>$this->id,
+            'question'=>strval($this->requirment?->title) ?? __("messages.not_answered"),
+            'answer'=>$this->answer ?? '',
+        ];
+    }
+}
+
+class UserInformationResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
+        return [
+            "id" => $this->id,
+        "title" => strval($this->requirment?->title) ?? "",
+        "value" => strval($this->requirment_item?->title)  ?? __("messages.not_answered"),
+
+        "title_id" => $this->requirment_id ?? "",
+        "value_id" => $this->requirment_item_id ?? __("messages.not_answered"),
+        ];
+    }
+}
