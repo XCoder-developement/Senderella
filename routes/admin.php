@@ -211,6 +211,8 @@ Route::group(
                 Route::get('notifications',  [NotificationController::class, 'index'])->name('notifications.index');
                 Route::get('premium_notifications',  [NotificationController::class, 'premium_index'])->name('notifications.premium_index');
                 Route::post('notifications/send', [NotificationController::class, 'send'])->name('notifications.send');
+                Route::post('notifications/send_premium', [NotificationController::class, 'send_premium'])->name('notifications.send_premium');
+
 
                 //new_duration
                 Route::resource('new_durations', NewDurationController::class);

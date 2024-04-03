@@ -64,4 +64,37 @@ class NotificationController extends Controller
         return view($this->view . 'premium_index');
     }
 
+    public function send_premium(StoreRequest $request)
+    {
+
+        $title = $request->title;
+        $text = $request->body;
+        $image = null;
+        $type = 7;
+        if($request->hasFile('image')){
+            $image = upload_image($request->image,"notifications");
+        }
+
+        $notify_data["title"] = $title;
+        $notify_data["body"] = $text;
+        $notify_data["image"] = $image;
+
+        $notification  = Notification::create($notify_data);
+        $users = User::whereHas('user_device' ,function($q){
+            $q->whereNotNull('device_token');
+        })->get();
+
+        foreach($users as $user){
+            // $user->notifications()->attach($notification);
+            foreach($user->user_devices as $user_device){
+
+            SendNotification::send($user_device->device_token,$title,$text ,$type ,'' ,url($image)??'');
+
+            }
+            }
+
+
+        return redirect()->back()->with(['success'=> __("messages.send_notification")]);
+    }
+
 }
