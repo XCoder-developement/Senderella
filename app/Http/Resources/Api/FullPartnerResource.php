@@ -97,9 +97,8 @@ class FullPartnerResource extends JsonResource
 
             "visibility"   => intval($this->visibility),
 
-            "partner_more_info"=>UserInformationResource::collection($this->informations->where('type',1)),
-
-            "questions"=>DetailsResource::collection($this->informations->where('type',2)),
+            "partner_more_info" => UserInformationResource::collection(Requirment::where('answer_type', 1)->get())->additional(['user_id' => $user_id]),
+            "questions" => DetailsResource::collection(Requirment::where('answer_type', 2)->get())->additional(['user_id' => $user_id]),
 
         ];
     }
@@ -121,20 +120,20 @@ class ImageResource extends JsonResource
     }
 }
 
-// class DetailsResource extends JsonResource
-// {
-//     public function toArray(Request $request): array
-//     {
+class DetailsResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
 
-//         $user_id = $request->partner_id;
-//         $info = UserInformation::where('requirment_id', $this->id)->where('type', 2)->where('user_id', $user_id)->first()?->value('answer');
-//         return [
-//             'id' => $this->id,
-//             'question' => strval($this->title) ?? "",
-//             'answer' => $info ?? __("messages.not_answered"),
-//         ];
-//     }
-// }
+        $user_id = $request->partner_id;
+        $info = UserInformation::where('requirment_id', $this->id)->where('type', 2)->where('user_id', $user_id)->first()?->value('answer');
+        return [
+            'id' => $this->id,
+            'question' => strval($this->title) ?? __("messages.not_answered"),
+            'answer' => $info ?? __("messages.not_answered"),
+        ];
+    }
+}
 
 
 // class UserInformationResource extends JsonResource
@@ -159,17 +158,17 @@ class ImageResource extends JsonResource
 //     }
 // }
 
-class DetailsResource extends JsonResource
-{
-    public function toArray(Request $request): array
-    {
-        return [
-            'id'=>$this->id,
-            'question'=>strval($this->requirment?->title) ?? __("messages.not_answered"),
-            'answer'=>$this->answer ?? '',
-        ];
-    }
-}
+// class DetailsResource extends JsonResource
+// {
+//     public function toArray(Request $request): array
+//     {
+//         return [
+//             'id'=>$this->id,
+//             'question'=>strval($this->requirment?->title) ?? __("messages.not_answered"),
+//             'answer'=>$this->answer ?? '',
+//         ];
+//     }
+// }
 
 class UserInformationResource extends JsonResource
 {
