@@ -18,6 +18,7 @@ class ProblemController extends Controller
             "email" => "required|email",
             "problem_type_id" => "required|integer|exists:problem_types,id",
             "comment" => "required",
+            // "phone" => "required",
         ];
         $validator = Validator::make($request->all(), $rules);
         if($validator->fails()){
