@@ -25,7 +25,7 @@ class ProblemController extends Controller
 
             // Manually check if either email or phone is provided
             if (empty($request->email) && empty($request->phone)) {
-                return $this->successResponse(__('messages.enter_email_or_phone_at_least'),200);
+                return $this->errorResponse(__('messages.enter_email_or_phone_at_least'),500);
             }
 
             if ($validator->fails()) {
