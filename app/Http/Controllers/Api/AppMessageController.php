@@ -42,7 +42,7 @@ class AppMessageController extends Controller
             $app_message = AppMessage::create($data);
 
             $msg = __("messages.save successful");
-            return $this->dataResponse($msg, new AppMessageReosurce($app_message), 200);
+            return $this->dataResponse($msg,  200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
