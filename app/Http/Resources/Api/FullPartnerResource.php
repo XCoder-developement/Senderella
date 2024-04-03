@@ -177,27 +177,15 @@ class UserInformationResource extends JsonResource
     {
         $locale = $request->header('Accept-Language');
         $user_id = $request->partner_id;
+        $qust = UserInformation::where('requirment_id', $this->id)->where('type', 1)->where('user_id', $user_id)->first()?->requirment_item_id;
+        $ques = RequirmentItemTranslation::where('requirment_item_id', $qust)->where('locale', $locale)->first()?->title;
 
-        $questions = UserInformation::where('requirment_id', $this->id)
-            ->where('user_id', $user_id)
-            ->get();
-
-        $data = [];
-
-        foreach ($questions as $question) {
-            $ques = RequirmentItemTranslation::where('requirment_item_id', $question->requirment_item_id)
-                ->where('locale', $locale)
-                ->first();
-
-            $data[] = [
-                "id" => $this->id,
-                "title" => $this->title ?? "",
-                "value" => $ques ? $ques->title : __("messages.not_answered"),
-                "title_id" => $this->requirment_id ?? "",
-                "value_id" => $question->requirment_item_id ?? "",
-            ];
-        }
-
-        return $data;
+        return [
+            "id" => $this->id,
+            "title" => ($this->title) ?? "",
+            "value" => ($ques)  ?? __("messages.not_answered"),
+            "title_id" => intval($this->requirment_id) ?? "",
+            "value_id" => intval($this->requirment_item_id) ?? "",
+        ];
     }
 }
