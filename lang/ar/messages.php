@@ -502,4 +502,7 @@ return [
     "done_updating_visibility"    => "تم تحديث خاصية الاظهار",
     "you_bookmarked_this_user"    => "تم إداراجه بالمفضلة",
     "app_messages"                => "رسايل االمستخدمين",
+    'enter_email_or_phone_at_least' => 'ادخل بريدك الالكتروني او رقم هاتفك',
+    'send_premium_notification' => 'ارسال اشعار المميز',
+    'premium_notifications' => 'الاشعارات المميزة',
 ];

@@ -59,4 +59,9 @@ class NotificationController extends Controller
         return redirect()->back()->with(['success'=> __("messages.send_notification")]);
     }
 
+    public function premium_index()
+    {
+        return view($this->view . 'premium_index');
+    }
+
 }

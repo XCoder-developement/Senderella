@@ -97,6 +97,11 @@
                                     </a>
                                 </li>
 
+                                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                    <a href="{{ route('app_messages.index') }}" class="menu-link">
+                                        <span class="menu-text">{{ __('messages.app_messages') }}</span>
+                                    </a>
+                                </li>
 
                             </ul>
                         </div>
@@ -403,6 +408,12 @@
                                     <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="{{route('notifications.index')}}" class="menu-link" >
                                             <span class="menu-text">{{__('messages.notifications')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('notifications.premium_index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.premium_notifications')}}</span>
                                         </a>
                                     </li>
 
