@@ -129,7 +129,7 @@ class DetailsResource extends JsonResource
         $info = UserInformation::where('requirment_id', $this->id)->where('type', 2)->where('user_id', $user_id)->first()?->value('answer');
         return [
             'id' => $this->id,
-            'question' => strval($this->title) ?? __("messages.not_answered"),
+            'question' => strval($this->title) ?? "",
             'answer' => $info ?? __("messages.not_answered"),
         ];
     }
@@ -162,10 +162,12 @@ class DetailsResource extends JsonResource
 // {
 //     public function toArray(Request $request): array
 //     {
+//                 $user_id = $request->partner_id;
+//         $info = UserInformation::where('requirment_id', $this->id)->where('type', 2)->where('user_id', $user_id)->first()?->value('answer');
 //         return [
 //             'id'=>$this->id,
-//             'question'=>strval($this->requirment?->title) ?? __("messages.not_answered"),
-//             'answer'=>$this->answer ?? '',
+//             'question' => strval($this->title) ?? "",
+//             'answer'=>$info ?? '',
 //         ];
 //     }
 // }
