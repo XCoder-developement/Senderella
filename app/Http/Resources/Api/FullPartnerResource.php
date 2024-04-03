@@ -165,7 +165,7 @@ class DetailsResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'question'=>strval($this->requirment?->title) ?? "",
+            'question'=>strval($this->requirment?->title) ?? __("messages.not_answered"),
             'answer'=>$this->answer ?? '',
         ];
     }
