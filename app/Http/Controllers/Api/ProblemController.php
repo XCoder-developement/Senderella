@@ -15,7 +15,7 @@ class ProblemController extends Controller
     {
         try{
             $rules = [
-                'email' => 'sometimes|email',
+                'email' => 'sometimes',
                 'phone' => 'sometimes',
                 'problem_type_id' => 'required|integer|exists:problem_types,id',
                 'comment' => 'required',
