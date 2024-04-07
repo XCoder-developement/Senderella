@@ -41,11 +41,13 @@ class RegisterController extends Controller
             // $data["verification_type"] = $request->verification_type;
 
             //create new user
-            $blocked_user = DeltedUser::where('phone' , $request->phone)->first()->value('trusted');
-            if($blocked_user == 2){
+            $blocked_user = DeltedUser::where('phone' , $request->phone)->first();
+            if ($blocked_user){
+            if($blocked_user->trusted == 2){
                 return $this->dataResponse(__('messages.this_phone_is_blocked'),  200);
 
             }
+        }
             $user = User::create($data);
 
 
