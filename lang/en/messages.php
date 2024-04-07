@@ -451,4 +451,5 @@ return [
     'enter_email_or_phone_at_least' => 'Enter email or phone at least',
     'send_premium_notification' => 'Send Premium Notification',
     'premium_notifications' => 'Premium Notifications',
+    'this_phone_is_blocked' => 'This phone is blocked',
 ];

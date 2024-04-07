@@ -505,4 +505,5 @@ return [
     'enter_email_or_phone_at_least' => 'ادخل بريدك الالكتروني او رقم هاتفك',
     'send_premium_notification' => 'ارسال اشعار المميز',
     'premium_notifications' => 'الاشعارات المميزة',
+    'this_phone_is_blocked' => 'هذا الرقم محظور',
 ];
