@@ -930,8 +930,8 @@ class PartnerController extends Controller
 
         try {
             $rules = [
-                "longitude" => "required",
-                "latitude" => "required",
+                "longitude" => "sometimes",
+                "latitude" => "sometimes",
             ];
             $validator = Validator::make(request()->all(), $rules);
             if ($validator->fails()) {
