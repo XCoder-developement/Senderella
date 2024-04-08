@@ -841,89 +841,61 @@ class PartnerController extends Controller
 
 
     public function fetch_most_liked_partners()
-    {
-        try {
-            $banners = [
-                'banner1' => Banner::inRandomOrder()->first(),
-                'banner2' => Banner::inRandomOrder()->first(),
-                'text_banner' => TextBanner::inRandomOrder()->first(),
-            ];
-            $banner1 = Banner::inRandomOrder()->first();
-            $text_banner = TextBanner::inRandomOrder()->first();
-            if ($banner1 && !$text_banner) {
-                unset($banners['text_banner']);
-            }
-            if ($text_banner && !$banner1) {
-                unset($banners['banner1']);
-                unset($banners['banner2']);
-            }
-            $user = auth()->user();
-            $blocked = UserBlock::where('user_id', $user->id)->pluck('partner_id')->toArray();
+{
+    try {
+        // Randomly select banners
+        $banner1 = Banner::inRandomOrder()->first();
+        $text_banner = TextBanner::inRandomOrder()->first();
 
-            $active_partner_counts = UserLike::groupBy('partner_id')
-                ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
-                ->whereIn('user_id', function ($query) {
-                    $query->select('user_id')->from('user_last_shows')->where('status', 1);
-                })
-                ->orderBy('count', 'desc') // Order by the count of likes in descending order
-                ->get()
-                ->pluck('partner_id')
-                ->toArray();
+        $user = auth()->user();
+        $blocked = UserBlock::where('user_id', $user->id)->pluck('partner_id')->toArray();
 
-            $disactive_partner_counts = UserLike::groupBy('partner_id')
-                ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
-                ->whereIn('user_id', function ($query) {
-                    $query->select('user_id')->from('user_last_shows')->where('status', 0)->orderBy('end_date', 'desc');
-                })
-                ->orderBy('count', 'desc') // Order by the count of likes in descending order
-                ->get()
-                ->pluck('partner_id')
-                ->toArray();
-            // dd($blocked);
-            // $most_active_partner = $active_partner_counts->sortDesc()->keys()->toArray();
-            // $most_disactive_partner = $disactive_partner_counts->sortDesc()->keys()->toArray();
-            $mostLikedPartnerIds = array_merge($active_partner_counts, $disactive_partner_counts);
-            // $mostLikedPartnerId = array_diff($mostLikedPartnerIds, $blocked);
-            // dd($mostLikedPartnerIds);
+        // Retrieve active and inactive partner counts
+        $active_partner_counts = UserLike::groupBy('partner_id')
+            ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
+            ->whereIn('user_id', function ($query) {
+                $query->select('user_id')->from('user_last_shows')->where('status', 1);
+            })
+            ->orderBy('count', 'desc')
+            ->pluck('partner_id')
+            ->toArray();
 
-            $mostLikedCount = User::whereIn('id', array_keys($mostLikedPartnerIds))->whereNotIn('id', $blocked)->where('gender', '!=', $user->gender);
-            $mostLikedCount = $mostLikedCount->paginate(10);
+        $disactive_partner_counts = UserLike::groupBy('partner_id')
+            ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
+            ->whereIn('user_id', function ($query) {
+                $query->select('user_id')->from('user_last_shows')->where('status', 0);
+            })
+            ->orderBy('count', 'desc')
+            ->pluck('partner_id')
+            ->toArray();
 
-            if ($banner1 || $text_banner) {
+        // Combine active and inactive partner counts
+        $mostLikedPartnerIds = array_merge($active_partner_counts, $disactive_partner_counts);
 
-                $combinedData = [];
-                foreach ($mostLikedCount as $key => $partner) {
-                    $combinedData[] = $partner;
-                    if ($key == 3 && $banners) {
-                        $combinedData[] = Arr::random($banners);
-                    }
-                    if ($key == 7 && $banners) {
-                        $combinedData[] = Arr::random($banners);
-                    }
-                }
+        // Fetch partners based on most liked partner IDs, excluding blocked users
+        $mostLikedPartners = User::whereIn('id', array_keys($mostLikedPartnerIds))
+            ->whereNotIn('id', $blocked)
+            ->where('gender', '!=', $user->gender)
+            ->paginate(10);
 
-                // Create a paginator instance manually
-                $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
-                    $combinedData,
-                    $mostLikedCount->total(),
-                    $mostLikedCount->perPage(),
-                    $mostLikedCount->currentPage(),
-                    ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
-                );
-
-                $paginator->appends(request()->all());
-            } else {
-
-                $paginator = $mostLikedCount;
-            }
-            $msg = "fetch_most_liked_partners";
-            $data = CustomPartnerResource::collection($paginator)->response()->getData(true);
-
-            return $this->dataResponse($msg, $data, 200);
-        } catch (\Exception $ex) {
-            return $this->returnException($ex->getMessage(), 500);
+        // Combine partners and banners
+        $combinedData = $mostLikedPartners->items();
+        if ($banner1 && $text_banner) {
+            $combinedData[] = $banner1;
+            $combinedData[] = $text_banner;
         }
+
+        $msg = "fetch_most_liked_partners";
+        $data = CustomPartnerResource::collection($combinedData)->response()->getData(true);
+
+        return $this->dataResponse($msg, $data, 200);
+    } catch (\Exception $ex) {
+        // Log exception for debugging
+        Log::error($ex);
+        return $this->returnException($ex->getMessage(), 500);
     }
+}
+
 
     public function fetch_nearst_partners(Request $request)
     {

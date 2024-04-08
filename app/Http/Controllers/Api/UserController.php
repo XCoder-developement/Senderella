@@ -98,24 +98,24 @@ class UserController extends Controller
             $data['percentage'] = intval(($p / 20) * 100);
             if ($request->notes) {
                 $p++;
-                $data['percentage'] = intval((($p) / 20) * 100);
+                // $data['percentage'] = intval((($p) / 20) * 100);
             }
             if ($request->about_me) {
                 $p++;
-                $data['percentage'] = intval((($p ) / 20) * 100);
+                // $data['percentage'] = intval((($p ) / 20) * 100);
             }
             if ($request->is_married_before) {
                 $p++;
-                $data['percentage'] = intval((($p ) / 20) * 100);
+                // $data['percentage'] = intval((($p ) / 20) * 100);
             }
             if ($request->important_for_marriage) {
                 $p++;
-                $data['percentage'] = intval((($p ) / 20) * 100);
+                // $data['percentage'] = intval((($p ) / 20) * 100);
             }
             if ($request->partner_specifications) {
                 $p++;
-                $data['percentage'] = intval((($p ) / 20) * 100);
             }
+            $data['percentage'] = intval((($p ) / 20) * 100);
             // if ($request->partner_specifications) {
             //     $p++;
             //     $data['percentage'] = intval((($p + 1) / 20) * 100);
