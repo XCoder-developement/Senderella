@@ -141,10 +141,9 @@ class UserController extends Controller
                         if($user_information["requirment_item_id"]){
                     $requirment_item_id = $user_information["requirment_item_id"];
                             $count++;
+                        }else{
+                            $requirment_item_id = 'messages.not_answered';
                         }
-                        // else{
-                        //     $requirment_item_id = 'messages.not_answered';
-                        // }
 
                     if ($existingRecord) {
                         // If the record exists, update the existing record
@@ -184,10 +183,9 @@ class UserController extends Controller
                         if ($question["answer"]){
                             $answer = $question["answer"];
                             $qcount++;
+                        }else{
+                            $answer = 'messages.not_answered';
                         }
-                        // else{
-                        //     $answer = 'messages.not_answered';
-                        // }
 
                         if ($existingRecord) {
                             // If the record exists, update the answer

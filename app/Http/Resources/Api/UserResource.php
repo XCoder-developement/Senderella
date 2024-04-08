@@ -51,8 +51,8 @@ class UserResource extends JsonResource
 //weight and rest details
             "weight" => $this->weight ?? "",
             "height" => $this->height ?? "",
-            "notes" => $this->notes ?? '',
-            "about_me" => $this->about_me ?? '',
+            "notes" => $this->notes ?? __("messages.not_answered"),
+            "about_me" => $this->about_me ?? __("messages.not_answered"),
             "country_id" => intval($this->country_id) ?? "",
             "state_id" => intval($this->state_id) ?? "",
             "country_title" => $this->country?->title ?? "",
