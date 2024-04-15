@@ -100,21 +100,26 @@ class UserController extends Controller
                 $p++;
                 // $data['percentage'] = intval((($p) / 20) * 100);
             }
+
             if ($request->about_me) {
                 $p++;
                 // $data['percentage'] = intval((($p ) / 20) * 100);
             }
+
             if ($request->is_married_before) {
                 $p++;
                 // $data['percentage'] = intval((($p ) / 20) * 100);
             }
+
             if ($request->important_for_marriage) {
                 $p++;
                 // $data['percentage'] = intval((($p ) / 20) * 100);
             }
+
             if ($request->partner_specifications) {
                 $p++;
             }
+
             $data['percentage'] = intval((($p ) / 20) * 100);
             // if ($request->partner_specifications) {
             //     $p++;
@@ -122,13 +127,13 @@ class UserController extends Controller
             // }else{
             //     $data[$request->partner_specifications] = 'Not answered';
             // }
-
+                // dd(intval((($p) / 20) * 100));
             $user->update($data);
 
             if ($request->user_information) {
                 $infos = Requirment::where('answer_type' ,1)->pluck('id')->toArray();
                 $infos_count = count($infos);
-                $count = 0;
+                $count = UserInformation::where('user_id', $user->id)->where('type', 1)->count();
                 foreach ($request->user_information as $user_information) {
                     $requirment_id = $user_information["requirment_id"];
                     $requirment_item_id = $user_information["requirment_item_id"];
@@ -140,7 +145,8 @@ class UserController extends Controller
 
                         if($user_information["requirment_item_id"]){
                     $requirment_item_id = $user_information["requirment_item_id"];
-                            $count++;
+                            // $count++;
+
                         }else{
                             $requirment_item_id = 'messages.not_answered';
                         }
@@ -158,14 +164,16 @@ class UserController extends Controller
                             'user_id' => $user->id,
                             'type' => 1,
                         ];
-                        if($count == $infos_count){
-                            $p++;
-                        }
+
                         UserInformation::create($user_info_data);
-                        $user->update(['percentage' => intval(($p / 20) * 100)]);
                     }
                 }
             }
+            if($count == $infos_count){
+                // dd($p);
+                $p++;
+            }
+            $user->update(['percentage' => intval(($p / 20) * 100)]);
 
             if ($request->questions) {
                 $ques = Requirment::where('answer_type' ,2)->pluck('id')->toArray();
@@ -200,14 +208,16 @@ class UserController extends Controller
                                 'type' => 2,
                             ];
 
-                            if($qcount == $ques_count){
-                                $p++;
-                            }
+
                             UserInformation::create($user_info_data);
-                        $user->update(['percentage' => intval(($p / 20) * 100)]);
+
 
                         }
                     }
+                    if($qcount == $ques_count){
+                        $p++;
+                    }
+                    $user->update(['percentage' => intval(($p / 20) * 100)]);
 
             }
             $msg = __("messages.save successful");
