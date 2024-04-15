@@ -32,7 +32,10 @@ class UserController extends Controller
     use ApiTrait;
     public function set_user_data(Request $request)
     {
-        $p = 13;
+        $user = auth()->user();
+        if($user->percentage == 0){
+            $p = 13;
+        }
         try {
             //validation
             $rules = [
@@ -73,7 +76,6 @@ class UserController extends Controller
                 return $this->getvalidationErrors($validator);
             }
 
-            $user = auth()->user();
             $data['name'] = $request->name;
             // $data['phone'] = $request->phone;
             $data['email'] = $request->email;
