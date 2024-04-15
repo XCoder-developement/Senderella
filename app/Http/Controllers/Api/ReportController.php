@@ -19,7 +19,7 @@ class ReportController extends Controller
                 "report_type_ids" => "required|array",
                 "reason" => "required",
                 "image" => "sometimes",
-                "email" => "sometimes|email",
+                "email" => "sometimes",
             ];
 
             $validator = Validator::make($request->all(), $rules);

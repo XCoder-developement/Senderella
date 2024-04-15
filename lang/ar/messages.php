@@ -506,4 +506,8 @@ return [
     'send_premium_notification' => 'ارسال اشعار المميز',
     'premium_notifications' => 'الاشعارات المميزة',
     'this_phone_is_blocked' => 'هذا الرقم محظور',
+    'answer_type'    => 'نوع الاجابة',
+    'requirments'    => 'متطلبات ',
+    'questions'        => 'أسئلة ',
+    'add requirment_items'  => 'اضافة تفاصيل متطلبات',
 ];
