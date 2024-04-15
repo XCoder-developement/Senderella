@@ -32,7 +32,7 @@ class UserController extends Controller
     use ApiTrait;
     public function set_user_data(Request $request)
     {
-        $p = 12;
+        $p = 13;
         try {
             //validation
             $rules = [
