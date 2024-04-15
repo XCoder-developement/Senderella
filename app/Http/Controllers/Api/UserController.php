@@ -146,7 +146,6 @@ class UserController extends Controller
                         if($user_information["requirment_item_id"]){
                     $requirment_item_id = $user_information["requirment_item_id"];
                             // $count++;
-
                         }else{
                             $requirment_item_id = 'messages.not_answered';
                         }
