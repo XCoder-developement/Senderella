@@ -34,7 +34,7 @@
 
 
             <div class="card-body">
-                <form method="post" action="{{ route('notifications.send_premium') }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('notifications.send') }}" enctype="multipart/form-data">
                     @csrf
                     {{-- image upload section--}}
                     <div class="row">
