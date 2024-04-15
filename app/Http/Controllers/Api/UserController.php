@@ -168,12 +168,13 @@ class UserController extends Controller
                         UserInformation::create($user_info_data);
                     }
                 }
+                if($count == $infos_count){
+                    // dd($p);
+                    $p++;
+                }
+                $user->update(['percentage' => intval(($p / 20) * 100)]);
+
             }
-            if($count == $infos_count){
-                // dd($p);
-                $p++;
-            }
-            $user->update(['percentage' => intval(($p / 20) * 100)]);
 
             if ($request->questions) {
                 $ques = Requirment::where('answer_type' ,2)->pluck('id')->toArray();
