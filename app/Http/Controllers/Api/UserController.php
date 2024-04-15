@@ -179,7 +179,7 @@ class UserController extends Controller
             if ($request->questions) {
                 $ques = Requirment::where('answer_type' ,2)->pluck('id')->toArray();
                 $ques_count = count($ques);
-                $qcount = 0;
+                $qcount = UserInformation::where('user_id', $user->id)->where('type', 2)->count();
                     foreach ($request->questions as $question) {
                         $requirment_id = $question["question_id"];
                         $answer = $question["answer"];
