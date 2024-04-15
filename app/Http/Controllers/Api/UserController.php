@@ -32,7 +32,7 @@ class UserController extends Controller
     use ApiTrait;
     public function set_user_data(Request $request)
     {
-        $p = 13;
+        $p = 12;
         try {
             //validation
             $rules = [
@@ -166,6 +166,7 @@ class UserController extends Controller
                         ];
 
                         UserInformation::create($user_info_data);
+                        $count ++;
                     }
                 }
                 if($count == $infos_count){
@@ -212,7 +213,7 @@ class UserController extends Controller
 
                             UserInformation::create($user_info_data);
 
-
+                             $qcount ++;
                         }
                     }
                     if($qcount == $ques_count){
