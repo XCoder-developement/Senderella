@@ -32,7 +32,10 @@ class UserController extends Controller
     use ApiTrait;
     public function set_user_data(Request $request)
     {
-        $p = 13;
+        $user = auth()->user();
+        if($user->percentage == 0){
+            $p = 13;
+        }
         try {
             //validation
             $rules = [
@@ -73,7 +76,6 @@ class UserController extends Controller
                 return $this->getvalidationErrors($validator);
             }
 
-            $user = auth()->user();
             $data['name'] = $request->name;
             // $data['phone'] = $request->phone;
             $data['email'] = $request->email;
@@ -146,7 +148,6 @@ class UserController extends Controller
                         if($user_information["requirment_item_id"]){
                     $requirment_item_id = $user_information["requirment_item_id"];
                             // $count++;
-
                         }else{
                             $requirment_item_id = 'messages.not_answered';
                         }
