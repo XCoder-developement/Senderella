@@ -427,8 +427,16 @@ class PartnerController extends Controller
             $bookmark_partner = UserBookmark::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
 
             if ($bookmark_partner) {
-                $msg = __('messages.you already bookmarked this partner');
-                return $this->errorResponse($msg, 200);
+                $bookmark_partner->delete();
+                $partner = User::whereId($partner_id)->first();
+                if ($partner->is_bookmark_shown > 0) {
+                    $partner->update(['is_bookmark_shown' => $partner->is_bookmark_shown - 1]);
+                }
+                $msg = __('messages.you_removed_this_user__from_your_bookmarks');
+                $data = new PartnerResource($partner);
+
+                return $this->dataResponse($msg, $data, 200);
+
             } else {
 
                 $data['user_id'] =  $user_id;
@@ -841,60 +849,60 @@ class PartnerController extends Controller
 
 
     public function fetch_most_liked_partners()
-{
-    try {
-        // Randomly select banners
-        $banner1 = Banner::inRandomOrder()->first();
-        $text_banner = TextBanner::inRandomOrder()->first();
+    {
+        try {
+            // Randomly select banners
+            $banner1 = Banner::inRandomOrder()->first();
+            $text_banner = TextBanner::inRandomOrder()->first();
 
-        $user = auth()->user();
-        $blocked = UserBlock::where('user_id', $user->id)->pluck('partner_id')->toArray();
+            $user = auth()->user();
+            $blocked = UserBlock::where('user_id', $user->id)->pluck('partner_id')->toArray();
 
-        // Retrieve active and inactive partner counts
-        $active_partner_counts = UserLike::groupBy('partner_id')
-            ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
-            ->whereIn('user_id', function ($query) {
-                $query->select('user_id')->from('user_last_shows')->where('status', 1);
-            })
-            ->orderBy('count', 'desc')
-            ->pluck('partner_id')
-            ->toArray();
+            // Retrieve active and inactive partner counts
+            $active_partner_counts = UserLike::groupBy('partner_id')
+                ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
+                ->whereIn('user_id', function ($query) {
+                    $query->select('user_id')->from('user_last_shows')->where('status', 1);
+                })
+                ->orderBy('count', 'desc')
+                ->pluck('partner_id')
+                ->toArray();
 
-        $disactive_partner_counts = UserLike::groupBy('partner_id')
-            ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
-            ->whereIn('user_id', function ($query) {
-                $query->select('user_id')->from('user_last_shows')->where('status', 0);
-            })
-            ->orderBy('count', 'desc')
-            ->pluck('partner_id')
-            ->toArray();
+            $disactive_partner_counts = UserLike::groupBy('partner_id')
+                ->select('partner_id', DB::raw('COUNT(partner_id) as count'))
+                ->whereIn('user_id', function ($query) {
+                    $query->select('user_id')->from('user_last_shows')->where('status', 0);
+                })
+                ->orderBy('count', 'desc')
+                ->pluck('partner_id')
+                ->toArray();
 
-        // Combine active and inactive partner counts
-        $mostLikedPartnerIds = array_merge($active_partner_counts, $disactive_partner_counts);
+            // Combine active and inactive partner counts
+            $mostLikedPartnerIds = array_merge($active_partner_counts, $disactive_partner_counts);
 
-        // Fetch partners based on most liked partner IDs, excluding blocked users
-        $mostLikedPartners = User::whereIn('id', array_keys($mostLikedPartnerIds))
-            ->whereNotIn('id', $blocked)
-            ->where('gender', '!=', $user->gender)
-            ->paginate(10);
+            // Fetch partners based on most liked partner IDs, excluding blocked users
+            $mostLikedPartners = User::whereIn('id', array_keys($mostLikedPartnerIds))
+                ->whereNotIn('id', $blocked)
+                ->where('gender', '!=', $user->gender)
+                ->paginate(10);
 
-        // Combine partners and banners
-        $combinedData = $mostLikedPartners->items();
-        if ($banner1 && $text_banner) {
-            $combinedData[] = $banner1;
-            $combinedData[] = $text_banner;
+            // Combine partners and banners
+            $combinedData = $mostLikedPartners->items();
+            if ($banner1 && $text_banner) {
+                $combinedData[] = $banner1;
+                $combinedData[] = $text_banner;
+            }
+
+            $msg = "fetch_most_liked_partners";
+            $data = CustomPartnerResource::collection($combinedData)->response()->getData(true);
+
+            return $this->dataResponse($msg, $data, 200);
+        } catch (\Exception $ex) {
+            // Log exception for debugging
+            Log::error($ex);
+            return $this->returnException($ex->getMessage(), 500);
         }
-
-        $msg = "fetch_most_liked_partners";
-        $data = CustomPartnerResource::collection($combinedData)->response()->getData(true);
-
-        return $this->dataResponse($msg, $data, 200);
-    } catch (\Exception $ex) {
-        // Log exception for debugging
-        Log::error($ex);
-        return $this->returnException($ex->getMessage(), 500);
     }
-}
 
 
     public function fetch_nearst_partners(Request $request)
