@@ -200,7 +200,7 @@ class UserController extends Controller
 
                         if ($question["answer"]){
                             $answer = $question["answer"];
-                            $qcount++;
+                            // $qcount++;
                         }else{
                             $answer = 'messages.not_answered';
                         }
@@ -208,7 +208,8 @@ class UserController extends Controller
                         if ($existingRecord) {
                             // If the record exists, update the answer
                             $existingRecord->update(['answer' => $answer]);
-                            $qcount ++;
+                            // $qcount ++;
+
                         } else {
                             // If the record does not exist, create a new record
                             $user_info_data = [
@@ -217,6 +218,7 @@ class UserController extends Controller
                                 'user_id' => $user->id,
                                 'type' => 2,
                             ];
+                            $qcount ++;
 
 
                             UserInformation::create($user_info_data);
