@@ -224,6 +224,7 @@ class UserController extends Controller
                             //  $qcount ++;
                         }
                     }
+                    dd($qcount,$ques_count,$p);
                     if($qcount == $ques_count){
                         $p++;
                     }
