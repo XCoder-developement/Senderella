@@ -176,7 +176,7 @@ class UserController extends Controller
                         // $count ++;
                     }
                 }
-                dd($count,$infos_count,$p);
+                // dd($count,$infos_count,$p);
 
                 if($count == $infos_count){
                     // dd($p);
