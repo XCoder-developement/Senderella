@@ -33,7 +33,7 @@ class UserController extends Controller
     public function set_user_data(Request $request)
     {
         $user = auth()->user();
-        $p = 13;
+        $p = 14;
         // if($user->percentage == 0){
         //     $p = 13;
         // }else{
