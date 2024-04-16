@@ -874,6 +874,7 @@ class PartnerController extends Controller
             ->orderBy('count', 'desc')
             ->pluck('partner_id')
             ->toArray();
+            dd($active_partner_counts, $disactive_partner_counts);
         // Combine active and inactive partner counts
         $mostLikedPartnerIds = array_merge($active_partner_counts, $disactive_partner_counts);
         // Fetch partners based on most liked partner IDs, excluding blocked users
