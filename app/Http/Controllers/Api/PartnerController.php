@@ -876,9 +876,9 @@ class PartnerController extends Controller
             ->toArray();
         // Combine active and inactive partner counts
         $mostLikedPartnerIds = array_merge($active_partner_counts, $disactive_partner_counts);
-        dd($mostLikedPartnerIds);
+        // dd($mostLikedPartnerIds);
         // Fetch partners based on most liked partner IDs, excluding blocked users
-        $mostLikedPartners = User::whereIn('id', array_keys($mostLikedPartnerIds))
+        $mostLikedPartners = User::whereIn('id', array_values($mostLikedPartnerIds))
             ->whereNotIn('id', $blocked)
             ->where('gender', '!=', $user->gender)
             ->paginate(10);
@@ -889,7 +889,7 @@ class PartnerController extends Controller
             $combinedData[] = $text_banner;
         }
         $msg = "fetch_most_liked_partners";
-        $data = CustomPartnerResource::collection($mostLikedPartners)->response()->getData(true);
+        $data = CustomPartnerResource::collection($combinedData)->response()->getData(true);
         return $this->dataResponse($msg, $data, 200);
     } catch (\Exception $ex) {
         // Log exception for debugging
