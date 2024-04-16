@@ -138,7 +138,8 @@ class UserController extends Controller
             if ($request->user_information) {
                 $infos = Requirment::where('answer_type' ,1)->pluck('id')->toArray();
                 $infos_count = count($infos);
-                $count = UserInformation::where('user_id', $user->id)->where('type', 1)->count();
+                // $count = UserInformation::where('user_id', $user->id)->where('type', 1)->count();
+                $count = 0;
                 foreach ($request->user_information as $user_information) {
                     $requirment_id = $user_information["requirment_id"];
                     $requirment_item_id = $user_information["requirment_item_id"];
@@ -160,6 +161,7 @@ class UserController extends Controller
                         $existingRecord->update([
                             'requirment_item_id' => $requirment_item_id,
                         ]);
+                        $count ++;
                     } else {
                         // If the record does not exist, create a new record
                         $user_info_data = [
@@ -170,7 +172,7 @@ class UserController extends Controller
                         ];
 
                         UserInformation::create($user_info_data);
-                        $count ++;
+                        // $count ++;
                     }
                 }
                 if($count == $infos_count){
@@ -184,7 +186,8 @@ class UserController extends Controller
             if ($request->questions) {
                 $ques = Requirment::where('answer_type' ,2)->pluck('id')->toArray();
                 $ques_count = count($ques);
-                $qcount = UserInformation::where('user_id', $user->id)->where('type', 2)->count();
+                // $qcount = UserInformation::where('user_id', $user->id)->where('type', 2)->count();
+                $qcount = 0;
                     foreach ($request->questions as $question) {
                         $requirment_id = $question["question_id"];
                         $answer = $question["answer"];
@@ -205,6 +208,7 @@ class UserController extends Controller
                         if ($existingRecord) {
                             // If the record exists, update the answer
                             $existingRecord->update(['answer' => $answer]);
+                            $qcount ++;
                         } else {
                             // If the record does not exist, create a new record
                             $user_info_data = [
@@ -217,7 +221,7 @@ class UserController extends Controller
 
                             UserInformation::create($user_info_data);
 
-                             $qcount ++;
+                            //  $qcount ++;
                         }
                     }
                     if($qcount == $ques_count){
