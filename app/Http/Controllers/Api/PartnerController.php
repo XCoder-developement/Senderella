@@ -888,7 +888,7 @@ class PartnerController extends Controller
             $combinedData[] = $text_banner;
         }
         $msg = "fetch_most_liked_partners";
-        $data = CustomPartnerResource::collection($combinedData)->response()->getData(true);
+        $data = CustomPartnerResource::collection($mostLikedPartners)->response()->getData(true);
         return $this->dataResponse($msg, $data, 200);
     } catch (\Exception $ex) {
         // Log exception for debugging
