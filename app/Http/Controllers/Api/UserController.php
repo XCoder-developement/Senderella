@@ -138,8 +138,8 @@ class UserController extends Controller
             if ($request->user_information) {
                 $infos = Requirment::where('answer_type' ,1)->pluck('id')->toArray();
                 $infos_count = count($infos);
-                // $count = UserInformation::where('user_id', $user->id)->where('type', 1)->count();
-                $count = 0;
+                $count = UserInformation::where('user_id', $user->id)->where('type', 1)->count();
+                // $count = 0;
                 foreach ($request->user_information as $user_information) {
                     $requirment_id = $user_information["requirment_id"];
                     $requirment_item_id = $user_information["requirment_item_id"];
@@ -151,7 +151,7 @@ class UserController extends Controller
 
                         if($user_information["requirment_item_id"]){
                     $requirment_item_id = $user_information["requirment_item_id"];
-                            $count++;
+                            // $count++;
                         }else{
                             $requirment_item_id = 'messages.not_answered';
                         }
@@ -161,7 +161,7 @@ class UserController extends Controller
                         $existingRecord->update([
                             'requirment_item_id' => $requirment_item_id,
                         ]);
-                        $count ++;
+                        // $count ++;
                     } else {
                         // If the record does not exist, create a new record
                         $user_info_data = [
@@ -170,11 +170,14 @@ class UserController extends Controller
                             'user_id' => $user->id,
                             'type' => 1,
                         ];
+                        $count ++;
 
                         UserInformation::create($user_info_data);
                         // $count ++;
                     }
                 }
+                dd($count,$infos_count,$p);
+
                 if($count == $infos_count){
                     // dd($p);
                     $p++;
@@ -226,7 +229,6 @@ class UserController extends Controller
                             //  $qcount ++;
                         }
                     }
-                    dd($qcount,$ques_count,$p);
                     if($qcount == $ques_count){
                         $p++;
                     }
