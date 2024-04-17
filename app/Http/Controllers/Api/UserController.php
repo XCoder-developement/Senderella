@@ -301,6 +301,10 @@ class UserController extends Controller
                         DB::table('user_images')->whereIn('id', $imagesToDelete)->delete();
                     }
                 }
+                elseif($request->stored_images == [] && $request->imagesArray != []){
+                    $user->images()->delete();
+                    
+                }
 
 
                 // if($user->images()){
