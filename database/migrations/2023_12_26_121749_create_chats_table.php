@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('chats', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->unsignedInteger('user_id')->nullable();
-            $table->unsignedInteger('receiver_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('receiver_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            // $table->unsignedInteger('user_id')->nullable();
+            // $table->unsignedInteger('receiver_id')->nullable();
+            // $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            // $table->foreign('receiver_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -28,9 +28,10 @@ return new class extends Migration
             $table->foreign('chat_id')->references('id')->on('chats')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('message');
-            $table->unsignedInteger('receiver_id')->nullable();
-            $table->foreign('receiver_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('message')->nullable();
+            $table->tinyInteger('is_read')->default(0);
+            // $table->unsignedInteger('receiver_id')->nullable();
+            // $table->foreign('receiver_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -11,9 +11,9 @@ class Chat extends Model
     use HasFactory;
     protected $table = 'chats';
     protected $guarded = [];
-    public function user(){
+    public function chat_users(){
         // this relationship belongs to user
-        return $this->belongsTo(User::class);
+        return $this->hasMany(ChatUser::class);
     }
 
     public function messages()
