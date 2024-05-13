@@ -91,15 +91,15 @@ class UserController extends Controller
             $data['is_married_before'] = $request->is_married_before;
             $data['weight'] = $request->weight;
             $data['height'] = $request->height;
-            $data['notes'] = $request->notes ;
+            $data['notes'] = $request->notes;
             $data['marital_status_id'] = $request->marital_status_id;
             $data['marriage_readiness_id'] = $request->readiness_for_marriages_id;
             $data['color_id'] = $request->skin_color_id;
             $data['education_type_id'] = $request->education_type_id;
 
-            $data['about_me'] = $request->about_me ;
-            $data['important_for_marriage'] = $request->important_for_marriage ;
-            $data['partner_specifications'] = $request->partner_specifications ;
+            $data['about_me'] = $request->about_me;
+            $data['important_for_marriage'] = $request->important_for_marriage;
+            $data['partner_specifications'] = $request->partner_specifications;
             $data['percentage'] = intval(($p / 20) * 100);
             if ($request->notes) {
                 $p++;
@@ -125,18 +125,18 @@ class UserController extends Controller
                 $p++;
             }
 
-            $data['percentage'] = intval((($p ) / 20) * 100);
+            $data['percentage'] = intval((($p) / 20) * 100);
             // if ($request->partner_specifications) {
             //     $p++;
             //     $data['percentage'] = intval((($p + 1) / 20) * 100);
             // }else{
             //     $data[$request->partner_specifications] = 'Not answered';
             // }
-                // dd(intval((($p) / 20) * 100));
+            // dd(intval((($p) / 20) * 100));
             $user->update($data);
 
             if ($request->user_information) {
-                $infos = Requirment::where('answer_type' ,1)->pluck('id')->toArray();
+                $infos = Requirment::where('answer_type', 1)->pluck('id')->toArray();
                 $infos_count = count($infos);
                 $count = UserInformation::where('user_id', $user->id)->where('type', 1)->count();
                 // $count = 0;
@@ -149,12 +149,12 @@ class UserController extends Controller
                         ->where('type', 1)
                         ->first();
 
-                        if($user_information["requirment_item_id"]){
-                    $requirment_item_id = $user_information["requirment_item_id"];
-                            // $count++;
-                        }else{
-                            $requirment_item_id = 'messages.not_answered';
-                        }
+                    if ($user_information["requirment_item_id"]) {
+                        $requirment_item_id = $user_information["requirment_item_id"];
+                        // $count++;
+                    } else {
+                        $requirment_item_id = 'messages.not_answered';
+                    }
 
                     if ($existingRecord) {
                         // If the record exists, update the existing record
@@ -170,7 +170,7 @@ class UserController extends Controller
                             'user_id' => $user->id,
                             'type' => 1,
                         ];
-                        $count ++;
+                        $count++;
 
                         UserInformation::create($user_info_data);
                         // $count ++;
@@ -178,62 +178,60 @@ class UserController extends Controller
                 }
                 // dd($count,$infos_count,$p);
 
-                if($count == $infos_count){
+                if ($count == $infos_count) {
                     // dd($p);
                     $p++;
                 }
                 $user->update(['percentage' => intval(($p / 20) * 100)]);
-
             }
 
             if ($request->questions) {
-                $ques = Requirment::where('answer_type' ,2)->pluck('id')->toArray();
+                $ques = Requirment::where('answer_type', 2)->pluck('id')->toArray();
                 $ques_count = count($ques);
                 $qcount = UserInformation::where('user_id', $user->id)->where('type', 2)->count();
                 // $qcount = 0;
-                    foreach ($request->questions as $question) {
-                        $requirment_id = $question["question_id"];
+                foreach ($request->questions as $question) {
+                    $requirment_id = $question["question_id"];
+                    $answer = $question["answer"];
+
+                    // Check if a record with the same requirment_id exists
+                    $existingRecord = UserInformation::where('requirment_id', $requirment_id)
+                        ->where('user_id', $user->id)
+                        ->where('type', 2)
+                        ->first();
+
+                    if ($question["answer"]) {
                         $answer = $question["answer"];
-
-                        // Check if a record with the same requirment_id exists
-                        $existingRecord = UserInformation::where('requirment_id', $requirment_id)
-                            ->where('user_id', $user->id)
-                            ->where('type', 2)
-                            ->first();
-
-                        if ($question["answer"]){
-                            $answer = $question["answer"];
-                            // $qcount++;
-                        }else{
-                            $answer = 'messages.not_answered';
-                        }
-
-                        if ($existingRecord) {
-                            // If the record exists, update the answer
-                            $existingRecord->update(['answer' => $answer]);
-                            // $qcount ++;
-
-                        } else {
-                            // If the record does not exist, create a new record
-                            $user_info_data = [
-                                'requirment_id' => $requirment_id,
-                                'answer' => $answer,
-                                'user_id' => $user->id,
-                                'type' => 2,
-                            ];
-                            $qcount ++;
-
-
-                            UserInformation::create($user_info_data);
-
-                            //  $qcount ++;
-                        }
+                        // $qcount++;
+                    } else {
+                        $answer = 'messages.not_answered';
                     }
-                    if($qcount == $ques_count){
-                        $p++;
-                    }
-                    $user->update(['percentage' => intval(($p / 20) * 100)]);
 
+                    if ($existingRecord) {
+                        // If the record exists, update the answer
+                        $existingRecord->update(['answer' => $answer]);
+                        // $qcount ++;
+
+                    } else {
+                        // If the record does not exist, create a new record
+                        $user_info_data = [
+                            'requirment_id' => $requirment_id,
+                            'answer' => $answer,
+                            'user_id' => $user->id,
+                            'type' => 2,
+                        ];
+                        $qcount++;
+
+
+                        UserInformation::create($user_info_data);
+
+                        //  $qcount ++;
+                    }
+                }
+                if ($qcount == $ques_count) {
+                    $p++;
+                }
+                $user->update(['percentage' => intval(($p / 20) * 100)]);
             }
             $msg = __("messages.save successful");
 
@@ -300,10 +298,8 @@ class UserController extends Controller
                     if (!empty($imagesToDelete)) {
                         DB::table('user_images')->whereIn('id', $imagesToDelete)->delete();
                     }
-                }
-                elseif($request->stored_images == [] && $request->imagesArray != []){
+                } elseif ($request->stored_images == [] && $request->imagesArray != []) {
                     $user->images()->delete();
-                    
                 }
 
 
@@ -335,7 +331,7 @@ class UserController extends Controller
                         $image = upload_image($user_image['image'], "users");
                         $user_image_data['image'] = $image;
 
-                    // }
+                        // }
 
 
                         $is_primary = $user_image['is_primary'];
@@ -471,39 +467,36 @@ class UserController extends Controller
             }
 
             $entry_status = UserLastShow::whereUserId(auth()->id())->first();
-            if(!$entry_status){
+            if (!$entry_status) {
 
                 $data['status'] = $request->status;
-                if($request->status == 1){
+                if ($request->status == 1) {
                     $data['start_date'] = Carbon::now();
                     $data['end_date'] = null;
-                }elseif($request->status == 0){
+                } elseif ($request->status == 0) {
                     $data['start_date'] = null;
                     $data['end_date'] = Carbon::now();
                 }
                 $data['user_id'] = auth()->id();
                 UserLastShow::create($data);
                 auth()->user()->update(['active' =>  $request->status]);
-
-            }elseif($entry_status){
+            } elseif ($entry_status) {
 
                 $data['status'] = $request->status;
-                if($request->status == 1){
+                if ($request->status == 1) {
                     $data['start_date'] = Carbon::now();
                     $data['end_date'] = null;
-                }elseif($request->status == 0){
+                } elseif ($request->status == 0) {
                     $data['start_date'] = $entry_status->start_date ?? null;
                     $data['end_date'] = Carbon::now();
                 }
 
                 $entry_status->update($data);
                 auth()->user()->update(['active' => $request->status]);
-
             }
 
             $msg = __('messages.status updated successfully');
-                return $this->successResponse($msg, 200);
-
+            return $this->successResponse($msg, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
@@ -530,15 +523,15 @@ class UserController extends Controller
                 'is_watch_shown' => 0,
             ]);
             $msg = __('messages.new_partner_activity');
-            return $this->dataResponse($msg,$data, 200);
-
+            return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
     }
 
-    public function set_visibility(Request $request){
-        try{
+    public function set_visibility(Request $request)
+    {
+        try {
             $rules = [
                 'visibility' => 'required',
             ];
@@ -553,16 +546,15 @@ class UserController extends Controller
 
             $data = new UserResource($user);
             $msg = __('messages.done_updating_visibility');
-            return $this->dataResponse($msg,$data, 200);
-
-            }
-        catch (\Exception $ex){
+            return $this->dataResponse($msg, $data, 200);
+        } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
     }
 
-    public function update_location(Request $request){
-        try{
+    public function update_location(Request $request)
+    {
+        try {
             $rules = [
                 'latitude' => 'required',
                 'longitude' => 'required',
@@ -570,7 +562,7 @@ class UserController extends Controller
 
             $validator = Validator::make($request->all(), $rules);
 
-            if($validator->fails()){
+            if ($validator->fails()) {
                 return $this->getvalidationErrors($validator);
             }
 
@@ -579,10 +571,8 @@ class UserController extends Controller
 
             $data = new UserResource($user);
             $msg = __('messages.done_updating_location');
-            return $this->dataResponse($msg,$data, 200);
-        }
-
-        catch (\Exception $ex){
+            return $this->dataResponse($msg, $data, 200);
+        } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
         }
     }
@@ -608,4 +598,25 @@ class UserController extends Controller
     //         return $this->returnException($ex->getMessage(), 500);
     //     }
     // }
+
+    public function allow_share_data()
+    {
+        try {
+
+            $user = auth()->user();
+            $user->update([
+                'is_view' => $user->is_view ? 0 : 1
+            ]);
+
+            if ($user->is_view == 1) {
+                $msg = __('messages.allowed');
+                return $this->successResponse($msg, 200);
+            } else {
+                $msg = __('messages.not allowed');
+                return $this->successResponse($msg, 200);
+            }
+        } catch (\Exception $ex) {
+            return $this->returnException($ex->getMessage(), 500);
+        }
+    }
 }

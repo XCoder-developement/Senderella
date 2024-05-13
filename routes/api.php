@@ -276,6 +276,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     // users_off
     // Route::get("users_off", [UserController::class, "users_off"]);
 
+    //allow_share_data
+    Route::get("allow_share_data", [UserController::class, "allow_share_data"]);
+
     //screenshot_session_api
-Route::get("screenshot_session_api", [WhatsappController::class, "screenshot_session_api"]);
+    Route::get("screenshot_session_api", [WhatsappController::class, "screenshot_session_api"]);
 });
