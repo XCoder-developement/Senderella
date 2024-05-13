@@ -103,6 +103,11 @@
                                     </a>
                                 </li>
 
+                                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                    <a href="{{ route('allowed_users.index') }}" class="menu-link">
+                                        <span class="menu-text">{{ __('messages.allowed_users') }}</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </li>

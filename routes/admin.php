@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\TermController;
 use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AllowedUserController;
 use App\Http\Controllers\Admin\AppMessageController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\CommentController;
@@ -84,6 +85,9 @@ Route::group(
                 //users
                 Route::resource('users', UserController::class);
                 Route::post('users/active/{id}', [UserController::class, 'active'])->name('users.active');
+
+                //allowed_users
+                Route::resource('allowed_users', AllowedUserController::class);
 
                 //delted_users
                 Route::resource('delted_users', DeltedUserController::class);
