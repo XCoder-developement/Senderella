@@ -243,6 +243,10 @@ class User extends Authenticatable
         return $this->hasMany(Chat::class)->orderBy('created_at', 'asc');
     }
 
+    public function chats(): belongsToMany{
+        // this relationship belongs to chat and ordered by which creating recently
+        return $this->belongsToMany(Chat::class,'chat_users','user_id','chat_id');
+    }
     public function chat_message(): HasMany{
         // this relationship belongs to chatmessage and ordered by which creating recently
 

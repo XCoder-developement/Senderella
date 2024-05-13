@@ -94,6 +94,7 @@ class ChatController extends Controller
                 $chat->chat_users()->create([
                     "user_id" => $receiver->id,
                 ]);
+
             }
 
             $chatMessage = ChatMessage::create([
@@ -101,6 +102,7 @@ class ChatController extends Controller
                 "user_id" => $user->id,
                 "message" => $message,
             ]);
+
 
             if (($request->image)) {
                 $document_data = upload_image($request->image, "chatMessage");
