@@ -114,6 +114,7 @@ class PartnerResource extends JsonResource
                 "favorite_time" => $favorite_time ?? '',
                 "watch_time" => $watch_time ?? '',
                 "type" => intval($this->type) ?? '',
+                "chat_id" => $this->chats->first()?->id ?? '',
                 // "partner_more_info" => UserInformationResource::collection($this->informations),
             ];
         } else if ($this->type == 2) {

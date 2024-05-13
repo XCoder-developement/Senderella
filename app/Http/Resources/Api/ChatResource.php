@@ -18,7 +18,7 @@ class ChatResource extends JsonResource
     public function toArray(Request $request): array
     {
         $chat_parts = $this->chat_users->pluck('user_id')->toArray();
-        $user = User::whereIn('id', $chat_parts)->whereNot('id',auth()->id())->first();
+        $user = User::whereIn('id', $chat_parts)->whereNot('id', auth()->id())->first();
         // $user = auth()->user();
         $message = ChatMessage::where('chat_id', $this->id)->orderBy('created_at', 'desc')->value('message');
         $last_message = ChatMessage::where('chat_id', $this->id)->orderBy('created_at', 'desc')->first();
@@ -28,8 +28,10 @@ class ChatResource extends JsonResource
             'message'   => $message ?? '',
             'date' => $last_message?->created_at->format('Y-m-d') ?? '',
             'time' => $last_message?->created_at->format('g:i A') ?? '',
-            'partner' => new PartnerResource($user),
 
+            'sender_id' => $last_message?->user_id ?? '',
+            'new_message_count' => $this->messages()->where('is_read', 0)->count(),
+            'partner' => new PartnerResource($user),
 
             // $message = $user->is_verify == 1 ? $message : substr($message, 0, 5) . encrypt(substr($message, 5)),
         ];
