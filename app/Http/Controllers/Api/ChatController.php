@@ -178,7 +178,7 @@ class ChatController extends Controller
             // if($user->is_verify == 1){
 
 
-            $messages = ChatMessage::where('chat_id', $chatId)->orderBy('created_at', 'desc')->get();
+            $messages = ChatMessage::where('chat_id', $chatId)->orderBy('created_at', 'asc')->get();
             foreach($messages as $message){
                 $message->update([
                     'is_read' => 1
