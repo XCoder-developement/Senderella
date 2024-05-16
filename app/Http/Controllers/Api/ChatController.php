@@ -121,7 +121,7 @@ class ChatController extends Controller
             // if (count($messages) == 1 && $receiver->user_device->device_token != null) {
             //     SendNotification::send($receiver->user_device->device_token, __('message.congratulations'), __('message.congrats_you_have_received_a_reply') , $type, $userId, url($image) ?? '');
             // }else{
-            if( $receiver->user_device->device_token != null) {
+            if($receiver->user_device && $receiver->user_device->device_token != null) {
                 SendNotification::send($receiver->user_device->device_token, __('messages.message'), $message , $type, $userId, url($image) ?? '');
             }
             // broadcast(new ChatMessageSent($message));
