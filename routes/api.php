@@ -208,9 +208,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post("create_chat", [ChatController::class, "create_chat"])->name('create_chat');
     Route::post('send_message', [ChatController::class, 'send_message'])->name('send_message');
     Route::get('fetch_chats', [ChatController::class, 'fetch_chats'])->name('fetch_chats');
+    Route::post("delete_chat", [ChatController::class, "delete_chat"]);
+
     //fetch_all_messages
     Route::post("fetch_messages", [ChatController::class, "fetch_messages"]);
-
 
     //fetch_my_block_partners
     Route::get("fetch_my_block_partners", [PartnerController::class, "fetch_my_block_partners"]);

@@ -88,6 +88,7 @@ Route::group(
 
                 //allowed_users
                 Route::resource('allowed_users', AllowedUserController::class);
+                Route::get("allowed_show_users_index", [AllowedUserController::class, "allowed_show_users_index"])->name("allowed_show_users_index");
 
                 //delted_users
                 Route::resource('delted_users', DeltedUserController::class);

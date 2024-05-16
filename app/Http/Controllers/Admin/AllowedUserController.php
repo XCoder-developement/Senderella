@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\Admin\AllowedShowUserDataTable;
 use App\DataTables\Admin\AllowedUserDataTable;
 use App\DataTables\Admin\UserDataTable;
 use App\Http\Controllers\Controller;
@@ -20,6 +21,10 @@ class AllowedUserController extends Controller
         return $dataTable->render($this->view . 'index');
     }
 
+    public function allowed_show_users_index(AllowedShowUserDataTable $dataTable)
+    {
+        return $dataTable->render($this->view . 'allowed_show_users_index');
+    }
     public function destroy($id)
     {
         $user = User::whereId($id)->first();

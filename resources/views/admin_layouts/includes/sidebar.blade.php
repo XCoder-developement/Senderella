@@ -87,7 +87,7 @@
                                     </span>
                                 </li>
                                 <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                    <a href="{{ route('users.index') }}" class="menu-link">
+                                    <a href="{{ route('allowed_show_users_index') }}" class="menu-link">
                                         <span class="menu-text">{{ __('messages.all') }}</span>
                                     </a>
                                 </li>

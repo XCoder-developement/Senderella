@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\ChatMessageSent;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\ChatMessageResource;
 use App\Http\Resources\Api\ChatResource;
 use App\Models\Chat\Chat;
 use App\Models\Chat\ChatMessage;
@@ -40,7 +41,7 @@ class ChatController extends Controller
 
     public function send_message(Request $request)
     {
-        // try {
+        try {
             $rules = [
                 'receiver_id' => 'required',
                 'message' => 'sometimes',
@@ -136,9 +137,9 @@ class ChatController extends Controller
             //     return $this->dataResponse($msg, 200);
             // }
 
-        // } catch (\Exception $ex) {
-        //     return $this->returnException($ex, 500);
-        // }
+        } catch (\Exception $ex) {
+            return $this->returnException($ex, 500);
+        }
     }
 
 
@@ -185,7 +186,37 @@ class ChatController extends Controller
                 ]);
             }
             $msg = __('message.Messages');
-            return $this->dataResponse($msg, $messages, 200);
+            return $this->dataResponse($msg, ChatMessageResource::collection($messages), 200);
+            // }else{
+            //     $msg = __('message.your account is not verified');
+            //     return $this->dataResponse($msg, 200);
+            // }
+        } catch (\Exception $ex) {
+            return $this->returnException($ex, 500);
+        }
+    }
+
+
+    public function delete_chat(Request $request)
+    {
+        try {
+            $rules = [
+                'chat_id' => 'required|exists:chats,id',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return $this->getValidationErrors($validator);
+            }
+            $chatId = $request->chat_id;
+            $user = auth()->user();
+            // if($user->is_verify == 1){
+
+            $chat = Chat::find($chatId);
+            $chat->delete();
+            $msg = __('message.delete_chat');
+            return $this->successResponse($msg, 200);
             // }else{
             //     $msg = __('message.your account is not verified');
             //     return $this->dataResponse($msg, 200);
