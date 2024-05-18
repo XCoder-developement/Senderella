@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\ChatMessageSent;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\ChatImageResource;
 use App\Http\Resources\Api\ChatMessageResource;
 use App\Http\Resources\Api\ChatResource;
 use App\Models\Chat\Chat;
@@ -221,6 +222,116 @@ class ChatController extends Controller
             //     $msg = __('message.your account is not verified');
             //     return $this->dataResponse($msg, 200);
             // }
+        } catch (\Exception $ex) {
+            return $this->returnException($ex, 500);
+        }
+    }
+
+    public function show_my_image(Request $request)
+    {
+        try {
+            $rules = [
+                'user_id' => 'required|exists:users,id',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return $this->getValidationErrors($validator);
+            }
+            $user = auth()->user();
+      
+            $msg = __('message.show_my_image');
+            return $this->successResponse($msg,new ChatImageResource($user), 200);
+           
+        } catch (\Exception $ex) {
+            return $this->returnException($ex, 500);
+        }
+    }
+
+    public function show_user_image(Request $request)
+    {
+        try {
+            $rules = [
+                'user_id' => 'required|exists:users,id',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return $this->getValidationErrors($validator);
+            }
+            $user = auth()->user();
+      
+            $msg = __('message.show_my_image');
+            return $this->successResponse($msg,rand(0,1), 200);
+           
+        } catch (\Exception $ex) {
+            return $this->returnException($ex, 500);
+        }
+    }
+
+    public function send_second_chance(Request $request)
+    {
+        try {
+            $rules = [
+                'user_id' => 'required|exists:users,id',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return $this->getValidationErrors($validator);
+            }
+            $user = auth()->user();
+      
+            $msg = __('message.show_my_image');
+            return $this->successResponse($msg,rand(0,1), 200);
+           
+        } catch (\Exception $ex) {
+            return $this->returnException($ex, 500);
+        }
+    }
+
+    public function accept_second_chance(Request $request)
+    {
+        try {
+            $rules = [
+                'user_id' => 'required|exists:users,id',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return $this->getValidationErrors($validator);
+            }
+            $user = auth()->user();
+      
+            $msg = __('message.show_my_image');
+            return $this->successResponse($msg,rand(0,1), 200);
+           
+        } catch (\Exception $ex) {
+            return $this->returnException($ex, 500);
+        }
+    }
+
+    public function accept_show_chance(Request $request)
+    {
+        try {
+            $rules = [
+                'user_id' => 'required|exists:users,id',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return $this->getValidationErrors($validator);
+            }
+            $user = auth()->user();
+      
+            $msg = __('message.show_my_image');
+            return $this->successResponse($msg,new ChatImageResource($user), 200);
+           
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
