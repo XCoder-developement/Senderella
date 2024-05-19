@@ -105,7 +105,7 @@ class ChatController extends Controller
                 "chat_id" => $chat->id,
                 "user_id" => $user->id,
                 "message" => $message,
-                
+
             ]);
 
 
@@ -183,9 +183,9 @@ class ChatController extends Controller
             // if($user->is_verify == 1){
 
             $chat = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first()?->chat;
-                if (!$chat) {
-                   return $this->errorResponse(__('message.no chat found'), 200);
-                }
+            if (!$chat) {
+                return $this->errorResponse(__('message.no chat found'), 200);
+            }
             $messages = ChatMessage::where('chat_id', $chat->id)->orderBy('id', 'asc')->get();
             foreach ($messages as $message) {
                 $message->update([
@@ -257,10 +257,7 @@ class ChatController extends Controller
                 'image_status' => 1
             ]);
             $msg = __('message.show_my_image');
-            return $this->dataResponse($msg, (object)[
-                'show_my_image' => $my_chat_user->image_status ?? 0,
-                'show_user_image' => $chat_reciever->image_status
-            ], 200);
+            return $this->dataResponse($msg,$my_chat_user->image_status ?? 0,200);
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
@@ -333,10 +330,8 @@ class ChatController extends Controller
                 'image_status' => 1
             ]);
             $msg = __('message.show_my_image');
-            return $this->dataResponse($msg, (object)[
-                'show_my_image' => $my_chat_user->image_status ?? 0,
-                'show_user_image' => $chat_reciever->image_status ?? 0
-            ], 200);
+            return $this->dataResponse($msg,$my_chat_user->image_status ?? 0,200);
+
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
