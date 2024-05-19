@@ -65,7 +65,7 @@ class PartnerResource extends JsonResource
 
         $images = $primaryImages->merge($nonPrimaryImages);
 
-
+        if($this->chat)
         $lat1 = $user->latitude;
         $lon1 = $user->longitude;
         $lat2 = $this->latitude;
