@@ -7,11 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\ChatImageResource;
 use App\Http\Resources\Api\ChatMessageResource;
 use App\Http\Resources\Api\ChatResource;
+use App\Models\Chat\BlockRequest;
 use App\Models\Chat\Chat;
 use App\Models\Chat\ChatMessage;
 use App\Models\Chat\ChatMessageMedia;
 use App\Models\Chat\ChatUser;
+use App\Models\Chat\UserImageRequest;
 use App\Models\User\User;
+use App\Models\User\UserBlock;
 use App\Services\SendNotification;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
@@ -59,7 +62,7 @@ class ChatController extends Controller
             $user = auth()->user();
             $receiver_id = $request->receiver_id;
             $receiver = User::where('id', $receiver_id)->first();
-            if(!$receiver){
+            if (!$receiver) {
                 return $this->errorResponse('Receiver not exist', 404);
             }
             $message = $request->message;
@@ -96,7 +99,6 @@ class ChatController extends Controller
                 $chat->chat_users()->create([
                     "user_id" => $receiver->id,
                 ]);
-
             }
 
             $chatMessage = ChatMessage::create([
@@ -115,23 +117,23 @@ class ChatController extends Controller
                 // $user->update(['is_verify' => 1]);
             }
             $messages = ChatMessage::where('chat_id', $chat->id)
-            ->orderBy('created_at', 'desc')
-            ->pluck('id')
-            ->toArray();
+                ->orderBy('created_at', 'desc')
+                ->pluck('id')
+                ->toArray();
 
-            $type = 4 ;
+            $type = 4;
             // if (count($messages) == 1 && $receiver->user_device->device_token != null) {
             //     SendNotification::send($receiver->user_device->device_token, __('message.congratulations'), __('message.congrats_you_have_received_a_reply') , $type, $userId, url($image) ?? '');
             // }else{
-            if($receiver->user_device && $receiver->user_device->device_token != null) {
-                SendNotification::send($receiver->user_device->device_token, __('messages.message'), $message , $type, $userId, url($image) ?? '');
+            if ($receiver->user_device && $receiver->user_device->device_token != null) {
+                SendNotification::send($receiver->user_device->device_token, __('messages.message'), $message, $type, $userId, url($image) ?? '');
             }
             // broadcast(new ChatMessageSent($message));
 
 
 
             // return $this->successResponse(__("message.sent successfully"), 200);
-            return $this->dataResponse(__('message.sent successfully'),$chat,200);
+            return $this->dataResponse(__('message.sent successfully'), $chat, 200);
 
             // }else{
             //     $msg = __('message.your account is not verified');
@@ -181,7 +183,7 @@ class ChatController extends Controller
 
 
             $messages = ChatMessage::where('chat_id', $chatId)->orderBy('id', 'desc')->get();
-            foreach($messages as $message){
+            foreach ($messages as $message) {
                 $message->update([
                     'is_read' => 1
                 ]);
@@ -240,10 +242,21 @@ class ChatController extends Controller
                 return $this->getValidationErrors($validator);
             }
             $user = auth()->user();
-      
+
+
+            $chat_user = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first();
+            $chat = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first()?->chat;
+
+            $my_chat_user = ChatUser::where('user_id', $user->id)->where('chat_id', $chat->id)->first();
+            $chat_reciever = ChatUser::where('user_id', $request->user_id)->where('chat_id', $chat->id)->first();
+            $my_chat_user->update([
+                'image_status' => 1
+            ]);
             $msg = __('message.show_my_image');
-            return $this->successResponse($msg,new ChatImageResource($user), 200);
-           
+            return $this->dataResponse($msg, (object)[
+                'show_my_image' => $my_chat_user->image_status ?? 0,
+                'show_user_image' => $chat_reciever->image_status
+            ], 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
@@ -261,17 +274,33 @@ class ChatController extends Controller
             if ($validator->fails()) {
                 return $this->getValidationErrors($validator);
             }
-            $user = auth()->user();
-      
-            $msg = __('message.show_my_image');
-            return $this->successResponse($msg,rand(0,1), 200);
-           
+            $requester = auth()->user();
+            $user = User::find($request->user_id);
+
+            $chat = ChatUser::where(['user_id' => $requester->id, 'user_id' => $request->user_id])->first()?->chat;
+
+            $data['requester_user_id'] = $requester->id;
+            $data['user_id'] = $request->user_id;
+            $data['chat_id'] = $chat->id;
+            UserImageRequest::create($data);
+
+            $title = __('message.request_for_image');
+            $text = __('message.request_for_show_image');
+
+            if (isset($user->devices) && $user->devices->count() > 0) {
+                foreach ($user->devices as $user_device) {
+
+                    SendNotification::send($user_device->device_token, $title, $text, 8, '',);
+                }
+            }
+            $msg = __('message.success');
+            return $this->successResponse($msg, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
     }
 
-    public function send_second_chance(Request $request)
+    public function accept_show_image(Request $request)
     {
         try {
             $rules = [
@@ -284,10 +313,68 @@ class ChatController extends Controller
                 return $this->getValidationErrors($validator);
             }
             $user = auth()->user();
-      
+            $image_request = UserImageRequest::where(['user_id' => $request->user_id, 'requester_user_id' => $user->id])->first();
+
+            if (!$image_request) {
+                $msg = __('message.request_not_found');
+                return $this->errorResponse($msg, 400);
+            }
+
+            $chat = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first()?->chat;
+
+            $my_chat_user = ChatUser::where('user_id', $user->id)->where('chat_id', $chat->id)->first();
+            $chat_reciever = ChatUser::where('user_id', $request->user_id)->where('chat_id', $chat->id)->first();
+
+            $my_chat_user->update([
+                'image_status' => 1
+            ]);
             $msg = __('message.show_my_image');
-            return $this->successResponse($msg,rand(0,1), 200);
-           
+            return $this->dataResponse($msg, (object)[
+                'show_my_image' => $my_chat_user->image_status ?? 0,
+                'show_user_image' => $chat_reciever->image_status ?? 0
+            ], 200);
+        } catch (\Exception $ex) {
+            return $this->returnException($ex, 500);
+        }
+    }
+    public function send_second_chance(Request $request)
+    {
+        try {
+            $rules = [
+                'user_id' => 'required|exists:users,id',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return $this->getValidationErrors($validator);
+            }
+            $requester = auth()->user();
+            $user = User::find($request->user_id);
+            $blocked_partner = UserBlock::where([['user_id', '=', $request->user_id], ['partner_id', '=', $requester->id]])->first();
+
+            if(!$blocked_partner){
+                $msg = __('message.user_not_blocked');
+                return $this->errorResponse($msg, 400);
+            }
+            $chat = ChatUser::where(['user_id' => $requester->id, 'user_id' => $request->user_id])->first()?->chat;
+
+            $data['requester_user_id'] = $requester->id;
+            $data['user_id'] = $request->user_id;
+            $data['chat_id'] = $chat->id;
+            BlockRequest::create($data);
+
+            $title = __('message.request_for_unblock');
+            $text = __('message.request_for_unblock');
+
+            if (isset($user->devices) && $user->devices->count() > 0) {
+                foreach ($user->devices as $user_device) {
+
+                    SendNotification::send($user_device->device_token, $title, $text, 9, '',);
+                }
+            }
+            $msg = __('message.send_second_chance');
+            return $this->successResponse($msg, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
@@ -306,32 +393,26 @@ class ChatController extends Controller
                 return $this->getValidationErrors($validator);
             }
             $user = auth()->user();
-      
-            $msg = __('message.show_my_image');
-            return $this->successResponse($msg,rand(0,1), 200);
-           
-        } catch (\Exception $ex) {
-            return $this->returnException($ex, 500);
-        }
-    }
+            $block_request = BlockRequest::where(['user_id' => $request->user_id, 'requester_user_id' => $user->id])->first();
 
-    public function accept_show_chance(Request $request)
-    {
-        try {
-            $rules = [
-                'user_id' => 'required|exists:users,id',
-            ];
-
-            $validator = Validator::make($request->all(), $rules);
-
-            if ($validator->fails()) {
-                return $this->getValidationErrors($validator);
+            if (!$block_request) {
+                $msg = __('message.request_not_found');
+                return $this->errorResponse($msg, 400);
             }
-            $user = auth()->user();
-      
-            $msg = __('message.show_my_image');
-            return $this->successResponse($msg,new ChatImageResource($user), 200);
-           
+
+            $chat = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first()?->chat;
+
+            $my_chat_user = ChatUser::where('user_id', $user->id)->where('chat_id', $chat->id)->first();
+            $chat_reciever = ChatUser::where('user_id', $request->user_id)->where('chat_id', $chat->id)->first();
+
+            $my_chat_user->update([
+                'block_status' => 1
+            ]);
+            $blocked_partner = UserBlock::where([['user_id', '=', $user->id], ['partner_id', '=', $request->user_id]])->first();
+            $blocked_partner->delete();
+            $msg = __('message.accept_second_chance');
+            return $this->successResponse($msg, 200);
+
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }

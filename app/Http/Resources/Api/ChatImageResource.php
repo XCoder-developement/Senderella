@@ -17,10 +17,10 @@ class ChatImageResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        
+
         return [
-            'show_my_image' => rand(0, 1),
-            'show_user_image'   => rand(0, 1),           
+            'show_my_image' => $this->image_status ?? 0,
+            'show_user_image'   => $this->image_status ?? 0,
         ];
     }
 }

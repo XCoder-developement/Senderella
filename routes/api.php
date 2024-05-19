@@ -208,7 +208,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post("create_chat", [ChatController::class, "create_chat"])->name('create_chat');
     Route::post('send_message', [ChatController::class, 'send_message'])->name('send_message');
     Route::get('fetch_chats', [ChatController::class, 'fetch_chats'])->name('fetch_chats');
-    Route::post("delete_chat", [ChatController::class, "delete_chat"]);
+    Route::post("delete_chat", [ChatController::class, "delete_chat"])->name('delete_chat');
 
     //fetch_all_messages
     Route::post("fetch_messages", [ChatController::class, "fetch_messages"]);
@@ -282,4 +282,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //screenshot_session_api
     Route::get("screenshot_session_api", [WhatsappController::class, "screenshot_session_api"]);
+
+    Route::post("show_my_image", [ChatController::class, "show_my_image"])->name('show_my_image');
+    Route::post("show_user_image", [ChatController::class, "show_user_image"])->name('show_user_image');
+    Route::post("accept_show_image", [ChatController::class, "accept_show_image"])->name('accept_show_image');
+    Route::post("send_second_chance", [ChatController::class, "send_second_chance"])->name('send_second_chance');
+    Route::post("accept_second_chance", [ChatController::class, "accept_second_chance"])->name('accept_second_chance');
+
 });
