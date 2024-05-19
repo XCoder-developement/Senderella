@@ -4,6 +4,7 @@ namespace App\Http\Resources\Api;
 
 use App\Http\Resources\api\RequirmentResource;
 use App\Models\NewDuration\NewDuration;
+use App\Models\User\UserBlock;
 use App\Models\User\UserBookmark;
 use App\Models\User\UserImage;
 use App\Models\User\UserLastShow;
@@ -33,6 +34,7 @@ class PartnerResource extends JsonResource
             $last_active_date = \Carbon\Carbon::parse($last_active_date);
             $last_active = $last_active_date->diffForHumans(null, true);
         }
+        $is_blocked = UserBlock::where('user_id', $this->id)->where('partner_id', $user->id)->first();
 
         $like_time = UserLike::where('user_id', $this->id)->where('partner_id', $user->id)->latest()->value('created_at');
         if ($like_time) {
@@ -115,6 +117,7 @@ class PartnerResource extends JsonResource
                 "watch_time" => $watch_time ?? '',
                 "type" => intval($this->type) ?? '',
                 "chat_id" => $this->chats->first()?->id ?? '',
+                "is_blocked" => $is_blocked ? 1 : 0,
                 // "partner_more_info" => UserInformationResource::collection($this->informations),
             ];
         } else if ($this->type == 2) {
