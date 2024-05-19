@@ -30,7 +30,7 @@ class ChatResource extends JsonResource
             'time' => $last_message?->created_at->format('g:i A') ?? '',
 
             'sender_id' => $last_message?->user_id ?? '',
-            'new_message_count' => $this->messages()->where('is_read', 0)->count(),
+            'new_message_count' => $this->messages()->where('is_read', 0)->whereNot('user_id', auth()->id())->count(),
             'partner' => new PartnerResource($user),
 
             // $message = $user->is_verify == 1 ? $message : substr($message, 0, 5) . encrypt(substr($message, 5)),

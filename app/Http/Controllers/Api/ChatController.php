@@ -105,6 +105,7 @@ class ChatController extends Controller
                 "chat_id" => $chat->id,
                 "user_id" => $user->id,
                 "message" => $message,
+                
             ]);
 
 
@@ -169,7 +170,7 @@ class ChatController extends Controller
     {
         try {
             $rules = [
-                'chat_id' => 'required',
+                'user_id' => 'required|exists:users,id',
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -177,12 +178,15 @@ class ChatController extends Controller
             if ($validator->fails()) {
                 return $this->getValidationErrors($validator);
             }
-            $chatId = $request->chat_id;
+            // $chatId = $request->chat_id;
             $user = auth()->user();
             // if($user->is_verify == 1){
 
-
-            $messages = ChatMessage::where('chat_id', $chatId)->orderBy('id', 'desc')->get();
+            $chat = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first()?->chat;
+                if (!$chat) {
+                   return $this->errorResponse(__('message.no chat found'), 200);
+                }
+            $messages = ChatMessage::where('chat_id', $chat->id)->orderBy('id', 'asc')->get();
             foreach ($messages as $message) {
                 $message->update([
                     'is_read' => 1
@@ -216,7 +220,7 @@ class ChatController extends Controller
             $user = auth()->user();
             // if($user->is_verify == 1){
 
-            $chat = Chat::find($chatId);
+            $chat = ChatUser::where(['user_id' => $user->id, 'chat_id' => $chatId])->first();
             $chat->delete();
             $msg = __('message.delete_chat');
             return $this->successResponse($msg, 200);
@@ -353,7 +357,7 @@ class ChatController extends Controller
             $user = User::find($request->user_id);
             $blocked_partner = UserBlock::where([['user_id', '=', $request->user_id], ['partner_id', '=', $requester->id]])->first();
 
-            if(!$blocked_partner){
+            if (!$blocked_partner) {
                 $msg = __('message.user_not_blocked');
                 return $this->errorResponse($msg, 400);
             }
@@ -412,7 +416,6 @@ class ChatController extends Controller
             $blocked_partner->delete();
             $msg = __('message.accept_second_chance');
             return $this->successResponse($msg, 200);
-
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
