@@ -18,4 +18,9 @@ class ChatMessage extends Model
     public function medias(){
         return $this->hasMany(ChatMessageMedia::class);
     }
+
+    public function chat()
+    {
+        return $this->belongsTo(Chat::class, 'chat_id');
+    }
 }
