@@ -27,7 +27,8 @@ class ChatMessageResource extends JsonResource
             'type' => $this->message != null ? 1 : 2, //1 message , 2 image
             "is_read"=> $this->is_read,
             "created_at"=> $this->created_at,
-            "updated_at"=> $this->updated_at
+            "updated_at"=> $this->updated_at,
+            'chat' => new ChatResource(Chat::find($this->chat_id)),
         ];
     }
 }
