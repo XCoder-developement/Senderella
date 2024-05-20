@@ -307,7 +307,7 @@ class ChatController extends Controller
                 }
             }
             $msg = __('message.success');
-            return $this->successResponse($msg, new ChatResource($chat) , 200);
+            return $this->successResponse($msg, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
