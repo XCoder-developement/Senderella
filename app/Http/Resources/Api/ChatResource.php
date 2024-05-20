@@ -34,7 +34,7 @@ class ChatResource extends JsonResource
             'partner' => new PartnerResource($user),
             'show_my_image' => $this->chat_users->where('user_id',auth()->id())->first()?->image_status ?? 0,
             'show_user_image' => $this->chat_users->where('user_id','!=',auth()->id())->first()?->image_status ?? 0,
-
+            
             // $message = $user->is_verify == 1 ? $message : substr($message, 0, 5) . encrypt(substr($message, 5)),
         ];
     }

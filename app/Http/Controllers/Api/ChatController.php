@@ -182,12 +182,16 @@ class ChatController extends Controller
             // $chatId = $request->chat_id;
             $user = auth()->user();
             // if($user->is_verify == 1){
-
-            $chat = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first()?->chat;
-            if (!$chat) {
+            $auth_chats = ChatUser::where('user_id' , $user->id)->pluck('chat_id')->toArray();
+            $reciever_chats = ChatUser::where('user_id' , $request->user_id)->pluck('chat_id')->toArray();
+            $chat_id = array_intersect($auth_chats , $reciever_chats);
+            $chat = ChatUser::whereIn('id' , $chat_id)->first();
+            // dd($chat);
+            if ($chat == null) {
                 return $this->errorResponse(__('message.no chat found'), 200);
             }
-            $messages = ChatMessage::where('chat_id', $chat->id)->orderBy('id', 'asc')->get();
+
+            $messages = ChatMessage::where('chat_id', $chat->id)->orderBy('id', 'desc')->get();
             foreach ($messages as $message) {
                 $message->update([
                     'is_read' => 1
