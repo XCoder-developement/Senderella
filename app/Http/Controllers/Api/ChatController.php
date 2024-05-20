@@ -136,7 +136,7 @@ class ChatController extends Controller
 
 
             // return $this->successResponse(__("message.sent successfully"), 200);
-            return $this->dataResponse(__('message.sent successfully'), $message_resource, 200);
+            return $this->dataResponse(__('message.sent successfully'), $chat_resource, 200);
 
             // }else{
             //     $msg = __('message.your account is not verified');
@@ -303,11 +303,11 @@ class ChatController extends Controller
             if (isset($user->devices) && $user->devices->count() > 0) {
                 foreach ($user->devices as $user_device) {
 
-                    SendNotification::send($user_device->device_token, $title, $text, $type, '',);
+                    SendNotification::send($user_device->device_token, $title, $text, $type, '', '' , new ChatResource($chat));
                 }
             }
             $msg = __('message.success');
-            return $this->successResponse($msg, 200);
+            return $this->successResponse($msg, new ChatResource($chat) , 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
@@ -382,7 +382,7 @@ class ChatController extends Controller
             if (isset($user->devices) && $user->devices->count() > 0) {
                 foreach ($user->devices as $user_device) {
 
-                    SendNotification::send($user_device->device_token, $title, $text, $type, '',);
+                    SendNotification::send($user_device->device_token, $title, $text, $type, '','' , new ChatResource($chat));
                 }
             }
             $msg = __('message.send_second_chance');
