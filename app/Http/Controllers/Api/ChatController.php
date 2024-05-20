@@ -128,6 +128,7 @@ class ChatController extends Controller
             //     SendNotification::send($receiver->user_device->device_token, __('message.congratulations'), __('message.congrats_you_have_received_a_reply') , $type, $userId, url($image) ?? '');
             // }else{
             if ($receiver->user_device && $receiver->user_device->device_token != null) {
+                dd('sent');
                 SendNotification::send($receiver->user_device->device_token, __('messages.message'), $message, $type, $userId, url($image) ?? '');
             }
             // broadcast(new ChatMessageSent($message));
@@ -135,7 +136,7 @@ class ChatController extends Controller
 
 
             // return $this->successResponse(__("message.sent successfully"), 200);
-            return $this->dataResponse(__('message.sent successfully'), $chat, 200);
+            return $this->dataResponse(__('message.sent successfully'), new ChatResource($chat), 200);
 
             // }else{
             //     $msg = __('message.your account is not verified');
