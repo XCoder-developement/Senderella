@@ -337,7 +337,7 @@ class ChatController extends Controller
                 'image_status' => 1
             ]);
             $msg = __('message.show_my_image');
-            return $this->dataResponse($msg,$my_chat_user->image_status ?? 0,200);
+            return $this->dataResponse($msg,new ChatResource($chat),200);
 
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
