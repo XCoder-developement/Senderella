@@ -46,7 +46,7 @@ class ChatController extends Controller
 
     public function send_message(Request $request)
     {
-        // try {
+        try {
             $rules = [
                 'receiver_id' => 'required',
                 'message' => 'sometimes',
@@ -123,12 +123,13 @@ class ChatController extends Controller
                 ->pluck('id')
                 ->toArray();
             $message_resource = new ChatMessageResource($chatMessage);
+            $chat_resource = new ChatResource($chat);
             $type = NotificationTypeEnum::CHAT->value;
             // if (count($messages) == 1 && $receiver->user_device->device_token != null) {
             //     SendNotification::send($receiver->user_device->device_token, __('message.congratulations'), __('message.congrats_you_have_received_a_reply') , $type, $userId, url($image) ?? '');
             // }else{
             if ($receiver->user_device && $receiver->user_device->device_token != null) {
-                SendNotification::send($receiver->user_device->device_token, __('messages.message'), $message, $type, $userId, url($image) ?? '' , $message_resource);
+                SendNotification::send($receiver->user_device->device_token, __('messages.message'), $message, $type, $userId, url($image) ?? '' , $message_resource , $chat_resource);
             }
             // broadcast(new ChatMessageSent($message));
 
@@ -142,9 +143,9 @@ class ChatController extends Controller
             //     return $this->dataResponse($msg, 200);
             // }
 
-        // } catch (\Exception $ex) {
-        //     return $this->returnException($ex, 500);
-        // }
+        } catch (\Exception $ex) {
+            return $this->returnException($ex, 500);
+        }
     }
 
 
