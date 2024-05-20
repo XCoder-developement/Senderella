@@ -11,7 +11,6 @@ class SendNotification
 
     public static function send($token, $title,$text ,$type = "general" , $userId , $image = null)
     {
-        dd($token);
         $data = [
             "to" =>$token,
             "data" =>[
