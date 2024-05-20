@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Api;
 
 use App\Http\Resources\api\RequirmentResource;
+use App\Models\Chat\ChatUser;
 use App\Models\NewDuration\NewDuration;
 use App\Models\User\UserBlock;
 use App\Models\User\UserBookmark;
@@ -135,11 +136,20 @@ class ImageResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $chat = ChatUser::where(['user_id' => auth()->id(), 'user_id' => $this->user->id])->first()?->chat;
+        if($chat){
+            $chat_partner = ChatUser::where(['user_id' => $this->user->id, 'chat_id' => $chat->id])->first();
+            if($chat_partner && $chat_partner->image_status == 1){
+                $is_blur = false;
+            }else{
+                $is_blur = boolval($this->is_blurry) ?? "";
+            }
+        }
         return [
             "id" => $this->id,
             "image" => $this->image_link ?? "",
             "is_primary" => boolval($this->is_primary) ?? "",
-            "is_blurry" => boolval($this->is_blurry) ?? "",
+            "is_blurry" => $is_blur ?? "",
         ];
     }
 }

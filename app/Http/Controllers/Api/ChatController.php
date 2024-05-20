@@ -250,11 +250,15 @@ class ChatController extends Controller
 
             $chat_user = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first();
             $chat = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first()?->chat;
-
+            if(!$chat){
+                return $this->errorResponse(__('message.no chat found'), 200);
+            }
             $my_chat_user = ChatUser::where('user_id', $user->id)->where('chat_id', $chat->id)->first();
+            
             $chat_reciever = ChatUser::where('user_id', $request->user_id)->where('chat_id', $chat->id)->first();
 
-            
+
+
             $my_chat_user->update([
                 'image_status' => 1
             ]);
