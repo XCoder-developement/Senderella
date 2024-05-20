@@ -9,6 +9,7 @@ use App\Models\Post\PostImage;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use App\DataTables\Admin\PostDataTable;
+use App\Http\Enums\NotificationTypeEnum;
 use App\Http\Requests\Admin\Post\PostRequest;
 use App\Models\User\User;
 use App\Models\User\UserNotification;
@@ -41,12 +42,12 @@ class PostController extends Controller
         }
         $data['admin_id'] = auth()->user()->id ?? null;
         $post = Post::create($data);
-        $tpye = 3 ;
+        $type = NotificationTypeEnum::NEWPOST->value; ;
         foreach($users as $user){
             $user->update(['is_post_shown' => $user->is_post_shown + 1]);
             $user->update(['is_notification_shown' => $user->is_notification_shown + 1]);
             if(optional($user->user_device)->device_token){
-            SendNotification::send($user->user_device->device_token,__('messages.new_post'),__('messages.new_post') , $tpye ,'' , '');
+            SendNotification::send($user->user_device->device_token,__('messages.new_post'),__('messages.new_post') , $type ,'' , '');
             UserNotification::create([
                 'user_id' => $user->id,
                 'title' => __('messages.new_post'),

@@ -8,6 +8,7 @@ use App\Traits\ApiTrait;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Enums\NotificationTypeEnum;
 use App\Http\Resources\Api\CustomPartnerResource;
 use App\Http\Resources\Api\MiniPartnerResource;
 use App\Http\Resources\Api\NotificationPartnerResource;
@@ -255,7 +256,7 @@ class PartnerController extends Controller
             $user_id = auth()->id();
             $partner_id = $request->partner_id;
             $partner = User::whereId($partner_id)->first();
-            $type = 2;
+            $type = NotificationTypeEnum::LIKE->value;
             $image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
             // dd($image);
             $like_partner = UserLike::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
@@ -289,7 +290,7 @@ class PartnerController extends Controller
                     $partner->update(['is_like_shown' => $partner->is_like_shown - 1]);
                 }
 
-                $type = 6;
+                $type = NotificationTypeEnum::DISLIKE->value;
                 $image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
                 $userId = $user->id;
                 $partner_devices = UserDevice::where('user_id', $partner->id)->pluck('device_token');
@@ -449,7 +450,7 @@ class PartnerController extends Controller
                 $user = auth()->user();
                 $userId = $user->id;
                 $image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
-                $type = 5;
+                $type = NotificationTypeEnum::BOOKMARK->value;
                 $partner->update(['is_bookmark_shown' => $partner->is_bookmark_shown + 1]);
 
                 $partner_devices = UserDevice::where('user_id', $partner->id)->pluck('device_token');
@@ -489,7 +490,7 @@ class PartnerController extends Controller
             $data['user_id'] =  $user->id;
             $data['partner_id'] =  $partner_id;
             // notifiaction_settings
-            $type = 1;
+            $type = NotificationTypeEnum::VIEW->value;
 
             $image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
 

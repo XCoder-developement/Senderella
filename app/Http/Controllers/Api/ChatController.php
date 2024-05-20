@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\ChatMessageSent;
 use App\Http\Controllers\Controller;
+use App\Http\Enums\NotificationTypeEnum;
 use App\Http\Resources\Api\ChatImageResource;
 use App\Http\Resources\Api\ChatMessageResource;
 use App\Http\Resources\Api\ChatResource;
@@ -122,7 +123,7 @@ class ChatController extends Controller
                 ->pluck('id')
                 ->toArray();
 
-            $type = 4;
+            $type = NotificationTypeEnum::CHAT->value;
             // if (count($messages) == 1 && $receiver->user_device->device_token != null) {
             //     SendNotification::send($receiver->user_device->device_token, __('message.congratulations'), __('message.congrats_you_have_received_a_reply') , $type, $userId, url($image) ?? '');
             // }else{
@@ -254,7 +255,7 @@ class ChatController extends Controller
                 return $this->errorResponse(__('message.no chat found'), 200);
             }
             $my_chat_user = ChatUser::where('user_id', $user->id)->where('chat_id', $chat->id)->first();
-            
+
             $chat_reciever = ChatUser::where('user_id', $request->user_id)->where('chat_id', $chat->id)->first();
 
 
@@ -293,11 +294,11 @@ class ChatController extends Controller
 
             $title = __('message.request_for_image');
             $text = __('message.request_for_show_image');
-
+            $type = NotificationTypeEnum::SHOWUSERIMAGE->value;
             if (isset($user->devices) && $user->devices->count() > 0) {
                 foreach ($user->devices as $user_device) {
 
-                    SendNotification::send($user_device->device_token, $title, $text, 8, '',);
+                    SendNotification::send($user_device->device_token, $title, $text, $type, '',);
                 }
             }
             $msg = __('message.success');
@@ -371,11 +372,12 @@ class ChatController extends Controller
 
             $title = __('message.request_for_unblock');
             $text = __('message.request_for_unblock');
+            $type = NotificationTypeEnum::SECONDCHANCE->value;
 
             if (isset($user->devices) && $user->devices->count() > 0) {
                 foreach ($user->devices as $user_device) {
 
-                    SendNotification::send($user_device->device_token, $title, $text, 9, '',);
+                    SendNotification::send($user_device->device_token, $title, $text, $type, '',);
                 }
             }
             $msg = __('message.send_second_chance');

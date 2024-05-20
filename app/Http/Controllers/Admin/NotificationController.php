@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\Admin\NotificationDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Enums\NotificationTypeEnum;
 use App\Http\Requests\Admin\Notification\StoreRequest;
 use App\Http\Requests\Admin\Notification\UpdateRequest;
 use App\Models\Notification\Notification;
@@ -32,7 +33,7 @@ class NotificationController extends Controller
         $title = $request->title;
         $text = $request->body;
         $image = null;
-        $type = 0;
+        $type = NotificationTypeEnum::DASHBOARD->value;
         if($request->hasFile('image')){
             $image = upload_image($request->image,"notifications");
         }
@@ -70,7 +71,7 @@ class NotificationController extends Controller
         $title = $request->title;
         $text = $request->body;
         $image = null;
-        $type = 7;
+        $type = NotificationTypeEnum::PREMIEM->value;
         if($request->hasFile('image')){
             $image = upload_image($request->image,"notifications");
         }
