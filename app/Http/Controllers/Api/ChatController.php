@@ -156,10 +156,8 @@ class ChatController extends Controller
             // $sent_chats = Chat::where('user_id', $user->id)->where('receiver_id', '!=', $user->id);
             // $received_chats = Chat::where('receiver_id', $user->id)->where('user_id', '!=', $user->id);
             // $chats = $sent_chats->union($received_chats)->get();
-
-            $chats = Chat::whereHas('chat_users', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            })->get();
+            $user_chats_ids = ChatUser::where('user_id' , $user->id)->pluck('chat_id')->toArray();
+            $chats = Chat::whereIn('id' ,$user_chats_ids )->get();
             $data = ChatResource::collection($chats);
             $msg = __('message.Your chats');
             return $this->dataResponse($msg, $data, 200);
