@@ -119,12 +119,14 @@ class PartnerResource extends JsonResource
                 "type" => intval($this->type) ?? '',
                 "chat_id" => $this->chats->first()?->id ?? '',
                 "is_blocked" => $is_blocked ? 1 : 0,
+                'show_my_image' => $this->my_image() ?? '',
+                'show_user_image' => $this->user_image() ?? '',
                 // "partner_more_info" => UserInformationResource::collection($this->informations),
             ];
         } else if ($this->type == 2) {
-            return[
-                "id" => $this->id ?? "" ,
-                "link" =>$this->link ?? "",
+            return [
+                "id" => $this->id ?? "",
+                "link" => $this->link ?? "",
                 "image" => $this->image_link ?? "",
                 "type"  => intval($this->type) ?? '',
             ];
@@ -137,11 +139,11 @@ class ImageResource extends JsonResource
     public function toArray(Request $request): array
     {
         $chat = ChatUser::where(['user_id' => auth()->id(), 'user_id' => $this->user->id])->first()?->chat;
-        if($chat){
+        if ($chat) {
             $chat_partner = ChatUser::where(['user_id' => $this->user->id, 'chat_id' => $chat->id])->first();
-            if($chat_partner && $chat_partner->image_status == 1){
+            if ($chat_partner && $chat_partner->image_status == 1) {
                 $is_blur = false;
-            }else{
+            } else {
                 $is_blur = boolval($this->is_blurry) ?? "";
             }
         }
