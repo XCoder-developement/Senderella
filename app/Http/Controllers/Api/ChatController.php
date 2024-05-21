@@ -128,7 +128,7 @@ class ChatController extends Controller
                 ->pluck('id')
                 ->toArray();
             $message_resource = new ChatMessageResource($chatMessage);
-            dd($chat);
+            // dd($chat);
             $chat_resource = new ChatResource($chat);
             $type = NotificationTypeEnum::CHAT->value;
             // if (count($messages) == 1 && $receiver->user_device->device_token != null) {
