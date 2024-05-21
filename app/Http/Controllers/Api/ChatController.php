@@ -48,9 +48,9 @@ class ChatController extends Controller
     {
         try {
             $rules = [
-                'receiver_id' => 'required',
-                'message' => 'sometimes',
-                'image' => 'sometimes',
+                'receiver_id' => 'required|exists:users,id',
+                'message' => 'sometimes|string|max:1000',
+                'image' => 'sometimes|image|max:10240', // Optional validation for images
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -59,42 +59,23 @@ class ChatController extends Controller
                 return $this->getValidationErrors($validator);
             }
 
-
             $user = auth()->user();
-            $receiver_id = $request->receiver_id;
-            $receiver = User::where('id', $receiver_id)->first();
+            $receiver = User::find($request->receiver_id);
+
             if (!$receiver) {
                 return $this->errorResponse('Receiver not exist', 404);
             }
+
             $message = $request->message;
+            $imageLink = $user->images()->where('is_primary', 1)->first()->image_link ?? '';
 
-            $userId = $user->id;
-            $image = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
+            $authChats = ChatUser::where('user_id', $user->id)->pluck('chat_id')->toArray();
+            $receiverChats = ChatUser::where('user_id', $request->receiver_id)->pluck('chat_id')->toArray();
+            $chatId = array_intersect($authChats, $receiverChats);
+            $chat = Chat::whereIn('id', $chatId)->first();
 
-            // $chat = Chat::whereHas('chat_users', function ($query) use ($user, $receiver) {
-            //     $query->where('user_id', $user->id )->orWhere('user_id', $receiver->id);
-            // })->first();
-            // $chat = ChatUser::where(['user_id' => $user->id, 'user_id' => $receiver->id])->first()?->chat;
-            // Check if a chat already exists between the user and the receiver
-            // $chat = Chat::where(function ($query) use ($user, $receiver) {
-            //     $query->where('user_id', $user->id)
-            //     ->where('receiver_id', $receiver->id);
-            // })->orWhere(function ($query) use ($user, $receiver) {
-            //     $query->where('user_id', $receiver->id)
-            //     ->where('receiver_id', $user->id);
-            // })->first();
-
-            $auth_chats = ChatUser::where('user_id' , $user->id)->pluck('chat_id')->toArray();
-            $reciever_chats = ChatUser::where('user_id' , $request->receiver_id)->pluck('chat_id')->toArray();
-            $chat_id = array_intersect($auth_chats , $reciever_chats);
-            $chat = ChatUser::whereIn('id' , $chat_id)->first();
-
-            //         // if($user->is_verify == 1){
             if (!$chat) {
-                // If no chat exists, create a new one
                 $chat = Chat::create([
-                    // "user_id" => $user->id,
-                    // "receiver_id" => $receiver->id,
                     "name" => $receiver->name,
                 ]);
 
@@ -111,48 +92,39 @@ class ChatController extends Controller
                 "chat_id" => $chat->id,
                 "user_id" => $user->id,
                 "message" => $message,
-
             ]);
 
-
-            if (($request->image)) {
-                $document_data = upload_image($request->image, "chatMessage");
+            if ($request->hasFile('image')) {
+                $documentData = upload_image($request->image, "chatMessage");
                 $chatMessage->medias()->create([
-                    'image' => $document_data,
+                    'image' => $documentData,
                 ]);
-
-                // $user->update(['is_verify' => 1]);
             }
-            $messages = ChatMessage::where('chat_id', $chat->id)
-                ->orderBy('created_at', 'desc')
-                ->pluck('id')
-                ->toArray();
-            $message_resource = new ChatMessageResource($chatMessage);
-            // dd($chat);
-            $chat_resource = new ChatResource($chat);
+
+            $messageResource = new ChatMessageResource($chatMessage);
+            $chatResource = new ChatResource($chat);
             $type = NotificationTypeEnum::CHAT->value;
-            // if (count($messages) == 1 && $receiver->user_device->device_token != null) {
-            //     SendNotification::send($receiver->user_device->device_token, __('message.congratulations'), __('message.congrats_you_have_received_a_reply') , $type, $userId, url($image) ?? '');
-            // }else{
-            if ($receiver->user_device && $receiver->user_device->device_token != null) {
-                SendNotification::send($receiver->user_device->device_token, __('messages.message'), $message, $type, $userId, url($image) ?? '' , $message_resource , $chat_resource);
+
+            if ($receiver->user_device && $receiver->user_device->device_token) {
+                SendNotification::send(
+                    $receiver->user_device->device_token,
+                    __('messages.message'),
+                    $message,
+                    $type,
+                    $user->id,
+                    url($imageLink) ?? '',
+                    $messageResource,
+                    $chatResource
+                );
             }
-            // broadcast(new ChatMessageSent($message));
 
-
-
-            // return $this->successResponse(__("message.sent successfully"), 200);
-            return $this->dataResponse(__('message.sent successfully'), $chat_resource, 200);
-
-            // }else{
-            //     $msg = __('message.your account is not verified');
-            //     return $this->dataResponse($msg, 200);
-            // }
+            return $this->dataResponse(__('message.sent successfully'), $chatResource, 200);
 
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
     }
+
 
 
     public function fetch_chats()

@@ -42,23 +42,38 @@
                     <div class="row">
 
 
-                        @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                        {{-- @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) --}}
                             <!-- For loop this div -->
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label>
-                                        {{ __('messages.text_' . $localeCode) }}
-                                        <span class="text-danger"> ( {{ $localeCode }} )</span>
+                                        {{ __('messages.text_' . 'en') }}
+                                        <span class="text-danger"> ( {{ 'en' }} )</span>
                                     </label>
-                                    <textarea id="summernote" class="form-control  @error('text-' . $localeCode) is-invalid @enderror"
-                                        name="text-{{ $localeCode }}" placeholder=" {{ __('messages.text_' . $localeCode) }}  " > {{ $help_instruction->translate($localeCode)->text ?? '' }} </textarea>
-                                    @error('text-' . $localeCode)
+                                    <textarea id="summernote" class="form-control  @error('text-' . 'en') is-invalid @enderror"
+                                        name="text-{{ 'en' }}" placeholder=" {{ __('messages.text_' . 'en') }}  " > {{ $help_instruction->translate('en')->text ?? '' }} </textarea>
+                                    @error('text-' . 'en')
                                         <span class="invalid-feedback">
                                             {{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
-                        @endforeach
+
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>
+                                        {{ __('messages.text_' . 'ar') }}
+                                        <span class="text-danger"> ( {{ 'ar' }} )</span>
+                                    </label>
+                                    <textarea id="summernote" class="form-control  @error('text-' . 'ar') is-invalid @enderror"
+                                        name="text-{{ 'ar' }}" placeholder=" {{ __('messages.text_' . 'ar') }}  " > {{ $help_instruction->translate('ar')->text ?? '' }} </textarea>
+                                    @error('text-' . 'ar')
+                                        <span class="invalid-feedback">
+                                            {{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        {{-- @endforeach --}}
 
 
 
