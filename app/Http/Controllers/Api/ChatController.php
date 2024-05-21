@@ -271,7 +271,11 @@ class ChatController extends Controller
             $requester = auth()->user();
             $user = User::find($request->user_id);
 
-            $chat = ChatUser::where(['user_id' => $requester->id, 'user_id' => $request->user_id])->first()?->chat;
+            // $chat = ChatUser::where(['user_id' => $requester->id, 'user_id' => $request->user_id])->first()?->chat;
+            $auth_chats = ChatUser::where('user_id' , $requester->id)->pluck('chat_id')->toArray();
+            $reciever_chats = ChatUser::where('user_id' , $request->user_id)->pluck('chat_id')->toArray();
+            $chat_id = array_intersect($auth_chats , $reciever_chats);
+            $chat = ChatUser::whereIn('id' , $chat_id)->first();
 
             $data['requester_user_id'] = $requester->id;
             $data['user_id'] = $request->user_id;
@@ -284,7 +288,15 @@ class ChatController extends Controller
             if (isset($user->devices) && $user->devices->count() > 0) {
                 foreach ($user->devices as $user_device) {
 
-                    SendNotification::send($user_device->device_token, $title, $text, $type, '', '' , new ChatResource($chat));
+                    SendNotification::send(
+                        $user_device->device_token,
+                        $title,
+                        $text,
+                        $type,
+                        $requester->id ,
+                        url($requester->image),
+                        '' ,
+                         new ChatResource($chat));
                 }
             }
             $msg = __('message.success');
@@ -349,7 +361,11 @@ class ChatController extends Controller
                 $msg = __('message.user_not_blocked');
                 return $this->errorResponse($msg, 400);
             }
-            $chat = ChatUser::where(['user_id' => $requester->id, 'user_id' => $request->user_id])->first()?->chat;
+            // $chat = ChatUser::where(['user_id' => $requester->id, 'user_id' => $request->user_id])->first()?->chat;
+            $auth_chats = ChatUser::where('user_id' , $requester->id)->pluck('chat_id')->toArray();
+            $reciever_chats = ChatUser::where('user_id' , $request->user_id)->pluck('chat_id')->toArray();
+            $chat_id = array_intersect($auth_chats , $reciever_chats);
+            $chat = ChatUser::whereIn('id' , $chat_id)->first();
 
             $data['requester_user_id'] = $requester->id;
             $data['user_id'] = $request->user_id;
@@ -363,7 +379,7 @@ class ChatController extends Controller
             if (isset($user->devices) && $user->devices->count() > 0) {
                 foreach ($user->devices as $user_device) {
 
-                    SendNotification::send($user_device->device_token, $title, $text, $type, '','' , new ChatResource($chat));
+                    SendNotification::send($user_device->device_token, $title, $text, $type, $requester->id, url($requester->image),'' , new ChatResource($chat));
                 }
             }
             $msg = __('message.send_second_chance');

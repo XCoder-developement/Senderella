@@ -20,6 +20,7 @@ enum NotificationTypeEnum: int
     case PREMIEM = 7;
     case SHOWUSERIMAGE = 8;
     case SECONDCHANCE = 9;
+    case BLOCK = 10;
 
 
     public static function getTitle($value)

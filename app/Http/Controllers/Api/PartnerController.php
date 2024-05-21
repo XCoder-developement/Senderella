@@ -334,7 +334,8 @@ class PartnerController extends Controller
             $reason = $request->reason;
 
             $like_partner = UserBlock::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
-
+            $partner = User::find('id' , $partner_id );
+            $user = User::find('id' , $user_id );
             if (!$like_partner) {
                 $data['user_id'] =  $user_id;
                 $data['partner_id'] =  $partner_id;
@@ -342,6 +343,24 @@ class PartnerController extends Controller
                 $user_block = UserBlock::create($data);
 
                 $user_block->reasons()->attach($reason_ids);
+
+                $title = __('message.block');
+            $text = __('message.partner_blocked');
+            $type = NotificationTypeEnum::BLOCK->value;
+            if (isset($partner->devices) && $partner->devices->count() > 0) {
+                foreach ($partner->devices as $user_device) {
+
+                    SendNotification::send(
+                        $user_device->device_token,
+                        $title,
+                        $text,
+                        $type,
+                        $user_id ,
+                        url($user->image),
+                        '' ,
+                        '');
+                }
+            }
 
                 $msg = __("messages.partner blocked");
 
