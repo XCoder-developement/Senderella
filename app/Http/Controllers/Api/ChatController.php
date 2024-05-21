@@ -158,6 +158,7 @@ class ChatController extends Controller
             // $chats = $sent_chats->union($received_chats)->get();
             $user_chats_ids = ChatUser::where('user_id' , $user->id)->pluck('chat_id')->toArray();
             $chats = Chat::whereIn('id' ,$user_chats_ids )->get();
+            dd( $user ,  $user_chats_ids ,$chats );
             $data = ChatResource::collection($chats);
             $msg = __('message.Your chats');
             return $this->dataResponse($msg, $data, 200);
@@ -185,7 +186,7 @@ class ChatController extends Controller
             $reciever_chats = ChatUser::where('user_id' , $request->user_id)->pluck('chat_id')->toArray();
             $chat_id = array_intersect($auth_chats , $reciever_chats);
             $chat = ChatUser::whereIn('id' , $chat_id)->first();
-            // dd($chat);
+            dd($chat , $chat_id , $reciever_chats , $auth_chats , $user);
             if ($chat == null) {
                 return $this->dataResponse(__('message.no chat found'), [] ,200);
             }
