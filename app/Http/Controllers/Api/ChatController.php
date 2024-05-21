@@ -46,7 +46,7 @@ class ChatController extends Controller
 
     public function send_message(Request $request)
     {
-        // try {
+        try {
             $rules = [
                 'receiver_id' => 'required',
                 'message' => 'sometimes',
@@ -128,6 +128,7 @@ class ChatController extends Controller
                 ->pluck('id')
                 ->toArray();
             $message_resource = new ChatMessageResource($chatMessage);
+            dd($chat);
             $chat_resource = new ChatResource($chat);
             $type = NotificationTypeEnum::CHAT->value;
             // if (count($messages) == 1 && $receiver->user_device->device_token != null) {
@@ -148,9 +149,9 @@ class ChatController extends Controller
             //     return $this->dataResponse($msg, 200);
             // }
 
-        // } catch (\Exception $ex) {
-        //     return $this->returnException($ex, 500);
-        // }
+        } catch (\Exception $ex) {
+            return $this->returnException($ex, 500);
+        }
     }
 
 
