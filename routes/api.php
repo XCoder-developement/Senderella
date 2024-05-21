@@ -44,6 +44,7 @@ use App\Http\Controllers\Admin\MarriageReadinessController;
 use App\Http\Controllers\Admin\PackageRuleController;
 use App\Http\Controllers\Api\AppMessageController;
 use App\Http\Controllers\Api\ChatController;
+use App\Http\Controllers\Api\HelpInstructionController;
 use App\Http\Controllers\Api\ReportTypeController;
 use App\Http\Controllers\Api\MarriageReadinessController as ApiMarriageReadinessController;
 use App\Http\Controllers\Api\PackageRuleController as ApiPackageRuleController;
@@ -289,4 +290,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post("send_second_chance", [ChatController::class, "send_second_chance"])->name('send_second_chance');
     Route::post("accept_second_chance", [ChatController::class, "accept_second_chance"])->name('accept_second_chance');
 
+    //fetch_help_instructions
+    Route::get('fetch_help_instructions' , [HelpInstructionController::class , "fetch_help_instructions"])->name('fetch_help_instructions');
 });

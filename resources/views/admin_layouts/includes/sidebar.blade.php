@@ -423,6 +423,18 @@
                                     </li>
 
                                     <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('help_instructions.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.help_instructions')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{route('use_methods.index')}}" class="menu-link" >
+                                            <span class="menu-text">{{__('messages.use_methods')}}</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="{{route('new_durations.index')}}" class="menu-link" >
                                             <span class="menu-text">{{__('messages.new_duration')}}</span>
                                         </a>

@@ -511,5 +511,11 @@ return [
     'questions'        => 'أسئلة ',
     'add requirment_items'  => 'اضافة تفاصيل متطلبات',
     'allowed_users'        => 'المستخدمين المسموح بعرض بياناته',
+    'edit_help_instruction' => 'تعديل تعليمات المساعدة',
+    'edit_use_method'   => 'تعديل بيانات الاستخدام',
+    'help_instructions' => 'تعليمات المساعدة',
+    'use_methods'   => 'بيانات الاستخدام',
+    'fetch_help_instructions_and_use_methods'   => 'عرض تعليمات المساعدة و بيانات الاستخدام',
+    
 
 ];
