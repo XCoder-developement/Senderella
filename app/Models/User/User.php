@@ -278,7 +278,7 @@ class User extends Authenticatable
         $chat_id = array_intersect($auth_chats, $reciever_chats);
         $chat = ChatUser::where('user_id' , $auth->id )->whereIn('id', $chat_id)->first();
 
-        return $chat->image_status;
+        return $chat ? $chat->image_status : '';
     }
 
     public function user_image()
@@ -289,7 +289,7 @@ class User extends Authenticatable
         $chat_id = array_intersect($auth_chats, $reciever_chats);
         $chat = ChatUser::where('user_id' , $this->id )->whereIn('id', $chat_id)->first();
 
-        return $chat->image_status;
+        return  $chat ? $chat->image_status : '';
     }
     //like me and followers partners
     // public function followers(): HasMany
