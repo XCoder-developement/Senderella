@@ -6,6 +6,7 @@ namespace App\Models\User;
 
 use App\Models\Chat\Chat;
 use App\Models\Chat\ChatMessage;
+use App\Models\Chat\ChatUser;
 use App\Models\Color\Color;
 use App\Models\Gift\Gift;
 use App\Models\Post\Post;
@@ -61,7 +62,8 @@ class User extends Authenticatable
         return Carbon::parse($this->birthday_date)->age;
     }
 
-    public function getLastActiveDateAttribute(){
+    public function getLastActiveDateAttribute()
+    {
         return $this->last_shows !== null && $this->last_shows->first() ? $this->last_shows?->first()?->end_date : Carbon::now()->format('Y-m-d H:i:s');
     }
     public function scopeAgeRange($query, $ageFrom, $ageTo)
@@ -168,11 +170,12 @@ class User extends Authenticatable
         }
     }
 
-    public function is_follow($user_id){
+    public function is_follow($user_id)
+    {
         $favorite_product = UserLike::whereUserId($user_id)->wherePartnerId($this->id)->first();
-        if($favorite_product){
+        if ($favorite_product) {
             return 1;
-        }elseif(!$favorite_product){
+        } elseif (!$favorite_product) {
             return 0;
         }
     }
@@ -217,11 +220,12 @@ class User extends Authenticatable
         return $this->hasMany(UserWatch::class, 'partner_id');
     }
 
-    public function is_favorite($user_id){
+    public function is_favorite($user_id)
+    {
         $favorite_product = UserBookmark::whereUserId($user_id)->wherePartnerId($this->id)->first();
-        if($favorite_product){
+        if ($favorite_product) {
             return 1;
-        }elseif(!$favorite_product){
+        } elseif (!$favorite_product) {
             return 0;
         }
     }
@@ -238,27 +242,54 @@ class User extends Authenticatable
         return $this->hasMany(UserBookmark::class, 'partner_id');
     }
 
-    public function chat(): HasMany{
+    public function chat(): HasMany
+    {
         // this relationship belongs to chat and ordered by which creating recently
         return $this->hasMany(Chat::class)->orderBy('created_at', 'asc');
     }
 
-    public function chats(): belongsToMany{
+    public function chats(): belongsToMany
+    {
         // this relationship belongs to chat and ordered by which creating recently
-        return $this->belongsToMany(Chat::class,'chat_users','user_id','chat_id');
+        return $this->belongsToMany(Chat::class, 'chat_users', 'user_id', 'chat_id');
     }
-    public function chat_message(): HasMany{
+    public function chat_message(): HasMany
+    {
         // this relationship belongs to chatmessage and ordered by which creating recently
 
         return $this->hasMany(ChatMessage::class)->orderBy('created_at', 'asc');
     }
 
-    public function last_shows(): HasMany{
+    public function last_shows(): HasMany
+    {
         return $this->hasMany(UserLastShow::class);
     }
 
-    public function search(): HasMany{
+    public function search(): HasMany
+    {
         return $this->hasMany(UserSearch::class);
+    }
+
+    public function my_image()
+    {
+        $auth = auth()->user();
+        $auth_chats = ChatUser::where('user_id', $auth->id)->pluck('chat_id')->toArray();
+        $reciever_chats = ChatUser::where('user_id', $this->id)->pluck('chat_id')->toArray();
+        $chat_id = array_intersect($auth_chats, $reciever_chats);
+        $chat = ChatUser::where('user_id' , $auth->id )->whereIn('id', $chat_id)->first();
+
+        return $chat->image_status;
+    }
+
+    public function user_image()
+    {
+        $auth = auth()->user();
+        $auth_chats = ChatUser::where('user_id', $auth->id)->pluck('chat_id')->toArray();
+        $reciever_chats = ChatUser::where('user_id', $this->id)->pluck('chat_id')->toArray();
+        $chat_id = array_intersect($auth_chats, $reciever_chats);
+        $chat = ChatUser::where('user_id' , $this->id )->whereIn('id', $chat_id)->first();
+
+        return $chat->image_status;
     }
     //like me and followers partners
     // public function followers(): HasMany

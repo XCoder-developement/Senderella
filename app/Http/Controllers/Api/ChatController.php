@@ -189,7 +189,7 @@ class ChatController extends Controller
             $chat = ChatUser::whereIn('id' , $chat_id)->first();
             // dd($chat);
             if ($chat == null) {
-                return $this->errorResponse(__('message.no chat found'), 200);
+                return $this->dataResponse(__('message.no chat found'), [] ,200);
             }
 
             $messages = ChatMessage::where('chat_id', $chat->id)->orderBy('id', 'desc')->get();
