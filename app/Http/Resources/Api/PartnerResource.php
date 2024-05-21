@@ -119,8 +119,8 @@ class PartnerResource extends JsonResource
                 "type" => intval($this->type) ?? '',
                 "chat_id" => $this->chats->first()?->id ?? '',
                 "is_blocked" => $is_blocked ? 1 : 0,
-                'show_my_image' => $this->my_image() ?? 0,
-                'show_user_image' => $this->user_image() ?? 0,
+                'show_my_image' => intval($this->my_image()) ?? 0,
+                'show_user_image' => intval($this->user_image()) ?? 0,
                 // "partner_more_info" => UserInformationResource::collection($this->informations),
             ];
         } else if ($this->type == 2) {
