@@ -50,7 +50,7 @@
                                         {{ __('messages.text_' . $localeCode) }}
                                         <span class="text-danger"> ( {{ $localeCode }} )</span>
                                     </label>
-                                    <textarea id="summernote" class="form-control  @error('text-' . $localeCode) is-invalid @enderror"
+                                    <textarea  class="summernote form-control  @error('text-' . $localeCode) is-invalid @enderror"
                                         name="text-{{ $localeCode }}" placeholder=" {{ __('messages.text_' . $localeCode) }}  " > {{ $use_method->translate($localeCode)->text ?? '' }} </textarea>
                                     @error('text-' . $localeCode)
                                         <span class="invalid-feedback">

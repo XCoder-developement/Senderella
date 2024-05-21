@@ -82,7 +82,7 @@
                                     <label>
                                         {{ __('messages.text') }}
                                     </label>
-                                    <textarea  id="summernote" class="form-control" required name="body" rows="5"></textarea>
+                                    <textarea   class="summernote form-control" required name="body" rows="5"></textarea>
                                     @error('body')
                                         <span class="invalid-feedback">
                                             {{ $message }}</span>
