@@ -17,7 +17,7 @@ class ChatResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $chat_parts = $this->chat_users()->pluck('user_id')->toArray();
+        $chat_parts = $this->chat_users->pluck('user_id')->toArray();
         $user = User::whereIn('id', $chat_parts)->whereNot('id', auth()->id())->first();
         // $user = auth()->user();
         $message = ChatMessage::where('chat_id', $this->id)->orderBy('created_at', 'desc')->value('message');
