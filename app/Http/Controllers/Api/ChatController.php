@@ -118,7 +118,7 @@ class ChatController extends Controller
                 );
             }
 
-            return $this->dataResponse(__('message.sent successfully'), $chatResource, 200);
+            return $this->dataResponse(__('message.sent successfully'), $messageResource, 200);
 
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
@@ -354,6 +354,8 @@ class ChatController extends Controller
                 return $this->getValidationErrors($validator);
             }
             $requester = auth()->user();
+            $imageLink = $requester->images()->where('is_primary', 1)->first()->image_link ?? '';
+
             $user = User::find($request->user_id);
             $blocked_partner = UserBlock::where([['user_id', '=', $request->user_id], ['partner_id', '=', $requester->id]])->first();
 
