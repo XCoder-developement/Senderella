@@ -46,7 +46,7 @@ class ChatController extends Controller
 
     public function send_message(Request $request)
     {
-        try {
+        // try {
             $rules = [
                 'receiver_id' => 'required',
                 'message' => 'sometimes',
@@ -148,9 +148,9 @@ class ChatController extends Controller
             //     return $this->dataResponse($msg, 200);
             // }
 
-        } catch (\Exception $ex) {
-            return $this->returnException($ex, 500);
-        }
+        // } catch (\Exception $ex) {
+        //     return $this->returnException($ex, 500);
+        // }
     }
 
 
