@@ -17,7 +17,7 @@ class ChatResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $chat_parts = $this->chat_users->pluck('user_id')->toArray();
+        $chat_parts = $this->chat_users()->pluck('user_id')->toArray();
         $user = User::whereIn('id', $chat_parts)->whereNot('id', auth()->id())->first();
         // $user = auth()->user();
         $message = ChatMessage::where('chat_id', $this->id)->orderBy('created_at', 'desc')->value('message');
@@ -34,7 +34,7 @@ class ChatResource extends JsonResource
             'partner' => new PartnerResource($user),
             'show_my_image' => $this->chat_users->where('user_id',auth()->id())->first()?->image_status ?? 0,
             'show_user_image' => $this->chat_users->where('user_id','!=',auth()->id())->first()?->image_status ?? 0,
-            
+
             // $message = $user->is_verify == 1 ? $message : substr($message, 0, 5) . encrypt(substr($message, 5)),
         ];
     }
