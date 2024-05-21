@@ -46,9 +46,9 @@
 window.addEventListener('load', function () {
   loader.style.display = 'none';
 });
-$(document).ready(function() {
-  $('.summernote').summernote();
-});
+// $(document).ready(function() {
+//   $('.summernote').summernote();
+// });
     </script>
 @yield('scripts')
 
@@ -67,7 +67,7 @@ $(document).ready(function() {
 	@endif
 <!--end::Page Scripts-->
 <script>
-    $('#summernote').summernote({
+    $('.summernote').summernote({
       placeholder: 'Hello stand alone ui',
       tabsize: 2,
       height: 120,

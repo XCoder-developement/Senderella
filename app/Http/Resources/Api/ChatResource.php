@@ -24,7 +24,7 @@ class ChatResource extends JsonResource
         $last_message = ChatMessage::where('chat_id', $this->id)->orderBy('created_at', 'desc')->first();
         return [
             'chat_id' => $this->id,
-            'name'   => $this->name ?? '',
+            'name'   => $user->name ?? '',
             'message'   => $message ?? '',
             'date' => $last_message?->created_at->format('Y-m-d') ?? '',
             'time' => $last_message?->created_at->format('g:i A') ?? '',
