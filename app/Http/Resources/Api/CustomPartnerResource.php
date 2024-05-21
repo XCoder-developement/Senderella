@@ -13,8 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Api\ImageResource;
 use App\Http\Resources\Api\UserInformationResource;
-
-
+use App\Models\User\UserBlock;
 
 class CustomPartnerResource extends JsonResource
 {
@@ -35,11 +34,12 @@ class CustomPartnerResource extends JsonResource
         if ($active == 0) {
             $last_active_date = UserLastShow::where('user_id', $user_id)->value('end_date');
             $last_active_date = \Carbon\Carbon::parse($last_active_date);
-            $last_active = $last_active_date->diffForHumans(null, true) ." " . __("messages.ago");
-            if($locale == 'ar'){
-                $last_active =  __("messages.ago") ." " . $last_active_date->diffForHumans(null, true) ;
+            $last_active = $last_active_date->diffForHumans(null, true) . " " . __("messages.ago");
+            if ($locale == 'ar') {
+                $last_active =  __("messages.ago") . " " . $last_active_date->diffForHumans(null, true);
             }
         }
+        $is_blocked = UserBlock::where('user_id', $this->id)->where('partner_id', $user->id)->first();
 
         $like_time = UserLike::where('user_id', $this->id)->where('partner_id', $user->id)->latest()->value('created_at');
         if ($like_time) {
@@ -121,11 +121,12 @@ class CustomPartnerResource extends JsonResource
                     "visibility"   => intval($this->visibility),
 
                     "is_favorite" => $this->is_favorite($user->id) ?? 0,
+                    "is_blocked" => $is_blocked ? 1 : 0,
 
                     "like_time" => $like_time ?? '',
                     "favorite_time" => $favorite_time ?? '',
                     "watch_time" => $watch_time ?? '',
-                    'show_my_image' => $this->my_image() ??'',
+                    'show_my_image' => $this->my_image() ?? '',
                     'show_user_image' => $this->user_image() ?? '',
                 ],
                 "type" => intval($this->type) ?? '',
@@ -133,7 +134,7 @@ class CustomPartnerResource extends JsonResource
             ];
         } else if ($this->type == 2) {
             $banners = (array) [];
-            $banners[] =[
+            $banners[] = [
                 "id" => $this->id ?? "",
                 "link" => $this->link ?? "",
                 "image" => $this->image_link ?? "",
@@ -142,10 +143,9 @@ class CustomPartnerResource extends JsonResource
                 "banners" => $banners,
                 "type"  => intval($this->type) ?? '',
             ];
-        }
-        else if ($this->type == 3) {
+        } else if ($this->type == 3) {
             $text_banners = (array) [];
-            $text_banners[] =[
+            $text_banners[] = [
                 "id" => $this->id ?? "",
                 "text" => $this->text ?? "",
             ];
@@ -154,7 +154,6 @@ class CustomPartnerResource extends JsonResource
                 "type"  => intval($this->type) ?? '',
             ];
         }
-
     }
 }
 
