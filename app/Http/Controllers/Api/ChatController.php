@@ -191,7 +191,7 @@ class ChatController extends Controller
             $reciever_chats = ChatUser::where('user_id' , $request->user_id)->pluck('chat_id')->toArray();
             $chat_id = array_intersect($auth_chats , $reciever_chats);
             $chat = ChatUser::whereIn('id' , $chat_id)->first();
-            // dd($chat , $chat_id , $reciever_chats , $auth_chats , $user);
+            dd($chat , $chat_id , $reciever_chats , $auth_chats , $user);
             if ($chat == null) {
                 return $this->dataResponse(__('message.no chat found'), [] ,200);
             }
