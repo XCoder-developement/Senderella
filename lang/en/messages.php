@@ -452,4 +452,9 @@ return [
     'send_premium_notification' => 'Send Premium Notification',
     'premium_notifications' => 'Premium Notifications',
     'this_phone_is_blocked' => 'This phone is blocked',
+    'edit_help_instruction' =>'Edit Help Instruction',
+    'edit_use_method'   => 'Edit Use Method',
+    'use_methods' => 'Use Methods',
+    'help_instructions' => 'Help Instructions',
+    'fetch_help_instructions_and_use_methods'   => 'Fetch help instructions and use methods',
 ];

@@ -34,6 +34,7 @@ use App\Http\Controllers\Admin\ReligiosityController;
 use App\Http\Controllers\Admin\HealthStatusController;
 use App\Http\Controllers\Admin\EducationTypeController;
 use App\Http\Controllers\Admin\EleganceStyleController;
+use App\Http\Controllers\Admin\HelpInstructionController;
 use App\Http\Controllers\Admin\MaritalStatusController;
 use App\Http\Controllers\Admin\Location\StateController;
 use App\Http\Controllers\Admin\RequirmentItemController;
@@ -45,6 +46,7 @@ use App\Http\Controllers\Admin\PackageRuleController;
 use App\Http\Controllers\Admin\PackageTermController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReportTypeController;
+use App\Http\Controllers\Admin\UseMethodController;
 use App\Http\Controllers\Admin\UserController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -239,6 +241,14 @@ Route::group(
 
                 //app_messages
                 Route::resource('app_messages' , AppMessageController::class);
+
+                //help_instructions
+                Route::get('help_instructions', [HelpInstructionController::class, 'index'])->name('help_instructions.index');
+                Route::post('help_instructions/update', [HelpInstructionController::class, 'update'])->name('help_instructions.update');
+
+                //use_methods
+                 Route::get('use_methods', [UseMethodController::class, 'index'])->name('use_methods.index');
+                 Route::post('use_methods/update', [UseMethodController::class, 'update'])->name('use_methods.update');
             });
         });
     }
