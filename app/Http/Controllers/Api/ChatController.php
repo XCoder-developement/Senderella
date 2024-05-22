@@ -67,7 +67,7 @@ class ChatController extends Controller
             }
 
             $message = $request->message;
-            $imageLink = $user->images()->where('is_primary', 1)->first()->image_link ?? '';
+            $imageLink = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
 
             $authChats = ChatUser::where('user_id', $user->id)->pluck('chat_id')->toArray();
             $receiverChats = ChatUser::where('user_id', $request->receiver_id)->pluck('chat_id')->toArray();
@@ -285,6 +285,8 @@ class ChatController extends Controller
             $title = __('message.request_for_image');
             $text = __('message.request_for_show_image');
             $type = NotificationTypeEnum::SHOWUSERIMAGE->value;
+            $image = $requester->images?->where('is_primary', 1)->first()->image_link ?? '';
+
             if (isset($user->devices) && $user->devices->count() > 0) {
                 foreach ($user->devices as $user_device) {
 
@@ -294,7 +296,7 @@ class ChatController extends Controller
                         $text,
                         $type,
                         $requester->id ,
-                        url($requester->image),
+                        url($image),
                         '' ,
                          new ChatResource($chat));
                 }
@@ -354,7 +356,7 @@ class ChatController extends Controller
                 return $this->getValidationErrors($validator);
             }
             $requester = auth()->user();
-            $imageLink = $requester->images()->where('is_primary', 1)->first()->image_link ?? '';
+            $imageLink = $requester->images?->where('is_primary', 1)->first()->image_link ?? '';
 
             $user = User::find($request->user_id);
             $blocked_partner = UserBlock::where([['user_id', '=', $request->user_id], ['partner_id', '=', $requester->id]])->first();
@@ -381,7 +383,14 @@ class ChatController extends Controller
             if (isset($user->devices) && $user->devices->count() > 0) {
                 foreach ($user->devices as $user_device) {
 
-                    SendNotification::send($user_device->device_token, $title, $text, $type, $requester->id, url($requester->image),'' , new ChatResource($chat));
+                    SendNotification::send($user_device->device_token,
+                    $title,
+                    $text,
+                    $type,
+                    $requester->id,
+                    url($imageLink),
+                    '' ,
+                    new ChatResource($chat));
                 }
             }
             $msg = __('message.send_second_chance');
