@@ -17,6 +17,7 @@ class ChatResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        dd($this->chat_users);
         $chat_parts = $this->chat_users->pluck('user_id')->toArray();
         $user = User::whereIn('id', $chat_parts)->whereNot('id', auth()->id())->first();
         // $user = auth()->user();
