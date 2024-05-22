@@ -2,13 +2,12 @@
 
 namespace App\Http\Resources\Api;
 
-use App\Models\Chat\Chat;
 use App\Models\Chat\ChatMessage;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ChatResource extends JsonResource
+class NotificationChatResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -32,7 +31,7 @@ class ChatResource extends JsonResource
 
             'sender_id' => $last_message?->user_id ?? '',
             'new_message_count' => $this->messages()->where('is_read', 0)->whereNot('user_id', auth()->id())->count(),
-            'partner' => new PartnerResource($user),
+            'partner' => new PartnerResource($auth),
             'show_my_image' => $this->chat_users->where('user_id',auth()->id())->first()?->image_status ?? 0,
             'show_user_image' => $this->chat_users->where('user_id','!=',auth()->id())->first()?->image_status ?? 0,
 

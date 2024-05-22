@@ -518,7 +518,8 @@ return [
     'fetch_help_instructions_and_use_methods'   => 'عرض تعليمات المساعدة و بيانات الاستخدام',
     'requests_to_show_your_image'           => 'يطلب كشف صورتك',
     'asks_for_second_chance'       =>   'يطلب منك فرصة ثانية',
-    
+    'accept_second_chance'  => 'قبول الفرصة الثانية',
+    'request_not_found'     => 'هذا الطلب غير موجود',
 
 
 ];
