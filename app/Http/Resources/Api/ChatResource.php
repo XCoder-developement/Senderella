@@ -20,12 +20,12 @@ class ChatResource extends JsonResource
         $chat_parts = $this->chat_users->pluck('user_id')->toArray();
         $user = User::whereIn('id', $chat_parts)->whereNot('id', auth()->id())->first();
         // $user = auth()->user();
-        $auth = User::find('id' ,auth()->id() );
+        $auth = User::find(auth()->id() );
         $message = ChatMessage::where('chat_id', $this->id)->orderBy('created_at', 'desc')->value('message');
         $last_message = ChatMessage::where('chat_id', $this->id)->orderBy('created_at', 'desc')->first();
         return [
             'chat_id' => $this->id,
-            'name'   => $user->name ?? '',
+            'name'   => $this->name ?? '',
             'message'   => $message ?? '',
             'date' => $last_message?->created_at->format('Y-m-d') ?? '',
             'time' => $last_message?->created_at->format('g:i A') ?? '',

@@ -47,7 +47,7 @@ class ChatController extends Controller
 
     public function send_message(Request $request)
     {
-        try {
+        // try {
             $rules = [
                 'receiver_id' => 'required|exists:users,id',
                 'message' => 'sometimes|string|max:1000',
@@ -101,11 +101,11 @@ class ChatController extends Controller
                     'image' => $documentData,
                 ]);
             }
-
+            
             $messageResource = new ChatMessageResource($chatMessage);
             $chatResource = new ChatResource($chat);
             $type = NotificationTypeEnum::CHAT->value;
-            
+
             if ($receiver->user_device && $receiver->user_device->device_token) {
                 SendNotification::send(
                     $receiver->user_device->device_token,
@@ -120,9 +120,9 @@ class ChatController extends Controller
             }
 
             return $this->dataResponse(__('message.sent successfully'), $messageResource, 200);
-        } catch (\Exception $ex) {
-            return $this->returnException($ex, 500);
-        }
+        // } catch (\Exception $ex) {
+        //     return $this->returnException($ex, 500);
+        // }
     }
 
 
