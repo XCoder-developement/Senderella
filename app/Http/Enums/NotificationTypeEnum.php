@@ -22,6 +22,12 @@ enum NotificationTypeEnum: int
     case SECONDCHANCE = 9;
     case BLOCK = 10;
 
+    case ACCEPTSECONDCHANCE = 11;
+
+    case ACCEPTIMAGE = 12;
+
+
+
 
     public static function getTitle($value)
     {

@@ -356,6 +356,36 @@ class ChatController extends Controller
             $chat = ChatUser::whereIn('chat_id', $chat_id)->first();
             $chat = Chat::find($chat->chat_id);
 
+            $chatMessage = ChatMessage::create([
+                "chat_id" => $chat->id,
+                "user_id" => $user->id,
+                "message" => $user->name . __('messages.accecpted_your_request'),
+            ]);
+
+            $title = __('messages.accecpted_your_request');
+            $text = __('messages.your_request_has_been_accaepted');
+            $type = NotificationTypeEnum::ACCEPTSECONDCHANCE->value;
+            $imageLink = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
+
+            if (isset($user->user_devices) && $user->user_devices->count() > 0) {
+
+                foreach ($user->user_devices as $user_device) {
+
+                    SendNotification::send(
+                        $user_device->device_token,
+                        $title,
+                        $text,
+                        $type,
+                        $user->id,
+                        url($imageLink),
+                        new ChatMessageResource($chatMessage),
+                        new NotificationChatResource($chat)
+                    );
+                }
+                $chatMessage->delete();
+
+            }
+
             $my_chat_user = ChatUser::where('user_id', $user->id)->where('chat_id', $chat->id)->first();
             $chat_reciever = ChatUser::where('user_id', $request->user_id)->where('chat_id', $chat->id)->first();
 
@@ -468,6 +498,35 @@ class ChatController extends Controller
 
             $my_chat_user = ChatUser::where('user_id', $user->id)->where('chat_id', $chat->id)->first();
             $chat_reciever = ChatUser::where('user_id', $request->user_id)->where('chat_id', $chat->id)->first();
+            $imageLink = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
+
+            $chatMessage = ChatMessage::create([
+                "chat_id" => $chat->id,
+                "user_id" => $user->id,
+                "message" => $user->name . __('messages.accecpted_your_request'),
+            ]);
+
+            $title = __('messages.accecpted_your_request');
+            $text = __('messages.your_request_has_been_accaepted');
+            $type = NotificationTypeEnum::ACCEPTSECONDCHANCE->value;
+            if (isset($user->user_devices) && $user->user_devices->count() > 0) {
+
+                foreach ($user->user_devices as $user_device) {
+
+                    SendNotification::send(
+                        $user_device->device_token,
+                        $title,
+                        $text,
+                        $type,
+                        $user->id,
+                        url($imageLink),
+                        new ChatMessageResource($chatMessage),
+                        new NotificationChatResource($chat)
+                    );
+                }
+                $chatMessage->delete();
+
+            }
 
             $my_chat_user->update([
                 'block_status' => 1,
