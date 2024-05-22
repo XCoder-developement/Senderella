@@ -320,6 +320,7 @@ class ChatController extends Controller
                         new NotificationChatResource($chat),
                     );
                 }
+                $chatMessage->delete();
             }
             $msg = __('messages.success');
             return $this->successResponse($msg, 200);
@@ -428,6 +429,8 @@ class ChatController extends Controller
                         new NotificationChatResource($chat)
                     );
                 }
+                $chatMessage->delete();
+
             }
             $msg = __('messages.send_second_chance');
             return $this->successResponse($msg, 200);
