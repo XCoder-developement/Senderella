@@ -368,7 +368,7 @@ class ChatController extends Controller
     }
     public function send_second_chance(Request $request)
     {
-        try {
+        // try {
             $rules = [
                 'user_id' => 'required|exists:users,id',
             ];
@@ -430,9 +430,9 @@ class ChatController extends Controller
             }
             $msg = __('messages.send_second_chance');
             return $this->successResponse($msg, 200);
-        } catch (\Exception $ex) {
-            return $this->returnException($ex, 500);
-        }
+        // } catch (\Exception $ex) {
+        //     return $this->returnException($ex, 500);
+        // }
     }
 
     public function accept_second_chance(Request $request)
