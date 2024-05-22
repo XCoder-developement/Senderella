@@ -283,11 +283,11 @@ class ChatController extends Controller
 
             $chatExists = DB::table('chats')->where('id', $chat->chat_id)->exists();
             if (!$chatExists) {
-                return $this->errorResponse(__('message.chat not found in database'), 404);
+                return $this->successResponse(__('message.no chat found'), 200);
             }
             $data['requester_user_id'] = $requester->id;
             $data['user_id'] = $request->user_id;
-            $data['chat_id'] = $chat->id;
+            $data['chat_id'] = $chat->chat_id;
             // dd($data);
             UserImageRequest::create($data);
 
