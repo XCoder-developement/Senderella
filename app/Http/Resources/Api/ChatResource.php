@@ -20,6 +20,7 @@ class ChatResource extends JsonResource
         $chat_parts = $this->chat_users->pluck('user_id')->toArray();
         $user = User::whereIn('id', $chat_parts)->whereNot('id', auth()->id())->first();
         // $user = auth()->user();
+        $auth = User::find('id' ,auth()->id() );
         $message = ChatMessage::where('chat_id', $this->id)->orderBy('created_at', 'desc')->value('message');
         $last_message = ChatMessage::where('chat_id', $this->id)->orderBy('created_at', 'desc')->first();
         return [
@@ -31,7 +32,7 @@ class ChatResource extends JsonResource
 
             'sender_id' => $last_message?->user_id ?? '',
             'new_message_count' => $this->messages()->where('is_read', 0)->whereNot('user_id', auth()->id())->count(),
-            'partner' => new PartnerResource($user),
+            'partner' => new PartnerResource($auth),
             'show_my_image' => $this->chat_users->where('user_id',auth()->id())->first()?->image_status ?? 0,
             'show_user_image' => $this->chat_users->where('user_id','!=',auth()->id())->first()?->image_status ?? 0,
 
