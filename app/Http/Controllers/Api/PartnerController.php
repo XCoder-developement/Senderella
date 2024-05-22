@@ -333,9 +333,9 @@ class PartnerController extends Controller
             $reason_ids = $request->reason_ids;
             $reason = $request->reason;
 
-            $like_partner = UserBlock::where([['user_id', '=', $user_id], ['partner_id', '=', $partner_id]])->first();
-            $partner = User::find('id' , $partner_id );
-            $user = User::find('id' , $user_id );
+            $like_partner = UserBlock::where('user_id', $user_id)->where('partner_id',  $partner_id)->first();
+            $partner = User::find( $partner_id );
+            $user = User::find( $user_id );
             if (!$like_partner) {
                 $data['user_id'] =  $user_id;
                 $data['partner_id'] =  $partner_id;
@@ -356,7 +356,7 @@ class PartnerController extends Controller
                         $text,
                         $type,
                         $user_id ,
-                        url($user->image),
+                        url($user->image_link),
                         '' ,
                         '');
                 }
