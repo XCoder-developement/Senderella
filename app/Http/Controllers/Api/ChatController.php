@@ -19,6 +19,7 @@ use App\Models\User\UserBlock;
 use App\Services\SendNotification;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ChatController extends Controller
@@ -119,7 +120,6 @@ class ChatController extends Controller
             }
 
             return $this->dataResponse(__('message.sent successfully'), $messageResource, 200);
-
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
@@ -134,8 +134,8 @@ class ChatController extends Controller
             // $sent_chats = Chat::where('user_id', $user->id)->where('receiver_id', '!=', $user->id);
             // $received_chats = Chat::where('receiver_id', $user->id)->where('user_id', '!=', $user->id);
             // $chats = $sent_chats->union($received_chats)->get();
-            $user_chats_ids = ChatUser::where('user_id' , $user->id)->pluck('chat_id')->toArray();
-            $chats = Chat::whereIn('id' ,$user_chats_ids )->get();
+            $user_chats_ids = ChatUser::where('user_id', $user->id)->pluck('chat_id')->toArray();
+            $chats = Chat::whereIn('id', $user_chats_ids)->get();
             // dd( $user ,  $user_chats_ids ,$chats );
             $data = ChatResource::collection($chats);
             $msg = __('message.Your chats');
@@ -160,13 +160,13 @@ class ChatController extends Controller
             // $chatId = $request->chat_id;
             $user = auth()->user();
             // if($user->is_verify == 1){
-            $auth_chats = ChatUser::where('user_id' , $user->id)->pluck('chat_id')->toArray();
-            $reciever_chats = ChatUser::where('user_id' , $request->user_id)->pluck('chat_id')->toArray();
-            $chat_id = array_intersect($auth_chats , $reciever_chats);
-            $chat = Chat::whereIn('id' , $chat_id)->first();
+            $auth_chats = ChatUser::where('user_id', $user->id)->pluck('chat_id')->toArray();
+            $reciever_chats = ChatUser::where('user_id', $request->user_id)->pluck('chat_id')->toArray();
+            $chat_id = array_intersect($auth_chats, $reciever_chats);
+            $chat = Chat::whereIn('id', $chat_id)->first();
             // dd($chat , $chat_id , $reciever_chats , $auth_chats , $user);
             if ($chat == null) {
-                return $this->dataResponse(__('message.no chat found'), [] ,200);
+                return $this->dataResponse(__('message.no chat found'), [], 200);
             }
 
             $messages = ChatMessage::where('chat_id', $chat->id)->orderBy('id', 'desc')->get();
@@ -203,7 +203,7 @@ class ChatController extends Controller
             $user = auth()->user();
             // if($user->is_verify == 1){
 
-            $chat = ChatUser::where('user_id',$user->id)->where(['chat_id',$chatId])->first();
+            $chat = ChatUser::where('user_id', $user->id)->where(['chat_id', $chatId])->first();
             $chat->delete();
             $msg = __('message.delete_chat');
             return $this->successResponse($msg, 200);
@@ -233,11 +233,11 @@ class ChatController extends Controller
 
             $chat_user = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first();
             // $chat = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first()?->chat;
-            $auth_chats = ChatUser::where('user_id' , $user->id)->pluck('chat_id')->toArray();
-            $reciever_chats = ChatUser::where('user_id' , $request->user_id)->pluck('chat_id')->toArray();
-            $chat_id = array_intersect($auth_chats , $reciever_chats);
-            $chat = ChatUser::whereIn('chat_id' , $chat_id)->first();
-            if(!$chat){
+            $auth_chats = ChatUser::where('user_id', $user->id)->pluck('chat_id')->toArray();
+            $reciever_chats = ChatUser::where('user_id', $request->user_id)->pluck('chat_id')->toArray();
+            $chat_id = array_intersect($auth_chats, $reciever_chats);
+            $chat = ChatUser::whereIn('chat_id', $chat_id)->first();
+            if (!$chat) {
                 return $this->errorResponse(__('message.no chat found'), 200);
             }
             $my_chat_user = ChatUser::where('user_id', $user->id)->where('chat_id', $chat->id)->first();
@@ -250,7 +250,7 @@ class ChatController extends Controller
                 'image_status' => 1
             ]);
             $msg = __('message.show_my_image');
-            return $this->dataResponse($msg,$my_chat_user->image_status ?? 0,200);
+            return $this->dataResponse($msg, $my_chat_user->image_status ?? 0, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
@@ -272,13 +272,18 @@ class ChatController extends Controller
             $user = User::find($request->user_id);
 
             // $chat = ChatUser::where(['user_id' => $requester->id, 'user_id' => $request->user_id])->first()?->chat;
-            $auth_chats = ChatUser::where('user_id' , $requester->id)->pluck('chat_id')->toArray();
-            $reciever_chats = ChatUser::where('user_id' , $request->user_id)->pluck('chat_id')->toArray();
-            $chat_id = array_intersect($auth_chats , $reciever_chats);
-            $chat = ChatUser::whereIn('chat_id' , $chat_id)->first();
+            $auth_chats = ChatUser::where('user_id', $requester->id)->pluck('chat_id')->toArray();
+            $reciever_chats = ChatUser::where('user_id', $request->user_id)->pluck('chat_id')->toArray();
+            $chat_id = array_intersect($auth_chats, $reciever_chats);
+            $chat = ChatUser::whereIn('chat_id', $chat_id)->first();
             // dd($chat , $auth_chats , $reciever_chats , $chat_id ,  $requester->id , $user  );
-            if(!$chat){
+            if (!$chat) {
                 return $this->successResponse(__('message.no chat found'), 200);
+            }
+
+            $chatExists = DB::table('chats')->where('id', $chat->chat_id)->exists();
+            if (!$chatExists) {
+                return $this->errorResponse(__('message.chat not found in database'), 404);
             }
             $data['requester_user_id'] = $requester->id;
             $data['user_id'] = $request->user_id;
@@ -299,10 +304,11 @@ class ChatController extends Controller
                         $title,
                         $text,
                         $type,
-                        $requester->id ,
+                        $requester->id,
                         url($image),
-                        '' ,
-                         new ChatResource($chat));
+                        '',
+                        new ChatResource($chat)
+                    );
                 }
             }
             $msg = __('message.success');
@@ -341,8 +347,7 @@ class ChatController extends Controller
                 'image_status' => 1
             ]);
             $msg = __('message.show_my_image');
-            return $this->dataResponse($msg,new ChatResource($chat),200);
-
+            return $this->dataResponse($msg, new ChatResource($chat), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
         }
@@ -370,10 +375,10 @@ class ChatController extends Controller
                 return $this->errorResponse($msg, 400);
             }
             // $chat = ChatUser::where(['user_id' => $requester->id, 'user_id' => $request->user_id])->first()?->chat;
-            $auth_chats = ChatUser::where('user_id' , $requester->id)->pluck('chat_id')->toArray();
-            $reciever_chats = ChatUser::where('user_id' , $request->user_id)->pluck('chat_id')->toArray();
-            $chat_id = array_intersect($auth_chats , $reciever_chats);
-            $chat = ChatUser::whereIn('id' , $chat_id)->first();
+            $auth_chats = ChatUser::where('user_id', $requester->id)->pluck('chat_id')->toArray();
+            $reciever_chats = ChatUser::where('user_id', $request->user_id)->pluck('chat_id')->toArray();
+            $chat_id = array_intersect($auth_chats, $reciever_chats);
+            $chat = ChatUser::whereIn('id', $chat_id)->first();
 
             $data['requester_user_id'] = $requester->id;
             $data['user_id'] = $request->user_id;
@@ -387,14 +392,16 @@ class ChatController extends Controller
             if (isset($user->devices) && $user->devices->count() > 0) {
                 foreach ($user->devices as $user_device) {
 
-                    SendNotification::send($user_device->device_token,
-                    $title,
-                    $text,
-                    $type,
-                    $requester->id,
-                    url($imageLink),
-                    '' ,
-                    new ChatResource($chat));
+                    SendNotification::send(
+                        $user_device->device_token,
+                        $title,
+                        $text,
+                        $type,
+                        $requester->id,
+                        url($imageLink),
+                        '',
+                        new ChatResource($chat)
+                    );
                 }
             }
             $msg = __('message.send_second_chance');
