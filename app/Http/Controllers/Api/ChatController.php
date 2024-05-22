@@ -340,7 +340,7 @@ class ChatController extends Controller
                 return $this->getValidationErrors($validator);
             }
             $user = auth()->user();
-            $image_request = UserImageRequest::where('user_id' , $request->user_id)->where('requester_user_id' , $user->id)->first();
+            $image_request = UserImageRequest::where('user_id' , $user->id)->where('requester_user_id' , $request->user_id)->first();
 
             if (!$image_request) {
                 $msg = __('messages.request_not_found');
