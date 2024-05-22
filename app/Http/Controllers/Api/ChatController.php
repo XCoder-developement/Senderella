@@ -8,6 +8,7 @@ use App\Http\Enums\NotificationTypeEnum;
 use App\Http\Resources\Api\ChatImageResource;
 use App\Http\Resources\Api\ChatMessageResource;
 use App\Http\Resources\Api\ChatResource;
+use App\Http\Resources\Api\NotificationChatResource;
 use App\Models\Chat\BlockRequest;
 use App\Models\Chat\Chat;
 use App\Models\Chat\ChatMessage;
@@ -103,7 +104,7 @@ class ChatController extends Controller
             }
 
             $messageResource = new ChatMessageResource($chatMessage);
-            $chatResource = new ChatResource($chat);
+            $chatResource = new NotificationChatResource($chat);
             $type = NotificationTypeEnum::CHAT->value;
 
             if ($receiver->user_device && $receiver->user_device->device_token) {
@@ -316,7 +317,7 @@ class ChatController extends Controller
                         $requester->id,
                         url($image),
                         new ChatMessageResource($chatMessage),
-                        new ChatResource($chat),
+                        new NotificationChatResource($chat),
                     );
                 }
             }
@@ -424,7 +425,7 @@ class ChatController extends Controller
                         $requester->id,
                         url($imageLink),
                         new ChatMessageResource($chatMessage),
-                        new ChatResource($chat)
+                        new NotificationChatResource($chat)
                     );
                 }
             }
