@@ -296,7 +296,8 @@ class ChatController extends Controller
             $type = NotificationTypeEnum::SHOWUSERIMAGE->value;
             $image = $requester->images?->where('is_primary', 1)->first()->image_link ?? '';
 
-            if (isset($user->devices) && $user->devices->count() > 0) {
+            // if (isset($user->devices) && $user->devices->count() > 0) {
+                if ($user->user_device && $user->user_device->device_token) {
                 dd('test');
                 foreach ($user->devices as $user_device) {
 
