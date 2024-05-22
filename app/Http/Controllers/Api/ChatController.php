@@ -297,6 +297,7 @@ class ChatController extends Controller
             $image = $requester->images?->where('is_primary', 1)->first()->image_link ?? '';
 
             if (isset($user->devices) && $user->devices->count() > 0) {
+                dd('test');
                 foreach ($user->devices as $user_device) {
 
                     SendNotification::send(
