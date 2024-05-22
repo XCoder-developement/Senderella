@@ -307,7 +307,7 @@ class ChatController extends Controller
                         $requester->id,
                         url($image),
                         '',
-                        new ChatResource($chat)
+                        new ChatResource($chat),
                     );
                 }
             }
@@ -331,14 +331,19 @@ class ChatController extends Controller
                 return $this->getValidationErrors($validator);
             }
             $user = auth()->user();
-            $image_request = UserImageRequest::where(['user_id' => $request->user_id, 'requester_user_id' => $user->id])->first();
+            $image_request = UserImageRequest::where('user_id' , $request->user_id)->where('requester_user_id' , $user->id)->first();
 
             if (!$image_request) {
                 $msg = __('message.request_not_found');
                 return $this->errorResponse($msg, 400);
             }
 
-            $chat = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first()?->chat;
+            // $chat = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first()?->chat;
+            $auth_chats = ChatUser::where('user_id', $user->id)->pluck('chat_id')->toArray();
+            $reciever_chats = ChatUser::where('user_id', $request->user_id)->pluck('chat_id')->toArray();
+            $chat_id = array_intersect($auth_chats, $reciever_chats);
+            $chat = ChatUser::whereIn('chat_id', $chat_id)->first();
+
 
             $my_chat_user = ChatUser::where('user_id', $user->id)->where('chat_id', $chat->id)->first();
             $chat_reciever = ChatUser::where('user_id', $request->user_id)->where('chat_id', $chat->id)->first();
@@ -368,7 +373,7 @@ class ChatController extends Controller
             $imageLink = $requester->images?->where('is_primary', 1)->first()->image_link ?? '';
 
             $user = User::find($request->user_id);
-            $blocked_partner = UserBlock::where([['user_id', '=', $request->user_id], ['partner_id', '=', $requester->id]])->first();
+            $blocked_partner = UserBlock::where('user_id', $request->user_id)->where('partner_id', $requester->id)->first();
 
             if (!$blocked_partner) {
                 $msg = __('message.user_not_blocked');
@@ -424,14 +429,18 @@ class ChatController extends Controller
                 return $this->getValidationErrors($validator);
             }
             $user = auth()->user();
-            $block_request = BlockRequest::where(['user_id' => $request->user_id, 'requester_user_id' => $user->id])->first();
+            $block_request = BlockRequest::where('user_id' , $request->user_id)->where('requester_user_id' , $user->id)->first();
 
             if (!$block_request) {
                 $msg = __('message.request_not_found');
                 return $this->errorResponse($msg, 400);
             }
 
-            $chat = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first()?->chat;
+            // $chat = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first()?->chat;
+            $auth_chats = ChatUser::where('user_id', $user->id)->pluck('chat_id')->toArray();
+            $reciever_chats = ChatUser::where('user_id', $request->user_id)->pluck('chat_id')->toArray();
+            $chat_id = array_intersect($auth_chats, $reciever_chats);
+            $chat = ChatUser::whereIn('chat_id', $chat_id)->first();
 
             $my_chat_user = ChatUser::where('user_id', $user->id)->where('chat_id', $chat->id)->first();
             $chat_reciever = ChatUser::where('user_id', $request->user_id)->where('chat_id', $chat->id)->first();
