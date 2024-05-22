@@ -468,7 +468,7 @@ class ChatController extends Controller
 
             $my_chat_user = ChatUser::where('user_id', $user->id)->where('chat_id', $chat->id)->first();
             $chat_reciever = ChatUser::where('user_id', $request->user_id)->where('chat_id', $chat->id)->first();
-           
+
             $my_chat_user->update([
                 'block_status' => 1,
                 'image_status' => 1
