@@ -292,6 +292,14 @@ class ChatController extends Controller
             // dd($data);
             UserImageRequest::create($data);
 
+            //message of the request
+            $chatMessage = ChatMessage::create([
+                "chat_id" => $chat->id,
+                "user_id" => $requester->id,
+                "message" => $requester->name . __('messages.requests_to_show_your_image'),
+            ]);
+            //end message of the request
+
             $title = __('message.request_for_image');
             $text = __('message.request_for_show_image');
             $type = NotificationTypeEnum::SHOWUSERIMAGE->value;
@@ -307,7 +315,7 @@ class ChatController extends Controller
                         $type,
                         $requester->id,
                         url($image),
-                        '',
+                        new ChatMessageResource($chatMessage),
                         new ChatResource($chat),
                     );
                 }
@@ -387,6 +395,14 @@ class ChatController extends Controller
             $chat = ChatUser::whereIn('id', $chat_id)->first();
             $chat = Chat::find($chat->chat_id );
 
+            //message
+            $chatMessage = ChatMessage::create([
+                "chat_id" => $chat->id,
+                "user_id" => $requester->id,
+                "message" => $requester->name . __('messages.asks_for_second_chance'),
+            ]);
+            //message
+
             $data['requester_user_id'] = $requester->id;
             $data['user_id'] = $request->user_id;
             $data['chat_id'] = $chat->id;
@@ -407,7 +423,7 @@ class ChatController extends Controller
                         $type,
                         $requester->id,
                         url($imageLink),
-                        '',
+                        new ChatMessageResource($chatMessage),
                         new ChatResource($chat)
                     );
                 }
