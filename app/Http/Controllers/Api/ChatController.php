@@ -138,7 +138,7 @@ class ChatController extends Controller
             $chats = Chat::whereIn('id', $user_chats_ids)->get();
             // dd( $user ,  $user_chats_ids ,$chats );
             $data = ChatResource::collection($chats);
-            $msg = __('message.Your chats');
+            $msg = __('messages.Your chats');
             return $this->dataResponse($msg, $data, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
@@ -166,7 +166,7 @@ class ChatController extends Controller
             $chat = Chat::whereIn('id', $chat_id)->first();
             // dd($chat , $chat_id , $reciever_chats , $auth_chats , $user);
             if ($chat == null) {
-                return $this->dataResponse(__('message.no chat found'), [], 200);
+                return $this->dataResponse(__('messages.no chat found'), [], 200);
             }
 
             $messages = ChatMessage::where('chat_id', $chat->id)->orderBy('id', 'desc')->get();
@@ -175,7 +175,7 @@ class ChatController extends Controller
                     'is_read' => 1
                 ]);
             }
-            $msg = __('message.Messages');
+            $msg = __('messages.Messages');
             return $this->dataResponse($msg, ChatMessageResource::collection($messages), 200);
             // }else{
             //     $msg = __('message.your account is not verified');
@@ -205,7 +205,7 @@ class ChatController extends Controller
 
             $chat = ChatUser::where('user_id', $user->id)->where(['chat_id', $chatId])->first();
             $chat->delete();
-            $msg = __('message.delete_chat');
+            $msg = __('messages.delete_chat');
             return $this->successResponse($msg, 200);
             // }else{
             //     $msg = __('message.your account is not verified');
@@ -238,7 +238,7 @@ class ChatController extends Controller
             $chat_id = array_intersect($auth_chats, $reciever_chats);
             $chat = ChatUser::whereIn('chat_id', $chat_id)->first();
             if (!$chat) {
-                return $this->errorResponse(__('message.no chat found'), 200);
+                return $this->errorResponse(__('messages.no chat found'), 200);
             }
             $my_chat_user = ChatUser::where('user_id', $user->id)->where('chat_id', $chat->id)->first();
 
@@ -249,7 +249,7 @@ class ChatController extends Controller
             $my_chat_user->update([
                 'image_status' => 1
             ]);
-            $msg = __('message.show_my_image');
+            $msg = __('messages.show_my_image');
             return $this->dataResponse($msg, $my_chat_user->image_status ?? 0, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
@@ -278,13 +278,13 @@ class ChatController extends Controller
             $chat = ChatUser::whereIn('chat_id', $chat_id)->first();
             // dd($chat , $auth_chats , $reciever_chats , $chat_id ,  $requester->id , $user  );
             if (!$chat) {
-                return $this->successResponse(__('message.no chat found'), 200);
+                return $this->successResponse(__('messages.no chat found'), 200);
             }
             $chat = Chat::find($chat->chat_id );
 
             $chatExists = DB::table('chats')->where('id', $chat->id)->exists();
             if (!$chatExists) {
-                return $this->successResponse(__('message.no chat found'), 200);
+                return $this->successResponse(__('messages.no chat found'), 200);
             }
             $data['requester_user_id'] = $requester->id;
             $data['user_id'] = $request->user_id;
@@ -300,8 +300,8 @@ class ChatController extends Controller
             ]);
             //end message of the request
 
-            $title = __('message.request_for_image');
-            $text = __('message.request_for_show_image');
+            $title = __('messages.request_for_image');
+            $text = __('messages.request_for_show_image');
             $type = NotificationTypeEnum::SHOWUSERIMAGE->value;
             $image = $requester->images?->where('is_primary', 1)->first()->image_link ?? '';
             // dd($user->user_device , $user->user_device->device_token) ;
@@ -320,7 +320,7 @@ class ChatController extends Controller
                     );
                 }
             }
-            $msg = __('message.success');
+            $msg = __('messages.success');
             return $this->successResponse($msg, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
@@ -343,7 +343,7 @@ class ChatController extends Controller
             $image_request = UserImageRequest::where('user_id' , $request->user_id)->where('requester_user_id' , $user->id)->first();
 
             if (!$image_request) {
-                $msg = __('message.request_not_found');
+                $msg = __('messages.request_not_found');
                 return $this->errorResponse($msg, 400);
             }
 
@@ -352,7 +352,7 @@ class ChatController extends Controller
             $reciever_chats = ChatUser::where('user_id', $request->user_id)->pluck('chat_id')->toArray();
             $chat_id = array_intersect($auth_chats, $reciever_chats);
             $chat = ChatUser::whereIn('chat_id', $chat_id)->first();
-
+            $chat = Chat::find($chat->id);
 
             $my_chat_user = ChatUser::where('user_id', $user->id)->where('chat_id', $chat->id)->first();
             $chat_reciever = ChatUser::where('user_id', $request->user_id)->where('chat_id', $chat->id)->first();
@@ -360,7 +360,7 @@ class ChatController extends Controller
             $my_chat_user->update([
                 'image_status' => 1
             ]);
-            $msg = __('message.show_my_image');
+            $msg = __('messages.show_my_image');
             return $this->dataResponse($msg, new ChatResource($chat), 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
@@ -385,7 +385,7 @@ class ChatController extends Controller
             $blocked_partner = UserBlock::where('user_id', $request->user_id)->where('partner_id', $requester->id)->first();
 
             if (!$blocked_partner) {
-                $msg = __('message.user_not_blocked');
+                $msg = __('messages.user_not_blocked');
                 return $this->errorResponse($msg, 400);
             }
             // $chat = ChatUser::where(['user_id' => $requester->id, 'user_id' => $request->user_id])->first()?->chat;
@@ -408,8 +408,8 @@ class ChatController extends Controller
             $data['chat_id'] = $chat->id;
             BlockRequest::create($data);
 
-            $title = __('message.request_for_unblock');
-            $text = __('message.request_for_unblock');
+            $title = __('messages.request_for_unblock');
+            $text = __('messages.request_for_unblock');
             $type = NotificationTypeEnum::SECONDCHANCE->value;
 
             if (isset($user->user_devices) && $user->user_devices->count() > 0) {
@@ -428,7 +428,7 @@ class ChatController extends Controller
                     );
                 }
             }
-            $msg = __('message.send_second_chance');
+            $msg = __('messages.send_second_chance');
             return $this->successResponse($msg, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
@@ -451,7 +451,7 @@ class ChatController extends Controller
             $block_request = BlockRequest::where('user_id' , $request->user_id)->where('requester_user_id' , $user->id)->first();
 
             if (!$block_request) {
-                $msg = __('message.request_not_found');
+                $msg = __('messages.request_not_found');
                 return $this->errorResponse($msg, 400);
             }
 
@@ -469,7 +469,7 @@ class ChatController extends Controller
             ]);
             $blocked_partner = UserBlock::where([['user_id', '=', $user->id], ['partner_id', '=', $request->user_id]])->first();
             $blocked_partner->delete();
-            $msg = __('message.accept_second_chance');
+            $msg = __('messages.accept_second_chance');
             return $this->successResponse($msg, 200);
         } catch (\Exception $ex) {
             return $this->returnException($ex, 500);
