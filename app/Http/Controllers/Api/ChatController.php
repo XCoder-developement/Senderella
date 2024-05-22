@@ -368,7 +368,7 @@ class ChatController extends Controller
     }
     public function send_second_chance(Request $request)
     {
-        // try {
+        try {
             $rules = [
                 'user_id' => 'required|exists:users,id',
             ];
@@ -430,9 +430,9 @@ class ChatController extends Controller
             }
             $msg = __('messages.send_second_chance');
             return $this->successResponse($msg, 200);
-        // } catch (\Exception $ex) {
-        //     return $this->returnException($ex, 500);
-        // }
+        } catch (\Exception $ex) {
+            return $this->returnException($ex, 500);
+        }
     }
 
     public function accept_second_chance(Request $request)
@@ -452,7 +452,7 @@ class ChatController extends Controller
 
             if (!$block_request) {
                 $msg = __('messages.request_not_found');
-                return $this->errorResponse($msg, 400);
+                return $this->successResponse($msg, 200);
             }
 
             // $chat = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first()?->chat;
@@ -467,7 +467,7 @@ class ChatController extends Controller
             $my_chat_user->update([
                 'block_status' => 1
             ]);
-            $blocked_partner = UserBlock::where([['user_id', '=', $user->id], ['partner_id', '=', $request->user_id]])->first();
+            $blocked_partner = UserBlock::where('user_id',  $user->id)->where('partner_id', $request->user_id)->first();
             $blocked_partner->delete();
             $msg = __('messages.accept_second_chance');
             return $this->successResponse($msg, 200);
