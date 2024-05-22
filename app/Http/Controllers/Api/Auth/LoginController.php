@@ -44,11 +44,11 @@ class LoginController extends Controller
 
             //update api_token  user
 
-            if(!$user->api_token){
+            // if(!$user->api_token){
                $user->update([
                 "api_token" => Hash::make(rand(99,99999999))
                ]);
-            }
+            // }
          //add device to user
 
          $userDevice = $user->user_devices()->firstOrNew([
