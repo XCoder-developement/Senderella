@@ -35,7 +35,7 @@ class PartnerResource extends JsonResource
             $last_active_date = \Carbon\Carbon::parse($last_active_date);
             $last_active = $last_active_date->diffForHumans(null, true);
         }
-        $is_blocked = UserBlock::where('user_id', $this->id)->where('partner_id', $user->id)->first();
+        $is_blocked = UserBlock::where('user_id', auth()->id())->where('partner_id', auth()->id())->first();
 
         $like_time = UserLike::where('user_id', $this->id)->where('partner_id', $user->id)->latest()->value('created_at');
         if ($like_time) {
