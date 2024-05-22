@@ -111,7 +111,7 @@ class ChatController extends Controller
                     __('messages.message'),
                     $message,
                     $type,
-                    $receiver->id,
+                    $user->id,
                     url($imageLink) ?? '',
                     $messageResource,
                     $chatResource
