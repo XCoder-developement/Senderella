@@ -343,7 +343,7 @@ class ChatController extends Controller
             }
             $user = auth()->user();
             $image_request = UserImageRequest::where('user_id' , $user->id)->where('requester_user_id' , $request->user_id)->first();
-
+            $requested_user = User::find($request->user_id);
             if (!$image_request) {
                 $msg = __('messages.request_not_found');
                 return $this->errorResponse($msg, 400);
@@ -367,9 +367,9 @@ class ChatController extends Controller
             $type = NotificationTypeEnum::ACCEPTSECONDCHANCE->value;
             $imageLink = $user->images?->where('is_primary', 1)->first()->image_link ?? '';
 
-            if (isset($user->user_devices) && $user->user_devices->count() > 0) {
+            if (isset($requested_user->user_devices) && $requested_user->user_devices->count() > 0) {
 
-                foreach ($user->user_devices as $user_device) {
+                foreach ($requested_user->user_devices as $user_device) {
 
                     SendNotification::send(
                         $user_device->device_token,
@@ -426,7 +426,7 @@ class ChatController extends Controller
             $chat_id = array_intersect($auth_chats, $reciever_chats);
             $chat = ChatUser::whereIn('chat_id', $chat_id)->first();
             $chat = Chat::find($chat->chat_id );
-
+            $requested_user = User::find($request->user_id);
             //message
             $chatMessage = ChatMessage::create([
                 "chat_id" => $chat->id,
@@ -444,9 +444,9 @@ class ChatController extends Controller
             $text = __('messages.request_for_unblock');
             $type = NotificationTypeEnum::SECONDCHANCE->value;
 
-            if (isset($user->user_devices) && $user->user_devices->count() > 0) {
+            if (isset($requested_user->user_devices) && $requested_user->user_devices->count() > 0) {
 
-                foreach ($user->user_devices as $user_device) {
+                foreach ($requested_user->user_devices as $user_device) {
 
                     SendNotification::send(
                         $user_device->device_token,

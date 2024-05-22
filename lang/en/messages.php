@@ -461,5 +461,6 @@ return [
     'asks_for_second_chance'            => 'asks for second chance',
     'request_for_image'     => 'Request for your image',
     'request_for_show_image' => 'A request to show  your image',
+    'request_for_unblock'   => 'Request for unblock',
 
 ];
