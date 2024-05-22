@@ -525,4 +525,6 @@ return [
     'accecpted_your_request'    => 'تمت الموافقة على طلبك',
     'your_request_has_been_accaepted'   => 'قام أحدهم بالموافقة على طلبك',
     'your_request_has_been_rejected'    => 'قام أحدهم بالرفض على طلبك',
+    'request_for_unblock'   => 'طلب لفك الحظر',
+    
 ];
