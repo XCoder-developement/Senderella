@@ -4,6 +4,7 @@ namespace App\Http\Resources\Api;
 
 use App\Models\Requirment\Requirment;
 use App\Models\RequirmentItem\RequirmentItemTranslation;
+use App\Models\User\UserBlock;
 use App\Models\User\UserImage;
 use App\Models\User\UserInformation;
 use App\Models\User\UserLastShow;
@@ -30,6 +31,7 @@ class FullPartnerResource extends JsonResource
             $last_active_date = \Carbon\Carbon::parse($last_active_date);
             $last_active = $last_active_date->diffForHumans(null, true);
         }
+        $is_blocked = UserBlock::where('user_id', $user->id)->where('partner_id', auth()->id())->first();
 
         $primaryImages = UserImage::where('user_id', $user_id)
             ->where('is_primary', true)
@@ -82,6 +84,7 @@ class FullPartnerResource extends JsonResource
             "marriage_readiness_title" => $this->marriage_readiness?->title ?? "",
             "marital_status_title" => $this->marital_status?->title ?? "",
             // "marital_status_title" => $this->marital_status?->title ?? "",
+            "is_blocked" => $is_blocked ? 1 : 0,
 
             "distance" => intval($distance) ?? "",
             "skin_color_id" => intval($this->color_id) ?? null,
