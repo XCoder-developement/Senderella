@@ -516,10 +516,11 @@ return [
     'help_instructions' => 'تعليمات المساعدة',
     'use_methods'   => 'بيانات الاستخدام',
     'fetch_help_instructions_and_use_methods'   => 'عرض تعليمات المساعدة و بيانات الاستخدام',
-    'requests_for_show_image'           => 'يطلب كشف صورتك',
+    'requests_to_show_your_image'           => 'يطلب كشف صورتك',
     'asks_for_second_chance'       =>   'يطلب منك فرصة ثانية',
     'accept_second_chance'  => 'قبول الفرصة الثانية',
     'request_not_found'     => 'هذا الطلب غير موجود',
-
+    'request_for_image'     => 'طلب كشف صورتك الشخصية',
+    'request_for_show_image'    => 'شريكك يطلب كشف صورتك الشخصية له',
 
 ];

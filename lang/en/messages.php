@@ -457,6 +457,9 @@ return [
     'use_methods' => 'Use Methods',
     'help_instructions' => 'Help Instructions',
     'fetch_help_instructions_and_use_methods'   => 'Fetch help instructions and use methods',
-    'requests_for_show_image'       => 'requests to show  your image',
+    'requests_to_show_your_image'       => 'requests to show  your image',
     'asks_for_second_chance'            => 'asks for second chance',
+    'request_for_image'     => 'Request for your image',
+    'request_for_show_image' => 'A request to show  your image',
+
 ];
