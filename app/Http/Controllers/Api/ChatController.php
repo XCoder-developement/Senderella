@@ -101,7 +101,7 @@ class ChatController extends Controller
                     'image' => $documentData,
                 ]);
             }
-            
+
             $messageResource = new ChatMessageResource($chatMessage);
             $chatResource = new ChatResource($chat);
             $type = NotificationTypeEnum::CHAT->value;
@@ -382,7 +382,7 @@ class ChatController extends Controller
 
             $data['requester_user_id'] = $requester->id;
             $data['user_id'] = $request->user_id;
-            $data['chat_id'] = $chat->id;
+            $data['chat_id'] = $chat->chat_id;
             BlockRequest::create($data);
 
             $title = __('message.request_for_unblock');
