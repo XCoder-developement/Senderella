@@ -5,6 +5,7 @@ namespace App\Http\Resources\Api;
 use App\Models\Chat\Chat;
 use App\Models\Chat\ChatMessage;
 use App\Models\User\User;
+use App\Models\User\UserBlock;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,6 +24,8 @@ class ChatResource extends JsonResource
         $auth = User::find(auth()->id() );
         $message = ChatMessage::where('chat_id', $this->id)->orderBy('created_at', 'desc')->value('message');
         $last_message = ChatMessage::where('chat_id', $this->id)->orderBy('created_at', 'desc')->first();
+        $is_blocked = UserBlock::where('user_id', auth()->id())->where('partner_id', $user->id)->first();
+
         return [
             'chat_id' => $this->id,
             'name'   => $this->name ?? '',
@@ -35,7 +38,7 @@ class ChatResource extends JsonResource
             'partner' => new PartnerResource($user),
             'show_my_image' => $this->chat_users->where('user_id',auth()->id())->first()?->image_status ?? 0,
             'show_user_image' => $this->chat_users->where('user_id','!=',auth()->id())->first()?->image_status ?? 0,
-
+            'is_blocked' => $is_blocked ?? 0,
             // $message = $user->is_verify == 1 ? $message : substr($message, 0, 5) . encrypt(substr($message, 5)),
         ];
     }
