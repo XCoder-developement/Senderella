@@ -258,7 +258,7 @@ class ChatController extends Controller
 
     public function show_user_image(Request $request)
     {
-        try {
+        // try {
             $rules = [
                 'user_id' => 'required|exists:users,id',
             ];
@@ -295,11 +295,9 @@ class ChatController extends Controller
             $text = __('message.request_for_show_image');
             $type = NotificationTypeEnum::SHOWUSERIMAGE->value;
             $image = $requester->images?->where('is_primary', 1)->first()->image_link ?? '';
-            dd($user->user_device , $user->user_device->device_token) ; 
-            // if (isset($user->devices) && $user->devices->count() > 0) {
-                if ($user->user_device && $user->user_device->device_token ) {
-                dd('test');
-                foreach ($user->devices as $user_device) {
+            // dd($user->user_device , $user->user_device->device_token) ;
+            if (isset($user->user_devices) && $user->user_devices->count() > 0) {
+                foreach ($user->user_devices as $user_device) {
 
                     SendNotification::send(
                         $user_device->device_token,
@@ -315,9 +313,9 @@ class ChatController extends Controller
             }
             $msg = __('message.success');
             return $this->successResponse($msg, 200);
-        } catch (\Exception $ex) {
-            return $this->returnException($ex, 500);
-        }
+        // } catch (\Exception $ex) {
+        //     return $this->returnException($ex, 500);
+        // }
     }
 
     public function accept_show_image(Request $request)
@@ -396,10 +394,9 @@ class ChatController extends Controller
             $text = __('message.request_for_unblock');
             $type = NotificationTypeEnum::SECONDCHANCE->value;
 
-            // if (isset($user->devices) && $user->devices->count() > 0) {
-                if ($user->user_device && $user->user_device->device_token) {
+            if (isset($user->user_devices) && $user->user_devices->count() > 0) {
 
-                foreach ($user->devices as $user_device) {
+                foreach ($user->user_devices as $user_device) {
 
                     SendNotification::send(
                         $user_device->device_token,
