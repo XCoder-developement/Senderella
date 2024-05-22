@@ -105,7 +105,7 @@ class ChatController extends Controller
             $messageResource = new ChatMessageResource($chatMessage);
             $chatResource = new ChatResource($chat);
             $type = NotificationTypeEnum::CHAT->value;
-
+            dd($user->id);
             if ($receiver->user_device && $receiver->user_device->device_token) {
                 SendNotification::send(
                     $receiver->user_device->device_token,
