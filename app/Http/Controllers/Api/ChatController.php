@@ -130,7 +130,7 @@ class ChatController extends Controller
 
     public function fetch_chats()
     {
-        try {
+        // try {
             $user = auth()->user();
             // $sent_chats = Chat::where('user_id', $user->id)->where('receiver_id', '!=', $user->id);
             // $received_chats = Chat::where('receiver_id', $user->id)->where('user_id', '!=', $user->id);
@@ -141,9 +141,9 @@ class ChatController extends Controller
             $data = ChatResource::collection($chats);
             $msg = __('messages.Your chats');
             return $this->dataResponse($msg, $data, 200);
-        } catch (\Exception $ex) {
-            return $this->returnException($ex, 500);
-        }
+        // } catch (\Exception $ex) {
+        //     return $this->returnException($ex, 500);
+        // }
     }
 
     public function fetch_messages(Request $request)
