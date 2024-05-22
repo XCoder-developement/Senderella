@@ -258,7 +258,7 @@ class ChatController extends Controller
 
     public function show_user_image(Request $request)
     {
-        // try {
+        try {
             $rules = [
                 'user_id' => 'required|exists:users,id',
             ];
@@ -276,11 +276,11 @@ class ChatController extends Controller
             $reciever_chats = ChatUser::where('user_id', $request->user_id)->pluck('chat_id')->toArray();
             $chat_id = array_intersect($auth_chats, $reciever_chats);
             $chat = ChatUser::whereIn('chat_id', $chat_id)->first();
-            $chat = Chat::find($chat->chat_id );
             // dd($chat , $auth_chats , $reciever_chats , $chat_id ,  $requester->id , $user  );
             if (!$chat) {
                 return $this->successResponse(__('message.no chat found'), 200);
             }
+            $chat = Chat::find($chat->chat_id );
 
             $chatExists = DB::table('chats')->where('id', $chat->id)->exists();
             if (!$chatExists) {
@@ -314,9 +314,9 @@ class ChatController extends Controller
             }
             $msg = __('message.success');
             return $this->successResponse($msg, 200);
-        // } catch (\Exception $ex) {
-        //     return $this->returnException($ex, 500);
-        // }
+        } catch (\Exception $ex) {
+            return $this->returnException($ex, 500);
+        }
     }
 
     public function accept_show_image(Request $request)
