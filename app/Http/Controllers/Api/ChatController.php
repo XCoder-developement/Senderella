@@ -352,7 +352,7 @@ class ChatController extends Controller
             $reciever_chats = ChatUser::where('user_id', $request->user_id)->pluck('chat_id')->toArray();
             $chat_id = array_intersect($auth_chats, $reciever_chats);
             $chat = ChatUser::whereIn('chat_id', $chat_id)->first();
-            $chat = Chat::find($chat->id);
+            $chat = Chat::find($chat->chat_id);
 
             $my_chat_user = ChatUser::where('user_id', $user->id)->where('chat_id', $chat->id)->first();
             $chat_reciever = ChatUser::where('user_id', $request->user_id)->where('chat_id', $chat->id)->first();
