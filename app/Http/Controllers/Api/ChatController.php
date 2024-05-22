@@ -307,7 +307,7 @@ class ChatController extends Controller
                         $requester->id,
                         url($image),
                         '',
-                        new ChatResource($chat),
+                        // new ChatResource($chat),
                     );
                 }
             }
