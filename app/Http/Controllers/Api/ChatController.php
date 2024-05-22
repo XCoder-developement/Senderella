@@ -282,7 +282,7 @@ class ChatController extends Controller
                 return $this->successResponse(__('message.no chat found'), 200);
             }
 
-            $chatExists = DB::table('chats')->where('id', $chat->chat_id)->exists();
+            $chatExists = DB::table('chats')->where('id', $chat->id)->exists();
             if (!$chatExists) {
                 return $this->successResponse(__('message.no chat found'), 200);
             }
