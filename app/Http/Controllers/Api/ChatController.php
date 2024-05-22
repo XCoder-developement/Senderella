@@ -448,11 +448,11 @@ class ChatController extends Controller
                 return $this->getValidationErrors($validator);
             }
             $user = auth()->user();
-            $block_request = BlockRequest::where('user_id' , $request->user_id)->where('requester_user_id' , $user->id)->first();
-
+            $block_request = BlockRequest::where('user_id' , $user->id)->where('requester_user_id' ,  $request->user_id)->first();
+            // dd($block_request);
             if (!$block_request) {
                 $msg = __('messages.request_not_found');
-                return $this->successResponse($msg, 200);
+                return $this->successResponse($msg, 400);
             }
 
             // $chat = ChatUser::where(['user_id' => $user->id, 'user_id' => $request->user_id])->first()?->chat;
