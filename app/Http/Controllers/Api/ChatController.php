@@ -298,7 +298,7 @@ class ChatController extends Controller
 
             // if (isset($user->devices) && $user->devices->count() > 0) {
                 if ($user->user_device && $user->user_device->device_token) {
-                dd('test');
+                // dd('test');
                 foreach ($user->devices as $user_device) {
 
                     SendNotification::send(
@@ -396,7 +396,9 @@ class ChatController extends Controller
             $text = __('message.request_for_unblock');
             $type = NotificationTypeEnum::SECONDCHANCE->value;
 
-            if (isset($user->devices) && $user->devices->count() > 0) {
+            // if (isset($user->devices) && $user->devices->count() > 0) {
+                if ($user->user_device && $user->user_device->device_token) {
+
                 foreach ($user->devices as $user_device) {
 
                     SendNotification::send(
