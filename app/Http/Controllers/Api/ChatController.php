@@ -111,7 +111,7 @@ class ChatController extends Controller
                     __('messages.message'),
                     $message,
                     $type,
-                    $receiver->id,
+                    $user->id,
                     url($imageLink) ?? '',
                     $messageResource,
                     $chatResource
@@ -276,7 +276,10 @@ class ChatController extends Controller
             $reciever_chats = ChatUser::where('user_id' , $request->user_id)->pluck('chat_id')->toArray();
             $chat_id = array_intersect($auth_chats , $reciever_chats);
             $chat = ChatUser::whereIn('id' , $chat_id)->first();
-
+            // dd($chat);
+            if(!$chat){
+                return $this->successResponse(__('message.no chat found'), 200);
+            }
             $data['requester_user_id'] = $requester->id;
             $data['user_id'] = $request->user_id;
             $data['chat_id'] = $chat->id;
