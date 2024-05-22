@@ -276,13 +276,14 @@ class ChatController extends Controller
             $reciever_chats = ChatUser::where('user_id' , $request->user_id)->pluck('chat_id')->toArray();
             $chat_id = array_intersect($auth_chats , $reciever_chats);
             $chat = ChatUser::whereIn('id' , $chat_id)->first();
-            // dd($chat);
+            dd($chat , $auth_chats , $reciever_chats , $chat_id   );
             if(!$chat){
                 return $this->successResponse(__('message.no chat found'), 200);
             }
             $data['requester_user_id'] = $requester->id;
             $data['user_id'] = $request->user_id;
             $data['chat_id'] = $chat->id;
+            // dd($data);
             UserImageRequest::create($data);
 
             $title = __('message.request_for_image');
