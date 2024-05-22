@@ -24,7 +24,7 @@ class SendNotification
                     "click_action" => "FLUTTER_NOTIFICATION_CLICK"
                 ],
         ];
-        dd($data);
+        // dd($data);
         $dataString = json_encode($data);
         $headers = [
             'Authorization: key=' . Constants::NOTIFICATION_KEY,
