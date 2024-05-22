@@ -24,8 +24,11 @@ class ChatResource extends JsonResource
         $auth = User::find(auth()->id() );
         $message = ChatMessage::where('chat_id', $this->id)->orderBy('created_at', 'desc')->value('message');
         $last_message = ChatMessage::where('chat_id', $this->id)->orderBy('created_at', 'desc')->first();
+        if($user){
         $is_blocked = UserBlock::where('user_id', $user->id)->where('partner_id', auth()->id())->first();
-
+        }else{
+            $is_blocked = null;
+        }
         return [
             'chat_id' => $this->id,
             'name'   => $this->name ?? '',
