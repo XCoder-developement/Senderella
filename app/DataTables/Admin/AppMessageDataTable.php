@@ -4,6 +4,7 @@ namespace App\DataTables\Admin;
 
 use App\Models\AppMessage\AppMessage;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Http\Request;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -19,13 +20,22 @@ class AppMessageDataTable extends DataTable
      *
      * @param QueryBuilder $query Results from query() method.
      */
-    public function dataTable(QueryBuilder $query): EloquentDataTable
+    public function dataTable(QueryBuilder $query , Request $request): EloquentDataTable
     {
         return (new EloquentDataTable($query))
         ->addColumn('action', 'admin_dashboard.app_messages.action')
         ->rawColumns([
             'action',
-        ]);
+        ])
+        ->filter(function ($query) use ($request) {
+            if ($request->has('search') && isset($request->input('search')['value'])
+            && !empty($request->input('search')['value'])) {
+                $searchValue = $request->input('search')['value'];
+                $query->where('name', 'like', "%{$searchValue}%")
+                ->orWhere('email', 'like', "%{$searchValue}%")
+                ->orWhere('phone', 'like', "%{$searchValue}%");
+            }
+        });;
     }
 
     /**
