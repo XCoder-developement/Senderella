@@ -4,6 +4,7 @@ namespace App\DataTables\Admin;
 
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Http\Request;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -19,7 +20,7 @@ class AllowedUserDataTable extends DataTable
      *
      * @param QueryBuilder $query Results from query() method.
      */
-    public function dataTable($query)
+    public function dataTable($query , Request $request)
     {
         return datatables()
         ->eloquent($query)
@@ -71,7 +72,16 @@ class AllowedUserDataTable extends DataTable
         ->rawColumns([
             'image',
             'action',
-        ]);
+        ])
+        ->filter(function ($query) use ($request) {
+            if ($request->has('search') && isset($request->input('search')['value'])
+            && !empty($request->input('search')['value'])) {
+                $searchValue = $request->input('search')['value'];
+                $query->where('name', 'like', "%{$searchValue}%")
+                ->orWhere('email', 'like', "%{$searchValue}%")
+                ->orWhere('phone', 'like', "%{$searchValue}%");
+            }
+        });
     }
 
     /**
