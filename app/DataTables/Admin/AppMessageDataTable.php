@@ -27,7 +27,7 @@ class AppMessageDataTable extends DataTable
         ->rawColumns([
             'action',
         ])
-        ->filter(function ($query) use ($request) {
+        ->filter(function ($query) use ($request) { //the search code section 
             if ($request->has('search') && isset($request->input('search')['value'])
             && !empty($request->input('search')['value'])) {
                 $searchValue = $request->input('search')['value'];
