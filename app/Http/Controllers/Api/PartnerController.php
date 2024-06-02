@@ -753,34 +753,6 @@ class PartnerController extends Controller
         }
     }
 
-    // public function who_favorite_me()
-    // {
-
-    //     try {
-    //         $user = auth()->user();
-    //         $favorite_ids = $user->favorited_by()->orderBy('created_at', 'desc')->pluck("user_id")
-    //             ->reject(function ($user_id) use ($user) {
-    //                 return $user_id == $user->id;
-    //             })->toArray();
-
-    //         $favorites = implode(',', $favorite_ids); // Convert array to comma-separated string
-
-
-    //         $favorite = User::select('users.*')
-    //             ->join('user_bookmarks', 'users.id', '=', 'user_bookmarks.user_id')
-    //             ->where('gender', '!=', $user->gender)
-    //             ->whereIn('users.id', $favorite_ids)
-    //             ->orderByRaw("FIELD(users.id, $favorites)") // Order by the sequence of IDs in the $followingUserIds array
-    //             // ->orderBy('user_bookmarks.created_at', 'desc') // Then order by user_likes.created_at
-    //             ->distinct()
-    //             ->get();
-
-    //         $msg = "who_favorite_me";
-    //         return $this->dataResponse($msg, PartnerResource::collection($favorite), 200);
-    //     } catch (\Exception $ex) {
-    //         return $this->returnException($ex->getMessage(), 500);
-    //     }
-    // }
 
     public function who_favorite_me() {
         try {

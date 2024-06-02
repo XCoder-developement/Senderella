@@ -80,7 +80,7 @@ class UserResource extends JsonResource
             "questions"=>DetailsResource::collection($this->informations->where('type',2)),
 
             "search"=>SearchResource::collection($this->search)->last(),
-            'is_view' => $this->is_view
+            'is_view' => $this->is_view ?? '',
 
         ];
     }

@@ -610,10 +610,10 @@ class UserController extends Controller
 
             if ($user->is_view == 1) {
                 $msg = __('messages.allowed');
-                return $this->successResponse($msg, 200);
+                return $this->dataResponse($msg, new UserResource($user), 200);
             } else {
                 $msg = __('messages.not allowed');
-                return $this->successResponse($msg, 200);
+                return $this->dataResponse($msg, new UserResource($user), 200);
             }
         } catch (\Exception $ex) {
             return $this->returnException($ex->getMessage(), 500);
