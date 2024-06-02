@@ -52,7 +52,10 @@ class LoginController extends Controller
             // }
          //add device to user
                Auth::logoutOtherDevices($request->password);
-               
+
+               if($user->user_devices()->exists()){
+                   $user->user_devices()->delete();
+               }
          $userDevice = $user->user_devices()->firstOrNew([
             'device_type' => $request->device_type,
             'device_id' => $request->device_id,
