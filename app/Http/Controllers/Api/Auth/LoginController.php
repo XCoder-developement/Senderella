@@ -7,6 +7,7 @@ use App\Http\Resources\Api\UserResource;
 use Illuminate\Http\Request;
 use App\Models\User\User;
 use App\Traits\ApiTrait;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Validator;
 
@@ -50,7 +51,11 @@ class LoginController extends Controller
                ]);
             // }
          //add device to user
+               Auth::logoutOtherDevices($request->password);
 
+               if($user->user_devices()->exists()){
+                   $user->user_devices()->delete();
+               }
          $userDevice = $user->user_devices()->firstOrNew([
             'device_type' => $request->device_type,
             'device_id' => $request->device_id,
